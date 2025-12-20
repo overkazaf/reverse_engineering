@@ -1,0 +1,125 @@
+site_name: Web RE Cookbook
+docs_dir: docs
+theme:
+  name: material
+  custom_dir: docs/custom_theme
+  features:
+  - navigation.tabs
+  - navigation.top
+  - search.suggest
+  - search.highlight
+  - navigation.instant
+  palette:
+  - scheme: default
+    toggle:
+      icon: material/brightness-7
+      name: Switch to dark mode
+  - scheme: slate
+    toggle:
+      icon: material/brightness-4
+      name: Switch to light mode
+extra_css:
+- https://uicdn.toast.com/editor/latest/toastui-editor.min.css
+- css/chat.css
+extra_javascript:
+- https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js
+- https://cdn.jsdelivr.net/npm/marked/marked.min.js
+- js/editor.js
+- js/chat.js
+- js/interview.js
+nav:
+- 首页: index.md
+- 快速入门:
+  - 概述: 00-Quick-Start/index.md
+  - 第一个 Hook: 00-Quick-Start/your_first_hook.md
+  - 解密 API 参数: 00-Quick-Start/decrypt_api_params.md
+  - 绕过简单验证码: 00-Quick-Start/bypass_simple_captcha.md
+- 基础知识:
+  - HTTP/HTTPS 协议: 01-Foundations/http_https_protocol.md
+  - 浏览器架构: 01-Foundations/browser_architecture.md
+  - JavaScript 基础: 01-Foundations/javascript_basics.md
+  - JavaScript 执行机制: 01-Foundations/javascript_execution_mechanism.md
+  - DOM 与 BOM: 01-Foundations/dom_and_bom.md
+  - WebAssembly 基础: 01-Foundations/webassembly_basics.md
+  - Cookie 与存储: 01-Foundations/cookie_and_storage.md
+  - CORS 与同源策略: 01-Foundations/cors_and_same_origin_policy.md
+  - TLS/SSL 握手: 01-Foundations/tls_ssl_handshake.md
+  - Web API 与 Ajax: 01-Foundations/web_api_and_ajax.md
+- 工具指南:
+  - 浏览器开发者工具: 02-Tooling/browser_devtools.md
+  - Burp Suite 指南: 02-Tooling/burp_suite_guide.md
+  - Fiddler 指南: 02-Tooling/fiddler_guide.md
+  - Charles 指南: 02-Tooling/charles_guide.md
+  - Wireshark 指南: 02-Tooling/wireshark_guide.md
+  - Puppeteer 与 Playwright: 02-Tooling/puppeteer_playwright.md
+  - Selenium 指南: 02-Tooling/selenium_guide.md
+  - AST 工具: 02-Tooling/ast_tools.md
+  - Node.js 调试: 02-Tooling/nodejs_debugging.md
+  - V8 工具: 02-Tooling/v8_tools.md
+- 实战配方:
+  - 基础配方:
+    - 逆向工程流程: 03-Basic-Recipes/re_workflow.md
+    - 调试技术: 03-Basic-Recipes/debugging_techniques.md
+    - Hook 技术: 03-Basic-Recipes/hooking_techniques.md
+    - API 逆向工程: 03-Basic-Recipes/api_reverse_engineering.md
+    - 加密算法识别: 03-Basic-Recipes/crypto_identification.md
+    - 动态参数分析: 03-Basic-Recipes/dynamic_parameter_analysis.md
+    - WebSocket 逆向: 03-Basic-Recipes/websocket_reversing.md
+  - 进阶配方:
+    - JavaScript 反混淆: 04-Advanced-Recipes/javascript_deobfuscation.md
+    - 验证码绕过: 04-Advanced-Recipes/captcha_bypass.md
+    - 浏览器指纹: 04-Advanced-Recipes/browser_fingerprinting.md
+    - JavaScript VM 保护: 04-Advanced-Recipes/javascript_vm_protection.md
+    - WebAssembly 逆向: 04-Advanced-Recipes/webassembly_reversing.md
+    - 反爬虫深度分析: 04-Advanced-Recipes/anti_scraping_deep_dive.md
+    - 前端加固技术: 04-Advanced-Recipes/frontend_hardening.md
+    - CSP 绕过: 04-Advanced-Recipes/csp_bypass.md
+    - WebRTC 指纹: 04-Advanced-Recipes/webrtc_fingerprinting.md
+    - Canvas 指纹: 04-Advanced-Recipes/canvas_fingerprinting.md
+    - TLS 指纹: 04-Advanced-Recipes/tls_fingerprinting.md
+    - HTTP/2 与 HTTP/3: 04-Advanced-Recipes/http2_http3.md
+    - PWA 与 Service Worker: 04-Advanced-Recipes/pwa_service_worker.md
+- 案例研究:
+  - 电商网站案例: 05-Case-Studies/case_ecommerce.md
+  - 社交媒体案例: 05-Case-Studies/case_social_media.md
+  - 金融网站案例: 05-Case-Studies/case_financial.md
+  - 视频流媒体案例: 05-Case-Studies/case_video_streaming.md
+  - 新闻聚合案例: 05-Case-Studies/case_news_aggregator.md
+  - 搜索引擎案例: 05-Case-Studies/case_search_engine.md
+- 参考资料:
+  - 工程实践:
+    - 分布式爬虫: 06-Engineering/distributed_scraping.md
+    - 代理池管理: 06-Engineering/proxy_pool_management.md
+    - 数据存储方案: 06-Engineering/data_storage_solutions.md
+    - 消息队列应用: 06-Engineering/message_queue_application.md
+    - Docker 部署: 06-Engineering/docker_deployment.md
+    - 监控与告警: 06-Engineering/monitoring_and_alerting.md
+    - 反反爬框架: 06-Engineering/anti_anti_scraping_framework.md
+  - 脚本集合:
+    - JavaScript Hook 脚本: 07-Scripts/javascript_hook_scripts.md
+    - 反混淆脚本: 07-Scripts/deobfuscation_scripts.md
+    - 自动化脚本: 07-Scripts/automation_scripts.md
+    - 加密检测脚本: 07-Scripts/crypto_detection_scripts.md
+  - 速查手册:
+    - 常用命令: 08-Cheat-Sheets/common_commands.md
+    - 加密签名: 08-Cheat-Sheets/crypto_signatures.md
+    - 工具快捷键: 08-Cheat-Sheets/tool_shortcuts.md
+    - 正则表达式: 08-Cheat-Sheets/regex_patterns.md
+    - HTTP 头部: 08-Cheat-Sheets/http_headers.md
+  - 项目模板:
+    - 基础爬虫: 09-Templates/basic_scraper.md
+    - 逆向项目: 09-Templates/reverse_project.md
+    - Docker 配置: 09-Templates/docker_setup.md
+    - CI/CD 流水线: 09-Templates/cicd_pipeline.md
+    - 分布式爬虫: 09-Templates/distributed_crawler.md
+  - 问题排查:
+    - 网络问题: 10-Troubleshooting/network_issues.md
+    - 反爬问题: 10-Troubleshooting/anti_scraping_issues.md
+    - JavaScript 调试: 10-Troubleshooting/javascript_debugging.md
+    - 工具问题: 10-Troubleshooting/tool_issues.md
+    - 数据问题: 10-Troubleshooting/data_issues.md
+    - Docker 问题: 10-Troubleshooting/docker_issues.md
+- 附录:
+  - GitHub 开源项目: 11-Resources/github_projects.md
+  - 学习资源: 11-Resources/learning_resources.md
+  - 常见问题: 11-Resources/faq.md

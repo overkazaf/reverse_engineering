@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git init:*)",
+      "Bash(find:*)",
+      "Bash(python generate_pdf.py:*)",
+      "Bash(python3:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}

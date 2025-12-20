@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip install:*)",
+      "Bash(mkdocs serve:*)",
+      "Bash(lsof:*)",
+      "WebSearch",
+      "Bash(find:*)",
+      "Bash(tree:*)",
+      "Bash(python fix_comments.py:*)",
+      "Bash(file:*)",
+      "Bash(for f in docs/**/*.md)",
+      "Bash(do file -I \"$f\")",
+      "Bash(done)",
+      "Bash(python docs_to_pdf.py:*)",
+      "Bash(python update_links.py:*)",
+      "Bash(mkdocs build:*)",
+      "Bash(python fix_cross_refs.py:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(python3 docs_to_pdf.py:*)",
+      "Bash(tee:*)",
+      "Bash(python3:*)",
+      "Bash(source venv/bin/activate)",
+      "Bash(deactivate)",
+      "Bash(/Users/nongjiawu/.pyenv/versions/3.12.9/bin/pip install:*)",
+      "Bash(/Users/nongjiawu/.pyenv/versions/3.12.9/bin/python:*)"
+    ]
+  }
+}

@@ -1,0 +1,6 @@
+mkdocs>=1.5.0
+mkdocs-material>=9.0.0
+markdown2>=2.4.0
+weasyprint>=59.0
+pillow>=10.0.0
+pyyaml>=6.0

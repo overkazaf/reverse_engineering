@@ -1,0 +1,117 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# MkDocs
+site/
+
+# PDF output
+# Uncomment the following line to exclude generated PDFs from git
+# output/*.pdf
+
+# PDF generation cache and debug files
+output/.cache/
+output/*_debug.html
+*.backup
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.cache
+.cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Node.js (if using any JS tools)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Test coverage
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+.pytest_cache/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# System files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Compiled files
+*.o
+*.a
+*.dylib
+*.dll
+*.exe
+
+# Archives (uncomment if needed)
+# *.tar.gz
+# *.zip
+
+# Database
+*.db
+*.sqlite3
+
+# Secrets (important for security)
+*.pem
+*.key
+credentials.json
+secrets.json
+config.local.json
