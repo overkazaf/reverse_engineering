@@ -1,5 +1,12 @@
 # Native 层字符串混淆与逆向
 
+> **📚 前置知识**
+>
+> 本配方涉及以下核心技术，建议先阅读相关章节：
+>
+> - **[SO/ELF 格式](../../04-Reference/Foundations/so_elf_format.md)** - 理解 .rodata 段与符号表
+> - **[IDA Pro 指南](../../02-Tools/Static/ida_pro_guide.md)** - 使用 IDA 进行静态分析
+
 在 Android Native 开发（C/C++）中，直接将明文字符串硬编码在代码中会带来安全风险。静态分析工具（如 IDA Pro、Ghidra）可以轻易地在二进制文件的 `.rodata`（只读数据）段中找到这些字符串，从而泄露 API 地址、加密密钥、敏感校验逻辑等信息。因此，开发者通常会采用各种字符串混淆技术来保护这些数据。
 
 ## 常见的 Native 字符串混淆技术

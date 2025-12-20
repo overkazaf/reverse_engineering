@@ -1,5 +1,12 @@
 # 脱壳分析加固的 Android 应用
 
+> **📚 前置知识**
+>
+> 本配方涉及以下核心技术，建议先阅读相关章节：
+>
+> - **[APK 结构解析](../../04-Reference/Foundations/apk_structure.md)** - 理解 DEX、Manifest 等文件结构
+> - **[加固厂商识别](../Anti-Detection/app_hardening_identification.md)** - 识别不同加固方案的特征
+
 ## 问题场景
 
 你在逆向分析一个 App 时遇到了以下情况：

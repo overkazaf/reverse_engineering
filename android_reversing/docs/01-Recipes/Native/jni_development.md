@@ -1,5 +1,12 @@
 # JNI 开发与调用原理
 
+> **📚 前置知识**
+>
+> 本配方涉及以下核心技术，建议先阅读相关章节：
+>
+> - **[Android 四大组件](../../04-Reference/Foundations/android_components.md)** - 理解 Android 应用架构
+> - **C/C++ 基础** - 掌握指针、内存管理等概念
+
 JNI (Java Native Interface) 是 Java 与 C/C++ 代码交互的标准接口。在 Android 逆向工程中，理解 JNI 的工作原理对于分析 Native 层代码至关重要。本章将从开发者视角介绍 JNI 的原理与实践。
 
 ## 目录

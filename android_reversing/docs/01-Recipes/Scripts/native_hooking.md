@@ -1,5 +1,12 @@
 # Native 层 Hook 技巧 (Native Hooking Patterns)
 
+> **📚 前置知识**
+>
+> 本配方涉及以下核心技术，建议先阅读相关章节：
+>
+> - **[Frida Native Hook](../../02-Tools/Dynamic/frida_guide.md#native-hook)** - 掌握 Interceptor API
+> - **[SO/ELF 格式](../../04-Reference/Foundations/so_elf_format.md)** - 理解 libc 函数与符号
+
 在 Android 逆向中，Native 层 (C/C++) 的分析往往比 Java 层更具挑战性。Hook 标准 C 库 (libc) 函数是理解 Native 层行为、脱壳和还原算法的重要手段。
 
 ---

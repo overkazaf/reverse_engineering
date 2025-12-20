@@ -2,7 +2,7 @@
 
 `AndroidManifest.xml` 是 Android 应用的"大脑"和"蓝图"。它是一个强制性的配置文件，位于每个 APK 的根目录中。该文件向 Android 构建工具、操作系统和 Google Play 描述了应用的基本信息、组件、权限和硬件要求。对于逆向工程师来说，这是了解应用功能、入口点和安全边界的首要切入点。
 
-## # 核心作用与特性
+## 核心作用与特性
 
 - **唯一标识**: 定义了应用的 Java 包名，这是它在设备和 Google Play 上的唯一标识。
 
@@ -18,9 +18,9 @@
 
 ---
 
-## # 关键标签 (Tags) 详解
+## 关键标签 (Tags) 详解
 
-### # `<manifest>`
+### `<manifest>`
 
 根元素。它必须包含 `package` 属性来定义应用的唯一包名。
 
@@ -42,7 +42,7 @@ package="com.example.myapp">
 
 - `android:networkSecurityConfig`: **（安全关键）** 指向网络安全配置文件，用于定义 SSL Pinning、自定义 CA 等高级网络策略。
 
-### # `<activity>`
+### `<activity>`
 
 声明一个 Activity (UI 界面)。
 
@@ -50,7 +50,7 @@ package="com.example.myapp">
 
 - `android:exported`: **（安全关键）** `true` 表示该 Activity 可以被其他应用启动。如果该 Activity 处理敏感数据且无需外部调用，应设为 `false`，否则可能导致组件劫持和数据泄露。对于包含 `LAUNCHER` intent-filter 的 Activity，`exported` 默认为 `true`。
 
-### # `<service>`
+### `<service>`
 
 声明一个 Service (后台服务)。
 
@@ -58,7 +58,7 @@ package="com.example.myapp">
 
 - `android:exported`: **（安全关键）** `true` 表示该 Service 可以被其他应用绑定或启动。规则同 Activity。
 
-### # `<receiver>`
+### `<receiver>`
 
 声明一个 BroadcastReceiver (广播接收器)。
 
@@ -66,7 +66,7 @@ package="com.example.myapp">
 
 - `android:exported`: **（安全关键）** `true` 表示它可以接收来自系统或其他应用的广播。
 
-### # `<provider>`
+### `<provider>`
 
 声明一个 ContentProvider (内容提供者)，用于跨应用共享数据。
 
@@ -76,7 +76,7 @@ package="com.example.myapp">
 
 - `android:exported`: **（安全关键）** `true` 表示其他应用可以访问其数据。如果 `minSdkVersion` 或 `targetSdkVersion` >= 17，默认值为 `false`。不正确的 `exported` 设置可能导致 SQL 注入或文件遍历漏洞。
 
-### # `<uses-permission>`
+### `<uses-permission>`
 
 请求应用运行所需的权限。这是分析应用行为的关键。
 
@@ -123,7 +123,7 @@ package="com.example.myapp">
 
 * 检查 `android:allowBackup="true"`，尝试 `adb backup` 导出数据。
 ---
-## # 安全风险与配置
+## 安全风险与配置
 
 * **组件导出风险**: 错误地将内部组件设置为 `exported="true"` 是最常见的 Android 漏洞之一。
 

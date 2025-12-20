@@ -1,5 +1,12 @@
 # JavaScript Obfuscator (OB 混淆) 分析
 
+> **📚 前置知识**
+>
+> 本配方涉及以下核心技术，建议先阅读相关章节：
+>
+> - **JavaScript 基础** - 理解 AST、作用域、闭包等概念
+> - **浏览器开发者工具** - 使用 Chrome DevTools 进行调试
+
 `javascript-obfuscator` 是一个非常流行和强大的开源工具，用于混淆和保护 JavaScript 代码。它的混淆产物通常被称为"OB 混淆"。OB 混淆通过多种手段的组合，使得代码难以阅读、理解和调试。
 
 ## 核心混淆技术

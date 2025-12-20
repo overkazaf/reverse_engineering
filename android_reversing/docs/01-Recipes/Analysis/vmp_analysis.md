@@ -1,5 +1,12 @@
 # VMP 分析
 
+> **📚 前置知识**
+>
+> 本配方涉及以下核心技术，建议先阅读相关章节：
+>
+> - **[SO/ELF 格式](../../04-Reference/Foundations/so_elf_format.md)** - 理解 Native 库的内存布局
+> - **[ARM 汇编基础](../../04-Reference/Foundations/arm_assembly.md)** - 分析虚拟机 Handler 的能力
+
 VMP (VMProtect 的简称) 是一种非常强大的软件保护解决方案，它使用虚拟化（一个"虚拟机"）来保护代码。受保护的代码不再执行原生 CPU 指令，而是被转换成一种自定义的字节码，只有特定的、嵌入的虚拟机才能解释执行。
 
 分析受 VMP 保护的代码是逆向工程中最具挑战性的任务之一。

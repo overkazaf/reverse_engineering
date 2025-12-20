@@ -128,13 +128,13 @@ nav:
     - 消息队列: 04-Reference/Engineering/message_queues.md
     - Redis 常用命令: 04-Reference/Engineering/redis.md
     - 风控 SDK 编译指南: 04-Reference/Engineering/risk_control_sdk_build_guide.md
-    - 群控与 API 逆向对比: 04-Reference/Engineering/automation_vs_api_reverse.md
     - 数据分析:
       - 数据仓库与处理: 04-Reference/Engineering/Data-Analysis/data_warehousing_and_processing.md
       - Apache Flink: 04-Reference/Engineering/Data-Analysis/flink.md
       - HBase 数据库: 04-Reference/Engineering/Data-Analysis/hbase.md
       - Apache Hive: 04-Reference/Engineering/Data-Analysis/hive.md
       - Apache Spark: 04-Reference/Engineering/Data-Analysis/spark.md
+    - 群控与 API 逆向对比: 04-Reference/Engineering/automation_vs_api_reverse.md
 - 附录:
   - GitHub 开源项目: 05-Appendix/github_projects.md
   - 学习资源: 05-Appendix/learning_resources.md

@@ -1,5 +1,12 @@
 # 使用 Frida 脱壳加固 App 并修复 SO 文件
 
+> **📚 前置知识**
+>
+> 本配方涉及以下核心技术，建议先阅读相关章节：
+>
+> - **[Frida 完整指南](../../02-Tools/Dynamic/frida_guide.md)** - 掌握 Frida 内存操作与 Hook
+> - **[SO/ELF 格式](../../04-Reference/Foundations/so_elf_format.md)** - 理解 ELF 文件结构以进行修复
+
 ## 问题场景
 
 **你遇到了什么问题？**

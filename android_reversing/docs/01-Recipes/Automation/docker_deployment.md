@@ -1,5 +1,12 @@
 # 容器化部署：Docker 与 Kubernetes 实战
 
+> **📚 前置知识**
+>
+> 本配方涉及以下核心技术，建议先阅读相关章节：
+>
+> - **[Scrapy 快速入门](./scrapy.md)** - 理解 Scrapy 项目结构
+> - **Docker 基础** - 理解容器与镜像概念
+
 将爬虫项目容器化是实现标准化部署、弹性伸缩和 CI/CD 的第一步。本指南将详细介绍如何编写 Dockerfile，使用 Docker Compose 编排服务，以及如何在 Kubernetes (K8s) 上运行爬虫任务。
 
 ---

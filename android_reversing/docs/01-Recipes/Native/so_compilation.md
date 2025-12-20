@@ -1,5 +1,12 @@
 # SO 动态库编译与加载
 
+> **📚 前置知识**
+>
+> 本配方涉及以下核心技术，建议先阅读相关章节：
+>
+> - **[SO/ELF 格式](../../04-Reference/Foundations/so_elf_format.md)** - 理解 ELF 文件的段与节
+> - **[JNI 开发与调用原理](./jni_development.md)** - 理解 Java 与 Native 的交互
+
 本章介绍如何从零开始编译 Android SO 动态库，以及 Android 系统加载 SO 的完整流程。理解这些原理对于逆向分析 Native 层代码至关重要。
 
 ## 目录
