@@ -1,0 +1,126 @@
+@startuml SDK_Overview
+!theme vibrant
+title RiskControl SDK - 整体架构流程图
+
+skinparam backgroundColor White
+skinparam shadowing false
+
+skinparam rectangle {
+    BackgroundColor<<Java>> LightBlue
+    BackgroundColor<<Native>> LightGreen
+    BackgroundColor<<Protection>> Orange
+    BackgroundColor<<Detection>> Yellow
+}
+
+actor "开发者" as Developer
+actor "应用程序" as App
+
+package "Java Layer" {
+    rectangle "RiskControlSDK" as SDK <<Java>>
+    rectangle "DeviceFingerprint" as DF <<Java>>
+    rectangle "SecurityResult" as SR <<Java>>
+    rectangle "RiskScore" as RS <<Java>>
+}
+
+package "JNI Interface" {
+    rectangle "JNI_OnLoad\n(动态注册)" as JNI <<Protection>>
+    rectangle "ArtMethod\n直接操作" as ART <<Protection>>
+}
+
+package "Native Layer" {
+    rectangle "反逆向保护\n(anti_reverse.c)" as ANTI <<Protection>>
+    rectangle "风控核心\n(risk_control.c)" as CORE <<Native>>
+    rectangle "SVC系统调用\n(svc_syscall.c)" as SVC <<Native>>
+    rectangle "ArtMethod Hook\n(art_method_hook.c)" as ARTHOOK <<Protection>>
+}
+
+package "检测模块" {
+    rectangle "模拟器检测" as EMU <<Detection>>
+    rectangle "Root检测" as ROOT <<Detection>>
+    rectangle "调试检测" as DEBUG <<Detection>>
+    rectangle "Hook检测" as HOOK <<Detection>>
+    rectangle "网络检测" as NET <<Detection>>
+}
+
+package "数据采集" {
+    rectangle "设备指纹采集" as FINGER <<Native>>
+    rectangle "硬件信息" as HW <<Native>>
+    rectangle "软件信息" as SW <<Native>>
+    rectangle "网络信息" as NW <<Native>>
+}
+
+package "保护机制" {
+    rectangle "字符串混淆" as STR <<Protection>>
+    rectangle "控制流混淆" as FLOW <<Protection>>
+    rectangle "内存保护" as MEM <<Protection>>
+    rectangle "代码完整性" as INTEGRITY <<Protection>>
+}
+
+' 主要流程
+Developer --> App : 集成SDK
+App --> SDK : 初始化
+SDK --> JNI : 动态注册
+JNI --> ART : ArtMethod操作
+ART --> ANTI : 启动保护
+
+ANTI --> CORE : 初始化核心
+CORE --> SVC : 系统调用
+CORE --> FINGER : 设备指纹
+FINGER --> HW : 硬件信息
+FINGER --> SW : 软件信息
+FINGER --> NW : 网络信息
+
+CORE --> EMU : 模拟器检测
+CORE --> ROOT : Root检测
+CORE --> DEBUG : 调试检测
+CORE --> HOOK : Hook检测
+CORE --> NET : 网络检测
+
+ANTI --> STR : 字符串保护
+ANTI --> FLOW : 控制流保护
+ANTI --> MEM : 内存保护
+ANTI --> INTEGRITY : 完整性保护
+
+' 数据回流
+HW --> DF : 硬件数据
+SW --> DF : 软件数据
+NW --> DF : 网络数据
+DF --> SDK : 设备指纹
+
+EMU --> SR : 检测结果
+ROOT --> SR : 检测结果
+DEBUG --> SR : 检测结果
+HOOK --> SR : 检测结果
+NET --> SR : 检测结果
+SR --> SDK : 安全结果
+
+DF --> RS : 指纹数据
+SR --> RS : 安全数据
+RS --> SDK : 风险评分
+
+SDK --> App : 返回结果
+App --> Developer : 业务决策
+
+note right of ART
+  <b>核心创新点</b>
+  绕过RegisterNatives
+  直接操作ArtMethod
+  实现深度隐藏
+end note
+
+note right of SVC
+  <b>系统级绕过</b>
+  使用SVC指令
+  绕过应用层Hook
+  直接内核交互
+end note
+
+note right of ANTI
+  <b>多层保护</b>
+  • 反调试检测
+  • Hook框架检测
+  • 代码完整性验证
+  • 运行时保护
+end note
+
+@enduml

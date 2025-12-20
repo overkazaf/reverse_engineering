@@ -1,0 +1,80 @@
+@startuml Frida Architecture
+!theme vibrant
+skinparam backgroundColor white
+skinparam packageBorderColor #2E86AB
+skinparam packageBackgroundColor #E8F4FD
+skinparam componentBorderColor #A23B72
+skinparam componentBackgroundColor #F18F01
+skinparam noteBorderColor #C73E1D
+skinparam noteBackgroundColor #FFF3CD
+title Frida 架构及模块关系
+
+package "Host 端 (开发机)" {
+    [Frida CLI] as cli
+    [Python API] as python
+    [Node.js API] as nodejs
+    [Frida Core] as core
+    
+    cli --> core : 调用
+    python --> core : 调用
+    nodejs --> core : 调用
+}
+
+package "Target 端 (目标设备)" {
+    package "frida-server" {
+        [Server] as server
+        [Agent Container] as container
+    }
+    
+    package "目标进程" {
+        [frida-agent] as agent
+        [Gum Engine] as gum
+        [V8 Runtime] as v8
+        [Hook Engine] as hook
+        
+        agent --> gum : 使用
+        agent --> v8 : JavaScript执行
+        gum --> hook : 底层Hook
+    }
+    
+    server --> container : 管理
+    container --> agent : 注入/通信
+}
+
+package "通信层" {
+    [TCP/USB] as transport
+    core --> transport : 发送指令
+    transport --> server : 传输
+}
+
+package "Hook 目标" {
+    [Native Library] as native
+    [Java Methods] as java
+    [System Calls] as syscall
+    
+    hook --> native : Hook so文件
+    hook --> java : Hook Java方法
+    hook --> syscall : Hook系统调用
+}
+
+note right of gum
+  Gum 是 Frida 的核心引擎
+  负责代码插桩和Hook实现
+end note
+
+note right of v8
+  内置 V8 JavaScript 引擎
+  执行用户编写的Hook脚本
+end note
+
+note right of agent
+  注入到目标进程的核心组件
+  执行具体的Hook操作
+end note
+
+note left of server
+  运行在目标设备上
+  负责进程管理和通信
+end note
+
+@enduml

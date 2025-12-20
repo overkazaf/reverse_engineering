@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+{% endblock %}
+
+{% block content %}
+  {{ super() }}
+
+  <!-- Chat Window HTML (untouched) -->
+  <div id="chat-container" class="chat-container">
+    <button id="start-interview-button" class="chat-toggle-button" title="Start Mock Interview">
+        <span class="material-icons">school</span>
+    </button>
+    <button id="chat-toggle-button" class="chat-toggle-button" title="Chat with Gemini">
+      <span class="material-icons">psychology</span>
+    </button>
+    <div id="chat-window" class="chat-window">
+      <div id="chat-header" class="chat-header">
+        <h3 id="chat-title">Chat with Gemini</h3>
+        <div class="chat-header-buttons">
+          <button id="chat-shell-button" class="chat-header-button" title="Open Shell">
+            <span class="material-icons">terminal</span>
+          </button>
+          <button id="chat-fullscreen-button" class="chat-header-button" title="Toggle Fullscreen">
+            <span class="material-icons">fullscreen</span>
+          </button>
+          <button id="chat-close-button" class="chat-header-button" title="Close">
+            <span class="material-icons">close</span>
+          </button>
+        </div>
+      </div>
+      <div id="chat-view" class="chat-view">
+        <div id="chat-messages" class="chat-messages">
+          <div class="chat-message bot-message">
+            <span class="chat-avatar"><span class="material-icons">psychology</span></span>
+            <div class="chat-message-content"><p>Hello! I am your AI assistant.</p></div>
+          </div>
+        </div>
+        <div class="chat-input-container">
+          <textarea id="chat-input" class="chat-input" placeholder="Ask a question..." rows="1"></textarea>
+          <button id="chat-send-button" class="chat-send-button">
+            <span class="material-icons">send</span>
+          </button>
+        </div>
+      </div>
+      <div id="shell-view" class="shell-view" style="display: none;">
+        <div id="shell-output" class="shell-output"></div>
+        <div class.="shell-input-container">
+          <span class="shell-prompt">&gt;</span>
+          <input type="text" id="shell-input" class="shell-input" autocomplete="off" />
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- File Write Modal -->
+  <div id="file-write-modal" class="chat-modal" style="display: none;">
+    <div class="chat-modal-content">
+        <h3>Confirm File Write</h3>
+        <p>The AI proposes writing or overwriting the following file:</p>
+        <p><strong>File:</strong> <code id="modal-filepath"></code></p>
+        <p><strong>Content:</strong></p>
+        <pre id="modal-file-content" class="chat-modal-code"></pre>
+        <div class="chat-modal-buttons">
+            <button id="modal-confirm-button" class="md-button md-button--primary">Confirm & Write</button>
+            <button id="modal-cancel-button" class="md-button">Cancel</button>
+        </div>
+    </div>
+  </div>
+
+  <!-- New Interactive Quiz Modal -->
+  <div id="quiz-modal-overlay" class="quiz-modal-overlay" style="display: none;">
+    <div id="quiz-modal" class="quiz-modal">
+      <div id="quiz-header">
+        <h2 id="quiz-title">Mock Interview</h2>
+        <button id="quiz-close-button" class="quiz-close-button">&times;</button>
+      </div>
+      <div id="quiz-body">
+
+        <!-- Initial/Loading View -->
+        <div id="quiz-start-view">
+            <p>Ready to test your knowledge on this topic?</p>
+            <p>I will generate 10 multiple-choice questions for you.</p>
+            <button id="quiz-start-button" class="quiz-action-button">Start Quiz</button>
+        </div>
+        
+        <!-- Loading Spinner -->
+        <div id="quiz-loading-view" style="display: none;">
+             <div class="quiz-spinner"></div>
+             <p>Generating your personalized quiz... Please wait.</p>
+        </div>
+
+        <!-- Main Question View -->
+        <div id="quiz-question-view" style="display: none;">
+          <div id="quiz-progress-bar">
+              <div id="quiz-progress"></div>
+          </div>
+          <p id="quiz-progress-text"></p>
+          <h3 id="quiz-question-text"></h3>
+          <div id="quiz-options-container"></div>
+          <button id="quiz-next-button" class="quiz-action-button" disabled>Next Question</button>
+        </div>
+
+        <!-- Results View -->
+        <div id="quiz-results-view" style="display: none;">
+          <h3>Quiz Complete!</h3>
+          <p id="quiz-score-text"></p>
+          <div id="quiz-summary-container"></div>
+          <div class="quiz-results-actions">
+            <button id="quiz-review-button" class="quiz-action-button">Review Mistakes</button>
+            <button id="quiz-retry-button" class="quiz-action-button">Try Again</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+{% endblock %} 

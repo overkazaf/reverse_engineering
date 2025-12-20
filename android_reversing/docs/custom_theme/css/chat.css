@@ -1,0 +1,763 @@
+/* --- Gemini Chatbot Styles - Cyberpunk Terminal Edition --- */
+
+/* Floating Action Button (FAB) for chat */
+#gemini-chat-fab {
+    position: fixed !important;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #000000 0%, #0a0e27 50%, #000000 100%);
+    color: #00ff41;
+    border: 2px solid #00ff41;
+    box-shadow: 0 0 25px rgba(0, 255, 65, 0.5),
+                0 0 50px rgba(0, 255, 65, 0.3),
+                inset 0 0 20px rgba(0, 255, 65, 0.1);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    animation: pulse 2s infinite, glow 3s ease-in-out infinite;
+    overflow: hidden;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 0 25px rgba(0, 255, 65, 0.5),
+                    0 0 50px rgba(0, 255, 65, 0.3),
+                    inset 0 0 20px rgba(0, 255, 65, 0.1);
+    }
+    50% {
+        box-shadow: 0 0 35px rgba(0, 255, 65, 0.7),
+                    0 0 70px rgba(0, 255, 65, 0.5),
+                    inset 0 0 30px rgba(0, 255, 65, 0.2);
+    }
+}
+
+@keyframes glow {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.3); }
+}
+
+#gemini-chat-fab:hover {
+    transform: scale(1.15) rotate(5deg);
+    box-shadow: 0 0 50px rgba(0, 255, 65, 1),
+                0 0 100px rgba(0, 255, 65, 0.7),
+                inset 0 0 40px rgba(0, 255, 65, 0.3);
+    border-color: #00ff88;
+}
+
+#gemini-chat-fab .twemoji svg {
+    width: 32px;
+    height: 32px;
+    fill: #00ff41;
+    filter: drop-shadow(0 0 8px #00ff41) drop-shadow(0 0 15px #00ff41);
+    animation: iconPulse 2s ease-in-out infinite;
+}
+
+@keyframes iconPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* Main chat window container - Cyberpunk Terminal style */
+#gemini-chat-container {
+    position: fixed !important;
+    bottom: 30px;
+    right: 30px;
+    width: 650px;
+    max-width: 90vw;
+    height: 650px;
+    max-height: 85vh;
+    background: linear-gradient(135deg,
+        rgba(0, 0, 0, 0.98) 0%,
+        rgba(10, 14, 39, 0.98) 25%,
+        rgba(0, 8, 20, 0.98) 50%,
+        rgba(10, 14, 39, 0.98) 75%,
+        rgba(0, 0, 0, 0.98) 100%);
+    border-radius: 12px;
+    box-shadow: 0 0 30px rgba(0, 255, 65, 0.3),
+                0 0 60px rgba(0, 255, 65, 0.2),
+                0 0 90px rgba(0, 255, 65, 0.1),
+                inset 0 0 150px rgba(0, 255, 65, 0.08),
+                0 20px 60px rgba(0, 0, 0, 0.8);
+    z-index: 1001;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    border: 3px solid #00ff41;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: 'Fira Code', 'JetBrains Mono', 'Source Code Pro', 'Monaco', 'Menlo', 'Consolas', monospace;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* Animated corner accents */
+#gemini-chat-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 12px;
+    padding: 3px;
+    background: linear-gradient(45deg,
+        #00ff41 0%,
+        #00ff88 25%,
+        #ff006e 50%,
+        #00ff88 75%,
+        #00ff41 100%
+    );
+    background-size: 400% 400%;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 1;
+    animation: borderFlow 8s ease infinite;
+}
+
+@keyframes borderFlow {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* CRT scanline effect */
+#gemini-chat-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.15),
+        rgba(0, 0, 0, 0.15) 1px,
+        transparent 1px,
+        transparent 3px
+    );
+    pointer-events: none;
+    z-index: 2;
+    animation: scanline 8s linear infinite;
+    opacity: 0.1;
+}
+
+/* Remove flicker animation to prevent background "bleed-through" effect */
+@keyframes flicker {
+    0% { opacity: 0.08; }
+    50% { opacity: 0.12; }
+    100% { opacity: 0.08; }
+}
+
+@keyframes scanline {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 100%; }
+}
+
+#gemini-chat-container.maximized {
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: 100vw !important;
+    max-height: 100vh !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    background: linear-gradient(135deg,
+        rgba(0, 0, 0, 1) 0%,
+        rgba(10, 14, 39, 1) 25%,
+        rgba(0, 8, 20, 1) 50%,
+        rgba(10, 14, 39, 1) 75%,
+        rgba(0, 0, 0, 1) 100%) !important;
+    z-index: 9999 !important;
+}
+
+/* Chat window header - Cyberpunk Terminal title bar */
+#gemini-chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    background: linear-gradient(180deg, #000000 0%, #0a0e27 50%, #000000 100%);
+    color: #00ff41;
+    font-weight: bold;
+    font-size: 0.9rem;
+    border-bottom: 3px solid #00ff41;
+    text-shadow: 0 0 15px rgba(0, 255, 65, 1),
+                 0 0 30px rgba(0, 255, 65, 0.6);
+    letter-spacing: 2px;
+    position: relative;
+    z-index: 10;
+    text-transform: uppercase;
+    box-shadow: 0 5px 20px rgba(0, 255, 65, 0.2);
+}
+
+/* Hacker-style corner decorations */
+#gemini-chat-header::before {
+    content: '[ ';
+    color: #ff006e;
+    margin-right: -5px;
+    text-shadow: 0 0 10px rgba(255, 0, 110, 0.8);
+}
+
+#gemini-chat-header::after {
+    content: ' ]';
+    color: #ff006e;
+    margin-left: -5px;
+    position: absolute;
+    text-shadow: 0 0 10px rgba(255, 0, 110, 0.8);
+}
+
+#gemini-chat-drag-handle {
+    flex-grow: 1;
+    cursor: move;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#gemini-chat-drag-handle::before {
+    content: '❯❯';
+    color: #ff006e;
+    font-weight: bold;
+    animation: blink 1.2s infinite, pulse-neon 2s ease-in-out infinite;
+    text-shadow: 0 0 15px rgba(255, 0, 110, 1),
+                 0 0 30px rgba(255, 0, 110, 0.6);
+}
+
+@keyframes blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0.4; }
+}
+
+@keyframes pulse-neon {
+    0%, 100% {
+        text-shadow: 0 0 15px rgba(255, 0, 110, 1),
+                     0 0 30px rgba(255, 0, 110, 0.6);
+    }
+    50% {
+        text-shadow: 0 0 25px rgba(255, 0, 110, 1),
+                     0 0 50px rgba(255, 0, 110, 0.8),
+                     0 0 75px rgba(255, 0, 110, 0.4);
+    }
+}
+
+#gemini-chat-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    z-index: 1;
+}
+
+#gemini-chat-controls button {
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid #00ff41;
+    color: #00ff41;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 8px rgba(0, 255, 65, 0.8);
+    box-shadow: 0 0 10px rgba(0, 255, 65, 0.3),
+                inset 0 0 10px rgba(0, 255, 65, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+#gemini-chat-controls button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(0, 255, 65, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.4s, height 0.4s;
+}
+
+#gemini-chat-controls button:hover::before {
+    width: 300%;
+    height: 300%;
+}
+
+#gemini-chat-controls button:hover {
+    background-color: rgba(0, 255, 65, 0.25);
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.7),
+                0 0 40px rgba(0, 255, 65, 0.5),
+                inset 0 0 20px rgba(0, 255, 65, 0.2);
+    transform: scale(1.1);
+    border-color: #00ff88;
+}
+
+#gemini-chat-controls button .twemoji svg {
+    width: 16px;
+    height: 16px;
+    fill: #00ff41;
+    filter: drop-shadow(0 0 5px #00ff41) drop-shadow(0 0 10px #00ff41);
+    position: relative;
+    z-index: 1;
+}
+
+#gemini-chat-controls #gemini-chat-shell-btn.active {
+    background-color: rgba(0, 255, 65, 0.4);
+    box-shadow: 0 0 25px rgba(0, 255, 65, 0.9),
+                0 0 50px rgba(0, 255, 65, 0.6),
+                inset 0 0 30px rgba(0, 255, 65, 0.3);
+    animation: shellActive 1.5s ease-in-out infinite;
+}
+
+@keyframes shellActive {
+    0%, 100% { border-color: #00ff41; }
+    50% { border-color: #00ff88; }
+}
+
+#gemini-chat-controls #gemini-chat-close {
+    font-size: 20px;
+    font-weight: bold;
+    color: #ff006e;
+    border-color: #ff006e;
+    text-shadow: 0 0 10px rgba(255, 0, 110, 0.8);
+}
+
+#gemini-chat-controls #gemini-chat-close:hover {
+    background-color: rgba(255, 0, 110, 0.3);
+    box-shadow: 0 0 20px rgba(255, 0, 110, 0.7),
+                0 0 40px rgba(255, 0, 110, 0.5),
+                inset 0 0 20px rgba(255, 0, 110, 0.2);
+    border-color: #ff0088;
+}
+
+/* Maximize/Restore Icon Toggle */
+#gemini-chat-maximize-btn .icon--restore {
+    display: none;
+}
+#gemini-chat-container.maximized #gemini-chat-maximize-btn .icon--maximize {
+    display: none;
+}
+#gemini-chat-container.maximized #gemini-chat-maximize-btn .icon--restore {
+    display: block;
+}
+
+/* Message display area - Cyberpunk Terminal */
+#gemini-chat-messages {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    position: relative;
+    z-index: 5;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* Custom scrollbar for messages area */
+#gemini-chat-messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+#gemini-chat-messages::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+}
+
+#gemini-chat-messages::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #00ff41 0%, #00d9ff 100%);
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+}
+
+.gemini-chat-message {
+    padding: 12px 18px;
+    border-radius: 12px;
+    max-width: 80%;
+    word-wrap: break-word;
+    position: relative;
+    z-index: 1;
+    animation: messageSlideIn 0.3s ease-out;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes messageSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.user-message {
+    background: linear-gradient(135deg, #ff006e 0%, #b026ff 100%);
+    color: #ffffff;
+    align-self: flex-end;
+    border-bottom-right-radius: 3px;
+    border: 2px solid #ff006e;
+    box-shadow: 0 0 20px rgba(255, 0, 110, 0.3),
+                0 4px 15px rgba(0, 0, 0, 0.4);
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    font-weight: 500;
+}
+
+.bot-message {
+    background: linear-gradient(135deg, rgba(0, 255, 65, 0.1) 0%, rgba(0, 217, 255, 0.1) 100%);
+    color: #00ff41;
+    align-self: flex-start;
+    border-bottom-left-radius: 3px;
+    border: 2px solid #00ff41;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.2),
+                0 4px 15px rgba(0, 0, 0, 0.4);
+    position: relative;
+    backdrop-filter: blur(5px);
+}
+
+/* Terminal prompt indicator for bot messages */
+.bot-message::before {
+    content: '◉';
+    position: absolute;
+    left: -10px;
+    top: 12px;
+    color: #00ff41;
+    font-size: 8px;
+    animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.2); }
+}
+
+/* Ensure p and code tags within bot messages have proper styling */
+.bot-message p, .bot-message pre {
+    margin: 0;
+    color: #00ff41;
+}
+
+.bot-message p {
+    line-height: 1.6;
+    font-family: 'Fira Code', 'JetBrains Mono', monospace;
+}
+
+.bot-message pre {
+    white-space: pre-wrap;
+    font-size: 0.85em;
+    padding: 10px;
+    border-radius: 6px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 255, 65, 0.3);
+    position: relative;
+    margin-top: 8px;
+    box-shadow: inset 0 0 10px rgba(0, 255, 65, 0.1);
+}
+
+.bot-message code {
+    color: #00ff88;
+    text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+}
+
+.copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #00ff41;
+    border: 1px solid #00ff41;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.7em;
+    font-family: 'Fira Code', monospace;
+    opacity: 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
+    text-shadow: 0 0 5px rgba(0, 255, 65, 0.8);
+    z-index: 2;
+}
+
+.bot-message:hover .copy-btn,
+.bot-message pre:hover .copy-btn {
+    opacity: 1;
+}
+
+.copy-btn:hover {
+    background: rgba(0, 255, 65, 0.2);
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.6);
+    transform: scale(1.05);
+}
+
+.copy-btn.copied {
+    background: rgba(0, 255, 65, 0.3);
+    color: #ffffff;
+    border-color: #00ff88;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.8);
+}
+
+.shell-message {
+    background: rgba(0, 0, 0, 0.9) !important;
+    border: 2px solid #00d9ff !important;
+    box-shadow: 0 0 25px rgba(0, 217, 255, 0.3) !important;
+}
+
+.shell-message::before {
+    color: #00d9ff !important;
+}
+
+.shell-message pre {
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #00ff41;
+    font-family: 'Fira Code', 'JetBrains Mono', 'Courier New', monospace;
+    padding: 12px;
+    border-radius: 6px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    border: 1px solid rgba(0, 217, 255, 0.3);
+    text-shadow: 0 0 5px rgba(0, 255, 65, 0.3);
+}
+
+/* Input area - Cyberpunk style */
+#gemini-chat-input-container {
+    display: flex;
+    padding: 15px;
+    border-top: 2px solid #00ff41;
+    background: linear-gradient(180deg, #000000 0%, #0a0e27 100%);
+    gap: 10px;
+    position: relative;
+    z-index: 10;
+    box-shadow: 0 -5px 20px rgba(0, 255, 65, 0.15);
+}
+
+#gemini-interview-btn {
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid #00d9ff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #00d9ff;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(0, 217, 255, 0.3);
+}
+
+#gemini-interview-btn:hover {
+    background: rgba(0, 217, 255, 0.2);
+    box-shadow: 0 0 20px rgba(0, 217, 255, 0.6);
+    transform: scale(1.05);
+}
+
+#gemini-interview-btn .twemoji svg {
+    width: 22px;
+    height: 22px;
+    fill: #00d9ff;
+    filter: drop-shadow(0 0 5px #00d9ff);
+}
+
+#gemini-chat-input {
+    flex-grow: 1;
+    border: 2px solid #00ff41;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #00ff41;
+    border-radius: 8px;
+    padding: 12px 18px;
+    outline: none;
+    font-family: 'Fira Code', 'JetBrains Mono', 'Source Code Pro', monospace;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.2),
+                inset 0 0 20px rgba(0, 255, 65, 0.05);
+    letter-spacing: 0.5px;
+}
+
+#gemini-chat-input::placeholder {
+    color: rgba(0, 255, 65, 0.5);
+    font-style: italic;
+}
+
+#gemini-chat-input:focus {
+    border-color: #00ff88;
+    background-color: rgba(0, 0, 0, 0.85);
+    box-shadow: 0 0 25px rgba(0, 255, 65, 0.5),
+                0 0 50px rgba(0, 255, 65, 0.3),
+                inset 0 0 30px rgba(0, 255, 65, 0.1);
+    text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+}
+
+#gemini-chat-send {
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid #ff006e;
+    font-size: 20px;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #ff006e;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(255, 0, 110, 0.3);
+    text-shadow: 0 0 10px rgba(255, 0, 110, 0.8);
+}
+
+#gemini-chat-send:hover {
+    background: rgba(255, 0, 110, 0.2);
+    box-shadow: 0 0 20px rgba(255, 0, 110, 0.6),
+                0 0 40px rgba(255, 0, 110, 0.4);
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* --- Mock Interview Modal Styles --- */
+
+#interview-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#interview-modal {
+    background: var(--md-default-bg-color);
+    width: 80%;
+    max-width: 800px;
+    height: 80vh;
+    max-height: 700px;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+}
+
+#interview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--md-typeset-table-color);
+}
+#interview-header h3 {
+    margin: 0;
+}
+#interview-close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+#interview-body {
+    flex-grow: 1;
+    padding: 1.5rem;
+    overflow-y: auto;
+}
+
+#interview-question {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem; /* More space for options */
+}
+
+#interview-options-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+}
+
+.interview-option-btn {
+    width: 100%;
+    padding: 0.75rem;
+    text-align: left;
+    border: 1px solid var(--md-typeset-table-color);
+    background-color: transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.interview-option-btn:hover:not([disabled]) {
+    border-color: var(--md-primary-fg-color);
+    background-color: var(--md-code-bg-color);
+}
+
+.interview-option-btn.correct {
+    background-color: #2e7d32; /* Green */
+    color: white;
+    border-color: #2e7d32;
+}
+
+.interview-option-btn.wrong {
+    background-color: #c62828; /* Red */
+    color: white;
+    border-color: #c62828;
+}
+
+#interview-feedback {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border-radius: 4px;
+}
+
+#interview-feedback.correct {
+    background-color: rgba(46, 125, 50, 0.1); /* Light green */
+    border-left: 5px solid #2e7d32;
+}
+
+#interview-feedback.wrong {
+    background-color: rgba(198, 40, 40, 0.1); /* Light red */
+    border-left: 5px solid #c62828;
+}
+
+#interview-answer {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: var(--md-code-bg-color);
+    border-radius: 4px;
+}
+
+#interview-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--md-typeset-table-color);
+    display: flex;
+    justify-content: space-between;
+}
+
+#interview-wrong-list .wrong-item {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--md-typeset-table-color);
+}
+#interview-wrong-list .wrong-item:last-child {
+    border-bottom: none;
+}
+
+#interview-analysis {
+    margin: 2rem 0;
+}
+
+#interview-analysis-list .analysis-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--md-typeset-table-color);
+}
+#interview-analysis-list .analysis-item:last-child {
+    border-bottom: none;
+}
+#interview-analysis-list .analysis-item span:first-child {
+    font-weight: bold;
+} 

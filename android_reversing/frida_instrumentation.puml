@@ -1,0 +1,173 @@
+@startuml Frida Instrumentation Core
+!theme vibrant
+skinparam backgroundColor white
+skinparam packageBorderColor #2E86AB
+skinparam packageBackgroundColor #E8F4FD
+skinparam componentBorderColor #A23B72
+skinparam componentBackgroundColor #F18F01
+skinparam noteBorderColor #C73E1D
+skinparam noteBackgroundColor #FFF3CD
+title Frida 插桩核心模块及实现原理
+
+package "Gum 引擎 (Core Engine)" {
+    package "代码生成器" {
+        [Code Writer] as writer
+        [Instruction Writer] as iwriter
+        [Assembly Relocator] as relocator
+        [Branch Tracer] as tracer
+        
+        writer --> iwriter : 指令写入
+        writer --> relocator : 代码重定位
+        writer --> tracer : 分支跟踪
+    }
+    
+    package "内存管理" {
+        [Memory Allocator] as malloc
+        [Code Cave] as cave
+        [Trampoline] as trampoline
+        [Patch Manager] as patch
+        
+        malloc --> cave : 分配代码洞
+        cave --> trampoline : 创建跳板
+        trampoline --> patch : 管理补丁
+    }
+    
+    package "Hook 引擎" {
+        [Interceptor] as interceptor
+        [Function Hook] as fhook
+        [Inline Hook] as ihook
+        [Hardware Hook] as hhook
+        
+        interceptor --> fhook : 函数级Hook
+        interceptor --> ihook : 内联Hook
+        interceptor --> hhook : 硬件断点Hook
+    }
+}
+
+package "插桩实现流程" {
+    package "Hook 准备阶段" {
+        [目标函数分析] as analyze
+        [指令解析] as disasm
+        [依赖检查] as deps
+        [权限检查] as perms
+        
+        analyze --> disasm : 反汇编分析
+        disasm --> deps : 检查依赖
+        deps --> perms : 验证权限
+    }
+    
+    package "代码插桩阶段" {
+        [原函数备份] as backup
+        [跳板代码生成] as gentramp
+        [Hook代码注入] as inject
+        [原指令修改] as modify
+        
+        backup --> gentramp : 生成跳板
+        gentramp --> inject : 注入Hook代码
+        inject --> modify : 修改原指令
+    }
+    
+    package "执行控制阶段" {
+        [调用拦截] as intercept
+        [上下文保存] as context
+        [回调执行] as callback
+        [返回处理] as return
+        
+        intercept --> context : 保存寄存器状态
+        context --> callback : 执行用户回调
+        callback --> return : 处理返回值
+    }
+}
+
+package "平台适配层" {
+    package "ARM/ARM64" {
+        [ARM Relocator] as armrel
+        [ARM Writer] as armwriter
+        [AARCH64 Writer] as aarch64
+        
+        armrel --> armwriter : ARM32指令
+        armrel --> aarch64 : ARM64指令
+    }
+    
+    package "x86/x64" {
+        [x86 Relocator] as x86rel
+        [x86 Writer] as x86writer
+        [x64 Writer] as x64writer
+        
+        x86rel --> x86writer : x86指令
+        x86rel --> x64writer : x64指令
+    }
+}
+
+package "JavaScript 桥接" {
+    [V8 Runtime] as v8
+    [Native Bridge] as bridge
+    [Type Converter] as converter
+    [Exception Handler] as exception
+    
+    v8 --> bridge : JS到Native调用
+    bridge --> converter : 类型转换
+    bridge --> exception : 异常处理
+}
+
+' Hook 实现流程
+analyze --> backup : 1. 分析目标函数
+backup --> cave : 2. 分配代码空间
+cave --> gentramp : 3. 生成跳板代码
+gentramp --> modify : 4. 修改原函数入口
+modify --> intercept : 5. 运行时拦截
+
+' 平台适配
+writer --> armwriter : ARM平台
+writer --> x86writer : x86平台
+relocator --> armrel : ARM重定位
+relocator --> x86rel : x86重定位
+
+' JS交互
+callback --> v8 : 调用JavaScript回调
+v8 --> converter : 参数类型转换
+converter --> callback : 返回Native
+
+note right of trampoline
+  跳板代码(Trampoline):
+  - 保存原函数前几条指令
+  - 跳转到Hook处理函数
+  - 执行完毕后跳回原函数
+end note
+
+note right of cave
+  代码洞(Code Cave):
+  - 在目标进程中分配可执行内存
+  - 存放Hook代码和跳板代码
+  - 管理内存页的读写执行权限
+end note
+
+note right of relocator
+  指令重定位:
+  - 分析原指令的PC相对寻址
+  - 修正跳转和调用指令
+  - 处理位置相关的指令
+end note
+
+note left of interceptor
+  拦截器核心功能:
+  - onEnter: 函数入口处理
+  - onLeave: 函数出口处理
+  - replace: 完全替换函数
+end note
+
+note left of context
+  上下文管理:
+  - 保存所有通用寄存器
+  - 保存浮点寄存器状态
+  - 维护调用栈信息
+end note
+
+note bottom of v8
+  JavaScript引擎集成:
+  - 内置V8引擎执行JS代码
+  - 提供完整的Frida API
+  - 支持ES6+语法特性
+end note
+
+@enduml

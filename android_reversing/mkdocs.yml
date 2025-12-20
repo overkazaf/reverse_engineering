@@ -1,0 +1,143 @@
+site_name: Android RE Cookbook
+docs_dir: docs
+theme:
+  name: material
+  custom_dir: docs/custom_theme
+  features:
+  - navigation.tabs
+  - navigation.top
+  - search.suggest
+  - search.highlight
+  - navigation.instant
+  palette:
+  - scheme: default
+    toggle:
+      icon: material/brightness-7
+      name: Switch to dark mode
+  - scheme: slate
+    toggle:
+      icon: material/brightness-4
+      name: Switch to light mode
+extra_css:
+- https://uicdn.toast.com/editor/latest/toastui-editor.min.css
+- css/chat.css
+extra_javascript:
+- https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js
+- https://cdn.jsdelivr.net/npm/marked/marked.min.js
+- js/editor.js
+- js/chat.js
+- js/interview.js
+nav:
+- 首页: index.md
+- 快速入门:
+  - 关于本书: 00-Quick-Start/intro.md
+  - 快速入门指南: 00-Quick-Start/index.md
+  - 环境配置: 00-Quick-Start/setup.md
+- 实战配方:
+  - 网络分析:
+    - 网络抓包分析: 01-Recipes/Network/network_sniffing.md
+    - 加密算法分析: 01-Recipes/Network/crypto_analysis.md
+    - TLS 指纹识别: 01-Recipes/Network/tls_fingerprinting_guide.md
+    - JA3 指纹技术: 01-Recipes/Network/ja3_fingerprinting.md
+    - JA4 指纹技术: 01-Recipes/Network/ja4_fingerprinting.md
+  - 反检测:
+    - Frida 反调试绕过: 01-Recipes/Anti-Detection/frida_anti_debugging.md
+    - Xposed 反调试绕过: 01-Recipes/Anti-Detection/xposed_anti_debugging.md
+    - 验证码绕过技术: 01-Recipes/Anti-Detection/captcha_bypassing_techniques.md
+    - 应用加固识别: 01-Recipes/Anti-Detection/app_hardening_identification.md
+    - 设备指纹与绕过: 01-Recipes/Anti-Detection/device_fingerprinting_and_bypass.md
+    - 移动安全与反爬: 01-Recipes/Anti-Detection/mobile_app_sec_and_anti_bot.md
+  - 脱壳技术:
+    - 脱壳概述: 01-Recipes/Unpacking/un-packing.md
+    - Frida 脱壳与 SO 修复: 01-Recipes/Unpacking/frida_unpacking_and_so_fixing.md
+    - SO 混淆与反混淆: 01-Recipes/Unpacking/so_obfuscation_deobfuscation.md
+    - SO 字符串解密: 01-Recipes/Unpacking/so_string_deobfuscation.md
+  - 分析技术:
+    - 逆向工程流程: 01-Recipes/Analysis/re_workflow.md
+    - 静态分析深入: 01-Recipes/Analysis/static_analysis_deep_dive.md
+    - 动态分析深入: 01-Recipes/Analysis/dynamic_analysis_deep_dive.md
+    - OLLVM 反混淆: 01-Recipes/Analysis/ollvm_deobfuscation.md
+    - VMP 虚拟机分析: 01-Recipes/Analysis/vmp_analysis.md
+    - JS 混淆器分析: 01-Recipes/Analysis/js_obfuscator.md
+    - JS 虚拟机保护: 01-Recipes/Analysis/js_vmp.md
+    - Native 字符串混淆: 01-Recipes/Analysis/native_string_obfuscation.md
+  - 自动化:
+    - 自动化与设备农场: 01-Recipes/Automation/automation_and_device_farming.md
+    - 拨号代理池: 01-Recipes/Automation/dial_up_proxy_pools.md
+    - 代理池设计: 01-Recipes/Automation/proxy_pool_design.md
+    - Scrapy 爬虫框架: 01-Recipes/Automation/scrapy.md
+    - Scrapy-Redis 分布式: 01-Recipes/Automation/scrapy_redis_distributed.md
+    - Docker 部署: 01-Recipes/Automation/docker_deployment.md
+    - 虚拟化与容器: 01-Recipes/Automation/virtualization_and_containers.md
+    - Web 反爬技术: 01-Recipes/Automation/web_anti_scraping.md
+  - 脚本集合:
+    - Frida 脚本示例: 01-Recipes/Scripts/frida_script_examples.md
+    - Frida 常用脚本: 01-Recipes/Scripts/frida_common_scripts.md
+    - 自动化脚本: 01-Recipes/Scripts/automation_scripts.md
+    - Native Hook 技术: 01-Recipes/Scripts/native_hooking.md
+    - Objection 代码片段: 01-Recipes/Scripts/objection_snippets.md
+    - C 语言仿真脚本: 01-Recipes/Scripts/c_for_emulation.md
+  - Native 开发:
+    - JNI 开发与调用原理: 01-Recipes/Native/jni_development.md
+    - SO 动态库编译与加载: 01-Recipes/Native/so_compilation.md
+- 工具指南:
+  - 动态分析工具:
+    - Frida 使用指南: 02-Tools/Dynamic/frida_guide.md
+    - Frida 内部原理: 02-Tools/Dynamic/frida_internals.md
+    - Xposed 使用指南: 02-Tools/Dynamic/xposed_guide.md
+    - Xposed 内部原理: 02-Tools/Dynamic/xposed_internals.md
+    - Unidbg 使用指南: 02-Tools/Dynamic/unidbg_guide.md
+    - Unidbg 内部原理: 02-Tools/Dynamic/unidbg_internals.md
+  - 静态分析工具:
+    - Ghidra 入门指南: 02-Tools/Static/ghidra_guide.md
+    - IDA Pro 入门指南: 02-Tools/Static/ida_pro_guide.md
+    - Radare2 入门指南: 02-Tools/Static/radare2_guide.md
+  - 速查手册:
+    - ADB 命令速查: 02-Tools/Cheatsheets/adb_cheatsheet.md
+- 案例研究:
+  - 反分析技术案例: 03-Case-Studies/case_anti_analysis_techniques.md
+  - 音乐 App 案例: 03-Case-Studies/case_music_apps.md
+  - 社交媒体与风控案例: 03-Case-Studies/case_social_media_and_anti_bot.md
+  - App 加密签名案例: 03-Case-Studies/case_study_app_encryption.md
+  - 视频 App 与 DRM 案例: 03-Case-Studies/case_video_apps_and_drm.md
+  - Unity 游戏 (Il2Cpp) 案例: 03-Case-Studies/case_unity_games.md
+  - Flutter 应用案例: 03-Case-Studies/case_flutter_apps.md
+  - 恶意软件分析案例: 03-Case-Studies/case_malware_analysis.md
+- 参考资料:
+  - 基础知识:
+    - APK 文件结构: 04-Reference/Foundations/apk_structure.md
+    - Android 四大组件: 04-Reference/Foundations/android_components.md
+    - AndroidManifest 解析: 04-Reference/Foundations/android_manifest.md
+    - Android Studio 调试工具: 04-Reference/Foundations/android_studio_debug_tools.md
+    - DEX 文件格式: 04-Reference/Foundations/dex_format.md
+    - Smali 语法入门: 04-Reference/Foundations/smali_syntax.md
+    - SO/ELF 文件格式: 04-Reference/Foundations/so_elf_format.md
+    - ART 运行时: 04-Reference/Foundations/art_runtime.md
+    - ARM 汇编入门: 04-Reference/Foundations/arm_assembly.md
+    - x86 与 ARM 汇编基础: 04-Reference/Foundations/x86_and_arm_assembly_basics.md
+    - TOTP 时间动态密码: 04-Reference/Foundations/totp.md
+  - 进阶主题:
+    - Android 沙箱实现: 04-Reference/Advanced/android_sandbox_implementation.md
+    - AOSP 与系统定制: 04-Reference/Advanced/aosp_and_system_customization.md
+    - AOSP 深度改机: 04-Reference/Advanced/aosp_device_modification.md
+    - 最小化 Android RootFS: 04-Reference/Advanced/minimal_android_rootfs.md
+    - SO 反调试与混淆: 04-Reference/Advanced/so_anti_debugging_and_obfuscation.md
+    - SO 运行时仿真: 04-Reference/Advanced/so_runtime_emulation.md
+  - 工程实践:
+    - 框架与中间件: 04-Reference/Engineering/frameworks_and_middleware.md
+    - 消息队列: 04-Reference/Engineering/message_queues.md
+    - Redis 常用命令: 04-Reference/Engineering/redis.md
+    - 风控 SDK 编译指南: 04-Reference/Engineering/risk_control_sdk_build_guide.md
+    - 群控与 API 逆向对比: 04-Reference/Engineering/automation_vs_api_reverse.md
+    - 数据分析:
+      - 数据仓库与处理: 04-Reference/Engineering/Data-Analysis/data_warehousing_and_processing.md
+      - Apache Flink: 04-Reference/Engineering/Data-Analysis/flink.md
+      - HBase 数据库: 04-Reference/Engineering/Data-Analysis/hbase.md
+      - Apache Hive: 04-Reference/Engineering/Data-Analysis/hive.md
+      - Apache Spark: 04-Reference/Engineering/Data-Analysis/spark.md
+- 附录:
+  - GitHub 开源项目: 05-Appendix/github_projects.md
+  - 学习资源: 05-Appendix/learning_resources.md
+  - CTF 练习平台: 05-Appendix/ctf_platforms.md
+  - 术语表: 05-Appendix/glossary.md
+  - 配方编号系统: 05-Appendix/numbering.md

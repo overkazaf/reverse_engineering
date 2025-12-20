@@ -1,0 +1,332 @@
+@startuml ArtMethod_Registration_Flow
+!theme vibrant
+skinparam backgroundColor White
+skinparam shadowing false
+title RiskControl SDK - ArtMethod直接注册流程
+
+start
+
+:JNI_OnLoad被调用;
+
+partition "环境检测和初始化" {
+    :检测当前ART版本;
+    
+    note right
+      版本检测方法:
+      • 读取ro.build.version.sdk
+      • 分析ArtMethod结构差异
+      • 验证内存布局特征
+    end note
+    
+    switch (Android版本)
+        case (5.0-6.0)
+            :使用ArtMethod_5_6结构;
+            :entry_point_from_jni_直接访问;
+        case (7.0-8.1)
+            :使用ArtMethod_7_8结构;
+            :ptr_sized_fields_.entry_point_from_jni_;
+        case (9.0+)
+            :使用ArtMethod_9_plus结构;
+            :ptr_sized_fields_.data_指针;
+        case (未知版本)
+            :版本不支持;
+            :回退到标准注册;
+            stop
+    endswitch
+}
+
+partition "安全检查" {
+    fork
+        :反调试检查;
+        if (检测到调试器?) then (是)
+            :执行反制措施;
+            :返回JNI_ERR;
+            stop
+        else (否)
+        endif
+        
+    fork again
+        :代码完整性验证;
+        :计算关键函数校验和;
+        if (代码被篡改?) then (是)
+            :数据自毁;
+            :返回JNI_ERR;
+            stop
+        else (否)
+        endif
+        
+    fork again
+        :JNI环境检查;
+        :验证JNI函数表完整性;
+        if (JNI被Hook?) then (是)
+            :执行反制措施;
+            :返回JNI_ERR;
+            stop
+        else (否)
+        endif
+        
+    end fork
+}
+
+partition "方法定位和验证" {
+    :遍历待注册的方法列表;
+    
+    repeat
+        :获取方法名和签名;
+        :调用GetMethodID获取jmethodID;
+        
+        note left
+          jmethodID在ART中实际就是
+          ArtMethod结构体指针
+        end note
+        
+        :转换为ArtMethod指针;
+        :验证ArtMethod有效性;
+        
+        if (ArtMethod指针有效?) then (否)
+            :跳过当前方法;
+            note right: 记录失败信息
+        else (是)
+            :添加到处理队列;
+        endif
+        
+    repeat while (还有待处理方法?)
+}
+
+partition "字符串混淆处理" {
+    :获取混淆后的类名;
+    
+    note right
+      字符串混淆策略:
+      • XOR加密关键字符串
+      • 动态字符串组装
+      • .init_array段解密
+    end note
+    
+    :在.init_array中解密AES密钥;
+    :解密类名和方法名;
+    :转换方法数组格式;
+}
+
+partition "ArtMethod结构操作" {
+    repeat
+        :从队列取出ArtMethod;
+        
+        partition "访问标志设置" {
+            :获取当前访问标志;
+            :设置kAccNative标志;
+            
+            if (版本 >= 9.0?) then (是)
+                :additional_flags |= kAccNative;
+            else (否)
+                :access_flags_ |= kAccNative;
+            endif
+            
+            :修改内存保护为RW;
+            :写入新的访问标志;
+            :恢复内存保护为RO;
+        }
+        
+        partition "JNI桥接代码生成" {
+            :根据CPU架构生成桥接代码;
+            
+            if (ARM64架构?) then (是)
+                :生成ARM64桥接汇编;
+                note left
+                  ARM64桥接代码:
+                  ```asm
+                  stp x29, x30, [sp, #-16]!
+                  mov x29, sp
+                  ldr x9, target_func_addr
+                  blr x9
+                  ldp x29, x30, [sp], #16
+                  ret
+                  ```
+                end note
+                
+            else (ARM32架构)
+                :生成ARM32桥接汇编;
+                note right
+                  ARM32桥接代码:
+                  ```asm
+                  push {r4, lr}
+                  ldr r4, target_func_addr
+                  blx r4
+                  pop {r4, pc}
+                  ```
+                end note
+            endif
+            
+            :分配可执行内存页;
+            :复制桥接代码到内存;
+            :设置内存权限为RX;
+            :填入目标函数地址;
+        }
+        
+        partition "入口点设置" {
+            :修改ArtMethod入口点;
+            
+            switch (ART版本)
+                case (5.0-6.0)
+                    :设置entry_point_from_jni_;
+                    :设置entry_point_from_quick_compiled_code_;
+                case (7.0-8.1)
+                    :设置ptr_sized_fields_.entry_point_from_jni_;
+                    :设置ptr_sized_fields_.entry_point_from_quick_compiled_code_;
+                case (9.0+)
+                    :设置ptr_sized_fields_.data_;
+                    :设置entry_point_from_quick_compiled_code_;
+            endswitch
+            
+            :保存原始入口点;
+            note left: 用于完整性监控和恢复
+        }
+        
+        partition "完整性监控设置" {
+            :计算ArtMethod结构校验和;
+            :注册监控回调函数;
+            :启动完整性检查线程;
+            
+            note right
+              监控内容:
+              • ArtMethod结构完整性
+              • 入口点变化检测
+              • 访问标志篡改检测
+            end note
+        }
+        
+    repeat while (队列中还有方法?)
+}
+
+partition "运行时保护启用" {
+    fork
+        :启动ArtMethod监控线程;
+        note left
+          监控线程功能:
+          • 定期检查入口点
+          • 检测Hook行为
+          • 触发反制措施
+        end note
+        
+    fork again
+        :注册信号处理器;
+        note right
+          处理信号:
+          • SIGSEGV (段错误)
+          • SIGBUS (总线错误)  
+          • SIGTRAP (陷阱信号)
+        end note
+        
+    fork again
+        :初始化垃圾代码注入;
+        :随机化控制流;
+        note left
+          混淆技术:
+          • 插入无意义指令
+          • 分支预测干扰
+          • 时间延迟变化
+        end note
+        
+    end fork
+}
+
+partition "Hook检测机制" {
+    :检测已注册方法的入口点;
+    
+    repeat
+        :获取当前入口点地址;
+        :使用dladdr分析所属库;
+        
+        if (入口点指向可疑库?) then (是)
+            note right
+              可疑库特征:
+              • 包含"frida"关键字
+              • 包含"xposed"关键字  
+              • 非系统库路径
+            end note
+            
+            :检测到Hook;
+            :记录威胁信息;
+            :执行反制措施;
+            
+            partition "反制措施" {
+                fork
+                    :恢复原始入口点;
+                fork again
+                    :清理敏感数据;
+                fork again
+                    :功能降级;
+                fork again
+                    :报告安全事件;
+                end fork
+            }
+            
+        else (否)
+            :入口点正常;
+        endif
+        
+        :延时随机间隔;
+        
+    repeat while (监控进行中?)
+}
+
+partition "注册验证" {
+    :测试已注册的方法调用;
+    
+    repeat
+        :调用native方法;
+        :验证返回结果;
+        :检查执行时间;
+        
+        if (方法调用正常?) then (否)
+            :注册失败;
+            :记录错误信息;
+        else (是)
+            :注册成功;
+            :增加成功计数;
+        endif
+        
+    repeat while (还有方法需要验证?)
+    
+    :计算注册成功率;
+    
+    if (成功率 > 80%?) then (是)
+        :ArtMethod注册成功;
+        :启用高级保护模式;
+    else (否)
+        :部分注册失败;
+        :记录详细错误日志;
+    endif
+}
+
+partition "清理和返回" {
+    :清理临时数据;
+    :释放中间缓冲区;
+    :设置初始化完成标志;
+    
+    if (注册完全成功?) then (是)
+        :返回JNI_VERSION_1_6;
+    else (否)
+        :返回JNI_ERR;
+    endif
+}
+
+stop
+
+note right
+  <b>技术亮点</b>
+  • 绕过RegisterNatives
+  • 直接操作ART内部结构
+  • 跨版本兼容处理
+  • 实时完整性监控
+end note
+
+note left
+  <b>安全特性</b>
+  • 多层反调试保护
+  • Hook行为检测
+  • 动态反制措施
+  • 代码完整性验证
+end note
+
+@enduml

@@ -1,0 +1,98 @@
+@startuml Unidbg Architecture
+!theme vibrant
+skinparam backgroundColor white
+skinparam packageBorderColor #2E86AB
+skinparam packageBackgroundColor #E8F4FD
+skinparam componentBorderColor #A23B72
+skinparam componentBackgroundColor #F18F01
+skinparam noteBorderColor #C73E1D
+skinparam noteBackgroundColor #FFF3CD
+title Unidbg 架构及工作原理
+
+package "宿主环境 (PC/服务器)" {
+    package "Java 应用程序" {
+        [用户代码] as usercode
+        [Unidbg API] as api
+        usercode --> api : 调用
+    }
+    
+    package "Unidbg 核心" {
+        [VM 管理器] as vm
+        [ARM 模拟器] as arm
+        [内存管理] as memory
+        [系统调用处理] as syscall
+        
+        api --> vm : 创建虚拟机
+        vm --> arm : 初始化
+        vm --> memory : 分配内存
+        vm --> syscall : 注册处理器
+    }
+    
+    package "模拟执行环境" {
+        [虚拟 CPU] as cpu
+        [虚拟内存空间] as vmem
+        [模拟文件系统] as vfs
+        [JNI 桥接] as jni
+        
+        arm --> cpu : 指令执行
+        memory --> vmem : 内存映射
+        syscall --> vfs : 文件操作
+        api --> jni : Java/Native桥接
+    }
+}
+
+package "目标 so 文件" {
+    [Native Library] as so
+    [函数导出表] as exports
+    [依赖库] as deps
+    
+    so --> exports : 包含
+    so --> deps : 依赖
+}
+
+package "Android 系统模拟" {
+    [libc 模拟] as libc
+    [linker 模拟] as linker
+    [JNI 环境模拟] as jnienv
+    [系统属性模拟] as props
+    
+    deps --> libc : 系统库调用
+    so --> linker : 动态链接
+    jni --> jnienv : JNI 调用
+    syscall --> props : 系统属性
+}
+
+' 执行流程
+usercode --> so : 1. 加载so文件
+so --> linker : 2. 解析依赖
+linker --> vmem : 3. 映射到内存
+vmem --> cpu : 4. 执行指令
+cpu --> syscall : 5. 系统调用
+syscall --> libc : 6. 库函数调用
+libc --> usercode : 7. 返回结果
+
+note right of cpu
+  基于 Unicorn Engine
+  模拟 ARM/ARM64 指令执行
+  支持断点和单步调试
+end note
+
+note right of vmem
+  完整的虚拟内存空间
+  支持 mmap、堆栈管理
+  内存保护机制模拟
+end note
+
+note right of jni
+  完整的 JNI 环境模拟
+  支持 Java 对象传递
+  自动类型转换
+end note
+
+note left of libc
+  实现了大部分 libc 函数
+  文件 I/O、网络、线程等
+  可自定义函数行为
+end note
+
+@enduml

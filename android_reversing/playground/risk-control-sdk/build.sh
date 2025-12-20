@@ -1,0 +1,114 @@
+#!/bin/bash
+
+# Risk Control SDK 构建脚本
+# 生成自: /frida/android_reversing/playground/risk-control-sdk
+
+set -e
+
+PROJECT_NAME="RiskControlSDK"
+PROJECT_VERSION="1.0.0"
+BUILD_TYPE="Release"
+SOURCE_DIR="/frida/android_reversing/playground/risk-control-sdk"
+BINARY_DIR="/frida/android_reversing/playground/risk-control-sdk"
+
+echo "=========================================="
+echo "  Risk Control SDK 构建脚本"
+echo "=========================================="
+echo "项目: $PROJECT_NAME"
+echo "版本: $PROJECT_VERSION"
+echo "构建类型: $BUILD_TYPE"
+echo "源码目录: $SOURCE_DIR"
+echo "构建目录: $BINARY_DIR"
+echo "=========================================="
+
+# 检查依赖
+echo "[1] 检查构建依赖..."
+
+check_command() {
+    if ! command -v $1 &> /dev/null; then
+        echo "错误: 未找到 $1 命令"
+        exit 1
+    fi
+}
+
+check_command cmake
+check_command make
+check_command gcc
+check_command javac
+
+echo "✅ 依赖检查通过"
+
+# 创建构建目录
+echo "[2] 准备构建环境..."
+mkdir -p build
+cd build
+
+# 配置项目
+echo "[3] 配置CMake项目..."
+cmake .. \
+    -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
+    -DENABLE_DEBUG=OFF \
+    -DENABLE_ANTI_REVERSE=ON \
+    -DENABLE_SVC_SYSCALLS=ON
+
+# 编译项目
+echo "[4] 编译native库..."
+make -j$(nproc)
+
+# 编译Java代码
+echo "[5] 编译Java代码..."
+make compile_java
+
+# 创建JAR包
+echo "[6] 创建JAR包..."
+make create_jar
+
+# 复制示例
+echo "[7] 准备示例程序..."
+make example
+
+# 运行测试
+echo "[8] 运行基本测试..."
+if [ -f "lib/libriskcontrol.so" ] || [ -f "lib/libriskcontrol.jnilib" ]; then
+    echo "✅ Native库构建成功"
+else
+    echo "❌ Native库构建失败"
+    exit 1
+fi
+
+if [ -f "lib/riskcontrol-sdk.jar" ]; then
+    echo "✅ Java JAR包构建成功"
+else
+    echo "❌ Java JAR包构建失败"
+    exit 1
+fi
+
+# 显示构件信息
+echo "[9] 构建结果:"
+echo "----------------------------------------"
+ls -la lib/
+echo "----------------------------------------"
+
+# 测试运行
+echo "[10] 测试运行..."
+if command -v java &> /dev/null; then
+    echo "运行Java测试..."
+    java -Djava.library.path=lib -cp lib/riskcontrol-sdk.jar:examples RiskControlDemo
+else
+    echo "跳过Java测试 (未找到java命令)"
+fi
+
+echo ""
+echo "=========================================="
+echo "  构建完成！"
+echo "=========================================="
+echo "构建产物位置："
+echo "  Native库: $(pwd)/lib/"
+echo "  Java JAR: $(pwd)/lib/riskcontrol-sdk.jar"
+echo "  示例程序: $(pwd)/examples/"
+echo ""
+echo "使用方法："
+echo "  1. 将 JAR 文件添加到 Java classpath"
+echo "  2. 设置 java.library.path 指向 native 库目录"
+echo "  3. 在代码中调用 RiskControlSDK.getInstance()"
+echo "=========================================="

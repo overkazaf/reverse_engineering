@@ -1,0 +1,115 @@
+@startuml Initialization_Flow
+!theme vibrant
+title RiskControl SDK - 初始化流程
+
+skinparam backgroundColor White
+skinparam shadowing false
+
+start
+
+:应用调用 RiskControlSDK.getInstance();
+:应用调用 sdk.initialize(context);
+
+partition "Native层初始化" {
+    :JNI_OnLoad 被调用;
+    
+    if (检测到调试器?) then (是)
+        :执行反制措施;
+        :返回 JNI_ERR;
+        stop
+    else (否)
+    endif
+    
+    if (代码完整性验证?) then (失败)
+        :执行反制措施;
+        :数据自毁;
+        stop
+    else (通过)
+    endif
+    
+    if (JNI环境被Hook?) then (是)
+        :执行反制措施;
+        stop
+    else (否)
+    endif
+    
+    :检测ART版本;
+    
+    if (支持ArtMethod直接注册?) then (是)
+        partition "高级注册模式" {
+            :获取混淆后的类名;
+            :转换方法数组格式;
+            :register_native_methods_direct();
+            
+            fork
+                :获取ArtMethod指针;
+            fork again
+                :设置Native标志;
+            fork again
+                :创建JNI桥接代码;
+            fork again
+                :修改内存保护;
+            end fork
+            
+            :设置ArtMethod入口点;
+            :保存原始入口点;
+            :启用ArtMethod监控;
+        }
+    else (否)
+        partition "标准注册模式" {
+            :获取混淆后的类名;
+            :调用RegisterNatives;
+        }
+    endif
+}
+
+partition "保护机制初始化" {
+    fork
+        :初始化字符串混淆;
+        :生成AES密钥;
+        :注册关键代码段;
+    fork again
+        :初始化反调试保护;
+        :设置信号处理器;
+        :启动ptrace自保护;
+    fork again
+        :初始化SVC模块;
+        :检测CPU架构;
+        :验证SVC调用;
+    end fork
+}
+
+partition "SDK核心初始化" {
+    :初始化配置结构;
+    :初始化设备信息结构;
+    :初始化安全状态结构;
+    :生成设备ID;
+    :收集基础设备信息;
+}
+
+:执行垃圾代码注入;
+:随机化控制流;
+:设置初始化标志;
+
+:返回 JNI_VERSION_1_6;
+
+stop
+
+note right
+  <b>关键安全检查</b>
+  • TracerPid检测
+  • Frida特征检测
+  • Xposed框架检测
+  • JNI函数表完整性
+  • 代码段校验和验证
+end note
+
+note left
+  <b>ArtMethod直接注册优势</b>
+  • 绕过RegisterNatives Hook
+  • 隐藏在ART内部数据结构
+  • 运行时完整性监控
+  • 动态反制能力
+end note
+
+@enduml

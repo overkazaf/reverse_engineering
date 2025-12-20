@@ -1,0 +1,581 @@
+{
+  "files": {
+    "docs/00-Quick-Start/index.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 00:31:40",
+      "fixed_at": "2025-12-19 00:31:40",
+      "issues": "**发现的问题**:\n- 代码块闭合不完整：部分代码块缺少结束符 ```\n- 存在多余的空行：代码块之间存在多余的空行，影响阅读体验。\n- 缺少图片引用：文档中提到检查图片引用，但是没有实际的图片引用。\n- 列表样式不统一：使用 `☐` 代替 `-` 作为列表前缀，应统一使用 `-`\n- 代码块中存在注释：有些代码块中包含注释，应当去除"
+    },
+    "docs/00-Quick-Start/setup.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 00:32:00",
+      "fixed_at": "2025-12-19 00:32:00",
+      "issues": "**发现的问题**:\n- 无"
+    },
+    "docs/01-Recipes/Analysis/dynamic_analysis_deep_dive.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:51:08",
+      "fixed_at": "2025-12-19 01:51:08",
+      "issues": "修复水平分割线格式 (- -- → ---)\n修复标题层级格式 (# # → ##)\n修复列表项前缀 (☐ → -)"
+    },
+    "docs/01-Recipes/Analysis/js_obfuscator.md": {
+      "status": "valid",
+      "checked_at": "2025-12-19 00:32:48",
+      "fixed_at": null,
+      "issues": "无"
+    },
+    "docs/01-Recipes/Analysis/js_vmp.md": {
+      "status": "valid",
+      "checked_at": "2025-12-19 00:32:51",
+      "fixed_at": null,
+      "issues": "无"
+    },
+    "docs/01-Recipes/Analysis/native_string_obfuscation.md": {
+      "status": "needs_manual_fix",
+      "checked_at": "2025-12-19 01:54:15",
+      "fixed_at": null,
+      "issues": "Gemini 返回内容不完整"
+    },
+    "docs/01-Recipes/Analysis/ollvm_deobfuscation.md": {
+      "status": "valid",
+      "checked_at": "2025-12-19 00:33:15",
+      "fixed_at": null,
+      "issues": "无"
+    },
+    "docs/01-Recipes/Analysis/re_workflow.md": {
+      "status": "needs_manual_fix",
+      "checked_at": "2025-12-19 01:24:00",
+      "fixed_at": null,
+      "issues": "API Error after 3 retries: HTTPSConnectionPool(host='generativelanguage.googleapis.com', port=443): Read timed out. (read timeout=60.0)"
+    },
+    "docs/01-Recipes/Analysis/static_analysis_deep_dive.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:54:18",
+      "fixed_at": "2025-12-19 01:54:18",
+      "issues": "修复水平分割线格式 (- -- → ---)\n修复标题层级格式 (# # → ##)\n⚠️ 检测到未闭合的代码块（59 个 ``` 标记）\n修复列表项前缀 (☐ → -)\n移除过多的连续空行"
+    },
+    "docs/01-Recipes/Analysis/vmp_analysis.md": {
+      "status": "valid",
+      "checked_at": "2025-12-19 00:34:57",
+      "fixed_at": null,
+      "issues": "无"
+    },
+    "docs/01-Recipes/Anti-Detection/app_hardening_identification.md": {
+      "status": "valid",
+      "checked_at": "2025-12-19 00:34:59",
+      "fixed_at": null,
+      "issues": "无"
+    },
+    "docs/01-Recipes/Anti-Detection/captcha_bypassing_techniques.md": {
+      "status": "needs_manual_fix",
+      "checked_at": "2025-12-19 00:35:19",
+      "fixed_at": "2025-12-19 00:35:19",
+      "issues": "内容丢失过多，已恢复原文件"
+    },
+    "docs/01-Recipes/Anti-Detection/device_fingerprinting_and_bypass.md": {
+      "status": "needs_manual_fix",
+      "checked_at": "2025-12-19 01:27:19",
+      "fixed_at": null,
+      "issues": "API Error after 3 retries: HTTPSConnectionPool(host='generativelanguage.googleapis.com', port=443): Read timed out. (read timeout=60.0)"
+    },
+    "docs/01-Recipes/Anti-Detection/frida_anti_debugging.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:54:21",
+      "fixed_at": "2025-12-19 01:54:21",
+      "issues": "修复水平分割线格式 (- -- → ---)\n修复标题层级格式 (# # → ##)\n⚠️ 检测到未闭合的代码块（41 个 ``` 标记）\n修复列表项前缀 (☐ → -)"
+    },
+    "docs/01-Recipes/Anti-Detection/mobile_app_sec_and_anti_bot.md": {
+      "status": "valid",
+      "checked_at": "2025-12-19 00:37:07",
+      "fixed_at": null,
+      "issues": "无"
+    },
+    "docs/01-Recipes/Anti-Detection/xposed_anti_debugging.md": {
+      "status": "needs_manual_fix",
+      "checked_at": "2025-12-19 01:30:39",
+      "fixed_at": null,
+      "issues": "API Error after 3 retries: HTTPSConnectionPool(host='generativelanguage.googleapis.com', port=443): Read timed out. (read timeout=60.0)"
+    },
+    "docs/01-Recipes/Automation/automation_and_device_farming.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:54:24",
+      "fixed_at": "2025-12-19 01:54:24",
+      "issues": "修复水平分割线格式 (- -- → ---)"
+    },
+    "docs/01-Recipes/Automation/dial_up_proxy_pools.md": {
+      "status": "needs_manual_fix",
+      "checked_at": "2025-12-19 01:55:08",
+      "fixed_at": null,
+      "issues": "Gemini 返回内容不完整"
+    },
+    "docs/01-Recipes/Automation/docker_deployment.md": {
+      "status": "valid",
+      "checked_at": "2025-12-19 01:55:11",
+      "fixed_at": null,
+      "issues": "格式正常"
+    },
+    "docs/01-Recipes/Automation/proxy_pool_design.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:55:14",
+      "fixed_at": "2025-12-19 01:55:14",
+      "issues": "修复水平分割线格式 (- -- → ---)"
+    },
+    "docs/01-Recipes/Automation/scrapy.md": {
+      "status": "needs_manual_fix",
+      "checked_at": "2025-12-19 01:33:11",
+      "fixed_at": null,
+      "issues": "API Error after 3 retries: The `response.text` quick accessor only works for simple (single-`Part`) text responses. This response is not simple text.Use the `result.parts` accessor or the full `result.candidates[index].content.parts` lookup instead."
+    },
+    "docs/01-Recipes/Automation/scrapy_redis_distributed.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:55:17",
+      "fixed_at": "2025-12-19 01:55:17",
+      "issues": "修复水平分割线格式 (- -- → ---)\n修复标题层级格式 (# # → ##)\n⚠️ 检测到未闭合的代码块（15 个 ``` 标记）"
+    },
+    "docs/01-Recipes/Automation/virtualization_and_containers.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:09:45",
+      "fixed_at": "2025-12-19 01:09:45",
+      "issues": "**发现的问题**:\n- **水平分割线格式不标准**: 文档中使用了 `- --` 作为分割线，这不是标准的 Markdown 语法。标准的水平分割线应为三个或以上的连字符 `---`、星号 `***` 或下划线 `___`。\n- **标题大小写不规范**: 标题 `## 1. android 模拟器 (Emulators)` 中的 \"android\" 应按惯例大写为 \"Android\"，以保持专业性。\n- **文件名未格式化**: 文中提到的 `docker-compose.yml` 是一个文件名，建议使用行内代码块（反引号 `` ` ``）进行包裹，以提高可读性和区分度。"
+    },
+    "docs/01-Recipes/Automation/web_anti_scraping.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:10:42",
+      "fixed_at": "2025-12-19 01:10:42",
+      "issues": "**发现的问题**:\n- **水平分割线格式错误**: 文档中使用了 ` - --` 作为分割线，这不是标准的 Markdown 格式。标准的水平分割线应为 `---`。\n- **列表层级错误**: 在\"客户端（浏览器）挑战\"和\"服务器端检测\"部分，描述详细信息的子列表项没有正确缩进，导致它们被渲染为顶级列表项，破坏了文档结构。\n- **代码块内注释不规范**: Python 代码块中的注释存在中英文混杂、表意不清的情况（如 `AutoProcess5Secondetc.待andJS挑战`），降低了代码的可读性。\n- **代码块内代码缩进错误**: `Playwright` 示例代码中，`with` 语句块内部的代码没有正确缩进，这是一个严重的 Python 语法错误。\n- **章节结构混乱**: \"绕过 Cloudflare 五秒盾\"的\"绕过方案\"部分，方案二（使用专用库）和方案三（逆向 JS）没有明确的标题，且描述内容（优缺点）与示例代码的排版混乱，逻辑不清。\n- **示例标题格式不当**: 代码示例的标题（如 `* *Playwright (Python) 示例:**`）被错误地格式化为斜体的列表项，应改为更常规的段落标题格式（如加粗）。"
+    },
+    "docs/01-Recipes/Network/crypto_analysis.md": {
+      "status": "needs_manual_fix",
+      "checked_at": "2025-12-19 01:36:30",
+      "fixed_at": null,
+      "issues": "API Error after 3 retries: HTTPSConnectionPool(host='generativelanguage.googleapis.com', port=443): Read timed out. (read timeout=60.0)"
+    },
+    "docs/01-Recipes/Network/ja3_fingerprinting.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:15:03",
+      "fixed_at": "2025-12-19 01:15:03",
+      "issues": "**发现的问题**:\n- **问题1 (分隔线格式错误)**: 文档中使用 `- --` 作为章节之间的分隔符。这不是标准的 Markdown 语法，可能无法被正确渲染为水平分割线。标准的语法应为 `---`。\n- **问题2 (列表格式错误)**: 在 \"指纹生成过程\" 章节中，第 2 点和第 4 点下的子列表（以 `*` 开始）没有正确缩进。这会中断外层的有序列表，导致编号和格式错乱。\n- **问题3 (强调格式不规范)**: 在 \"JA3S - 服务器端指纹\" 章节中，小标题 `* *为什么 JA3S 很重要？**` 的格式不规范。它会被渲染成一个列表项，其中的内容同时被斜体和加粗，语义不清晰，应改为更标准的段落强调格式。"
+    },
+    "docs/01-Recipes/Network/ja4_fingerprinting.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:16:02",
+      "fixed_at": "2025-12-19 01:16:02",
+      "issues": "**发现的问题**:\n- **标题层级不一致**: 文档的主标题为一级标题 (`#`)，但所有主要章节标题（如“为什么需要 JA4+”）都使用了三级标题 (`###`)，这在结构上不正确，它们应该是二级标题 (`##`)。同理，“JA4+ 套件概览”下的子项（如“JA4 (客户端 TLS)”）使用了四级标题 (`####`)，它们应该是三级标题 (`###`)。\n- **列表格式错误**:\n    1.  在“目录”部分，JA4+ 套件的各个组件被列为与主目录项同级的无序列表项，而它们应该是第 3 项“JA4+ 套件概览”下的嵌套子列表。\n    2.  在“JA4 的核心设计”部分，对指纹 `d1516h2` 的解释是一个扁平的无序列表，应该改为嵌套列表以表示层级关系。\n- **代码格式缺失**: 文档中的多个技术术语、协议名称和指纹示例（如 `Protocol_Version_Ciphers_Extensions_Signature` 和 `t13d1516h2_174735a34e8a_b2149a751699`）没有使用行内代码格式（` `` `），影响了可读性和专业性。\n- **代码块使用不当**: 在“应用与实践”部分，多个查询示例被写成了独立的列表项。将它们合并到一个使用 `bash` 或类似语言标识的单一代码块中，会更加清晰和规范。\n- **分隔线格式非标准**: 文档中使用了 `- --` 作为分隔线，虽然某些渲染器可能支持，但标准且通用的 Markdown 语法是 `---`。"
+    },
+    "docs/01-Recipes/Network/network_sniffing.md": {
+      "status": "needs_manual_fix",
+      "checked_at": "2025-12-19 01:39:49",
+      "fixed_at": null,
+      "issues": "API Error after 3 retries: HTTPSConnectionPool(host='generativelanguage.googleapis.com', port=443): Read timed out. (read timeout=60.0)"
+    },
+    "docs/01-Recipes/Network/tls_fingerprinting_guide.md": {
+      "status": "needs_manual_fix",
+      "checked_at": "2025-12-19 01:43:08",
+      "fixed_at": null,
+      "issues": "API Error after 3 retries: HTTPSConnectionPool(host='generativelanguage.googleapis.com', port=443): Read timed out. (read timeout=60.0)"
+    },
+    "docs/01-Recipes/Scripts/automation_scripts.md": {
+      "status": "valid",
+      "checked_at": "2025-12-19 01:55:20",
+      "fixed_at": null,
+      "issues": "格式正常"
+    },
+    "docs/01-Recipes/Scripts/c_for_emulation.md": {
+      "status": "needs_manual_fix",
+      "checked_at": "2025-12-19 01:55:57",
+      "fixed_at": null,
+      "issues": "Gemini 返回内容不完整"
+    },
+    "docs/01-Recipes/Scripts/frida_common_scripts.md": {
+      "status": "needs_manual_fix",
+      "checked_at": "2025-12-19 01:47:44",
+      "fixed_at": null,
+      "issues": "API Error after 3 retries: HTTPSConnectionPool(host='generativelanguage.googleapis.com', port=443): Read timed out. (read timeout=60.0)"
+    },
+    "docs/01-Recipes/Scripts/frida_script_examples.md": {
+      "status": "needs_manual_fix",
+      "checked_at": "2025-12-19 00:45:55",
+      "fixed_at": null,
+      "issues": "API Error after 3 retries: Unknown field for GenerateContentRequest: request_options"
+    },
+    "docs/01-Recipes/Scripts/native_hooking.md": {
+      "status": "needs_manual_fix",
+      "checked_at": "2025-12-19 00:46:13",
+      "fixed_at": null,
+      "issues": "API Error after 3 retries: Unknown field for GenerateContentRequest: request_options"
+    },
+    "docs/01-Recipes/Scripts/objection_snippets.md": {
+      "status": "needs_manual_fix",
+      "checked_at": "2025-12-19 00:46:31",
+      "fixed_at": null,
+      "issues": "API Error after 3 retries: Unknown field for GenerateContentRequest: request_options"
+    },
+    "docs/01-Recipes/Scripts/summary.md": {
+      "status": "needs_manual_fix",
+      "checked_at": "2025-12-19 00:46:49",
+      "fixed_at": null,
+      "issues": "API Error after 3 retries: Unknown field for GenerateContentRequest: request_options"
+    },
+    "docs/01-Recipes/Unpacking/frida_unpacking_and_so_fixing.md": {
+      "status": "needs_manual_fix",
+      "checked_at": "2025-12-19 00:47:07",
+      "fixed_at": null,
+      "issues": "API Error after 3 retries: Unknown field for GenerateContentRequest: request_options"
+    },
+    "docs/01-Recipes/Unpacking/so_obfuscation_deobfuscation.md": {
+      "status": "needs_manual_fix",
+      "checked_at": "2025-12-19 00:47:25",
+      "fixed_at": null,
+      "issues": "API Error after 3 retries: Unknown field for GenerateContentRequest: request_options"
+    },
+    "docs/01-Recipes/Unpacking/so_string_deobfuscation.md": {
+      "status": "needs_manual_fix",
+      "checked_at": "2025-12-19 00:47:43",
+      "fixed_at": null,
+      "issues": "API Error after 3 retries: Unknown field for GenerateContentRequest: request_options"
+    },
+    "docs/01-Recipes/Unpacking/un-packing.md": {
+      "status": "needs_manual_fix",
+      "checked_at": "2025-12-19 00:48:01",
+      "fixed_at": null,
+      "issues": "API Error after 3 retries: Unknown field for GenerateContentRequest: request_options"
+    },
+    "docs/01-Recipes/summary.md": {
+      "status": "needs_manual_fix",
+      "checked_at": "2025-12-19 00:48:19",
+      "fixed_at": null,
+      "issues": "API Error after 3 retries: Unknown field for GenerateContentRequest: request_options"
+    },
+    "docs/02-Tools/Cheatsheets/adb_cheatsheet.md": {
+      "status": "needs_manual_fix",
+      "checked_at": "2025-12-19 00:48:37",
+      "fixed_at": null,
+      "issues": "API Error after 3 retries: Unknown field for GenerateContentRequest: request_options"
+    },
+    "docs/02-Tools/Dynamic/frida_guide.md": {
+      "status": "needs_manual_fix",
+      "checked_at": "2025-12-19 00:48:55",
+      "fixed_at": null,
+      "issues": "API Error after 3 retries: Unknown field for GenerateContentRequest: request_options"
+    },
+    "docs/02-Tools/Dynamic/frida_internals.md": {
+      "status": "needs_manual_fix",
+      "checked_at": "2025-12-19 00:49:13",
+      "fixed_at": null,
+      "issues": "API Error after 3 retries: Unknown field for GenerateContentRequest: request_options"
+    },
+    "docs/02-Tools/Dynamic/unidbg_guide.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:56:00",
+      "fixed_at": "2025-12-19 01:56:00",
+      "issues": "修复水平分割线格式 (- -- → ---)\n修复标题层级格式 (# # → ##)\n⚠️ 检测到未闭合的代码块（5 个 ``` 标记）"
+    },
+    "docs/02-Tools/Dynamic/unidbg_internals.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:56:03",
+      "fixed_at": "2025-12-19 01:56:03",
+      "issues": "修复水平分割线格式 (- -- → ---)"
+    },
+    "docs/02-Tools/Dynamic/xposed_guide.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:56:06",
+      "fixed_at": "2025-12-19 01:56:06",
+      "issues": "修复水平分割线格式 (- -- → ---)"
+    },
+    "docs/02-Tools/Dynamic/xposed_internals.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:56:09",
+      "fixed_at": "2025-12-19 01:56:09",
+      "issues": "修复水平分割线格式 (- -- → ---)"
+    },
+    "docs/02-Tools/Static/ghidra_guide.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:56:12",
+      "fixed_at": "2025-12-19 01:56:12",
+      "issues": "修复水平分割线格式 (- -- → ---)\n修复标题层级格式 (# # → ##)\n⚠️ 检测到未闭合的代码块（3 个 ``` 标记）"
+    },
+    "docs/02-Tools/Static/ida_pro_guide.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:56:15",
+      "fixed_at": "2025-12-19 01:56:15",
+      "issues": "修复水平分割线格式 (- -- → ---)"
+    },
+    "docs/02-Tools/Static/radare2_guide.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:56:18",
+      "fixed_at": "2025-12-19 01:56:18",
+      "issues": "修复水平分割线格式 (- -- → ---)"
+    },
+    "docs/02-Tools/summary.md": {
+      "status": "valid",
+      "checked_at": "2025-12-19 01:56:28",
+      "fixed_at": null,
+      "issues": "格式正常"
+    },
+    "docs/03-Case-Studies/case_anti_analysis_techniques.md": {
+      "status": "needs_manual_fix",
+      "checked_at": "2025-12-19 01:56:54",
+      "fixed_at": null,
+      "issues": "Gemini 返回内容不完整"
+    },
+    "docs/03-Case-Studies/case_flutter_apps.md": {
+      "status": "needs_manual_fix",
+      "checked_at": "2025-12-19 01:57:27",
+      "fixed_at": null,
+      "issues": "Gemini 返回内容不完整"
+    },
+    "docs/03-Case-Studies/case_malware_analysis.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:57:30",
+      "fixed_at": "2025-12-19 01:57:30",
+      "issues": "修复水平分割线格式 (- -- → ---)\n修复标题层级格式 (# # → ##)\n⚠️ 检测到未闭合的代码块（7 个 ``` 标记）"
+    },
+    "docs/03-Case-Studies/case_music_apps.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:57:33",
+      "fixed_at": "2025-12-19 01:57:33",
+      "issues": "修复水平分割线格式 (- -- → ---)"
+    },
+    "docs/03-Case-Studies/case_social_media_and_anti_bot.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:57:36",
+      "fixed_at": "2025-12-19 01:57:36",
+      "issues": "修复水平分割线格式 (- -- → ---)\n修复标题层级格式 (# # → ##)\n⚠️ 检测到未闭合的代码块（3 个 ``` 标记）"
+    },
+    "docs/03-Case-Studies/case_study_app_encryption.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:57:39",
+      "fixed_at": "2025-12-19 01:57:39",
+      "issues": "修复水平分割线格式 (- -- → ---)\n修复标题层级格式 (# # → ##)"
+    },
+    "docs/03-Case-Studies/case_unity_games.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:57:42",
+      "fixed_at": "2025-12-19 01:57:42",
+      "issues": "修复水平分割线格式 (- -- → ---)"
+    },
+    "docs/03-Case-Studies/case_video_apps_and_drm.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:57:45",
+      "fixed_at": "2025-12-19 01:57:45",
+      "issues": "修复水平分割线格式 (- -- → ---)"
+    },
+    "docs/03-Case-Studies/summary.md": {
+      "status": "valid",
+      "checked_at": "2025-12-19 01:57:53",
+      "fixed_at": null,
+      "issues": "格式正常"
+    },
+    "docs/04-Reference/Advanced/android_sandbox_implementation.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:57:56",
+      "fixed_at": "2025-12-19 01:57:56",
+      "issues": "修复水平分割线格式 (- -- → ---)"
+    },
+    "docs/04-Reference/Advanced/aosp_and_system_customization.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:57:59",
+      "fixed_at": "2025-12-19 01:57:59",
+      "issues": "修复水平分割线格式 (- -- → ---)"
+    },
+    "docs/04-Reference/Advanced/aosp_device_modification.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:58:02",
+      "fixed_at": "2025-12-19 01:58:02",
+      "issues": "修复水平分割线格式 (- -- → ---)\n修复标题层级格式 (# # → ##)\n⚠️ 检测到未闭合的代码块（3 个 ``` 标记）"
+    },
+    "docs/04-Reference/Advanced/minimal_android_rootfs.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:58:05",
+      "fixed_at": "2025-12-19 01:58:05",
+      "issues": "修复水平分割线格式 (- -- → ---)\n修复标题层级格式 (# # → ##)\n⚠️ 检测到未闭合的代码块（11 个 ``` 标记）"
+    },
+    "docs/04-Reference/Advanced/so_anti_debugging_and_obfuscation.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:58:08",
+      "fixed_at": "2025-12-19 01:58:08",
+      "issues": "修复水平分割线格式 (- -- → ---)\n修复标题层级格式 (# # → ##)"
+    },
+    "docs/04-Reference/Advanced/so_runtime_emulation.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:58:11",
+      "fixed_at": "2025-12-19 01:58:11",
+      "issues": "修复标题层级格式 (# # → ##)"
+    },
+    "docs/04-Reference/Advanced/summary.md": {
+      "status": "valid",
+      "checked_at": "2025-12-19 01:58:23",
+      "fixed_at": null,
+      "issues": "格式正常"
+    },
+    "docs/04-Reference/Engineering/Data-Analysis/data_warehousing_and_processing.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:58:52",
+      "fixed_at": "2025-12-19 01:58:52",
+      "issues": "Gemini 修复"
+    },
+    "docs/04-Reference/Engineering/Data-Analysis/flink.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:58:55",
+      "fixed_at": "2025-12-19 01:58:55",
+      "issues": "修复水平分割线格式 (- -- → ---)\n修复标题层级格式 (# # → ##)\n⚠️ 检测到未闭合的代码块（29 个 ``` 标记）"
+    },
+    "docs/04-Reference/Engineering/Data-Analysis/hbase.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:58:58",
+      "fixed_at": "2025-12-19 01:58:58",
+      "issues": "修复水平分割线格式 (- -- → ---)\n修复标题层级格式 (# # → ##)"
+    },
+    "docs/04-Reference/Engineering/Data-Analysis/hive.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:59:01",
+      "fixed_at": "2025-12-19 01:59:01",
+      "issues": "修复水平分割线格式 (- -- → ---)\n修复标题层级格式 (# # → ##)"
+    },
+    "docs/04-Reference/Engineering/Data-Analysis/spark.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:59:04",
+      "fixed_at": "2025-12-19 01:59:04",
+      "issues": "修复水平分割线格式 (- -- → ---)\n修复标题层级格式 (# # → ##)"
+    },
+    "docs/04-Reference/Engineering/Data-Analysis/summary.md": {
+      "status": "valid",
+      "checked_at": "2025-12-19 01:59:14",
+      "fixed_at": null,
+      "issues": "格式正常"
+    },
+    "docs/04-Reference/Engineering/frameworks_and_middleware.md": {
+      "status": "valid",
+      "checked_at": "2025-12-19 01:59:26",
+      "fixed_at": null,
+      "issues": "格式正常"
+    },
+    "docs/04-Reference/Engineering/message_queues.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:59:51",
+      "fixed_at": "2025-12-19 01:59:51",
+      "issues": "Gemini 修复"
+    },
+    "docs/04-Reference/Engineering/redis.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:59:54",
+      "fixed_at": "2025-12-19 01:59:54",
+      "issues": "修复水平分割线格式 (- -- → ---)\n修复标题层级格式 (# # → ##)\n移除过多的连续空行"
+    },
+    "docs/04-Reference/Engineering/risk_control_sdk_build_guide.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 01:59:57",
+      "fixed_at": "2025-12-19 01:59:57",
+      "issues": "修复水平分割线格式 (- -- → ---)"
+    },
+    "docs/04-Reference/Engineering/summary.md": {
+      "status": "valid",
+      "checked_at": "2025-12-19 02:00:06",
+      "fixed_at": null,
+      "issues": "格式正常"
+    },
+    "docs/04-Reference/Foundations/android_components.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 02:00:34",
+      "fixed_at": "2025-12-19 02:00:34",
+      "issues": "Gemini 修复"
+    },
+    "docs/04-Reference/Foundations/android_manifest.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 02:00:37",
+      "fixed_at": "2025-12-19 02:00:37",
+      "issues": "修复水平分割线格式 (- -- → ---)"
+    },
+    "docs/04-Reference/Foundations/android_studio_debug_tools.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 02:01:25",
+      "fixed_at": "2025-12-19 02:01:25",
+      "issues": "Gemini 修复"
+    },
+    "docs/04-Reference/Foundations/apk_structure.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 02:01:28",
+      "fixed_at": "2025-12-19 02:01:28",
+      "issues": "修复水平分割线格式 (- -- → ---)"
+    },
+    "docs/04-Reference/Foundations/arm_assembly.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 02:01:31",
+      "fixed_at": "2025-12-19 02:01:31",
+      "issues": "修复水平分割线格式 (- -- → ---)"
+    },
+    "docs/04-Reference/Foundations/art_runtime.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 02:01:34",
+      "fixed_at": "2025-12-19 02:01:34",
+      "issues": "修复水平分割线格式 (- -- → ---)"
+    },
+    "docs/04-Reference/Foundations/dex_format.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 02:01:37",
+      "fixed_at": "2025-12-19 02:01:37",
+      "issues": "修复水平分割线格式 (- -- → ---)"
+    },
+    "docs/04-Reference/Foundations/smali_syntax.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 02:01:40",
+      "fixed_at": "2025-12-19 02:01:40",
+      "issues": "修复水平分割线格式 (- -- → ---)"
+    },
+    "docs/04-Reference/Foundations/so_elf_format.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 02:01:43",
+      "fixed_at": "2025-12-19 02:01:43",
+      "issues": "修复水平分割线格式 (- -- → ---)"
+    },
+    "docs/04-Reference/Foundations/summary.md": {
+      "status": "valid",
+      "checked_at": "2025-12-19 02:01:53",
+      "fixed_at": null,
+      "issues": "格式正常"
+    },
+    "docs/04-Reference/Foundations/x86_and_arm_assembly_basics.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 02:01:56",
+      "fixed_at": "2025-12-19 02:01:56",
+      "issues": "修复水平分割线格式 (- -- → ---)"
+    },
+    "docs/05-Appendix/ctf_platforms.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 02:02:16",
+      "fixed_at": "2025-12-19 02:02:16",
+      "issues": "Gemini 修复"
+    },
+    "docs/05-Appendix/github_projects.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 02:02:19",
+      "fixed_at": "2025-12-19 02:02:19",
+      "issues": "修复水平分割线格式 (- -- → ---)"
+    },
+    "docs/05-Appendix/glossary.md": {
+      "status": "valid",
+      "checked_at": "2025-12-19 02:02:33",
+      "fixed_at": null,
+      "issues": "格式正常"
+    },
+    "docs/05-Appendix/learning_resources.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 02:03:17",
+      "fixed_at": "2025-12-19 02:03:17",
+      "issues": "Gemini 修复"
+    },
+    "docs/05-Appendix/summary.md": {
+      "status": "valid",
+      "checked_at": "2025-12-19 02:03:25",
+      "fixed_at": null,
+      "issues": "格式正常"
+    },
+    "docs/index.md": {
+      "status": "fixed",
+      "checked_at": "2025-12-19 02:03:28",
+      "fixed_at": "2025-12-19 02:03:28",
+      "issues": "修复水平分割线格式 (- -- → ---)"
+    }
+  },
+  "last_updated": "2025-12-19 02:03:28"
+}

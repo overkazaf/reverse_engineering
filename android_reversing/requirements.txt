@@ -1,0 +1,6 @@
+Flask
+google-genai
+markdown
+python-dotenv
+Flask-Cors 
+PyYAML

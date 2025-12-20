@@ -1,0 +1,143 @@
+@startuml Magisk Architecture
+!theme vibrant
+skinparam backgroundColor white
+skinparam packageBorderColor #2E86AB
+skinparam packageBackgroundColor #E8F4FD
+skinparam componentBorderColor #A23B72
+skinparam componentBackgroundColor #F18F01
+skinparam noteBorderColor #C73E1D
+skinparam noteBackgroundColor #FFF3CD
+title Magisk 架构及Root权限获取原理
+
+package "启动流程 (Boot Process)" {
+    package "Bootloader" {
+        [Boot.img] as bootimg
+        [Recovery.img] as recovery
+        [Magisk 修补] as patch
+        
+        bootimg --> patch : 修补boot镜像
+        patch --> recovery : 可选安装方式
+    }
+    
+    package "内核启动" {
+        [Linux Kernel] as kernel
+        [init 进程] as init
+        [magiskinit] as magiskinit
+        
+        bootimg --> kernel : 加载内核
+        kernel --> init : 启动第一个进程
+        init --> magiskinit : 被替换/注入
+    }
+}
+
+package "Magisk 核心组件" {
+    package "init 阶段" {
+        [magiskinit] as minit
+        [原始 init 备份] as oriinit
+        [Early Mount] as earlymount
+        [Sepolicy 修补] as sepolicy
+        
+        minit --> earlymount : 早期挂载
+        minit --> sepolicy : 修补SELinux策略
+        minit --> oriinit : 启动原始init
+    }
+    
+    package "systemless 机制" {
+        [Magic Mount] as magicmount
+        [虚拟文件系统] as vfs
+        [Bind Mount] as bindmount
+        [原始系统保护] as protect
+        
+        magicmount --> vfs : 创建虚拟层
+        vfs --> bindmount : 绑定挂载
+        bindmount --> protect : 保护原始文件
+    }
+    
+    package "权限管理" {
+        [magiskd] as daemon
+        [su 二进制] as su
+        [权限数据库] as db
+        [Root 授权] as grant
+        
+        daemon --> su : 管理su命令
+        daemon --> db : 存储权限
+        su --> grant : 授权检查
+    }
+}
+
+package "应用层" {
+    [Magisk Manager] as manager
+    [Root 应用] as rootapp
+    [Magisk 模块] as modules
+    [Hide 机制] as hide
+    
+    manager --> daemon : 管理守护进程
+    rootapp --> su : 请求root权限
+    modules --> magicmount : 安装模块
+    hide --> protect : 隐藏root痕迹
+}
+
+package "Root 权限获取过程" {
+    [应用请求] as request
+    [权限检查] as check
+    [用户授权] as userauth
+    [执行命令] as execute
+    
+    request --> check : 1. 检查权限
+    check --> userauth : 2. 用户确认
+    userauth --> execute : 3. 以root执行
+}
+
+' 启动流程
+bootimg --> kernel : 1. Bootloader加载修补的boot.img
+kernel --> minit : 2. 启动magiskinit替代原始init
+minit --> sepolicy : 3. 修补SELinux策略获取权限
+sepolicy --> daemon : 4. 启动magiskd守护进程
+daemon --> manager : 5. 初始化Magisk环境
+
+' Magic Mount 工作原理
+modules --> magicmount : 模块文件
+magicmount --> vfs : 创建虚拟文件系统层
+vfs --> bindmount : 使用bind mount覆盖系统文件
+protect --> vfs : 原始系统文件保持不变
+
+' Root 权限流程
+rootapp --> request : 应用调用su命令
+request --> daemon : magiskd接收请求
+daemon --> userauth : 弹出授权对话框
+userauth --> grant : 用户同意后授权
+grant --> execute : 以root身份执行命令
+
+note right of magiskinit
+  关键组件：替换或注入init进程
+  在系统启动早期获得控制权
+  修补SELinux策略获取权限
+end note
+
+note right of magicmount
+  核心技术：不修改系统分区
+  使用bind mount技术
+  实现systemless修改
+end note
+
+note right of hide
+  反检测机制：
+  - 隐藏Magisk应用
+  - 伪造SafetyNet检查
+  - 重命名su文件
+end note
+
+note left of daemon
+  守护进程特权：
+  - 运行在root权限
+  - 管理所有su请求
+  - 维护权限数据库
+end note
+
+note bottom of sepolicy
+  SELinux策略修补是获得权限的关键
+  允许Magisk组件获得必要的系统权限
+  绕过Android安全机制
+end note
+
+@enduml

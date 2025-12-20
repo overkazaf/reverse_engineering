@@ -1,0 +1,13 @@
+# PDF生成器依赖包
+markdown2>=2.4.0
+weasyprint>=59.0
+Pillow>=9.0.0
+cairocffi>=1.4.0
+cffi>=1.15.0
+
+# 可选：如果需要更好的字体支持
+fonttools>=4.33.0
+
+# 开发依赖（可选）
+pytest>=7.0.0
+black>=22.0.0

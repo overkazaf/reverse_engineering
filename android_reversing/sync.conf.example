@@ -1,0 +1,59 @@
+# ============================================
+# Android Reverse Engineering Cookbook
+# 服务器同步配置示例
+# ============================================
+# 复制此文件为 sync.conf 并修改配置
+
+# ===== 服务器基本配置 =====
+SERVER_HOST="your-server.com"           # 服务器地址或IP
+SERVER_USER="username"                  # SSH用户名
+SERVER_PORT="22"                        # SSH端口
+REMOTE_PATH="/var/www/android_re_kb"   # 服务器上的部署目录
+
+# ===== SSH认证配置 =====
+# 推荐使用SSH密钥认证，留空则使用密码
+SSH_KEY="~/.ssh/id_rsa"
+
+# ===== Nginx Web服务器配置 =====
+SITE_NAME="android_re_kb"               # 站点名称
+DOMAIN="kb.example.com"                 # 域名
+NGINX_PORT="80"                         # HTTP端口
+
+# ===== 排除文件配置 =====
+# 同步时不上传的文件和目录
+EXCLUDE_PATTERNS=(
+    ".git"
+    ".gitignore"
+    ".DS_Store"
+    "__pycache__"
+    "*.pyc"
+    ".vscode"
+    ".idea"
+    "node_modules"
+    ".venv"
+    "venv"
+    "*.log"
+    "output"
+    "site"
+    ".cache"
+    "*.tmp"
+)
+
+# ===== 示例配置 =====
+# 下面是一些常见的配置示例
+
+# 示例1: 阿里云服务器
+# SERVER_HOST="123.45.67.89"
+# SERVER_USER="root"
+# REMOTE_PATH="/var/www/html/kb"
+
+# 示例2: 腾讯云服务器
+# SERVER_HOST="your-domain.com"
+# SERVER_USER="ubuntu"
+# REMOTE_PATH="/home/ubuntu/android_re_kb"
+
+# 示例3: 自建服务器
+# SERVER_HOST="192.168.1.100"
+# SERVER_USER="admin"
+# SERVER_PORT="2222"
+# REMOTE_PATH="/opt/www/kb"

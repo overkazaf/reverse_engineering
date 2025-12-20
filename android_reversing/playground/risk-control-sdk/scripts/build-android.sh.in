@@ -1,0 +1,188 @@
+#!/bin/bash
+
+# Android 平台构建脚本
+# 生成自: @CMAKE_CURRENT_SOURCE_DIR@
+
+set -e
+
+PROJECT_NAME="@PROJECT_NAME@"
+PROJECT_VERSION="@PROJECT_VERSION@"
+SOURCE_DIR="@CMAKE_CURRENT_SOURCE_DIR@"
+
+echo "=========================================="
+echo "  Risk Control SDK - Android 构建"
+echo "=========================================="
+
+# 检查Android NDK
+if [ -z "$ANDROID_NDK" ]; then
+    echo "错误: 请设置 ANDROID_NDK 环境变量"
+    echo "例如: export ANDROID_NDK=/path/to/android-ndk"
+    exit 1
+fi
+
+if [ ! -d "$ANDROID_NDK" ]; then
+    echo "错误: Android NDK 目录不存在: $ANDROID_NDK"
+    exit 1
+fi
+
+echo "Android NDK: $ANDROID_NDK"
+
+# 支持的架构
+ARCHITECTURES=("arm64-v8a" "armeabi-v7a" "x86" "x86_64")
+ANDROID_API_LEVEL=${ANDROID_API_LEVEL:-21}
+
+echo "目标API级别: $ANDROID_API_LEVEL"
+
+# 为每个架构构建
+for ARCH in "${ARCHITECTURES[@]}"; do
+    echo ""
+    echo "构建架构: $ARCH"
+    echo "----------------------------------------"
+    
+    BUILD_DIR="build-android-$ARCH"
+    mkdir -p $BUILD_DIR
+    cd $BUILD_DIR
+    
+    # 配置CMake
+    cmake .. \
+        -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake \
+        -DANDROID_ABI=$ARCH \
+        -DANDROID_PLATFORM=android-$ANDROID_API_LEVEL \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_ANDROID=ON \
+        -DENABLE_ANTI_REVERSE=ON \
+        -DENABLE_SVC_SYSCALLS=ON
+    
+    # 构建
+    make -j$(nproc)
+    
+    # 复制构建产物
+    mkdir -p ../libs/$ARCH
+    cp lib/libriskcontrol.so ../libs/$ARCH/
+    
+    cd ..
+    
+    echo "✅ $ARCH 构建完成"
+done
+
+# 构建APK需要的目录结构
+echo ""
+echo "创建Android项目结构..."
+mkdir -p android-project/app/src/main/{java,jniLibs}
+
+# 复制Java源码
+cp -r src/java/* android-project/app/src/main/java/
+
+# 复制so库
+cp -r libs/* android-project/app/src/main/jniLibs/
+
+# 生成Android.mk
+cat > android-project/app/src/main/jni/Android.mk << 'EOF'
+LOCAL_PATH := $(call my-dir)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := riskcontrol
+LOCAL_SRC_FILES := ../../jniLibs/$(TARGET_ARCH_ABI)/libriskcontrol.so
+include $(PREBUILT_SHARED_LIBRARY)
+EOF
+
+# 生成Application.mk
+cat > android-project/app/src/main/jni/Application.mk << 'EOF'
+APP_ABI := arm64-v8a armeabi-v7a x86 x86_64
+APP_PLATFORM := android-21
+APP_STL := c++_static
+EOF
+
+# 生成build.gradle
+cat > android-project/app/build.gradle << 'EOF'
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 30
+    
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0.0"
+    }
+    
+    buildTypes {
+        release {
+            minifyEnabled false
+            consumerProguardFiles 'proguard-rules.pro'
+        }
+    }
+    
+    externalNativeBuild {
+        ndkBuild {
+            path 'src/main/jni/Android.mk'
+        }
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+}
+EOF
+
+# 生成ProGuard规则
+cat > android-project/app/proguard-rules.pro << 'EOF'
+# Keep native methods
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+
+# Keep RiskControl SDK classes
+-keep class com.riskcontrol.** { *; }
+
+# Prevent obfuscation of JNI callback methods
+-keepclassmembers class com.riskcontrol.** {
+    public *;
+}
+EOF
+
+# 生成AAR包
+echo ""
+echo "生成AAR包..."
+cd android-project
+
+if command -v gradle &> /dev/null; then
+    gradle assembleRelease
+    
+    if [ -f "app/build/outputs/aar/app-release.aar" ]; then
+        cp app/build/outputs/aar/app-release.aar ../riskcontrol-sdk-$PROJECT_VERSION.aar
+        echo "✅ AAR包生成成功: riskcontrol-sdk-$PROJECT_VERSION.aar"
+    fi
+else
+    echo "⚠️  未找到gradle，跳过AAR包生成"
+fi
+
+cd ..
+
+echo ""
+echo "=========================================="
+echo "  Android 构建完成！"
+echo "=========================================="
+echo "构建产物："
+echo "  SO库目录: $(pwd)/libs/"
+for ARCH in "${ARCHITECTURES[@]}"; do
+    if [ -f "libs/$ARCH/libriskcontrol.so" ]; then
+        echo "    ✅ $ARCH: $(ls -lh libs/$ARCH/libriskcontrol.so | awk '{print $5}')"
+    else
+        echo "    ❌ $ARCH: 构建失败"
+    fi
+done
+
+if [ -f "riskcontrol-sdk-$PROJECT_VERSION.aar" ]; then
+    echo "  AAR包: riskcontrol-sdk-$PROJECT_VERSION.aar"
+fi
+
+echo "  Android项目: android-project/"
+echo ""
+echo "集成说明："
+echo "  1. 将AAR文件添加到Android项目依赖"
+echo "  2. 或者直接复制SO库到 jniLibs/ 目录"
+echo "  3. 复制Java源码到项目中"
+echo "  4. 在Application中初始化SDK"
+echo "=========================================="

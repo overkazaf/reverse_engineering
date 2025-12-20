@@ -1,0 +1,110 @@
+@startuml Xposed Architecture
+!theme vibrant
+skinparam backgroundColor white
+skinparam packageBorderColor #2E86AB
+skinparam packageBackgroundColor #E8F4FD
+skinparam componentBorderColor #A23B72
+skinparam componentBackgroundColor #F18F01
+skinparam noteBorderColor #C73E1D
+skinparam noteBackgroundColor #FFF3CD
+title Xposed 架构及Hook原理
+
+package "系统层面" {
+    package "Zygote 进程" {
+        [app_process] as zygote
+        [XposedBridge.jar] as bridge
+        [libxposed_art.so] as artlib
+        
+        zygote --> bridge : 加载
+        bridge --> artlib : 调用Native Hook
+    }
+    
+    package "ART Runtime 修改" {
+        [Hook Engine] as hookengine
+        [Method 替换] as methodreplace
+        [调用栈管理] as callstack
+        
+        artlib --> hookengine : 初始化
+        hookengine --> methodreplace : 方法替换
+        hookengine --> callstack : 管理调用
+    }
+}
+
+package "应用进程" {
+    package "Xposed 模块" {
+        [模块 APK] as module
+        [Hook 代码] as hookcode
+        [IXposedHookLoadPackage] as hookinterface
+        
+        module --> hookcode : 包含
+        hookcode --> hookinterface : 实现接口
+    }
+    
+    package "目标应用" {
+        [原始 Java 方法] as original
+        [被Hook方法] as hooked
+        [应用逻辑] as applogic
+        
+        applogic --> hooked : 调用
+        hooked --> original : 可选调用原方法
+    }
+}
+
+package "Hook 执行流程" {
+    [方法调用拦截] as intercept
+    [beforeHookedMethod] as before
+    [afterHookedMethod] as after
+    [参数修改] as param
+    [返回值修改] as result
+    
+    intercept --> before : 前置处理
+    before --> param : 修改参数
+    before --> after : 执行原方法
+    after --> result : 修改返回值
+}
+
+' Hook 流程
+applogic --> intercept : 1. 调用被Hook方法
+intercept --> hookcode : 2. 触发Hook代码
+hookcode --> before : 3. 执行before回调
+before --> original : 4. 调用原方法(可选)
+original --> after : 5. 执行after回调
+after --> applogic : 6. 返回结果
+
+' 系统启动流程
+zygote --> bridge : 启动时加载
+bridge --> hookengine : 初始化Hook引擎
+hookengine --> module : 加载所有模块
+module --> hookinterface : 注册Hook回调
+
+note right of hookengine
+  直接修改 ART 虚拟机
+  替换方法的入口点
+  保存原方法引用
+end note
+
+note right of bridge
+  Xposed 核心组件
+  管理模块加载
+  提供 Hook API
+end note
+
+note left of before
+  可以修改方法参数
+  可以阻止原方法执行
+  setResult() 直接返回
+end note
+
+note left of after
+  可以修改返回值
+  可以获取方法执行结果
+  处理异常情况
+end note
+
+note bottom of zygote
+  Xposed 通过替换 app_process
+  在所有应用启动前注入Hook能力
+  具有系统级权限
+end note
+
+@enduml

@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+  {# Add a meta tag to store the source path of the current page.
+     This is crucial for the editing functionality. #}
+  {% if page.file %}
+    <meta name="page-source-path" content="{{ page.file.src_path }}">
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {# The standard content block from the material theme #}
+  <div class="md-content" data-md-component="content">
+    <article class="md-content__inner md-typeset">
+      
+      {# Custom edit button added at the top of the article #}
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-bottom: 1rem;">
+        <button id="mock-interview-btn" title="Start a mock interview for this page" class="md-button">Mock Interview</button>
+        <button id="edit-page-btn" title="Edit this page" class="md-button">Edit</button>
+      </div>
+
+      {# This is where the actual page content is rendered by MkDocs #}
+      {{ page.content }}
+    </article>
+  </div>
+
+  {# This is the template for our editor.
+     It will be moved and displayed by the JavaScript logic. #}
+  <div id="editor-container" style="display: none; max-width: 90%; margin: 20px auto;">
+    <div id="markdown-editor-tui"></div>
+    <div style="margin-top: 15px; display: flex; justify-content: flex-end; gap: 10px;">
+      <button id="save-page-btn" class="md-button md-button--primary">Save Changes</button>
+      <button id="cancel-edit-btn" class="md-button">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Mock Interview Modal -->
+  <div id="interview-modal-overlay" style="display: none;">
+    <div id="interview-modal">
+      <div id="interview-header">
+        <h3>Mock Interview</h3>
+        <button id="interview-close-btn">&times;</button>
+      </div>
+      <div id="interview-body">
+        <div id="interview-loading" style="display: none;">Generating questions...</div>
+        <div id="interview-content">
+          <div id="interview-progress">Question 1 / 10</div>
+          <p id="interview-question">Question text will appear here.</p>
+          
+          <div id="interview-options-container"></div>
+
+          <div id="interview-feedback" style="display: none;">
+            <h4></h4>
+            <p id="interview-feedback-text"></p>
+          </div>
+        </div>
+        <div id="interview-summary" style="display: none;">
+          <h3>Interview Complete!</h3>
+          <p id="interview-score"></p>
+          
+          <div id="interview-analysis">
+            <h4>Knowledge Point Mastery:</h4>
+            <div id="interview-analysis-list"></div>
+          </div>
+
+          <h4>Review your incorrect answers:</h4>
+          <div id="interview-wrong-list"></div>
+          <button id="interview-restart-btn" class="md-button">Try Again</button>
+        </div>
+      </div>
+      <div id="interview-footer">
+        <button id="interview-prev-btn" class="md-button" disabled>Previous</button>
+        <button id="interview-next-btn" class="md-button" disabled>Next</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gemini Chatbot -->
+  <div id="gemini-chat-container" style="display: none;">
+    <div id="gemini-chat-header">
+      <span id="gemini-chat-drag-handle">AI Assistant</span>
+      <div id="gemini-chat-controls">
+        <button id="gemini-chat-shell-btn" title="Shell Mode">
+          <span class="twemoji">{% include ".icons/material/console.svg" %}</span>
+        </button>
+        <button id="gemini-chat-maximize-btn" title="Maximize">
+          <span class="twemoji icon--maximize">{% include ".icons/material/window-maximize.svg" %}</span>
+          <span class="twemoji icon--restore">{% include ".icons/material/window-restore.svg" %}</span>
+        </button>
+        <button id="gemini-chat-close" title="Close">&times;</button>
+      </div>
+    </div>
+    <div id="gemini-chat-messages"></div>
+    <div id="gemini-chat-input-container">
+      <input type="text" id="gemini-chat-input" placeholder="Ask something...">
+      <button id="gemini-chat-send">&#9658;</button>
+    </div>
+  </div>
+  <button id="gemini-chat-fab">
+    <span class="twemoji">
+        {% include ".icons/material/robot-excited-outline.svg" %}
+    </span>
+  </button>
+{% endblock %}

@@ -1,0 +1,328 @@
+@startuml SVC_Syscall_Flow
+!theme vibrant
+skinparam backgroundColor White
+skinparam shadowing false
+title RiskControl SDK - SVC系统调用流程
+
+start
+
+:需要执行系统级操作;
+
+partition "CPU架构检测" {
+    :检测当前CPU架构;
+    
+    if (CPU架构类型?) then (ARM64)
+        :设置ARM64模式;
+        :使用64位寄存器;
+        :设置SVC指令格式;
+    elseif (CPU架构类型?) then (ARM32)
+        :设置ARM32模式;
+        :使用32位寄存器;
+        :设置SWI指令格式;
+    else (其他)
+        :不支持的架构;
+        :返回错误;
+        stop
+    endif
+}
+
+partition "系统调用号获取" {
+    :根据操作类型确定系统调用号;
+    
+    note right
+      常用系统调用号:
+      • __NR_uname: 160 (获取系统信息)
+      • __NR_getpid: 172 (获取进程ID)
+      • __NR_gettimeofday: 169 (获取时间)
+      • __NR_statfs: 43 (文件系统信息)
+      • __NR_openat: 56 (打开文件)
+      • __NR_read: 63 (读取数据)
+      • __NR_close: 57 (关闭文件)
+    end note
+    
+    switch (请求的操作)
+        case (获取系统信息)
+            :syscall_num = __NR_uname;
+        case (获取进程信息)
+            :syscall_num = __NR_getpid;
+        case (获取时间信息)
+            :syscall_num = __NR_gettimeofday;
+        case (获取文件系统信息)
+            :syscall_num = __NR_statfs;
+        case (读取文件内容)
+            :syscall_num = __NR_openat + __NR_read;
+        case (其他操作)
+            :syscall_num = 自定义;
+    endswitch
+}
+
+partition "参数准备" {
+    if (ARM64架构?) then (是)
+        :准备ARM64寄存器;
+        note left
+          ARM64寄存器分配:
+          • x8: 系统调用号
+          • x0: 第1个参数
+          • x1: 第2个参数
+          • x2: 第3个参数
+          • x3: 第4个参数
+          • x4: 第5个参数
+          • x5: 第6个参数
+        end note
+        
+        :设置x8寄存器为系统调用号;
+        :设置x0-x5寄存器为参数;
+        
+    else (ARM32)
+        :准备ARM32寄存器;
+        note right
+          ARM32寄存器分配:
+          • r7: 系统调用号
+          • r0: 第1个参数
+          • r1: 第2个参数
+          • r2: 第3个参数
+          • r3: 第4个参数
+          • r4: 第5个参数
+          • r5: 第6个参数
+        end note
+        
+        :设置r7寄存器为系统调用号;
+        :设置r0-r5寄存器为参数;
+    endif
+}
+
+partition "内存准备" {
+    :分配结果缓冲区;
+    :设置缓冲区权限 (RW);
+    
+    if (需要输出缓冲区?) then (是)
+        :分配足够大小的内存;
+        :清零缓冲区内容;
+        :将缓冲区地址传入参数;
+    else (否)
+        :仅使用寄存器传参;
+    endif
+}
+
+partition "SVC指令执行" {
+    if (ARM64模式?) then (是)
+        :执行ARM64 SVC指令;
+        
+        note left
+          ARM64汇编代码:
+          ```asm
+          // 设置系统调用号
+          mov x8, syscall_num
+          
+          // 设置参数
+          mov x0, arg1
+          mov x1, arg2
+          mov x2, arg3
+          
+          // 执行系统调用
+          svc #0
+          
+          // 返回值在x0中
+          mov result, x0
+          ```
+        end note
+        
+        :svc #0 指令;
+        :切换到内核模式;
+        :内核处理系统调用;
+        :返回用户模式;
+        :结果保存在x0寄存器;
+        
+    else (ARM32模式)
+        :执行ARM32 SWI指令;
+        
+        note right
+          ARM32汇编代码:
+          ```asm
+          // 设置系统调用号  
+          mov r7, syscall_num
+          
+          // 设置参数
+          mov r0, arg1
+          mov r1, arg2
+          mov r2, arg3
+          
+          // 执行系统调用
+          swi #0
+          
+          // 返回值在r0中
+          mov result, r0
+          ```
+        end note
+        
+        :swi #0 指令;
+        :切换到内核模式;
+        :内核处理系统调用;
+        :返回用户模式;
+        :结果保存在r0寄存器;
+    endif
+}
+
+partition "结果处理" {
+    :检查返回值;
+    
+    if (返回值 < 0?) then (是)
+        :系统调用失败;
+        :获取错误码;
+        :设置errno;
+        
+        note left
+          常见错误码:
+          • ENOENT: 文件不存在
+          • EACCES: 权限不足
+          • EINVAL: 参数无效
+          • ENOMEM: 内存不足
+        end note
+        
+        :返回错误状态;
+        
+    else (否)
+        :系统调用成功;
+        :解析返回数据;
+    endif
+}
+
+partition "数据解析" {
+    switch (系统调用类型)
+        case (uname)
+            :解析系统信息结构;
+            note left
+              struct utsname {
+                char sysname[65];
+                char nodename[65]; 
+                char release[65];
+                char version[65];
+                char machine[65];
+                char domainname[65];
+              };
+            end note
+            :提取内核版本、架构等信息;
+            
+        case (getpid)
+            :获取进程ID;
+            :转换为整数类型;
+            
+        case (gettimeofday)
+            :解析时间结构;
+            note right
+              struct timeval {
+                time_t tv_sec;
+                suseconds_t tv_usec;
+              };
+            end note
+            :转换为时间戳;
+            
+        case (statfs)
+            :解析文件系统信息;
+            note left
+              struct statfs {
+                unsigned long f_type;
+                unsigned long f_bsize;
+                unsigned long f_blocks;
+                unsigned long f_bfree;
+                unsigned long f_bavail;
+                // ...
+              };
+            end note
+            :提取存储空间、文件系统类型等;
+            
+        case (文件读取)
+            :解析文件内容;
+            :处理编码转换;
+            
+    endswitch
+}
+
+partition "Hook绕过验证" {
+    :验证数据真实性;
+    
+    fork
+        :与标准API结果对比;
+        note right
+          对比检查项:
+          • 数据一致性验证
+          • 时序分析
+          • 异常值检测
+        end note
+        
+        if (数据差异显著?) then (是)
+            :可能存在Hook;
+            :标记数据可疑;
+        else (否)
+            :数据可信度高;
+        endif
+        
+    fork again
+        :检查调用耗时;
+        note left
+          SVC调用特征:
+          • 直接内核交互
+          • 耗时相对稳定
+          • 无中间层处理
+        end note
+        
+        if (耗时异常?) then (是)
+            :可能被拦截;
+            :降低可信度;
+        else (否)
+            :调用特征正常;
+        endif
+        
+    end fork
+    
+    :计算数据可信度分数;
+}
+
+partition "安全清理" {
+    :清理敏感寄存器;
+    note right
+      安全清理措施:
+      • 重置参数寄存器
+      • 清空临时缓冲区
+      • 覆写内存数据
+    end note
+    
+    :释放分配的内存;
+    :重置状态标志;
+}
+
+partition "结果返回" {
+    :封装系统调用结果;
+    
+    fork
+        :设置返回码;
+    fork again
+        :设置数据内容;
+    fork again
+        :设置可信度;
+    fork again
+        :设置时间戳;
+    end fork
+    
+    :返回结构化结果;
+}
+
+stop
+
+note right
+  <b>SVC优势</b>
+  • 绕过应用层Hook
+  • 直接内核交互
+  • 难以被监控
+  • 性能开销低
+end note
+
+note left
+  <b>技术要点</b>
+  • 汇编级别实现
+  • 多架构支持
+  • 错误处理完善
+  • 安全清理机制
+end note
+
+@enduml

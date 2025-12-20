@@ -1,0 +1,222 @@
+@startuml Device_Fingerprint_Collection_Flow
+!theme vibrant
+title RiskControl SDK - 设备指纹采集流程
+
+skinparam backgroundColor White
+skinparam shadowing false
+
+start
+
+:应用调用 getDeviceFingerprint();
+
+partition "初始化检查" {
+    if (SDK已初始化?) then (否)
+        :返回空指纹;
+        stop
+    else (是)
+    endif
+    
+    if (权限检查?) then (失败)
+        :返回部分指纹;
+        note right: 降级处理，返回基础信息
+    else (通过)
+    endif
+}
+
+partition "硬件信息采集" {
+    fork
+        :获取CPU信息;
+        note left
+          • CPU架构 (ARM64/ARM32)
+          • CPU核心数
+          • CPU频率
+          • CPU特性标志
+        end note
+    fork again
+        :获取内存信息;
+        note right
+          • 总内存大小
+          • 可用内存
+          • 内存类型
+        end note
+    fork again
+        :获取存储信息;
+        note left
+          • 内部存储大小
+          • 外部存储状态
+          • 分区信息
+        end note
+    fork again
+        :获取传感器信息;
+        note right
+          • 加速度计
+          • 陀螺仪
+          • 磁力计
+          • 光线传感器
+        end note
+    end fork
+}
+
+partition "SVC系统调用采集" {
+    if (SVC调用可用?) then (是)
+        fork
+            :SVC获取内核版本;
+            :执行 __NR_uname;
+        fork again
+            :SVC获取进程信息;
+            :执行 __NR_getpid;
+        fork again
+            :SVC获取系统时间;
+            :执行 __NR_gettimeofday;
+        fork again
+            :SVC获取文件系统信息;
+            :执行 __NR_statfs;
+        end fork
+        
+        :组装系统级指纹;
+        
+    else (否)
+        :使用标准API;
+        note right: 回退到应用层API
+    endif
+}
+
+partition "软件信息采集" {
+    fork
+        :获取系统属性;
+        note left
+          • Android版本
+          • API Level
+          • 构建信息
+          • 厂商定制信息
+        end note
+    fork again
+        :获取运行时信息;
+        note right
+          • ART版本
+          • JVM参数
+          • 类加载器信息
+        end note
+    fork again
+        :获取安装包信息;
+        note left
+          • 包名列表
+          • 签名信息
+          • 安装时间
+        end note
+    fork again
+        :获取系统服务;
+        note right
+          • 可用服务列表
+          • 权限状态
+          • 功能支持
+        end note
+    end fork
+}
+
+partition "网络信息采集" {
+    fork
+        :获取网络接口;
+        note left
+          • WiFi MAC地址
+          • 蓝牙MAC地址
+          • 移动网络信息
+        end note
+    fork again
+        :获取网络状态;
+        note right
+          • 连接类型
+          • IP地址
+          • 网络运营商
+        end note
+    fork again
+        :获取位置信息;
+        note left
+          • GPS状态
+          • 基站信息
+          • WiFi热点
+        end note
+    end fork
+}
+
+partition "设备标识生成" {
+    :收集所有原始数据;
+    
+    :数据标准化处理;
+    note right
+      • 去除随机变化项
+      • 格式统一化
+      • 空值处理
+    end note
+    
+    :权重分配;
+    note left
+      硬件信息: 40%
+      软件信息: 25%
+      网络信息: 20%
+      系统调用: 15%
+    end note
+    
+    :SHA256哈希计算;
+    :生成64位设备ID;
+}
+
+partition "指纹完整性验证" {
+    :计算指纹校验和;
+    
+    if (校验和正确?) then (否)
+        :重新采集数据;
+        note right: 最多重试3次
+    else (是)
+    endif
+    
+    :时间戳标记;
+    :设置有效期;
+}
+
+partition "缓存和返回" {
+    :更新本地缓存;
+    note left
+      • 缓存有效期: 24小时
+      • 自动刷新机制
+      • 变化检测
+    end note
+    
+    :构建DeviceFingerprint对象;
+    
+    fork
+        :设置硬件指纹;
+    fork again
+        :设置软件指纹;
+    fork again
+        :设置网络指纹;
+    fork again
+        :设置系统指纹;
+    fork again
+        :设置设备ID;
+    fork again
+        :设置置信度;
+    end fork
+}
+
+:返回完整设备指纹;
+
+stop
+
+note right
+  <b>关键特性</b>
+  • SVC系统调用绕过Hook
+  • 多维度数据采集
+  • 智能权重分配
+  • 实时完整性验证
+end note
+
+note left
+  <b>性能优化</b>
+  • 并行数据采集
+  • 智能缓存机制
+  • 增量更新策略
+  • 降级处理方案
+end note
+
+@enduml

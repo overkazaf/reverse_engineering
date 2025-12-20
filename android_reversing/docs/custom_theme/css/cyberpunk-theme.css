@@ -1,0 +1,529 @@
+/* ====================================
+   CYBERPUNK HACKER THEME - GLOBAL STYLES
+   ==================================== */
+
+/* Import Google Fonts for better terminal aesthetics */
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap');
+
+/* Root Variables - Cyberpunk Color Palette */
+:root {
+    --cyber-green: #00ff41;
+    --cyber-green-dim: rgba(0, 255, 65, 0.6);
+    --cyber-green-glow: rgba(0, 255, 65, 0.3);
+    --cyber-pink: #ff006e;
+    --cyber-pink-dim: rgba(255, 0, 110, 0.6);
+    --cyber-cyan: #00d9ff;
+    --cyber-purple: #b026ff;
+    --cyber-yellow: #ffd000;
+    --cyber-bg-dark: #000000;
+    --cyber-bg-darker: #0a0e27;
+    --cyber-bg-terminal: #000814;
+    --terminal-font: 'Fira Code', 'JetBrains Mono', 'Share Tech Mono', 'Courier New', monospace;
+}
+
+/* Global Body Styling */
+body {
+    font-family: var(--terminal-font) !important;
+    background: radial-gradient(ellipse at top, #0a0e27 0%, #000000 50%, #000000 100%) !important;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Animated background grid effect */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+    z-index: 0;
+    animation: gridScroll 20s linear infinite;
+}
+
+@keyframes gridScroll {
+    0% { background-position: 0 0, 0 0; }
+    100% { background-position: 50px 50px, 50px 50px; }
+}
+
+/* Glowing corner accents for the page */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    background:
+        radial-gradient(circle at 0% 0%, rgba(0, 255, 65, 0.15) 0%, transparent 30%),
+        radial-gradient(circle at 100% 0%, rgba(255, 0, 110, 0.15) 0%, transparent 30%),
+        radial-gradient(circle at 100% 100%, rgba(0, 217, 255, 0.15) 0%, transparent 30%),
+        radial-gradient(circle at 0% 100%, rgba(176, 38, 255, 0.15) 0%, transparent 30%);
+}
+
+/* Navigation Header Styling */
+.md-header {
+    background: linear-gradient(135deg, #000000 0%, #0a0e27 50%, #000000 100%) !important;
+    border-bottom: 2px solid var(--cyber-green) !important;
+    box-shadow: 0 0 30px rgba(0, 255, 65, 0.3),
+                0 5px 20px rgba(0, 0, 0, 0.8) !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+.md-header__title {
+    color: var(--cyber-green) !important;
+    text-shadow: 0 0 20px rgba(0, 255, 65, 0.8),
+                 0 0 40px rgba(0, 255, 65, 0.5) !important;
+    font-weight: 700 !important;
+    letter-spacing: 2px !important;
+    text-transform: uppercase !important;
+}
+
+.md-header__button {
+    color: var(--cyber-green) !important;
+}
+
+.md-header__button:hover {
+    color: var(--cyber-cyan) !important;
+    filter: drop-shadow(0 0 10px var(--cyber-cyan));
+}
+
+/* Navigation Tabs */
+.md-tabs {
+    background: linear-gradient(180deg, #0a0e27 0%, #000000 100%) !important;
+    border-bottom: 1px solid var(--cyber-green) !important;
+}
+
+.md-tabs__link {
+    color: var(--cyber-green-dim) !important;
+    transition: all 0.3s ease !important;
+    font-weight: 500 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+}
+
+.md-tabs__link:hover,
+.md-tabs__link--active {
+    color: var(--cyber-green) !important;
+    text-shadow: 0 0 15px rgba(0, 255, 65, 0.8) !important;
+    background: rgba(0, 255, 65, 0.1) !important;
+}
+
+/* Sidebar Navigation */
+.md-sidebar {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(10, 14, 39, 0.9) 100%) !important;
+    border-right: 2px solid rgba(0, 255, 65, 0.2) !important;
+}
+
+.md-nav__link {
+    color: var(--cyber-green-dim) !important;
+    transition: all 0.3s ease !important;
+    border-left: 2px solid transparent !important;
+    padding-left: 1rem !important;
+}
+
+.md-nav__link:hover {
+    color: var(--cyber-green) !important;
+    background: rgba(0, 255, 65, 0.05) !important;
+    border-left-color: var(--cyber-green) !important;
+    text-shadow: 0 0 10px rgba(0, 255, 65, 0.6) !important;
+}
+
+.md-nav__link--active {
+    color: var(--cyber-green) !important;
+    background: rgba(0, 255, 65, 0.1) !important;
+    border-left-color: var(--cyber-green) !important;
+    text-shadow: 0 0 15px rgba(0, 255, 65, 0.8) !important;
+    font-weight: 600 !important;
+}
+
+/* Main Content Area */
+.md-content {
+    position: relative;
+    z-index: 1;
+}
+
+.md-content__inner {
+    padding: 2rem !important;
+}
+
+/* Typography - Code blocks and inline code */
+code {
+    background: rgba(0, 255, 65, 0.08) !important;
+    color: var(--cyber-green) !important;
+    border: 1px solid rgba(0, 255, 65, 0.2) !important;
+    padding: 0.2em 0.4em !important;
+    border-radius: 4px !important;
+    font-family: var(--terminal-font) !important;
+    font-weight: 500 !important;
+    box-shadow: 0 0 10px rgba(0, 255, 65, 0.1) !important;
+}
+
+pre {
+    background: linear-gradient(135deg, #000000 0%, #0a0e27 100%) !important;
+    border: 2px solid var(--cyber-green) !important;
+    border-radius: 8px !important;
+    padding: 1.5rem !important;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.2),
+                inset 0 0 30px rgba(0, 255, 65, 0.05) !important;
+    position: relative !important;
+    overflow-x: auto !important;
+}
+
+pre code {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: var(--cyber-green) !important;
+    text-shadow: 0 0 5px rgba(0, 255, 65, 0.3) !important;
+}
+
+/* Add terminal prompt indicator to code blocks */
+pre::before {
+    content: '❯ ';
+    color: var(--cyber-pink);
+    font-weight: bold;
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    text-shadow: 0 0 10px rgba(255, 0, 110, 0.8);
+}
+
+/* Headings - Cyberpunk style */
+.md-typeset h1 {
+    color: var(--cyber-green) !important;
+    text-shadow: 0 0 20px rgba(0, 255, 65, 0.8),
+                 0 0 40px rgba(0, 255, 65, 0.5) !important;
+    border-bottom: 3px solid var(--cyber-green) !important;
+    padding-bottom: 0.5rem !important;
+    letter-spacing: 2px !important;
+    text-transform: uppercase !important;
+    font-weight: 700 !important;
+}
+
+.md-typeset h2 {
+    color: var(--cyber-cyan) !important;
+    text-shadow: 0 0 15px rgba(0, 217, 255, 0.8) !important;
+    border-left: 4px solid var(--cyber-cyan) !important;
+    padding-left: 1rem !important;
+    font-weight: 600 !important;
+}
+
+.md-typeset h3 {
+    color: var(--cyber-pink) !important;
+    text-shadow: 0 0 10px rgba(255, 0, 110, 0.6) !important;
+    font-weight: 600 !important;
+}
+
+.md-typeset h4,
+.md-typeset h5,
+.md-typeset h6 {
+    color: var(--cyber-green-dim) !important;
+    font-weight: 600 !important;
+}
+
+/* Links - Neon effect */
+.md-typeset a {
+    color: var(--cyber-cyan) !important;
+    text-decoration: none !important;
+    transition: all 0.3s ease !important;
+    position: relative !important;
+}
+
+.md-typeset a:hover {
+    color: var(--cyber-green) !important;
+    text-shadow: 0 0 10px rgba(0, 255, 65, 0.8) !important;
+}
+
+.md-typeset a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--cyber-cyan), var(--cyber-green));
+    transition: width 0.3s ease;
+    box-shadow: 0 0 10px var(--cyber-cyan);
+}
+
+.md-typeset a:hover::after {
+    width: 100%;
+}
+
+/* Buttons - Cyberpunk style */
+.md-button {
+    background: rgba(0, 0, 0, 0.7) !important;
+    color: var(--cyber-green) !important;
+    border: 2px solid var(--cyber-green) !important;
+    padding: 0.6rem 1.5rem !important;
+    border-radius: 6px !important;
+    font-family: var(--terminal-font) !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.3),
+                inset 0 0 15px rgba(0, 255, 65, 0.05) !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.md-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(0, 255, 65, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.5s, height 0.5s;
+}
+
+.md-button:hover::before {
+    width: 300%;
+    height: 300%;
+}
+
+.md-button:hover {
+    background: rgba(0, 255, 65, 0.2) !important;
+    border-color: var(--cyber-cyan) !important;
+    color: var(--cyber-cyan) !important;
+    box-shadow: 0 0 30px rgba(0, 255, 65, 0.6),
+                0 0 60px rgba(0, 255, 65, 0.4),
+                inset 0 0 30px rgba(0, 255, 65, 0.15) !important;
+    transform: translateY(-2px) !important;
+}
+
+.md-button--primary {
+    background: linear-gradient(135deg, var(--cyber-green) 0%, var(--cyber-cyan) 100%) !important;
+    color: #000000 !important;
+    border: none !important;
+    text-shadow: none !important;
+}
+
+.md-button--primary:hover {
+    box-shadow: 0 0 40px rgba(0, 255, 65, 0.8),
+                0 0 80px rgba(0, 255, 65, 0.5) !important;
+    transform: translateY(-3px) scale(1.05) !important;
+}
+
+/* Tables - Matrix style */
+.md-typeset table {
+    border: 2px solid var(--cyber-green) !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.2) !important;
+}
+
+.md-typeset table thead {
+    background: linear-gradient(135deg, #0a0e27 0%, #000814 100%) !important;
+}
+
+.md-typeset table th {
+    color: var(--cyber-green) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    font-weight: 600 !important;
+    border-bottom: 2px solid var(--cyber-green) !important;
+    text-shadow: 0 0 10px rgba(0, 255, 65, 0.6) !important;
+}
+
+.md-typeset table td {
+    border-bottom: 1px solid rgba(0, 255, 65, 0.2) !important;
+    color: var(--cyber-green-dim) !important;
+}
+
+.md-typeset table tr:hover {
+    background: rgba(0, 255, 65, 0.05) !important;
+}
+
+/* Blockquotes - Terminal output style */
+.md-typeset blockquote {
+    border-left: 4px solid var(--cyber-cyan) !important;
+    background: rgba(0, 217, 255, 0.05) !important;
+    padding: 1rem 1.5rem !important;
+    margin: 1.5rem 0 !important;
+    border-radius: 0 8px 8px 0 !important;
+    box-shadow: 0 0 15px rgba(0, 217, 255, 0.15) !important;
+    position: relative !important;
+}
+
+.md-typeset blockquote::before {
+    content: '>';
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    color: var(--cyber-cyan);
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-shadow: 0 0 10px rgba(0, 217, 255, 0.8);
+}
+
+.md-typeset blockquote p {
+    padding-left: 1.5rem;
+    color: var(--cyber-cyan) !important;
+}
+
+/* Search Box */
+.md-search__input {
+    background: rgba(0, 0, 0, 0.8) !important;
+    border: 2px solid var(--cyber-green) !important;
+    color: var(--cyber-green) !important;
+    border-radius: 8px !important;
+    font-family: var(--terminal-font) !important;
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.3) !important;
+}
+
+.md-search__input:focus {
+    border-color: var(--cyber-cyan) !important;
+    box-shadow: 0 0 25px rgba(0, 255, 65, 0.5),
+                0 0 50px rgba(0, 255, 65, 0.3) !important;
+}
+
+.md-search__input::placeholder {
+    color: var(--cyber-green-dim) !important;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #000000;
+    border: 1px solid rgba(0, 255, 65, 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--cyber-green) 0%, var(--cyber-cyan) 100%);
+    border-radius: 6px;
+    border: 2px solid #000000;
+    box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, var(--cyber-cyan) 0%, var(--cyber-green) 100%);
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.8);
+}
+
+/* Selection color */
+::selection {
+    background: rgba(0, 255, 65, 0.3);
+    color: var(--cyber-green);
+    text-shadow: 0 0 10px rgba(0, 255, 65, 0.8);
+}
+
+/* Admonitions/Alerts - Cyberpunk style */
+.md-typeset .admonition {
+    border-left: 4px solid var(--cyber-green) !important;
+    background: rgba(0, 255, 65, 0.05) !important;
+    border-radius: 0 8px 8px 0 !important;
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.15) !important;
+}
+
+.md-typeset .admonition-title {
+    background: rgba(0, 255, 65, 0.1) !important;
+    color: var(--cyber-green) !important;
+    font-weight: 600 !important;
+    text-shadow: 0 0 10px rgba(0, 255, 65, 0.6) !important;
+}
+
+/* Footer */
+.md-footer {
+    background: linear-gradient(180deg, #000000 0%, #0a0e27 100%) !important;
+    border-top: 2px solid var(--cyber-green) !important;
+    box-shadow: 0 -5px 20px rgba(0, 255, 65, 0.2) !important;
+}
+
+.md-footer__link {
+    color: var(--cyber-green) !important;
+}
+
+.md-footer__link:hover {
+    color: var(--cyber-cyan) !important;
+    text-shadow: 0 0 10px rgba(0, 217, 255, 0.8) !important;
+}
+
+/* Pagination */
+.md-footer__direction {
+    color: var(--cyber-green-dim) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+}
+
+/* Loading animation for dynamic content */
+@keyframes cyber-pulse {
+    0%, 100% {
+        opacity: 1;
+        text-shadow: 0 0 20px rgba(0, 255, 65, 0.8);
+    }
+    50% {
+        opacity: 0.7;
+        text-shadow: 0 0 40px rgba(0, 255, 65, 1);
+    }
+}
+
+/* Glitch effect (optional - can be applied to specific elements) */
+@keyframes glitch {
+    0% {
+        transform: translate(0);
+    }
+    20% {
+        transform: translate(-2px, 2px);
+    }
+    40% {
+        transform: translate(-2px, -2px);
+    }
+    60% {
+        transform: translate(2px, 2px);
+    }
+    80% {
+        transform: translate(2px, -2px);
+    }
+    100% {
+        transform: translate(0);
+    }
+}
+
+/* Dark mode specific overrides */
+[data-md-color-scheme="slate"] {
+    --md-default-bg-color: #000000;
+    --md-default-fg-color: var(--cyber-green);
+    --md-code-bg-color: rgba(0, 255, 65, 0.08);
+    --md-code-fg-color: var(--cyber-green);
+}
+
+/* Responsive adjustments for mobile */
+@media screen and (max-width: 768px) {
+    body::before {
+        background-size: 30px 30px;
+    }
+
+    .md-header__title {
+        font-size: 0.9rem !important;
+    }
+
+    .md-typeset h1 {
+        font-size: 1.6rem !important;
+    }
+}
+
+/* Performance optimization - reduce animations on low-end devices */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
