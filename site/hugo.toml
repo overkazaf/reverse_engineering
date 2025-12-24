@@ -14,7 +14,7 @@ enableEmoji = true
   pagerSize = 20
 
 [outputs]
-  home = ["HTML", "RSS", "JSON", "search"]
+  home = ["HTML", "RSS", "JSON", "search", "archives"]
 
 [markup]
   [markup.goldmark]
@@ -107,7 +107,11 @@ enableEmoji = true
       hugoLogo = true
       themeLogo = true
     [params.footer.siteTime]
-      enable = false
+      enable = true
+      animate = true
+      icon = "fa-solid fa-heartbeat"
+      pre = "已运行 "
+      value = "2024-12-01T00:00:00+08:00"
     [params.footer.order]
       powered = 0
       copyright = 0
@@ -131,6 +135,14 @@ enableEmoji = true
     paginate = 20
     dateFormat = "01-02"
     rss = 10
+
+  # 标签云配置
+  [params.tagcloud]
+    enable = true
+    min = 14
+    max = 32
+    peakCount = 10
+    orderby = "count"
 
   # 文章页面配置
   [params.page]
@@ -339,9 +351,23 @@ enableEmoji = true
     url = "/pdf/web_reverse_engineering_cookbook.pdf"
     weight = 2
   [[menu.main]]
+    identifier = "archives"
+    name = "归档"
+    url = "/archives/"
+    weight = 6
+    [menu.main.params]
+      icon = "fa-solid fa-archive"
+  [[menu.main]]
+    identifier = "tags"
+    name = "标签"
+    url = "/tags/"
+    weight = 7
+    [menu.main.params]
+      icon = "fa-solid fa-tags"
+  [[menu.main]]
     identifier = "github"
     name = "GitHub"
     url = "https://github.com/overkazaf/reverse_engineering"
-    weight = 6
+    weight = 8
     [menu.main.params]
       icon = "fa-brands fa-github"
