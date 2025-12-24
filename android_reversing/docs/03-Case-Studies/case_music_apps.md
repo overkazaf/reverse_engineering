@@ -456,34 +456,6 @@ class XiaMi:
 
 ---
 
-### 某咕音乐 API 分析
-
-某咕音乐的 API 相对简单，主要依赖 User-Agent 区分设备类型。
-
-```python
-class Migu:
-    def __init__(self):
-        self.urls = {
-            "digital_album_list": "https://c.musicapp.migu.cn/MIGUM2.0/resource/dalbum/list-by-tag/v1.0?tagIds=&page={page}",
-            "digital_album_info": "https://c.musicapp.migu.cn/MIGUM2.0/v1.0/content/resourceinfo.do?needSimple=01&resourceId={resource_id}&resourceType=5",
-            "songlist_info": "https://c.musicapp.migu.cn/MIGUM3.0/resource/playlist/v2.0?playlistId={songlist_id}",
-            "songlist_songs": "https://c.musicapp.migu.cn/MIGUM3.0/resource/playlist/song/v2.0?playlistId={songlist_id}&pageNo={page}&pageSize=50"
-        }
-
-    def web_headers(self):
-        return {"user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) ..."}
-
-    def phone_headers(self):
-        return {"user-agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) ..."}
-
-    def get_songlist(self, songlist_id, page=1):
-        """获取歌单详情"""
-        url = self.get_url("songlist_songs", songlist_id=songlist_id, page=page)
-        return requests.get(url, headers=self.phone_headers()).json()
-```
-
----
-
 ## 逆向要点总结
 
 ### 密钥提取策略
@@ -495,7 +467,6 @@ class Migu:
 | 某狗音乐   | 多表异或   | SO 文件 + 服务端        | 高       |
 | 某我音乐   | XOR + RID  | SO 文件中静态密钥       | 低       |
 | 某米音乐   | MD5 签名   | Cookie 中的 Token       | 低       |
-| 某咕音乐   | 无加密     | N/A                     | 无       |
 
 ### 通用逆向流程
 

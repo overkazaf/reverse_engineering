@@ -4,18 +4,33 @@
 
 ---
 
-## 📊 配方信息
+## 配方信息
 
-| 项目         | 说明                                               |
+| 项目 | 说明 |
 | ------------ | -------------------------------------------------- |
-| **难度**     | ⭐⭐⭐ (中级)                                      |
-| **预计时间** | 2-8 小时 (根据目标复杂度)                          |
+| **难度** | ⭐⭐⭐ (中级) |
+| **预计时间** | 2-8 小时 (根据目标复杂度) |
 | **所需工具** | Chrome DevTools, Burp Suite (可选), Python/Node.js |
-| **适用场景** | 任何 Web 逆向项目                                  |
+| **适用场景** | 任何 Web 逆向项目 |
 
 ---
 
-## 🎯 学习目标
+## 📚 前置知识
+
+在开始本配方之前，建议先掌握以下内容：
+
+| 知识领域 | 重要程度 | 参考资料 |
+|----------|---------|---------|
+| Chrome DevTools 基础 | 必需 | [浏览器开发者工具](../02-Tooling/browser_devtools.md) |
+| JavaScript 基础 | 必需 | [JavaScript 基础](../01-Foundations/javascript_basics.md) |
+| HTTP 协议 | 推荐 | [HTTP/HTTPS 协议](../01-Foundations/http_https_protocol.md) |
+| Hook 技术基础 | 推荐 | [Hook 技术](./hooking_techniques.md) |
+
+> 💡 **提示**: 本配方是一个**系统化的方法论**，适合作为所有逆向项目的标准流程参考。建议先完成快速入门系列后再学习本配方。
+
+---
+
+## 学习目标
 
 完成本配方后，你将能够：
 
@@ -68,10 +83,10 @@ window.Vue && Vue.version; // Vue 版本
 1. 打开 DevTools -> Network 面板
 2. 清空记录，执行目标操作（如登录、提交表单）
 3. 分析请求：
-   - 请求方法（GET/POST）
-   - 请求参数
-   - 请求头（特别是自定义 Header）
-   - 响应数据格式
+    - 请求方法（GET/POST）
+    - 请求参数
+    - 请求头（特别是自定义 Header）
+    - 响应数据格式
 
 **关键问题**:
 
@@ -96,9 +111,9 @@ window.Vue && Vue.version; // Vue 版本
 
 1. `Ctrl+Shift+F` 打开全局搜索
 2. 搜索关键词：
-   - 参数名：`sign`, `timestamp`
-   - 加密关键词：`encrypt`, `crypto`, `MD5`, `AES`
-   - API 端点：`/api/login`
+    - 参数名：`sign`, `timestamp`
+    - 加密关键词：`encrypt`, `crypto`, `MD5`, `AES`
+    - API 端点：`/api/login`
 
 **方法二：利用 Network Initiator**
 
@@ -153,16 +168,16 @@ window.Vue && Vue.version; // Vue 版本
 // Hook fetch
 const originalFetch = window.fetch;
 window.fetch = function (...args) {
-  console.log("[Fetch]", args);
-  return originalFetch.apply(this, arguments);
+console.log("[Fetch]", args);
+return originalFetch.apply(this, arguments);
 };
 
 // Hook JSON.stringify (常用于构造请求体)
 const originalStringify = JSON.stringify;
 JSON.stringify = function (obj) {
-  console.log("[JSON.stringify]", obj);
-  debugger; // 自动断点
-  return originalStringify.apply(this, arguments);
+console.log("[JSON.stringify]", obj);
+debugger; // 自动断点
+return originalStringify.apply(this, arguments);
 };
 ```
 
@@ -201,12 +216,12 @@ JSON.stringify = function (obj) {
 ```javascript
 // encrypt.js
 function generateSign(params) {
-  // 复制的原始代码
-  let str = Object.keys(params)
-    .sort()
-    .map((k) => `${k}=${params[k]}`)
-    .join("&");
-  return md5(str + "secret_salt");
+// 复制的原始代码
+let str = Object.keys(params)
+.sort()
+.map((k) => `${k}=${params[k]}`)
+.join("&");
+return md5(str + "secret_salt");
 }
 
 module.exports = { generateSign };
@@ -218,7 +233,7 @@ import execjs
 import requests
 
 with open('encrypt.js', 'r') as f:
-    js_code = f.read()
+js_code = f.read()
 
 ctx = execjs.compile(js_code)
 sign = ctx.call('generateSign', {'user': 'admin', 'pass': '123456'})
@@ -235,15 +250,15 @@ import hashlib
 import time
 
 def generate_sign(params):
-    sorted_params = sorted(params.items())
-    param_str = '&'.join([f"{k}={v}" for k, v in sorted_params])
-    sign_str = param_str + 'secret_salt'
-    return hashlib.md5(sign_str.encode()).hexdigest()
+sorted_params = sorted(params.items())
+param_str = '&'.join([f"{k}={v}" for k, v in sorted_params])
+sign_str = param_str + 'secret_salt'
+return hashlib.md5(sign_str.encode()).hexdigest()
 
 params = {
-    'username': 'admin',
-    'password': '123456',
-    'timestamp': int(time.time())
+'username': 'admin',
+'password': '123456',
+'timestamp': int(time.time())
 }
 
 params['sign'] = generate_sign(params)
@@ -260,17 +275,17 @@ params['sign'] = generate_sign(params)
 const puppeteer = require("puppeteer");
 
 (async () => {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-  await page.goto("https://target.com");
+const browser = await puppeteer.launch();
+const page = await browser.newPage();
+await page.goto("https://target.com");
 
-  const sign = await page.evaluate(() => {
-    // 调用网页中的加密函数
-    return window.generateSign({ user: "admin" });
-  });
+const sign = await page.evaluate(() => {
+// 调用网页中的加密函数
+return window.generateSign({ user: "admin" });
+});
 
-  console.log("Sign:", sign);
-  await browser.close();
+console.log("Sign:", sign);
+await browser.close();
 })();
 ```
 
@@ -286,11 +301,11 @@ const puppeteer = require("puppeteer");
 import unittest
 
 class TestSignGeneration(unittest.TestCase):
-    def test_sign(self):
-        params = {'user': 'test', 'timestamp': 1234567890}
-        sign = generate_sign(params)
-        # 与浏览器中生成的签名对比
-        self.assertEqual(sign, 'expected_sign_value')
+def test_sign(self):
+params = {'user': 'test', 'timestamp': 1234567890}
+sign = generate_sign(params)
+# 与浏览器中生成的签名对比
+self.assertEqual(sign, 'expected_sign_value')
 ```
 
 ### 2. 实战测试
@@ -329,36 +344,36 @@ class TestSignGeneration(unittest.TestCase):
 
 - ☐ **信息收集完成**
 
-  - ☐ 识别了技术栈和框架
-  - ☐ 枚举了所有关键资源
-  - ☐ 记录了目标功能
+- ☐ 识别了技术栈和框架
+- ☐ 枚举了所有关键资源
+- ☐ 记录了目标功能
 
 - ☐ **流量分析完成**
 
-  - ☐ 捕获了关键请求
-  - ☐ 识别了签名/加密参数
-  - ☐ 分析了请求头和响应
+- ☐ 捕获了关键请求
+- ☐ 识别了签名/加密参数
+- ☐ 分析了请求头和响应
 
 - ☐ **代码定位完成**
 
-  - ☐ 找到了加密/签名函数
-  - ☐ 理解了参数生成逻辑
-  - ☐ 识别了算法类型
+- ☐ 找到了加密/签名函数
+- ☐ 理解了参数生成逻辑
+- ☐ 识别了算法类型
 
 - ☐ **动态调试完成**
 
-  - ☐ 成功设置断点
-  - ☐ 追踪了完整调用链
-  - ☐ 提取了关键参数
+- ☐ 成功设置断点
+- ☐ 追踪了完整调用链
+- ☐ 提取了关键参数
 
 - ☐ **自动化实现完成**
-  - ☐ 编写了复现代码
-  - ☐ 测试输出与浏览器一致
-  - ☐ 实际请求成功
+- ☐ 编写了复现代码
+- ☐ 测试输出与浏览器一致
+- ☐ 实际请求成功
 
 ---
 
-## 🔧 故障排除
+## 故障排除
 
 ### 问题：找不到关键代码
 
@@ -382,7 +397,7 @@ class TestSignGeneration(unittest.TestCase):
 global.window = global;
 global.document = {};
 global.navigator = {
-  userAgent: "Mozilla/5.0...",
+userAgent: "Mozilla/5.0...",
 };
 ```
 
@@ -400,7 +415,7 @@ global.navigator = {
 
 ---
 
-## 💡 最佳实践
+## 最佳实践
 
 ### 1. 分阶段记录
 
@@ -408,10 +423,10 @@ global.navigator = {
 
 ```
 analysis/
-├── 01-recon.md         # 信息收集记录
-├── 02-traffic.md       # 流量分析
-├── 03-code.md          # 代码定位
-├── 04-algorithm.md     # 算法分析
+├── 01-recon.md # 信息收集记录
+├── 02-traffic.md # 流量分析
+├── 03-code.md # 代码定位
+├── 04-algorithm.md # 算法分析
 └── 05-implementation.md # 实现方案
 ```
 
@@ -432,15 +447,15 @@ git commit -m "Phase 1: Recon completed"
 
 ```python
 def test_sign_generation():
-    # 从浏览器获取的已知值
-    expected = "abc123def456"
-    actual = generate_sign(test_params)
-    assert actual == expected
+# 从浏览器获取的已知值
+expected = "abc123def456"
+actual = generate_sign(test_params)
+assert actual == expected
 ```
 
 ---
 
-## 📊 总结
+## 总结
 
 Web 逆向工程是一个循环迭代的过程：
 
@@ -464,7 +479,7 @@ Web 逆向工程是一个循环迭代的过程：
 
 ---
 
-## 🔗 相关章节
+## 相关章节
 
 - [调试技巧与断点设置](./debugging_techniques.md)
 - [API 接口逆向](./api_reverse_engineering.md)

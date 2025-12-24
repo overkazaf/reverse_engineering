@@ -13,6 +13,21 @@ HTTP/2 和 HTTP/3 是 HTTP 协议的最新版本，带来了性能提升和新�
 
 ---
 
+## 📚 前置知识
+
+在开始本配方之前，建议先掌握以下内容：
+
+| 知识领域 | 重要程度 | 参考资料 |
+|----------|---------|---------|
+| HTTP/HTTPS 协议 | 必需 | [HTTP/HTTPS 协议](../01-Foundations/http_https_protocol.md) |
+| TLS/SSL 握手 | 必需 | [TLS/SSL 握手](../01-Foundations/tls_ssl_handshake.md) |
+| Chrome DevTools | 推荐 | [浏览器开发者工具](../02-Tooling/browser_devtools.md) |
+| Wireshark 使用 | 推荐 | [Wireshark 指南](../02-Tooling/wireshark_guide.md) |
+
+> 💡 **提示**: HTTP/2 和 HTTP/3 是**二进制协议**，无法直接用文本工具查看。理解这些协议的工作原理，对于调试现代 Web 应用和绕过协议检测非常重要。
+
+---
+
 ## 1. HTTP/1.x 的局限性
 
 ### 1.1 队头阻塞 (Head-of-Line Blocking)
@@ -21,8 +36,8 @@ HTTP/2 和 HTTP/3 是 HTTP 协议的最新版本，带来了性能提升和新�
 
 ```
 请求1: |========== 响应 ==========|
-请求2:                              |===== 响应 =====|
-请求3:                                                |== 响应 ==|
+请求2: |===== 响应 =====|
+请求3: |== 响应 ==|
 ```
 
 **影响**: 前面的慢请求会阻塞后面的所有请求
@@ -52,9 +67,9 @@ Cookie: session=abc123...
 ```http
 GET /api/data?id=2 HTTP/1.1
 Host: example.com
-User-Agent: Mozilla/5.0...        <-- 重复
-Accept: application/json          <-- 重复
-Cookie: session=abc123...         <-- 重复
+User-Agent: Mozilla/5.0... <-- 重复
+Accept: application/json <-- 重复
+Cookie: session=abc123... <-- 重复
 ```
 
 **影响**: 带宽浪费，尤其是移动网络
@@ -91,11 +106,11 @@ Host: example.com\r\n
 
 ```
 +-----------------------------------------------+
-|                 Frame Header                   |
+| Frame Header |
 +-----------------------------------------------+
 | Length (24) | Type (8) | Flags (8) | R |Stream|
 +-----------------------------------------------+
-|                 Frame Payload                  |
+| Frame Payload |
 +-----------------------------------------------+
 ```
 
@@ -116,7 +131,7 @@ Host: example.com\r\n
 
 - ✅ **更高效**: 解析速度快
 - ❌ **不可读**: 无法直接用 `cat` 查看
-- 🛠️ **需要工具**: Wireshark、Chrome DevTools
+- **需要工具**: Wireshark、Chrome DevTools
 
 ---
 
@@ -160,13 +175,13 @@ TCP 连接
 **静态表** (常见头部预定义):
 
 ```
-Index | Header Name     | Header Value
+Index | Header Name | Header Value
 ------+-----------------+-------------
-1     | :authority      |
-2     | :method         | GET
-3     | :method         | POST
-4     | :path           | /
-5     | :path           | /index.html
+1 | :authority |
+2 | :method | GET
+3 | :method | POST
+4 | :path | /
+5 | :path | /index.html
 ...
 ```
 
@@ -186,9 +201,9 @@ Index | Header Name     | Header Value
 cookie: session=abc123
 
 # HPACK 编码 (简化表示)
-82          # :method GET (静态表索引 2)
-84          # :path /api/user (字面量)
-BE          # cookie: session=abc123 (动态表索引 62)
+82 # :method GET (静态表索引 2)
+84 # :path /api/user (字面量)
+BE # cookie: session=abc123 (动态表索引 62)
 ```
 
 **压缩率**: 通常可达 70-90%
@@ -236,12 +251,12 @@ BE          # cookie: session=abc123 (动态表索引 62)
 **场景**: 防止快速发送方压垮慢速接收方
 
 ```
-发送方                接收方
-  |                      |
-  |---- DATA (16KB) ---->|
-  |                      | (缓冲区满)
-  |<-- WINDOW_UPDATE ---|  (通知可接收)
-  |---- DATA (16KB) ---->|
+发送方 接收方
+| |
+|---- DATA (16KB) ---->|
+| | (缓冲区满)
+|<-- WINDOW_UPDATE ---| (通知可接收)
+|---- DATA (16KB) ---->|
 ```
 
 ---
@@ -278,15 +293,15 @@ set SSLKEYLOGFILE=C:\sslkeys.log
 
 ```
 Frame 123: HEADERS
-  Stream ID: 3
-  :method: GET
-  :path: /api/data
-  :authority: example.com
+Stream ID: 3
+:method: GET
+:path: /api/data
+:authority: example.com
 
 Frame 125: DATA
-  Stream ID: 3
-  Data Length: 1024
-  Payload: {"result": ...}
+Stream ID: 3
+Data Length: 1024
+Payload: {"result": ...}
 ```
 
 ---
@@ -336,9 +351,9 @@ import httpx
 
 # httpx 默认支持 HTTP/2
 async with httpx.AsyncClient(http2=True) as client:
-    response = await client.get('https://example.com/api/data')
-    print(f"HTTP版本: {response.http_version}")  # HTTP/2
-    print(response.json())
+response = await client.get('https://example.com/api/data')
+print(f"HTTP版本: {response.http_version}") # HTTP/2
+print(response.json())
 ```
 
 ---
@@ -355,14 +370,14 @@ async with httpx.AsyncClient(http2=True) as client:
 ```javascript
 // Service Worker 中拦截服务器推送
 self.addEventListener("push", function (event) {
-  console.log("Received server push:", event);
+console.log("Received server push:", event);
 });
 
 // 性能 API 检测
 performance.getEntriesByType("navigation").forEach((entry) => {
-  if (entry.nextHopProtocol === "h2") {
-    console.log("使用 HTTP/2");
-  }
+if (entry.nextHopProtocol === "h2") {
+console.log("使用 HTTP/2");
+}
 });
 ```
 
@@ -383,13 +398,13 @@ performance.getEntriesByType("navigation").forEach((entry) => {
 **协议栈对比**:
 
 ```
-HTTP/1.1               HTTP/2                 HTTP/3
---------               ------                 ------
-HTTP                   HTTP/2                 HTTP/3
-TCP                    TCP                    QUIC
-TLS                    TLS                    (内置 TLS 1.3)
-IP                     IP                     UDP
-                                             IP
+HTTP/1.1 HTTP/2 HTTP/3
+-------- ------ ------
+HTTP HTTP/2 HTTP/3
+TCP TCP QUIC
+TLS TLS (内置 TLS 1.3)
+IP IP UDP
+IP
 ```
 
 ---
@@ -399,27 +414,27 @@ IP                     IP                     UDP
 **TCP + TLS 1.2** (HTTP/1.1, HTTP/2):
 
 ```
-客户端 -> 服务器: SYN                       (1 RTT)
+客户端 -> 服务器: SYN (1 RTT)
 服务器 -> 客户端: SYN-ACK
 客户端 -> 服务器: ACK
 
-客户端 -> 服务器: ClientHello               (2 RTT)
+客户端 -> 服务器: ClientHello (2 RTT)
 服务器 -> 客户端: ServerHello, Certificate
 客户端 -> 服务器: Finished
 
-客户端 -> 服务器: HTTP Request              (3 RTT)
+客户端 -> 服务器: HTTP Request (3 RTT)
 ```
 
 **QUIC** (HTTP/3):
 
 ```
 首次连接:
-客户端 -> 服务器: Initial Packet (含 ClientHello)  (1 RTT)
+客户端 -> 服务器: Initial Packet (含 ClientHello) (1 RTT)
 服务器 -> 客户端: Handshake Packet
-客户端 -> 服务器: HTTP Request                     (1 RTT 完成)
+客户端 -> 服务器: HTTP Request (1 RTT 完成)
 
 后续连接 (0-RTT):
-客户端 -> 服务器: 0-RTT Packet (含加密的 HTTP 请求)  (0 RTT!)
+客户端 -> 服务器: 0-RTT Packet (含加密的 HTTP 请求) (0 RTT!)
 ```
 
 **性能提升**: 可减少 66% 的握手延迟
@@ -517,13 +532,13 @@ http3
 ```javascript
 // 检测 HTTP 版本
 fetch("https://example.com/api/data").then((response) => {
-  console.log(response.headers.get("alt-svc"));
-  // 输出: h3=":443"; ma=2592000
+console.log(response.headers.get("alt-svc"));
+// 输出: h3=":443"; ma=2592000
 });
 
 // Performance API
 performance.getEntriesByType("resource").forEach((entry) => {
-  console.log(entry.nextHopProtocol); // h3, h2, http/1.1
+console.log(entry.nextHopProtocol); // h3, h2, http/1.1
 });
 ```
 
@@ -570,27 +585,27 @@ import httpx
 # pip install httpx[http3]
 
 async with httpx.AsyncClient(http3=True) as client:
-    response = await client.get('https://cloudflare-quic.com/')
-    print(f"HTTP版本: {response.http_version}")  # HTTP/3
-    print(response.text)
+response = await client.get('https://cloudflare-quic.com/')
+print(f"HTTP版本: {response.http_version}") # HTTP/3
+print(response.text)
 ```
 
 ---
 
 ## 4. 版本对比总结
 
-| 特性           | HTTP/1.1        | HTTP/2   | HTTP/3             |
+| 特性 | HTTP/1.1 | HTTP/2 | HTTP/3 |
 | -------------- | --------------- | -------- | ------------------ |
-| **协议类型**   | 文本            | 二进制   | 二进制             |
-| **传输层**     | TCP             | TCP      | UDP (QUIC)         |
-| **加密**       | 可选 (HTTPS)    | 强制 TLS | 内置 TLS 1.3       |
-| **多路复用**   | ❌              | ✅       | ✅                 |
-| **队头阻塞**   | 严重            | TCP 层   | 无                 |
-| **头部压缩**   | ❌              | HPACK    | QPACK              |
-| **服务器推送** | ❌              | ✅       | ✅                 |
-| **连接建立**   | 3 RTT (TCP+TLS) | 3 RTT    | 1 RTT (0-RTT 可用) |
-| **连接迁移**   | ❌              | ❌       | ✅                 |
-| **浏览器支持** | 100%            | 97%+     | 75%+ (增长中)      |
+| **协议类型** | 文本 | 二进制 | 二进制 |
+| **传输层** | TCP | TCP | UDP (QUIC) |
+| **加密** | 可选 (HTTPS) | 强制 TLS | 内置 TLS 1.3 |
+| **多路复用** | ❌ | ✅ | ✅ |
+| **队头阻塞** | 严重 | TCP 层 | 无 |
+| **头部压缩** | ❌ | HPACK | QPACK |
+| **服务器推送** | ❌ | ✅ | ✅ |
+| **连接建立** | 3 RTT (TCP+TLS) | 3 RTT | 1 RTT (0-RTT 可用) |
+| **连接迁移** | ❌ | ❌ | ✅ |
+| **浏览器支持** | 100% | 97%+ | 75%+ (增长中) |
 
 ---
 
@@ -604,10 +619,10 @@ async with httpx.AsyncClient(http3=True) as client:
 
 ```
 ClientHello:
-  ALPN Extension: [h2, http/1.1]
+ALPN Extension: [h2, http/1.1]
 
 ServerHello:
-  ALPN Extension: h2
+ALPN Extension: h2
 ```
 
 **HTTP/3 协商** (通过 Alt-Svc 头):
@@ -625,13 +640,13 @@ Alt-Svc: h3=":443"; ma=2592000
 
 ### 5.2 抓包工具选择
 
-| 工具                | HTTP/1.1 | HTTP/2 | HTTP/3 | 备注          |
+| 工具 | HTTP/1.1 | HTTP/2 | HTTP/3 | 备注 |
 | ------------------- | -------- | ------ | ------ | ------------- |
-| **Wireshark**       | ✅       | ✅     | ✅     | 需要配置解密  |
-| **Chrome DevTools** | ✅       | ✅     | ✅     | 最方便        |
-| **Burp Suite**      | ✅       | ✅     | ❌     | 不支持 HTTP/3 |
-| **Charles Proxy**   | ✅       | ✅     | ❌     | 不支持 HTTP/3 |
-| **mitmproxy**       | ✅       | ✅     | ⚠️     | 实验性支持    |
+| **Wireshark** | ✅ | ✅ | ✅ | 需要配置解密 |
+| **Chrome DevTools** | ✅ | ✅ | ✅ | 最方便 |
+| **Burp Suite** | ✅ | ✅ | ❌ | 不支持 HTTP/3 |
+| **Charles Proxy** | ✅ | ✅ | ❌ | 不支持 HTTP/3 |
+| **mitmproxy** | ✅ | ✅ | ⚠️ | 实验性支持 |
 
 **注意**: 大部分 MITM 代理工具不支持 HTTP/3，因为 QUIC 难以中间人攻击。
 
@@ -650,7 +665,7 @@ await page.goto("https://cloudflare-quic.com/");
 
 // 检测协议版本
 const protocol = await page.evaluate(() => {
-  return performance.getEntriesByType("navigation")[0].nextHopProtocol;
+return performance.getEntriesByType("navigation")[0].nextHopProtocol;
 });
 
 console.log(`使用协议: ${protocol}`); // h2 或 h3
@@ -667,8 +682,8 @@ import requests
 import httpx
 
 async with httpx.AsyncClient(http2=True) as client:
-    response = await client.get('https://example.com/')
-    print(response.http_version)  # HTTP/2
+response = await client.get('https://example.com/')
+print(response.http_version) # HTTP/2
 ```
 
 ---
@@ -681,13 +696,13 @@ HTTP/2 和 HTTP/3 的使用会影响 TLS 指纹。
 
 ```
 HTTP/1.1 Client:
-  ALPN: [http/1.1]
+ALPN: [http/1.1]
 
 HTTP/2 Client:
-  ALPN: [h2, http/1.1]
+ALPN: [h2, http/1.1]
 
 HTTP/3 Client:
-  ALPN: [h3, h2, http/1.1]
+ALPN: [h3, h2, http/1.1]
 ```
 
 **对抗方法**: 使用 `curl-impersonate` 或 `tls-client` 库模拟真实浏览器指纹。
@@ -730,9 +745,9 @@ chrome --disable-quic
 **curl**:
 
 ```bash
-curl --http1.1 https://example.com/  # 强制 HTTP/1.1
-curl --http2 https://example.com/    # 强制 HTTP/2
-curl --http3 https://example.com/    # 强制 HTTP/3
+curl --http1.1 https://example.com/ # 强制 HTTP/1.1
+curl --http2 https://example.com/ # 强制 HTTP/2
+curl --http3 https://example.com/ # 强制 HTTP/3
 ```
 
 ---
@@ -742,7 +757,7 @@ curl --http3 https://example.com/    # 强制 HTTP/3
 **解决方案**:
 
 1. **禁用 HTTP/3**: 在浏览器中禁用 QUIC
-   - Chrome: `chrome://flags/` 搜索 "QUIC"，设为 Disabled
+- Chrome: `chrome://flags/` 搜索 "QUIC"，设为 Disabled
 2. **使用 Wireshark**: Burp 不支持 HTTP/3，使用 Wireshark 抓包
 3. **服务器降级**: 删除 `Alt-Svc` 头，阻止客户端升级到 HTTP/3
 
@@ -760,12 +775,12 @@ curl --http3 https://example.com/    # 强制 HTTP/3
 
 ```
 Chrome:
-  SETTINGS_HEADER_TABLE_SIZE: 65536
-  SETTINGS_INITIAL_WINDOW_SIZE: 6291456
+SETTINGS_HEADER_TABLE_SIZE: 65536
+SETTINGS_INITIAL_WINDOW_SIZE: 6291456
 
 Firefox:
-  SETTINGS_HEADER_TABLE_SIZE: 4096
-  SETTINGS_INITIAL_WINDOW_SIZE: 65535
+SETTINGS_HEADER_TABLE_SIZE: 4096
+SETTINGS_INITIAL_WINDOW_SIZE: 65535
 ```
 
 **对抗**: 使用真实浏览器而非脚本工具。
@@ -776,13 +791,13 @@ Firefox:
 
 ### 推荐工具
 
-| 工具          | 用途                   | 链接                                 |
+| 工具 | 用途 | 链接 |
 | ------------- | ---------------------- | ------------------------------------ |
-| **Wireshark** | 抓包分析               | https://www.wireshark.org/           |
-| **httpx**     | Python HTTP/2/3 客户端 | https://www.python-httpx.org/        |
-| **curl**      | 命令行 HTTP 客户端     | https://curl.se/                     |
-| **h2spec**    | HTTP/2 合规性测试      | https://github.com/summerwind/h2spec |
-| **quic-go**   | Go 语言 QUIC 实现      | https://github.com/quic-go/quic-go   |
+| **Wireshark** | 抓包分析 | https://www.wireshark.org/ |
+| **httpx** | Python HTTP/2/3 客户端 | https://www.python-httpx.org/ |
+| **curl** | 命令行 HTTP 客户端 | https://curl.se/ |
+| **h2spec** | HTTP/2 合规性测试 | https://github.com/summerwind/h2spec |
+| **quic-go** | Go 语言 QUIC 实现 | https://github.com/quic-go/quic-go |
 
 ---
 
@@ -807,8 +822,8 @@ HTTP/2 和 HTTP/3 是现代 Web 的基石，理解它们对于逆向工程至关
 
 **HTTP/3**:
 
-- 🚀 未来趋势，逐步普及
-- 🔒 更安全（内置加密）
+- 未来趋势，逐步普及
+- 更安全（内置加密）
 - ⚠️ 工具支持有限
 
 **逆向建议**:

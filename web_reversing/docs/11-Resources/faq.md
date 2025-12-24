@@ -111,10 +111,10 @@
 
 ```python
 headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) ...',
-    'Referer': 'https://example.com/',
-    'Accept': 'text/html,application/xhtml+xml,application/xml',
-    'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) ...',
+'Referer': 'https://example.com/',
+'Accept': 'text/html,application/xhtml+xml,application/xml',
+'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
 }
 ```
 
@@ -124,7 +124,7 @@ headers = {
 import time
 import random
 
-time.sleep(random.uniform(1, 3))  # 随机延迟
+time.sleep(random.uniform(1, 3)) # 随机延迟
 ```
 
 **第三层：使用真实浏览器**
@@ -133,9 +133,9 @@ time.sleep(random.uniform(1, 3))  # 随机延迟
 from playwright.sync_api import sync_playwright
 
 with sync_playwright() as p:
-    browser = p.chromium.launch()
-    page = browser.new_page()
-    page.goto('https://example.com')
+browser = p.chromium.launch()
+page = browser.new_page()
+page.goto('https://example.com')
 ```
 
 **第四层：代理轮换**
@@ -171,9 +171,9 @@ proxy = random.choice(proxies)
 ```javascript
 const originalFetch = window.fetch;
 window.fetch = function (...args) {
-  console.log("[Fetch]", args);
-  debugger; // 自动断点
-  return originalFetch.apply(this, args);
+console.log("[Fetch]", args);
+debugger; // 自动断点
+return originalFetch.apply(this, args);
 };
 ```
 

@@ -6,6 +6,22 @@
 
 ---
 
+## 📚 前置知识
+
+在开始本配方之前，建议先掌握以下内容：
+
+| 知识领域 | 重要程度 | 参考资料 |
+|----------|---------|---------|
+| 浏览器架构 | 必需 | [浏览器架构](../01-Foundations/browser_architecture.md) |
+| JavaScript 基础 | 必需 | [JavaScript 基础](../01-Foundations/javascript_basics.md) |
+| DOM 与 BOM | 必需 | [DOM 与 BOM](../01-Foundations/dom_and_bom.md) |
+| Hook 技术 | 推荐 | [Hook 技术](../03-Basic-Recipes/hooking_techniques.md) |
+| 浏览器自动化 | 推荐 | [Puppeteer/Playwright](../02-Tooling/puppeteer_playwright.md) |
+
+> 💡 **提示**: 浏览器指纹是现代反爬虫系统的**核心检测手段**。理解指纹的生成原理，才能有效地伪装和规避检测。建议配合 [Canvas 指纹](./canvas_fingerprinting.md) 和 [WebRTC 指纹](./webrtc_fingerprinting.md) 一起学习。
+
+---
+
 ## 指纹组成要素
 
 ### 1. User-Agent
@@ -21,12 +37,12 @@ navigator.userAgent;
 
 ```javascript
 const screenInfo = {
-  width: screen.width,
-  height: screen.height,
-  colorDepth: screen.colorDepth,
-  pixelDepth: screen.pixelDepth,
-  availWidth: screen.availWidth,
-  availHeight: screen.availHeight,
+width: screen.width,
+height: screen.height,
+colorDepth: screen.colorDepth,
+pixelDepth: screen.pixelDepth,
+availWidth: screen.availWidth,
+availHeight: screen.availHeight,
 };
 ```
 
@@ -53,12 +69,12 @@ const plugins = Array.from(navigator.plugins).map((p) => p.name);
 
 ```javascript
 function getCanvasFingerprint() {
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
-  ctx.textBaseline = "top";
-  ctx.font = "14px Arial";
-  ctx.fillText("fingerprint", 2, 2);
-  return canvas.toDataURL();
+const canvas = document.createElement("canvas");
+const ctx = canvas.getContext("2d");
+ctx.textBaseline = "top";
+ctx.font = "14px Arial";
+ctx.fillText("fingerprint", 2, 2);
+return canvas.toDataURL();
 }
 ```
 
@@ -66,15 +82,15 @@ function getCanvasFingerprint() {
 
 ```javascript
 function getWebGLFingerprint() {
-  const canvas = document.createElement("canvas");
-  const gl =
-    canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+const canvas = document.createElement("canvas");
+const gl =
+canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
 
-  const debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
-  const vendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
-  const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+const debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
+const vendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
+const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
 
-  return { vendor, renderer };
+return { vendor, renderer };
 }
 ```
 
@@ -82,14 +98,14 @@ function getWebGLFingerprint() {
 
 ```javascript
 function getAudioFingerprint() {
-  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-  const oscillator = audioContext.createOscillator();
-  const analyser = audioContext.createAnalyser();
-  const gainNode = audioContext.createGain();
-  const scriptProcessor = audioContext.createScriptProcessor(4096, 1, 1);
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+const oscillator = audioContext.createOscillator();
+const analyser = audioContext.createAnalyser();
+const gainNode = audioContext.createGain();
+const scriptProcessor = audioContext.createScriptProcessor(4096, 1, 1);
 
-  // 通过音频处理的细微差异生成指纹
-  // ... 复杂的音频处理逻辑
+// 通过音频处理的细微差异生成指纹
+// ... 复杂的音频处理逻辑
 }
 ```
 
@@ -97,23 +113,23 @@ function getAudioFingerprint() {
 
 ```javascript
 function detectFonts() {
-  const baseFonts = ["monospace", "sans-serif", "serif"];
-  const testFonts = [
-    "Arial",
-    "Verdana",
-    "Times New Roman",
-    "Courier",
-    "Comic Sans MS",
-  ];
+const baseFonts = ["monospace", "sans-serif", "serif"];
+const testFonts = [
+"Arial",
+"Verdana",
+"Times New Roman",
+"Courier",
+"Comic Sans MS",
+];
 
-  const detectedFonts = [];
+const detectedFonts = [];
 
-  testFonts.forEach((font) => {
-    // 通过测量文本宽度的变化来检测字体是否存在
-    // ... 实现逻辑
-  });
+testFonts.forEach((font) => {
+// 通过测量文本宽度的变化来检测字体是否存在
+// ... 实现逻辑
+});
 
-  return detectedFonts;
+return detectedFonts;
 }
 ```
 
@@ -121,10 +137,10 @@ function detectFonts() {
 
 ```javascript
 const hardwareInfo = {
-  cpuCores: navigator.hardwareConcurrency, // CPU 核心数
-  deviceMemory: navigator.deviceMemory, // 设备内存（GB）
-  platform: navigator.platform, // "Win32", "MacIntel"
-  vendor: navigator.vendor, // "Google Inc."
+cpuCores: navigator.hardwareConcurrency, // CPU 核心数
+deviceMemory: navigator.deviceMemory, // 设备内存（GB）
+platform: navigator.platform, // "Win32", "MacIntel"
+vendor: navigator.vendor, // "Google Inc."
 };
 ```
 
@@ -146,11 +162,11 @@ const fpPromise = FingerprintJS.load();
 
 // 获取指纹
 fpPromise
-  .then((fp) => fp.get())
-  .then((result) => {
-    console.log("Visitor ID:", result.visitorId);
-    console.log("Components:", result.components);
-  });
+.then((fp) => fp.get())
+.then((result) => {
+console.log("Visitor ID:", result.visitorId);
+console.log("Components:", result.components);
+});
 ```
 
 **特点**:
@@ -169,16 +185,16 @@ fpPromise
 // Hook Canvas API
 const originalToDataURL = HTMLCanvasElement.prototype.toDataURL;
 HTMLCanvasElement.prototype.toDataURL = function () {
-  console.log("[Fingerprint] Canvas fingerprinting detected!");
-  console.trace();
-  return originalToDataURL.apply(this, arguments);
+console.log("[Fingerprint] Canvas fingerprinting detected!");
+console.trace();
+return originalToDataURL.apply(this, arguments);
 };
 
 // Hook WebGL
 const originalGetParameter = WebGLRenderingContext.prototype.getParameter;
 WebGLRenderingContext.prototype.getParameter = function (param) {
-  console.log("[Fingerprint] WebGL fingerprinting detected!", param);
-  return originalGetParameter.apply(this, arguments);
+console.log("[Fingerprint] WebGL fingerprinting detected!", param);
+return originalGetParameter.apply(this, arguments);
 };
 ```
 
@@ -219,16 +235,16 @@ options.add_argument("user-agent=Mozilla/5.0...");
 // 注入噪点到 Canvas
 const originalToDataURL = HTMLCanvasElement.prototype.toDataURL;
 HTMLCanvasElement.prototype.toDataURL = function () {
-  // 添加随机噪点
-  const ctx = this.getContext("2d");
-  const imageData = ctx.getImageData(0, 0, this.width, this.height);
-  for (let i = 0; i < imageData.data.length; i += 4) {
-    if (Math.random() < 0.001) {
-      imageData.data[i] = Math.floor(Math.random() * 256);
-    }
-  }
-  ctx.putImageData(imageData, 0, 0);
-  return originalToDataURL.apply(this, arguments);
+// 添加随机噪点
+const ctx = this.getContext("2d");
+const imageData = ctx.getImageData(0, 0, this.width, this.height);
+for (let i = 0; i < imageData.data.length; i += 4) {
+if (Math.random() < 0.001) {
+imageData.data[i] = Math.floor(Math.random() * 256);
+}
+}
+ctx.putImageData(imageData, 0, 0);
+return originalToDataURL.apply(this, arguments);
 };
 ```
 
@@ -268,18 +284,18 @@ Puppeteer/Playwright 控制真实浏览器，天然具有完整指纹。
 
 ```python
 FINGERPRINT_POOL = [
-    {
-        'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0',
-        'screen': {'width': 1920, 'height': 1080},
-        'timezone': 'America/New_York',
-        'language': 'en-US'
-    },
-    {
-        'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) ...',
-        'screen': {'width': 1440, 'height': 900},
-        'timezone': 'America/Los_Angeles',
-        'language': 'en-US'
-    }
+{
+'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0',
+'screen': {'width': 1920, 'height': 1080},
+'timezone': 'America/New_York',
+'language': 'en-US'
+},
+{
+'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) ...',
+'screen': {'width': 1440, 'height': 900},
+'timezone': 'America/Los_Angeles',
+'language': 'en-US'
+}
 ]
 
 # 随机选择一个指纹
@@ -337,11 +353,11 @@ driver = webdriver.Chrome(options=options)
 
 # 修改 navigator.webdriver
 driver.execute_cdp_cmd('Page.addScriptToEvaluateOnNewDocument', {
-    'source': '''
-        Object.defineProperty(navigator, 'webdriver', {
-            get: () => undefined
-        })
-    '''
+'source': '''
+Object.defineProperty(navigator, 'webdriver', {
+get: () => undefined
+})
+'''
 })
 
 driver.get('https://target.com')

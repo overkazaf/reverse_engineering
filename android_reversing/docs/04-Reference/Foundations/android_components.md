@@ -93,3 +93,103 @@ Android 的应用框架核心由四个基本组件构成。每个组件都是一
   - 逆向 App 时，可以自己编写一个 App 来调用目标 App 的 Content Provider，从而读取或操纵其内部数据。
 
 ---
+
+## 5. 四大组件对比总结
+
+下表从多个维度对比 Android 四大组件的核心特性，帮助快速理解它们的异同：
+
+### 基本特性对比
+
+| 维度 | Activity | Service | BroadcastReceiver | ContentProvider |
+|------|----------|---------|-------------------|-----------------|
+| **中文名称** | 活动 | 服务 | 广播接收器 | 内容提供器 |
+| **核心职责** | 提供用户交互界面 | 执行后台长时任务 | 响应系统/应用广播 | 管理共享数据访问 |
+| **是否有 UI** | ✅ 有界面 | ❌ 无界面 | ❌ 无界面 | ❌ 无界面 |
+| **运行线程** | 主线程 (UI 线程) | 默认主线程 | 主线程 | Binder 线程池 |
+| **存活时间** | 随用户交互变化 | 可长期后台运行 | 短暂 (onReceive 约 10s) | 随进程存活 |
+
+### 生命周期对比
+
+| 维度 | Activity | Service | BroadcastReceiver | ContentProvider |
+|------|----------|---------|-------------------|-----------------|
+| **核心回调** | onCreate → onStart → onResume → onPause → onStop → onDestroy | onCreate → onStartCommand / onBind → onDestroy | onReceive | onCreate (仅一次) |
+| **创建方式** | startActivity() / startActivityForResult() | startService() / bindService() | 系统/应用发送广播 | 首次访问时自动创建 |
+| **销毁条件** | 用户退出或系统回收 | stopSelf() / unbindService() / 系统回收 | onReceive() 执行完毕 | 进程被杀死 |
+
+### 通信机制对比
+
+| 维度 | Activity | Service | BroadcastReceiver | ContentProvider |
+|------|----------|---------|-------------------|-----------------|
+| **启动/调用方式** | Intent (显式/隐式) | Intent (显式/隐式) | Intent (广播) | ContentResolver + URI |
+| **数据传递** | Intent extras / Bundle | Intent extras / Binder (AIDL) | Intent extras | Cursor / ContentValues |
+| **跨进程通信** | 支持 (IPC) | 支持 (Binder/AIDL) | 支持 (系统广播) | 支持 (ContentResolver) |
+| **返回结果** | onActivityResult / ActivityResultLauncher | Binder 回调 / Messenger | 不支持直接返回 | query() 返回 Cursor |
+
+### 注册与声明对比
+
+| 维度 | Activity | Service | BroadcastReceiver | ContentProvider |
+|------|----------|---------|-------------------|-----------------|
+| **Manifest 声明** | `<activity>` | `<service>` | `<receiver>` (可选) | `<provider>` |
+| **动态注册** | ❌ 不支持 | ❌ 不支持 | ✅ registerReceiver() | ❌ 不支持 |
+| **导出控制** | android:exported | android:exported | android:exported | android:exported |
+| **权限控制** | android:permission | android:permission | android:permission | android:readPermission / writePermission |
+
+### 逆向分析对比
+
+| 维度 | Activity | Service | BroadcastReceiver | ContentProvider |
+|------|----------|---------|-------------------|-----------------|
+| **定位命令** | `adb shell dumpsys activity top` | `adb shell dumpsys activity services` | 分析 Manifest | `adb shell content query` |
+| **关键 Hook 点** | onCreate / onResume | onStartCommand / onBind | onReceive | query / insert / update / delete |
+| **常见用途** | 登录页、主页、支付页 | 推送、下载、同步 | 开机启动、网络变化 | 联系人、短信、文件 |
+| **数据获取** | findViewById / getIntent | getBinder / getExtras | getIntent().getExtras() | Cursor 遍历 |
+
+### 使用场景速查
+
+| 需求场景 | 推荐组件 | 原因 |
+|----------|----------|------|
+| 显示用户界面 | Activity | 唯一具有 UI 能力的组件 |
+| 后台播放音乐 | Service (前台服务) | 需要长期后台运行，前台服务防止被杀 |
+| 监听网络状态变化 | BroadcastReceiver | 系统会广播网络状态变更事件 |
+| 为其他 App 提供数据 | ContentProvider | 标准化的数据共享接口 |
+| 后台数据同步 | Service + BroadcastReceiver | Service 执行同步，Receiver 触发时机 |
+| 定时任务 | WorkManager (推荐) / AlarmManager + Receiver | 现代 Android 推荐 WorkManager |
+
+### 组件间协作示意
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        应用进程                                  │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   ┌──────────┐    startService()    ┌──────────┐               │
+│   │ Activity │ ──────────────────→  │ Service  │               │
+│   │  (UI)    │                      │ (后台)    │               │
+│   └────┬─────┘                      └────┬─────┘               │
+│        │                                 │                      │
+│        │ registerReceiver()              │ sendBroadcast()      │
+│        ↓                                 ↓                      │
+│   ┌────────────────────────────────────────┐                   │
+│   │         BroadcastReceiver              │                   │
+│   │           (事件分发)                    │                   │
+│   └────────────────────────────────────────┘                   │
+│        │                                                        │
+│        │ ContentResolver.query()                                │
+│        ↓                                                        │
+│   ┌──────────────┐                                             │
+│   │ContentProvider│ ←── 其他 App 通过 URI 访问                  │
+│   │   (数据层)    │                                             │
+│   └──────────────┘                                             │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### 逆向分析优先级建议
+
+在进行 App 逆向分析时，建议按以下优先级顺序切入：
+
+1. **Activity** - 从用户可见的界面入手，找到目标功能的入口点
+2. **Service** - 分析后台核心业务逻辑，如加密、通信、数据处理
+3. **BroadcastReceiver** - 了解 App 关注的系统事件和自定义事件
+4. **ContentProvider** - 探索 App 暴露的数据接口，可能存在数据泄露风险
+
+---

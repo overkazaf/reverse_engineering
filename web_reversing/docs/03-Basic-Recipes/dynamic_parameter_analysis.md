@@ -8,6 +8,21 @@
 
 ---
 
+## 📚 前置知识
+
+在开始本配方之前，建议先掌握以下内容：
+
+| 知识领域 | 重要程度 | 参考资料 |
+|----------|---------|---------|
+| Chrome DevTools | 必需 | [浏览器开发者工具](../02-Tooling/browser_devtools.md) |
+| 调试技巧 | 必需 | [调试技巧与断点设置](./debugging_techniques.md) |
+| JavaScript 执行机制 | 推荐 | [JavaScript 执行机制](../01-Foundations/javascript_execution_mechanism.md) |
+| Hook 技术 | 推荐 | [Hook 技术](./hooking_techniques.md) |
+
+> 💡 **提示**: 动态分析是对抗重度混淆代码的**终极武器**。当静态分析走不通时，通过观察运行时的数据流向，往往能快速找到关键逻辑。
+
+---
+
 ## 1. 堆栈跟踪 (Stack Trace) 分析
 
 调用栈是程序执行的"案发现场"，是定位代码的第一手段。
@@ -20,12 +35,12 @@
 
 ```
 generateSign (utils.js:1234)
-  ↑ 调用者
+↑ 调用者
 sendRequest (api.js:567)
-  ↑ 调用者
+↑ 调用者
 onClick (main.js:89)
-  ↑ 调用者
-(anonymous) (VM123:5)  ← 事件监听器
+↑ 调用者
+(anonymous) (VM123:5) ← 事件监听器
 ```
 
 #### 方法 2：手动打印堆栈
@@ -40,9 +55,9 @@ console.trace("当前调用栈");
 
 ```
 console.trace
-  at generateSign (utils.js:1234)
-  at sendRequest (api.js:567)
-  at onClick (main.js:89)
+at generateSign (utils.js:1234)
+at sendRequest (api.js:567)
+at onClick (main.js:89)
 ```
 
 #### 方法 3：使用 Error 对象
@@ -68,13 +83,13 @@ console.log(stack);
 
 ```
 Call Stack:
-generateSign (utils.js:1234)  ← 可读，从这里开始调试
-  ↑
-t (VM123:5)                   ← 混淆代码
-  ↑
-e (VM123:2)                   ← 混淆代码
-  ↑
-onClick (main.js:89)          ← 可读
+generateSign (utils.js:1234) ← 可读，从这里开始调试
+↑
+t (VM123:5) ← 混淆代码
+↑
+e (VM123:2) ← 混淆代码
+↑
+onClick (main.js:89) ← 可读
 ```
 
 ### 1.3 利用 Initiator (发起者)
@@ -89,12 +104,12 @@ Chrome 的 Network 面板有一列 `Initiator`，显示请求的来源。
 
 **Initiator 类型**:
 
-| 类型         | 含义                   | 示例              |
+| 类型 | 含义 | 示例 |
 | ------------ | ---------------------- | ----------------- |
-| **Script**   | JS 代码发起            | `api.js:567`      |
-| **Parser**   | HTML 解析器加载        | `<img src="...">` |
-| **Redirect** | 重定向                 | `301/302`         |
-| **Other**    | 其他（扩展、DevTools） | -                 |
+| **Script** | JS 代码发起 | `api.js:567` |
+| **Parser** | HTML 解析器加载 | `<img src="...">` |
+| **Redirect** | 重定向 | `301/302` |
+| **Other** | 其他（扩展、DevTools） | - |
 
 **高级功能**: Request Call Stack
 
@@ -173,13 +188,13 @@ Sources 面板 → Event Listener Breakpoints → 勾选事件类型
 
 #### 单步调试快捷键
 
-| 快捷键        | 功能                    | 说明                       |
+| 快捷键 | 功能 | 说明 |
 | ------------- | ----------------------- | -------------------------- |
-| **F8**        | Resume                  | 继续执行（到下一个断点）   |
-| **F10**       | Step Over               | 单步跳过（不进入函数内部） |
-| **F11**       | Step Into               | 单步进入（进入函数内部）   |
-| **Shift+F11** | Step Out                | 跳出当前函数               |
-| **Ctrl+F8**   | Disable All Breakpoints | 临时禁用所有断点           |
+| **F8** | Resume | 继续执行（到下一个断点） |
+| **F10** | Step Over | 单步跳过（不进入函数内部） |
+| **F11** | Step Into | 单步进入（进入函数内部） |
+| **Shift+F11** | Step Out | 跳出当前函数 |
+| **Ctrl+F8** | Disable All Breakpoints | 临时禁用所有断点 |
 
 #### 黑盒脚本 (Blackbox Script)
 
@@ -240,12 +255,12 @@ console.log(this); // 打印 this 对象
 
 ```javascript
 function createEncryptor() {
-  const secretKey = "hardcoded_key_2024"; // 闭包变量
+const secretKey = "hardcoded_key_2024"; // 闭包变量
 
-  return function encrypt(data) {
-    // 使用 secretKey，但 Local Scope 里看不到
-    return AES.encrypt(data, secretKey);
-  };
+return function encrypt(data) {
+// 使用 secretKey，但 Local Scope 里看不到
+return AES.encrypt(data, secretKey);
+};
 }
 
 const encrypt = createEncryptor();
@@ -309,15 +324,15 @@ Object.prototype.myDebug = true;
 const obj = { x: "original_value" };
 
 Object.defineProperty(obj, "x", {
-  get: function () {
-    console.trace("读取了 obj.x"); // 打印调用栈
-    debugger; // 自动断点
-    return "original_value";
-  },
-  set: function (value) {
-    console.trace("修改了 obj.x 为", value);
-    debugger;
-  },
+get: function () {
+console.trace("读取了 obj.x"); // 打印调用栈
+debugger; // 自动断点
+return "original_value";
+},
+set: function (value) {
+console.trace("修改了 obj.x 为", value);
+debugger;
+},
 });
 ```
 
@@ -327,15 +342,15 @@ Object.defineProperty(obj, "x", {
 // 劫持 document.cookie
 let _cookie = document.cookie;
 Object.defineProperty(document, "cookie", {
-  get: function () {
-    console.trace("读取了 cookie");
-    debugger;
-    return _cookie;
-  },
-  set: function (value) {
-    console.trace("设置了 cookie:", value);
-    _cookie = value;
-  },
+get: function () {
+console.trace("读取了 cookie");
+debugger;
+return _cookie;
+},
+set: function (value) {
+console.trace("设置了 cookie:", value);
+_cookie = value;
+},
 });
 ```
 
@@ -348,9 +363,9 @@ Object.defineProperty(document, "cookie", {
 ```javascript
 const _fetch = window.fetch;
 window.fetch = function (...args) {
-  console.log("[Fetch]", args[0]); // 打印 URL
-  debugger; // 发起 fetch 请求前断点
-  return _fetch.apply(this, args);
+console.log("[Fetch]", args[0]); // 打印 URL
+debugger; // 发起 fetch 请求前断点
+return _fetch.apply(this, args);
 };
 ```
 
@@ -359,9 +374,9 @@ window.fetch = function (...args) {
 ```javascript
 const _stringify = JSON.stringify;
 JSON.stringify = function (obj) {
-  console.log("[JSON.stringify]", obj);
-  debugger;
-  return _stringify.apply(this, arguments);
+console.log("[JSON.stringify]", obj);
+debugger;
+return _stringify.apply(this, arguments);
 };
 ```
 
@@ -369,11 +384,11 @@ JSON.stringify = function (obj) {
 
 ```javascript
 const handler = {
-  apply: function (target, thisArg, args) {
-    console.log("[调用]", target.name, args);
-    debugger;
-    return target.apply(thisArg, args);
-  },
+apply: function (target, thisArg, args) {
+console.log("[调用]", target.name, args);
+debugger;
+return target.apply(thisArg, args);
+},
 };
 
 // 劫持加密函数
@@ -394,11 +409,11 @@ window.encrypt = new Proxy(originalEncrypt, handler);
 
 ```javascript
 try {
-  // 某个会抛异常的加密函数
-  const encrypted = riskyEncrypt(data);
+// 某个会抛异常的加密函数
+const encrypted = riskyEncrypt(data);
 } catch (e) {
-  // 如果勾选了 "Pause on caught exceptions"，会在这里暂停
-  console.error(e);
+// 如果勾选了 "Pause on caught exceptions"，会在这里暂停
+console.error(e);
 }
 ```
 
@@ -420,23 +435,23 @@ DevTools Settings → Enable async stack traces
 
 ```
 Call Stack:
-then (api.js:123)  ← 当前 Promise
-  ↑ (async)
-fetchData (main.js:45)  ← 发起 Promise 的位置
+then (api.js:123) ← 当前 Promise
+↑ (async)
+fetchData (main.js:45) ← 发起 Promise 的位置
 ```
 
 **解决方案 2**: 在 Promise 中手动断点
 
 ```javascript
 fetch("/api/data")
-  .then((response) => {
-    debugger; // 断点
-    return response.json();
-  })
-  .then((data) => {
-    debugger; // 断点
-    console.log(data);
-  });
+.then((response) => {
+debugger; // 断点
+return response.json();
+})
+.then((data) => {
+debugger; // 断点
+console.log(data);
+});
 ```
 
 ### 5.2 async/await 调试
@@ -445,9 +460,9 @@ fetch("/api/data")
 
 ```javascript
 async function fetchData() {
-  const response = await fetch("/api/data"); // 断点
-  const json = await response.json(); // 断点
-  console.log(json); // 断点
+const response = await fetch("/api/data"); // 断点
+const json = await response.json(); // 断点
+console.log(json); // 断点
 }
 ```
 
@@ -466,9 +481,9 @@ Sources → Event Listener Breakpoints → Timer → setInterval fired
 ```javascript
 const _setTimeout = window.setTimeout;
 window.setTimeout = function (callback, delay) {
-  console.log(`[setTimeout] ${delay}ms`, callback.toString());
-  debugger;
-  return _setTimeout.apply(this, arguments);
+console.log(`[setTimeout] ${delay}ms`, callback.toString());
+debugger;
+return _setTimeout.apply(this, arguments);
 };
 ```
 
@@ -491,9 +506,9 @@ window.setTimeout = function (callback, delay) {
 
 - **宽度** = 执行时间（越宽越慢）
 - **颜色**:
-  - 黄色 = JavaScript 执行
-  - 紫色 = 渲染/布局
-  - 绿色 = 绘制
+- 黄色 = JavaScript 执行
+- 紫色 = 渲染/布局
+- 绿色 = 绘制
 
 **示例**: 发现某个函数 `slowHash()` 占用了 90% 的 CPU 时间 → 这就是加密/混淆的核心逻辑
 
@@ -567,10 +582,11 @@ body = JSON.stringify({ hacked: true }); // 修改 Body
 5. 查看 Call Stack 和 Local Scope
 6. 发现局部变量 `salt = "my_secret_2024"`
 7. 在 Console 中验证：
-   ```javascript
-   md5("user_id=123&timestamp=1638360000&salt=my_secret_2024");
-   // 结果与 sign 匹配 ✅
-   ```
+
+```javascript
+md5("user_id=123&timestamp=1638360000&salt=my_secret_2024");
+// 结果与 sign 匹配 ✅
+```
 
 ### 案例 2：定位 AES 密钥
 
@@ -580,20 +596,22 @@ body = JSON.stringify({ hacked: true }); // 修改 Body
 
 1. 搜索 `AES.encrypt` 关键字
 2. 找到加密函数：
-   ```javascript
-   function encryptPassword(password) {
-     return CryptoJS.AES.encrypt(password, key, { iv: iv }).toString();
-   }
-   ```
+
+```javascript
+function encryptPassword(password) {
+    return CryptoJS.AES.encrypt(password, key, { iv: iv }).toString();
+}
+```
 3. 在该函数打断点
 4. 触发登录操作 → 断点暂停
 5. 查看 Scope 面板 → Closure 部分
 6. 发现 `key = "1234567890abcdef"`, `iv = "abcdef1234567890"`
 7. 在 Console 中验证：
-   ```javascript
-   CryptoJS.AES.encrypt("MyPassword", key, { iv: iv }).toString();
-   // 结果与实际加密的密码匹配 ✅
-   ```
+
+```javascript
+CryptoJS.AES.encrypt("MyPassword", key, { iv: iv }).toString();
+// 结果与实际加密的密码匹配 ✅
+```
 
 ### 案例 3：追踪动态生成的参数
 
@@ -604,17 +622,20 @@ body = JSON.stringify({ hacked: true }); // 修改 Body
 1. 设置 XHR 断点（URL: `/api/data`）
 2. 触发请求 → 自动断点
 3. 查看 Call Stack:
-   ```
-   send (XMLHttpRequest)
-     ↑
-   sendRequest (api.js:567)  ← 查看此处代码
-     ↑
-   onClick (main.js:89)
-   ```
+
+```
+send (XMLHttpRequest)
+↑
+sendRequest (api.js:567) ← 查看此处代码
+↑
+onClick (main.js:89)
+```
+
 4. 跳转到 `api.js:567`，发现：
-   ```javascript
-   const device_id = getDeviceId(); // 调用了函数
-   ```
+
+```javascript
+const device_id = getDeviceId(); // 调用了函数
+```
 5. 继续追踪 `getDeviceId()` 函数
 
 **方法 2: 属性拦截**
@@ -623,14 +644,14 @@ body = JSON.stringify({ hacked: true }); // 修改 Body
 // 在 Console 中执行
 const params = {};
 Object.defineProperty(params, "device_id", {
-  set: function (value) {
-    console.trace("设置 device_id:", value);
-    debugger;
-    this._device_id = value;
-  },
-  get: function () {
-    return this._device_id;
-  },
+set: function (value) {
+console.trace("设置 device_id:", value);
+debugger;
+this._device_id = value;
+},
+get: function () {
+return this._device_id;
+},
 });
 
 // 当代码执行 params.device_id = xxx 时，自动断点
@@ -648,12 +669,12 @@ Object.defineProperty(params, "device_id", {
 // 检测 console
 const devtools = /./;
 devtools.toString = function () {
-  this.opened = true;
+this.opened = true;
 };
 console.log("%c", devtools);
 if (devtools.opened) {
-  alert("请关闭开发者工具");
-  debugger; // 无限 debugger 循环
+alert("请关闭开发者工具");
+debugger; // 无限 debugger 循环
 }
 ```
 
@@ -661,20 +682,21 @@ if (devtools.opened) {
 
 1. 禁用所有断点（Ctrl+F8）
 2. 或在 Console 中执行：
-   ```javascript
-   devtools.toString = function () {
-     return "";
-   };
-   ```
+
+```javascript
+devtools.toString = function () {
+    return "";
+};
+```
 
 #### 检测页面大小变化
 
 ```javascript
 window.onresize = function () {
-  if (window.outerWidth - window.innerWidth > 200) {
-    alert("检测到开发者工具");
-    location.href = "about:blank"; // 跳转空白页
-  }
+if (window.outerWidth - window.innerWidth > 200) {
+alert("检测到开发者工具");
+location.href = "about:blank"; // 跳转空白页
+}
 };
 ```
 
@@ -684,7 +706,7 @@ window.onresize = function () {
 
 ```javascript
 setInterval(function () {
-  debugger;
+debugger;
 }, 100);
 ```
 
@@ -699,22 +721,22 @@ setInterval(function () {
 
 ### 9.1 快速定位技巧
 
-| 场景                   | 方法                                         |
+| 场景 | 方法 |
 | ---------------------- | -------------------------------------------- |
-| **找不到签名函数**     | 搜索 `sign`、`signature`、`md5`、`sha`       |
-| **找不到加密函数**     | 搜索 `encrypt`、`AES`、`RSA`、`CryptoJS`     |
-| **找不到请求发起点**   | Network → Initiator → 点击链接               |
-| **找不到事件处理函数** | Elements → Event Listeners                   |
-| **找不到定时器回调**   | Sources → Event Listener Breakpoints → Timer |
+| **找不到签名函数** | 搜索 `sign`、`signature`、`md5`、`sha` |
+| **找不到加密函数** | 搜索 `encrypt`、`AES`、`RSA`、`CryptoJS` |
+| **找不到请求发起点** | Network → Initiator → 点击链接 |
+| **找不到事件处理函数** | Elements → Event Listeners |
+| **找不到定时器回调** | Sources → Event Listener Breakpoints → Timer |
 
 ### 9.2 常见错误
 
-| 错误                     | 原因                      | 解决方案                             |
+| 错误 | 原因 | 解决方案 |
 | ------------------------ | ------------------------- | ------------------------------------ |
-| **变量显示 `undefined`** | 作用域不对                | 检查 Scope 面板，可能在 Closure 中   |
-| **断点不生效**           | 代码已优化/内联           | 使用 Logpoint 或禁用缓存             |
-| **调用栈看不到源码**     | Source Map 缺失           | 寻找 `.map` 文件或分析编译后代码     |
-| **异步代码断不住**       | Async Stack Traces 未开启 | Settings → Enable async stack traces |
+| **变量显示 `undefined`** | 作用域不对 | 检查 Scope 面板，可能在 Closure 中 |
+| **断点不生效** | 代码已优化/内联 | 使用 Logpoint 或禁用缓存 |
+| **调用栈看不到源码** | Source Map 缺失 | 寻找 `.map` 文件或分析编译后代码 |
+| **异步代码断不住** | Async Stack Traces 未开启 | Settings → Enable async stack traces |
 
 ### 9.3 效率提升技巧
 
@@ -762,8 +784,8 @@ options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
 driver = webdriver.Chrome(options=options)
 driver.execute_cdp_cmd("Debugger.enable", {})
 driver.execute_cdp_cmd("Debugger.setBreakpointByUrl", {
-    "lineNumber": 123,
-    "url": "https://example.com/utils.js"
+"lineNumber": 123,
+"url": "https://example.com/utils.js"
 })
 ```
 
@@ -773,21 +795,21 @@ driver.execute_cdp_cmd("Debugger.setBreakpointByUrl", {
 const puppeteer = require("puppeteer");
 
 (async () => {
-  const browser = await puppeteer.launch({
-    headless: false,
-    devtools: true, // 自动打开 DevTools
-  });
+const browser = await puppeteer.launch({
+headless: false,
+devtools: true, // 自动打开 DevTools
+});
 
-  const page = await browser.newPage();
+const page = await browser.newPage();
 
-  // 在控制台执行代码
-  await page.evaluateOnNewDocument(() => {
-    window.addEventListener("load", () => {
-      debugger; // 页面加载完成后自动断点
-    });
-  });
+// 在控制台执行代码
+await page.evaluateOnNewDocument(() => {
+window.addEventListener("load", () => {
+debugger; // 页面加载完成后自动断点
+});
+});
 
-  await page.goto("https://example.com");
+await page.goto("https://example.com");
 })();
 ```
 
@@ -798,12 +820,12 @@ const puppeteer = require("puppeteer");
 ```javascript
 // Frida 脚本
 Interceptor.attach(Module.findExportByName(null, "encrypt"), {
-  onEnter: function (args) {
-    console.log("[encrypt] 参数:", Memory.readUtf8String(args[0]));
-  },
-  onLeave: function (retval) {
-    console.log("[encrypt] 返回值:", Memory.readUtf8String(retval));
-  },
+onEnter: function (args) {
+console.log("[encrypt] 参数:", Memory.readUtf8String(args[0]));
+},
+onLeave: function (retval) {
+console.log("[encrypt] 返回值:", Memory.readUtf8String(retval));
+},
 });
 ```
 

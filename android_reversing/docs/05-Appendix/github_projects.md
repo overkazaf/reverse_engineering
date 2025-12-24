@@ -30,7 +30,7 @@
 | [intel/pin](https://www.intel.com/content/www/us/en/developer/articles/tool/pin-a-dynamic-binary-instrumentation-tool.html) | N/A       | Intel 出品的动态二进制插桩框架。                                       |
 | [googleprojectzero/winafl](https://github.com/googleprojectzero/winafl)                                                     | 2.1k      | AFL 的一个分支，用于对 Windows 二进制文件进行模糊测试。                |
 | [processhacker/processhacker](https://github.com/processhacker/processhacker)                                               | 3.2k      | 强大的多用途工具，用于监控系统资源、调试软件和检测恶意软件。           |
-| [dsincl/procmon-parser](https://github.com/dsincl/procmon-parser)                                                           | 170       | Sysinternals Process Monitor (Procmon) 的日志解析器。                  |
+| [eronnen/procmon-parser](https://github.com/eronnen/procmon-parser)                                                           | 170       | Sysinternals Process Monitor (Procmon) 的日志解析器。                  |
 | [microsoft/Detours](https://github.com/microsoft/detours)                                                                   | 1.9k      | 微软官方的 API Hooking 工具库。                                        |
 | [easyhook/EasyHook](https://github.com/easyhook/EasyHook)                                                                   | 1.8k      | 强大的 Windows API Hooking 库。                                        |
 | [tmate-io/tmate](https://github.com/tmate-io/tmate)                                                                         | 3.5k      | 即时终端共享工具。                                                     |
@@ -45,17 +45,13 @@
 
 | 项目                                                                              | Star 数量 | 描述                                                     |
 | --------------------------------------------------------------------------------- | --------- | -------------------------------------------------------- |
-| [NationalSecurityAgency/ghidra](https://github.com/NationalSecurityAgency/ghidra) | 47.9k     | NSA 出品的软件逆向工程框架，包含反编译器。               |
-| [radareorg/radare2](https://github.com/radareorg/radare2)                         | 19.8k     | 开源的逆向工程框架和命令行工具集。                       |
-| [rizin-re/rizin](https://github.com/rizin-re/rizin)                               | 2.5k      | radare2 的一个分支，专注于可用性和社区。                 |
-| [avast/retdec](https://github.com/avast/retdec)                                   | 8.2k      | 基于 LLVM 的可重定向机器码反编译器。                     |
+| [NationalSecurityAgency/ghidra](https://github.com/NationalSecurityAgency/ghidra) | 47.9k     | NSA 出品的软件逆向工程框架，包含反编译器。               |Inline Hook 原理| [avast/retdec](https://github.com/avast/retdec)                                   | 8.2k      | 基于 LLVM 的可重定向机器码反编译器。                     |
 | [yegord/snowman](https://github.com/yegord/snowman)                               | 1.8k      | 支持 x86, ARM 和 x86-64 的反编译器。                     |
 | [aquynh/capstone](https://github.com/aquynh/capstone)                             | 7.4k      | 强大的多架构反汇编框架。                                 |
 | [keystone-engine/keystone](https://github.com/keystone-engine/keystone)           | 3.9k      | 轻量级多架构汇编器框架。                                 |
 | [unicorn-engine/unicorn](https://github.com/unicorn-engine/unicorn)               | 7.5k      | 基于 QEMU 的多架构 CPU 模拟器框架。                      |
 | [lifting-bits/mcsema](https://github.com/lifting-bits/mcsema)                     | 1.7k      | 将 x86/64, aarch64 二进制文件提升到 LLVM IR。            |
-| [maji-cat/redress](https://github.com/maji-cat/redress)                           | 680       | 基于 Triton 的二进制反编译器。                           |
-| [wtdcode/retdec-idaplugin](https://github.com/wtdcode/retdec-idaplugin)           | 500+      | RetDec 反编译器的 IDA 插件。                             |
+| [avast/retdec-idaplugin](https://github.com/avast/retdec-idaplugin)           | 500+      | RetDec 反编译器的 IDA 插件。                             |
 | [airbus-seclab/bincat](https://github.com/airbus-seclab/bincat)                   | 1k        | 二进制代码静态分析工具，支持值分析、污点分析和类型推断。 |
 
 ### 3. 调试器
@@ -64,14 +60,14 @@
 | ----------------------------------------------------------------------- | --------- | --------------------------------------------------------- |
 | [x64dbg/x64dbg](https://github.com/x64dbg/x64dbg)                       | 45.3k     | Windows 平台开源的 x64/x32 调试器。                       |
 | [gdb/gdb](https://www.gnu.org/software/gdb/)                            | N/A       | GNU 项目调试器。                                          |
-| [radareorg/cutter](https://github.com/radareorg/cutter)                 | 15.6k     | radare2 的 GUI 界面。                                     |
+| [rizinorg/cutter](https://github.com/rizinorg/cutter)                 | 15.6k     | radare2 的 GUI 界面。                                     |
 | [hugsy/gef](https://github.com/hugsy/gef)                               | 6.4k      | GDB 的现代化插件，用于漏洞利用和逆向。                    |
 | [pwndbg/pwndbg](https://github.com/pwndbg/pwndbg)                       | 6.7k      | GDB 的一个插件，辅助 pwn。                                |
 | [longld/peda](https://github.com/longld/peda)                           | 5.7k      | GDB PEDA - Python Exploit Development Assistance for GDB. |
 | [voltron/voltron](https://github.com/snare/voltron)                     | 5.3k      | 一个可扩展的、跨平台的调试器 UI 工具包。                  |
 | [microsoft/WinDbg-Samples](https://github.com/microsoft/WinDbg-Samples) | 300+      | WinDbg 的示例扩展、脚本和 API 用法。                      |
-| [moyix/pdbpp](https://github.com/moyix/pdbpp)                           | 1.4k      | Python 调试器 (pdb) 的一个增强版。                        |
-| [deroko/x64dbg-python](https://github.com/deroko/x64dbg-python)         | 300+      | 用于 x64dbg 的 Python 脚本插件。                          |
+| [pdbpp/pdbpp](https://github.com/pdbpp/pdbpp)                           | 1.4k      | Python 调试器 (pdb) 的一个增强版。                        |
+| [x64dbg/x64dbgpy](https://github.com/x64dbg/x64dbgpy)         | 300+      | 用于 x64dbg 的 Python 脚本插件。                          |
 
 ### 4. 静态分析与二进制分析
 
@@ -85,7 +81,7 @@
 | [Gallopsled/pwntools](https://github.com/Gallopsled/pwntools)       | 11.2k     | CTF 框架和漏洞利用开发库。                                |
 | [erocarrera/pefile](https://github.com/erocarrera/pefile)           | 1.3k      | 用于解析和操作 PE 文件的 Python 模块。                    |
 | [eliben/pyelftools](https://github.com/eliben/pyelftools)           | 1k        | 用于解析和分析 ELF 文件和 DWARF 调试信息的 Python 库。    |
-| [s-c-repo/vtable-dumper](https://github.com/s-c-repo/vtable-dumper) | 250       | 用于从 PE/ELF 文件中 dump 虚函数表的工具。                |
+| [lvc/vtable-dumper](https://github.com/lvc/vtable-dumper)           | 250       | 用于从 PE/ELF 文件中 dump 虚函数表的工具。                |
 
 ### 5. android 平台
 
@@ -117,8 +113,7 @@
 | ----------------------------------------------------------------------------------- | --------- | ------------------------------------------------------ |
 | [upx/upx](https://github.com/upx/upx)                                               | 4.9k      | 极致的可执行文件压缩器。                               |
 | [horsicq/Detect-It-Easy](https://github.com/horsicq/Detect-It-Easy)                 | 5.8k      | 用于判断文件类型的程序，支持 Windows, Linux, macOS。   |
-| [wbenny/xorsearch](https://github.com/wbenny/xorsearch)                             | 450+      | 在文件中搜索经过 XOR, ROL, ROT 或 SHIFT 编码的字符串。 |
-| [balena-io/etason](https://github.com/balena-io/etason)                             | 200+      | JSON 解析器，能容忍语法错误。                          |
+| [DidierStevens/DidierStevensSuite](https://github.com/DidierStevens/DidierStevensSuite)                             | 450+      | 在文件中搜索经过 XOR, ROL, ROT 或 SHIFT 编码的字符串。 |
 | [google/santa](https://github.com/google/santa)                                     | 3.1k      | 用于 macOS 的二进制文件白名单/黑名单系统。             |
 | [trailofbits/osquery-extensions](https://github.com/trailofbits/osquery-extensions) | 300+      | osquery 的扩展，用于增强安全分析。                     |
 | [checkra1n/pongoOS](https://github.com/checkra1n/pongoOS)                           | 1.2k      | checkra1n 使用的 Pre-boot eXecution Environment。      |
@@ -128,10 +123,8 @@
 
 | 项目                                                                  | Star 数量 | 描述                            |
 | --------------------------------------------------------------------- | --------- | ------------------------------- |
-| [codepainters/distorm](https://github.com/codepainters/distorm)       | 500+      | x86/AMD64 的快速反汇编库。      |
-| [radareorg/hex-lib](https://github.com/radareorg/hex-lib)             | 100+      | Hex a go go.                    |
+| [gdabah/distorm](https://github.com/gdabah/distorm)       | 500+      | x86/AMD64 的快速反汇编库。      |
 | [WerWolv/ImHex](https://github.com/WerWolv/ImHex)                     | 3k        | 一个功能丰富的现代 Hex 编辑器。 |
-| [chrystianvieira/hexcute](https://github.com/chrystianvieira/hexcute) | 100+      | 一个简单的十六进制编辑器。      |
 
 ### 8. 脱壳与反混淆
 
@@ -140,7 +133,6 @@
 | [de4dot/de4dot](https://github.com/de4dot/de4dot)                     | 6.5k      | .NET 反混淆器和脱壳器。                    |
 | [fireeye/flare-floss](https://github.com/fireeye/flare-floss)         | 1.5k      | 自动从恶意软件中提取混淆后的字符串。       |
 | [ioncodes/dnpatch](https://github.com/ioncodes/dnpatch)               | 500+      | 用于修补 .NET 程序集的工具。               |
-| [rolfrolles/deobfuscator](https://github.com/rolfrolles/deobfuscator) | 400+      | 基于 QEMU 的 x86 反混淆器。                |
 | [hluwa/frida-dexdump](https://github.com/hluwa/frida-dexdump)         | 3k+       | 基于 Frida 的快速 Dex 内存导出工具。       |
 | [Perfare/Il2CppDumper](https://github.com/Perfare/Il2CppDumper)       | 7k+       | Unity Il2Cpp 逆向工具，还原 DLL 和头文件。 |
 
@@ -149,9 +141,9 @@
 | 项目                                                                                    | Star 数量 | 描述                                 |
 | --------------------------------------------------------------------------------------- | --------- | ------------------------------------ |
 | [ReFirmLabs/binwalk](https://github.com/ReFirmLabs/binwalk)                             | 10.1k     | 用于分析、逆向和提取固件镜像的工具。 |
-| [craigz/firmwalker](https://github.com/craigz/firmwalker)                               | 1k        | 自动在固件中搜索敏感信息的脚本。     |
+| [craigz28/firmwalker](https://github.com/craigz28/firmwalker)                               | 1k        | 自动在固件中搜索敏感信息的脚本。     |
 | [attify/firmware-analysis-toolkit](https://github.com/attify/firmware-analysis-toolkit) | 1k        | 用于固件安全测试的工具包。           |
-| [scriptingx/IoTSecurity101](https://github.com/scriptingx/IoTSecurity101)               | 500+      | 物联网安全入门指南。                 |
+| [0xff7/IoTSecurity101](https://github.com/0xff7/IoTSecurity101)               | 500+      | 物联网安全入门。                     |
 
 ### 10. Apple 平台 (iOS/macOS)
 
@@ -170,7 +162,6 @@
 | 项目                                                                      | Star 数量 | 描述                                       |
 | ------------------------------------------------------------------------- | --------- | ------------------------------------------ |
 | [firmianay/security-paper](https://github.com/firmianay/security-paper)   | 1.7k      | 安全领域的一些经典论文。                   |
-| [endgameinc/RSOI](https://github.com/endgameinc/RSOI)                     | 200+      | 逆向工程领域的资源和信息。                 |
 | [enaqx/awesome-pentest](https://github.com/enaqx/awesome-pentest)         | 18k+      | 精选的渗透测试资源、工具和其它很棒的东西。 |
 | [carpedm20/awesome-hacking](https://github.com/carpedm20/awesome-hacking) | 9k+       | 精选的黑客资源、工具和教程。               |
 | [onethawt/idaplugins-list](https://github.com/onethawt/idaplugins-list)   | 1.9k      | IDA Pro 插件列表。                         |

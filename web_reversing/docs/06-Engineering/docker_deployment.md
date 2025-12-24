@@ -30,10 +30,10 @@ WORKDIR /app
 
 # 安装系统依赖
 RUN apt-get update && apt-get install -y \
-    gcc \
-    g++ \
-    wget \
-    && rm -rf /var/lib/apt/lists/*
+gcc \
+g++ \
+wget \
+&& rm -rf /var/lib/apt/lists/*
 
 # 复制依赖文件
 COPY requirements.txt .
@@ -63,23 +63,23 @@ FROM node:18-slim
 
 # 安装 Chromium 依赖
 RUN apt-get update && apt-get install -y \
-    chromium \
-    fonts-liberation \
-    libappindicator3-1 \
-    libasound2 \
-    libatk-bridge2.0-0 \
-    libatk1.0-0 \
-    libcups2 \
-    libdbus-1-3 \
-    libgdk-pixbuf2.0-0 \
-    libnspr4 \
-    libnss3 \
-    libx11-xcb1 \
-    libxcomposite1 \
-    libxdamage1 \
-    libxrandr2 \
-    xdg-utils \
-    && rm -rf /var/lib/apt/lists/*
+chromium \
+fonts-liberation \
+libappindicator3-1 \
+libasound2 \
+libatk-bridge2.0-0 \
+libatk1.0-0 \
+libcups2 \
+libdbus-1-3 \
+libgdk-pixbuf2.0-0 \
+libnspr4 \
+libnss3 \
+libx11-xcb1 \
+libxcomposite1 \
+libxdamage1 \
+libxrandr2 \
+xdg-utils \
+&& rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
@@ -101,56 +101,56 @@ CMD ["node", "index.js"]
 version: "3.8"
 
 services:
-  # Redis
-  redis:
-    image: redis:7-alpine
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-    restart: unless-stopped
+# Redis
+redis:
+image: redis:7-alpine
+ports:
+- "6379:6379"
+volumes:
+- redis_data:/data
+restart: unless-stopped
 
-  # MongoDB
-  mongodb:
-    image: mongo:6
-    ports:
-      - "27017:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: password
-    volumes:
-      - mongo_data:/data/db
-    restart: unless-stopped
+# MongoDB
+mongodb:
+image: mongo:6
+ports:
+- "27017:27017"
+environment:
+MONGO_INITDB_ROOT_USERNAME: admin
+MONGO_INITDB_ROOT_PASSWORD: password
+volumes:
+- mongo_data:/data/db
+restart: unless-stopped
 
-  # 爬虫 Master
-  spider-master:
-    build: .
-    command: python master.py
-    depends_on:
-      - redis
-      - mongodb
-    environment:
-      - REDIS_URL=redis://redis:6379
-      - MONGO_URL=mongodb://admin:password@mongodb:27017
-    restart: unless-stopped
+# 爬虫 Master
+spider-master:
+build: .
+command: python master.py
+depends_on:
+- redis
+- mongodb
+environment:
+- REDIS_URL=redis://redis:6379
+- MONGO_URL=mongodb://admin:${MONGO_PASSWORD}@mongodb:27017
+restart: unless-stopped
 
-  # 爬虫 Worker
-  spider-worker:
-    build: .
-    command: python worker.py
-    depends_on:
-      - redis
-      - mongodb
-    environment:
-      - REDIS_URL=redis://redis:6379
-      - MONGO_URL=mongodb://admin:password@mongodb:27017
-    restart: unless-stopped
-    deploy:
-      replicas: 3 # 启动3个Worker
+# 爬虫 Worker
+spider-worker:
+build: .
+command: python worker.py
+depends_on:
+- redis
+- mongodb
+environment:
+- REDIS_URL=redis://redis:6379
+- MONGO_URL=mongodb://admin:${MONGO_PASSWORD}@mongodb:27017
+restart: unless-stopped
+deploy:
+replicas: 3 # 启动3个Worker
 
 volumes:
-  redis_data:
-  mongo_data:
+redis_data:
+mongo_data:
 ```
 
 ### 启动和管理
@@ -227,7 +227,7 @@ htmlcov/
 
 ```dockerfile
 HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
-  CMD python -c "import requests; requests.get('http://localhost:8000/health')" || exit 1
+CMD python -c "import requests; requests.get('http://localhost:8000/health')" || exit 1
 ```
 
 ### 4. 环境变量管理
@@ -235,9 +235,9 @@ HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
 ```yaml
 # docker-compose.yml
 services:
-  spider:
-    env_file:
-      - .env
+spider:
+env_file:
+- .env
 ```
 
 ```bash
@@ -277,30 +277,30 @@ docker stack rm spider
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: spider-worker
+name: spider-worker
 spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: spider-worker
-  template:
-    metadata:
-      labels:
-        app: spider-worker
-    spec:
-      containers:
-        - name: spider
-          image: myregistry/spider:latest
-          env:
-            - name: REDIS_URL
-              value: "redis://redis:6379"
-          resources:
-            requests:
-              memory: "512Mi"
-              cpu: "500m"
-            limits:
-              memory: "1Gi"
-              cpu: "1000m"
+replicas: 3
+selector:
+matchLabels:
+app: spider-worker
+template:
+metadata:
+labels:
+app: spider-worker
+spec:
+containers:
+- name: spider
+image: myregistry/spider:latest
+env:
+- name: REDIS_URL
+value: "redis://redis:6379"
+resources:
+requests:
+memory: "512Mi"
+cpu: "500m"
+limits:
+memory: "1Gi"
+cpu: "1000m"
 ```
 
 ```bash
@@ -322,32 +322,32 @@ kubectl get pods
 
 ```yaml
 services:
-  spider:
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
+spider:
+logging:
+driver: "json-file"
+options:
+max-size: "10m"
+max-file: "3"
 ```
 
 ### 集成 Prometheus
 
 ```yaml
 services:
-  prometheus:
-    image: prom/prometheus
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-      - prometheus_data:/prometheus
+prometheus:
+image: prom/prometheus
+ports:
+- "9090:9090"
+volumes:
+- ./prometheus.yml:/etc/prometheus/prometheus.yml
+- prometheus_data:/prometheus
 
-  grafana:
-    image: grafana/grafana
-    ports:
-      - "3000:3000"
-    volumes:
-      - grafana_data:/var/lib/grafana
+grafana:
+image: grafana/grafana
+ports:
+- "3000:3000"
+volumes:
+- grafana_data:/var/lib/grafana
 ```
 
 ---
@@ -380,12 +380,12 @@ docker stats container_id
 
 ```yaml
 services:
-  spider:
-    volumes:
-      - spider_data:/app/data
+spider:
+volumes:
+- spider_data:/app/data
 
 volumes:
-  spider_data:
+spider_data:
 ```
 
 ---

@@ -14,9 +14,9 @@
 
 ```json
 {
-  "product_id": 12345,
-  "name": "iPhone 15",
-  "price_enc": "U2FsdGVkX19Qx7..."
+"product_id": 12345,
+"name": "iPhone 15",
+"price_enc": "U2FsdGVkX19Qx7..."
 }
 ```
 
@@ -49,22 +49,22 @@
 
 ```
 updatePrice()
-  |- decryptPrice(encryptedPrice)
-       |- CryptoJS.AES.decrypt(enc, key, {iv: iv})
+|- decryptPrice(encryptedPrice)
+|- CryptoJS.AES.decrypt(enc, key, {iv: iv})
 ```
 
 发现使用了 **AES-CBC** 加密，Key 和 IV 都在 JS 中硬编码：
 
 ```javascript
 function decryptPrice(enc) {
-  var key = CryptoJS.enc.Utf8.parse("1234567890abcdef");
-  var iv = CryptoJS.enc.Utf8.parse("abcdefghijklmnop");
-  var decrypted = CryptoJS.AES.decrypt(enc, key, {
-    iv: iv,
-    mode: CryptoJS.mode.CBC,
-    padding: CryptoJS.pad.Pkcs7,
-  });
-  return decrypted.toString(CryptoJS.enc.Utf8);
+var key = CryptoJS.enc.Utf8.parse("1234567890abcdef");
+var iv = CryptoJS.enc.Utf8.parse("abcdefghijklmnop");
+var decrypted = CryptoJS.AES.decrypt(enc, key, {
+iv: iv,
+mode: CryptoJS.mode.CBC,
+padding: CryptoJS.pad.Pkcs7,
+});
+return decrypted.toString(CryptoJS.enc.Utf8);
 }
 ```
 
@@ -76,18 +76,18 @@ from Crypto.Util.Padding import unpad
 import base64
 
 def decrypt_price(price_enc):
-    key = b'1234567890abcdef'
-    iv = b'abcdefghijklmnop'
+key = b'1234567890abcdef'
+iv = b'abcdefghijklmnop'
 
-    cipher = AES.new(key, AES.MODE_CBC, iv)
-    encrypted_data = base64.b64decode(price_enc)
-    decrypted = unpad(cipher.decrypt(encrypted_data), AES.block_size)
+cipher = AES.new(key, AES.MODE_CBC, iv)
+encrypted_data = base64.b64decode(price_enc)
+decrypted = unpad(cipher.decrypt(encrypted_data), AES.block_size)
 
-    return decrypted.decode('utf-8')
+return decrypted.decode('utf-8')
 
 # 测试
 price_enc = "U2FsdGVkX19Qx7..."
-print(decrypt_price(price_enc))  # "￥5999"
+print(decrypt_price(price_enc)) # "￥5999"
 ```
 
 ---
@@ -122,17 +122,17 @@ GET /api/search?q=iPhone&page=1&sign=abc123&timestamp=1234567890
 
 ```javascript
 function generateSign(params) {
-  // 1. 参数排序
-  var keys = Object.keys(params).sort();
+// 1. 参数排序
+var keys = Object.keys(params).sort();
 
-  // 2. 拼接字符串
-  var str = keys.map((k) => k + "=" + params[k]).join("&");
+// 2. 拼接字符串
+var str = keys.map((k) => k + "=" + params[k]).join("&");
 
-  // 3. 加盐
-  str += "&key=my_secret_key_2023";
+// 3. 加盐
+str += "&key=my_secret_key_2023";
 
-  // 4. MD5
-  return md5(str);
+// 4. MD5
+return md5(str);
 }
 ```
 
@@ -150,23 +150,23 @@ import hashlib
 import time
 
 def generate_sign(params):
-    # 参数排序
-    sorted_params = sorted(params.items())
+# 参数排序
+sorted_params = sorted(params.items())
 
-    # 拼接
-    param_str = '&'.join([f"{k}={v}" for k, v in sorted_params])
+# 拼接
+param_str = '&'.join([f"{k}={v}" for k, v in sorted_params])
 
-    # 加盐
-    sign_str = param_str + '&key=my_secret_key_2023'
+# 加盐
+sign_str = param_str + '&key=my_secret_key_2023'
 
-    # MD5
-    return hashlib.md5(sign_str.encode()).hexdigest()
+# MD5
+return hashlib.md5(sign_str.encode()).hexdigest()
 
 # 使用
 params = {
-    'q': 'iPhone',
-    'page': 1,
-    'timestamp': int(time.time())
+'q': 'iPhone',
+'page': 1,
+'timestamp': int(time.time())
 }
 params['sign'] = generate_sign(params)
 
@@ -196,13 +196,13 @@ print(response.json())
 
 ```python
 def generate_track(distance):
-    track = []
-    current = 0
-    while current < distance:
-        step = min(5, distance - current)  # 每次移动 5px
-        track.append(step)
-        current += step
-    return track
+track = []
+current = 0
+while current < distance:
+step = min(5, distance - current) # 每次移动 5px
+track.append(step)
+current += step
+return track
 ```
 
 **模拟真实轨迹** (更高级):
@@ -211,30 +211,30 @@ def generate_track(distance):
 import random
 
 def generate_realistic_track(distance):
-    track = []
-    current = 0
-    mid = distance * 0.8  # 80% 处开始减速
+track = []
+current = 0
+mid = distance * 0.8 # 80% 处开始减速
 
-    while current < distance:
-        if current < mid:
-            # 加速阶段
-            step = random.randint(5, 10)
-        else:
-            # 减速阶段
-            step = random.randint(2, 5)
+while current < distance:
+if current < mid:
+# 加速阶段
+step = random.randint(5, 10)
+else:
+# 减速阶段
+step = random.randint(2, 5)
 
-        if current + step > distance:
-            step = distance - current
+if current + step > distance:
+step = distance - current
 
-        track.append(step)
-        current += step
+track.append(step)
+current += step
 
-        # 随机抖动
-        if random.random() < 0.2:
-            track.append(-random.randint(1, 2))
-            current -= track[-1]
+# 随机抖动
+if random.random() < 0.2:
+track.append(-random.randint(1, 2))
+current -= track[-1]
 
-    return track
+return track
 ```
 
 #### 2. Selenium 模拟
@@ -252,14 +252,14 @@ driver.get('https://example.com/login')
 slider = driver.find_element(By.CLASS_NAME, 'slider-button')
 
 # 生成轨迹
-distance = 260  # 需要移动的距离（像素）
+distance = 260 # 需要移动的距离（像素）
 track = generate_realistic_track(distance)
 
 # 执行拖动
 ActionChains(driver).click_and_hold(slider).perform()
 for step in track:
-    ActionChains(driver).move_by_offset(step, 0).perform()
-    time.sleep(random.uniform(0.001, 0.003))  # 模拟人类延迟
+ActionChains(driver).move_by_offset(step, 0).perform()
+time.sleep(random.uniform(0.001, 0.003)) # 模拟人类延迟
 
 ActionChains(driver).release().perform()
 ```
@@ -285,28 +285,28 @@ ActionChains(driver).release().perform()
 import time
 
 for page in range(1, 100):
-    response = requests.get(f'https://example.com/api/products?page={page}')
-    print(response.json())
+response = requests.get(f'https://example.com/api/products?page={page}')
+print(response.json())
 
-    # 休眠 1-3 秒
-    time.sleep(random.uniform(1, 3))
+# 休眠 1-3 秒
+time.sleep(random.uniform(1, 3))
 ```
 
 #### 2. 使用代理池
 
 ```python
 proxies_list = [
-    {'http': 'http://proxy1:port'},
-    {'http': 'http://proxy2:port'},
-    # ...
+{'http': 'http://proxy1:port'},
+{'http': 'http://proxy2:port'},
+# ...
 ]
 
 for page in range(1, 100):
-    proxy = random.choice(proxies_list)
-    response = requests.get(
-        f'https://example.com/api/products?page={page}',
-        proxies=proxy
-    )
+proxy = random.choice(proxies_list)
+response = requests.get(
+f'https://example.com/api/products?page={page}',
+proxies=proxy
+)
 ```
 
 #### 3. 分布式爬取

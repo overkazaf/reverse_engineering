@@ -1,18 +1,33 @@
 # 配方：解密 API 参数
 
-## 📊 配方信息
+## 配方信息
 
-| 项目         | 说明                                         |
+| 项目 | 说明 |
 | ------------ | -------------------------------------------- |
-| **难度**     | ⭐⭐ (初级)                                  |
-| **预计时间** | 30-45 分钟                                   |
-| **所需工具** | Chrome 浏览器, Python 3.7+                   |
-| **适用场景** | 破解 API 签名、解密请求参数                  |
+| **难度** | ⭐⭐ (初级) |
+| **预计时间** | 30-45 分钟 |
+| **所需工具** | Chrome 浏览器, Python 3.7+ |
+| **适用场景** | 破解 API 签名、解密请求参数 |
 | **前置知识** | 完成 [你的第一个 Hook](./your_first_hook.md) |
 
 ---
 
-## 🎯 你将学到
+## 📚 前置知识
+
+在开始本配方之前，建议先掌握以下内容：
+
+| 知识领域 | 重要程度 | 参考资料 |
+|----------|---------|---------|
+| 你的第一个 Hook | 必需 | [你的第一个 Hook](./your_first_hook.md) |
+| JavaScript 基础 | 推荐 | [JavaScript 基础](../01-Foundations/javascript_basics.md) |
+| HTTP 协议基础 | 推荐 | [HTTP/HTTPS 协议](../01-Foundations/http_https_protocol.md) |
+| Chrome DevTools | 推荐 | [浏览器开发者工具](../02-Tooling/browser_devtools.md) |
+
+> 💡 **新手提示**: 如果你已完成"你的第一个 Hook"配方，就可以开始本教程了。对加密算法不熟悉也没关系，我们会在实践中逐步讲解。
+
+---
+
+## 你将学到
 
 完成这个配方后，你将能够：
 
@@ -25,7 +40,7 @@
 
 ---
 
-## 📝 准备工作
+## 准备工作
 
 ### 检查清单
 
@@ -45,7 +60,7 @@
 
 ---
 
-## 🚀 步骤详解
+## 步骤详解
 
 ### Step 1: 找到加密的请求
 
@@ -56,46 +71,46 @@
 ```html
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>登录示例</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-  </head>
-  <body>
-    <h2>登录</h2>
-    <input id="username" placeholder="用户名" value="admin" />
-    <input id="password" type="password" placeholder="密码" value="123456" />
-    <button onclick="login()">登录</button>
+<head>
+<title>登录示例</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</head>
+<body>
+<h2>登录</h2>
+<input id="username" placeholder="用户名" value="admin" />
+<input id="password" type="password" placeholder="密码" value="123456" />
+<button onclick="login()">登录</button>
 
-    <script>
-      function login() {
-        const username = document.getElementById("username").value;
-        const password = document.getElementById("password").value;
+<script>
+function login() {
+const username = document.getElementById("username").value;
+const password = document.getElementById("password").value;
 
-        // 加密密码
-        const encryptedPassword = CryptoJS.MD5(password).toString();
+// 加密密码
+const encryptedPassword = CryptoJS.MD5(password).toString();
 
-        // 生成签名
-        const timestamp = Date.now();
-        const sign = CryptoJS.MD5(
-          username + encryptedPassword + timestamp + "SECRET_KEY"
-        ).toString();
+// 生成签名
+const timestamp = Date.now();
+const sign = CryptoJS.MD5(
+username + encryptedPassword + timestamp + "SECRET_KEY"
+).toString();
 
-        // 发送请求
-        fetch("/api/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            username: username,
-            password: encryptedPassword,
-            timestamp: timestamp,
-            sign: sign,
-          }),
-        })
-          .then((r) => r.json())
-          .then((data) => console.log(data));
-      }
-    </script>
-  </body>
+// 发送请求
+fetch("/api/login", {
+method: "POST",
+headers: { "Content-Type": "application/json" },
+body: JSON.stringify({
+username: username,
+password: encryptedPassword,
+timestamp: timestamp,
+sign: sign,
+}),
+})
+.then((r) => r.json())
+.then((data) => console.log(data));
+}
+</script>
+</body>
 </html>
 ```
 
@@ -112,10 +127,10 @@
 
 ```json
 {
-  "username": "admin",
-  "password": "e10adc3949ba59abbe56e057f20f883e",
-  "timestamp": 1702887654321,
-  "sign": "a1b2c3d4e5f6..."
+"username": "admin",
+"password": "e10adc3949ba59abbe56e057f20f883e",
+"timestamp": 1702887654321,
+"sign": "a1b2c3d4e5f6..."
 }
 ```
 
@@ -158,7 +173,7 @@ onclick (login_demo.html:12)
 ```javascript
 const encryptedPassword = CryptoJS.MD5(password).toString();
 const sign = CryptoJS.MD5(
-  username + encryptedPassword + timestamp + "SECRET_KEY"
+username + encryptedPassword + timestamp + "SECRET_KEY"
 ).toString();
 ```
 
@@ -191,13 +206,13 @@ const timestamp = Date.now();
 
 const encryptedPassword = CryptoJS.MD5(password).toString();
 const sign = CryptoJS.MD5(
-  username + encryptedPassword + timestamp + "SECRET_KEY"
+username + encryptedPassword + timestamp + "SECRET_KEY"
 ).toString();
 
 console.log({
-  encryptedPassword: encryptedPassword,
-  sign: sign,
-  timestamp: timestamp,
+encryptedPassword: encryptedPassword,
+sign: sign,
+timestamp: timestamp,
 });
 ```
 
@@ -205,9 +220,9 @@ console.log({
 
 ```
 {
-  encryptedPassword: "e10adc3949ba59abbe56e057f20f883e",
-  sign: "f7c3bc1d808e04732adf679965ccc34c",
-  timestamp: 1702887654321
+encryptedPassword: "e10adc3949ba59abbe56e057f20f883e",
+sign: "f7c3bc1d808e04732adf679965ccc34c",
+timestamp: 1702887654321
 }
 ```
 
@@ -233,51 +248,51 @@ import time
 import requests
 
 def md5(text):
-    """MD5 加密"""
-    return hashlib.md5(text.encode()).hexdigest()
+"""MD5 加密"""
+return hashlib.md5(text.encode()).hexdigest()
 
 def login(username, password):
-    # 1. 加密密码
-    encrypted_password = md5(password)
+# 1. 加密密码
+encrypted_password = md5(password)
 
-    # 2. 生成时间戳
-    timestamp = int(time.time() * 1000)
+# 2. 生成时间戳
+timestamp = int(time.time() * 1000)
 
-    # 3. 生成签名
-    sign_string = username + encrypted_password + str(timestamp) + 'SECRET_KEY'
-    sign = md5(sign_string)
+# 3. 生成签名
+sign_string = username + encrypted_password + str(timestamp) + 'SECRET_KEY'
+sign = md5(sign_string)
 
-    # 4. 构造请求体
-    payload = {
-        'username': username,
-        'password': encrypted_password,
-        'timestamp': timestamp,
-        'sign': sign
-    }
+# 4. 构造请求体
+payload = {
+'username': username,
+'password': encrypted_password,
+'timestamp': timestamp,
+'sign': sign
+}
 
-    print(f"📤 发送请求:")
-    print(f"  Username: {username}")
-    print(f"  Encrypted Password: {encrypted_password}")
-    print(f"  Timestamp: {timestamp}")
-    print(f"  Sign: {sign}")
+print(f" 发送请求:")
+print(f" Username: {username}")
+print(f" Encrypted Password: {encrypted_password}")
+print(f" Timestamp: {timestamp}")
+print(f" Sign: {sign}")
 
-    # 5. 发送请求
-    response = requests.post(
-        'https://example.com/api/login',
-        json=payload,
-        headers={'Content-Type': 'application/json'}
-    )
+# 5. 发送请求
+response = requests.post(
+'https://example.com/api/login',
+json=payload,
+headers={'Content-Type': 'application/json'}
+)
 
-    print(f"\n📥 响应:")
-    print(f"  Status Code: {response.status_code}")
-    print(f"  Response: {response.text}")
+print(f"\n 响应:")
+print(f" Status Code: {response.status_code}")
+print(f" Response: {response.text}")
 
-    return response.json()
+return response.json()
 
 if __name__ == '__main__':
-    # 测试
-    result = login('admin', '123456')
-    print(f"\n✅ 登录结果: {result}")
+# 测试
+result = login('admin', '123456')
+print(f"\n✅ 登录结果: {result}")
 ```
 
 #### 4.3 运行测试
@@ -289,15 +304,15 @@ python login.py
 **预期输出**:
 
 ```
-📤 发送请求:
-  Username: admin
-  Encrypted Password: e10adc3949ba59abbe56e057f20f883e
-  Timestamp: 1702887654321
-  Sign: f7c3bc1d808e04732adf679965ccc34c
+发送请求:
+Username: admin
+Encrypted Password: e10adc3949ba59abbe56e057f20f883e
+Timestamp: 1702887654321
+Sign: f7c3bc1d808e04732adf679965ccc34c
 
-📥 响应:
-  Status Code: 200
-  Response: {"code":0,"message":"登录成功","data":{"token":"..."}}
+响应:
+Status Code: 200
+Response: {"code":0,"message":"登录成功","data":{"token":"..."}}
 
 ✅ 登录结果: {'code': 0, 'message': '登录成功', 'data': {...}}
 ```
@@ -317,7 +332,7 @@ python login.py
 
 ---
 
-## 🎓 进阶练习
+## 进阶练习
 
 ### 练习 1: 分析更复杂的加密
 
@@ -352,31 +367,31 @@ const key = CryptoJS.MD5(username + timestamp).toString();
 
 ```python
 users = [
-    ('user1', 'password1'),
-    ('user2', 'password2'),
-    ('user3', 'password3')
+('user1', 'password1'),
+('user2', 'password2'),
+('user3', 'password3')
 ]
 
 for username, password in users:
-    result = login(username, password)
-    print(f"{username}: {result['message']}")
+result = login(username, password)
+print(f"{username}: {result['message']}")
 ```
 
 ---
 
-## ❗ 常见问题
+## 常见问题
 
 ### Q1: 如何判断使用了哪种加密算法？
 
 **A**: 根据特征识别：
 
-| 特征                   | 可能的算法 |
+| 特征 | 可能的算法 |
 | ---------------------- | ---------- |
-| 32 位十六进制          | MD5        |
-| 40 位十六进制          | SHA1       |
-| 64 位十六进制          | SHA256     |
-| Base64 编码 + 固定长度 | AES/DES    |
-| 看到 `CryptoJS.MD5`    | 确定是 MD5 |
+| 32 位十六进制 | MD5 |
+| 40 位十六进制 | SHA1 |
+| 64 位十六进制 | SHA256 |
+| Base64 编码 + 固定长度 | AES/DES |
+| 看到 `CryptoJS.MD5` | 确定是 MD5 |
 
 **工具**: 使用 [加密算法识别](../../03-Basic-Recipes/crypto_identification.md)
 
@@ -419,8 +434,8 @@ console.log(username + encryptedPassword + timestamp + "SECRET_KEY");
 
 ```javascript
 function customEncrypt(data) {
-  // 自定义算法
-  return data.split("").reverse().join("");
+// 自定义算法
+return data.split("").reverse().join("");
 }
 ```
 
@@ -432,7 +447,7 @@ function customEncrypt(data) {
 
 ---
 
-## 🔍 原理解析
+## 原理解析
 
 ### 为什么网站要加密参数？
 
@@ -455,12 +470,12 @@ received_sign = request.json['sign']
 calculated_sign = md5(username + password + timestamp + 'SECRET_KEY')
 
 if received_sign != calculated_sign:
-    return {'code': -1, 'message': '签名错误'}
+return {'code': -1, 'message': '签名错误'}
 ```
 
 ---
 
-## 📚 相关配方
+## 相关配方
 
 ### 基础配方
 
@@ -478,7 +493,7 @@ if received_sign != calculated_sign:
 
 ---
 
-## 🎉 恭喜！
+## 恭喜！
 
 你已经掌握了：
 
@@ -500,4 +515,4 @@ if received_sign != calculated_sign:
 - 记录你分析过的加密算法，建立自己的知识库
 - 遇到不懂的加密算法，可以搜索或参考 [加密算法识别](../../03-Basic-Recipes/crypto_identification.md)
 
-Happy Decrypting! 🔐
+Happy Decrypting! 

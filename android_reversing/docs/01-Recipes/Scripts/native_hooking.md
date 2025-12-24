@@ -6,6 +6,8 @@
 >
 > - **[Frida Native Hook](../../02-Tools/Dynamic/frida_guide.md#native-hook)** - 掌握 Interceptor API
 > - **[SO/ELF 格式](../../04-Reference/Foundations/so_elf_format.md)** - 理解 libc 函数与符号
+> - **[ARM 汇编入门](../../04-Reference/Foundations/arm_assembly.md)** - 理解 Inline Hook 原理
+> - **[二进制分析工具链](../../04-Reference/Foundations/binary_analysis_toolkit.md)** - Capstone 反汇编与指令分析
 
 在 Android 逆向中，Native 层 (C/C++) 的分析往往比 Java 层更具挑战性。Hook 标准 C 库 (libc) 函数是理解 Native 层行为、脱壳和还原算法的重要手段。
 
@@ -387,6 +389,328 @@ unpackHelper();
 
 ---
 
+## 8. Inline Hook 技术详解
+
+Inline Hook 是 Native 层 Hook 的核心技术，通过直接修改目标函数的机器指令来实现函数拦截。与 GOT/PLT Hook 不同，Inline Hook 可以 Hook 任意函数地址，包括内部函数。
+
+### 8.1 Inline Hook 原理
+
+Inline Hook 的基本原理是：
+
+1. **备份原指令**：保存目标函数开头的若干字节指令
+2. **写入跳转指令**：在原位置写入跳转到 Hook 函数的指令
+3. **执行 Hook 函数**：Hook 函数执行自定义逻辑
+4. **执行原函数**：通过 Trampoline 跳回执行原始指令
+
+```
+原始函数:                      Hook 后:
++------------------+           +------------------+
+| 原始指令 1       |  ───>     | JMP hook_func    |
+| 原始指令 2       |           | (覆盖原指令)      |
+| 原始指令 3       |           | 原始指令 3       |
+| ...              |           | ...              |
++------------------+           +------------------+
+
+Hook 函数:                     Trampoline:
++------------------+           +------------------+
+| 自定义逻辑       |           | 原始指令 1       |
+| call_original()  |  ───>     | 原始指令 2       |
+| 返回             |           | JMP 原函数+偏移  |
++------------------+           +------------------+
+```
+
+### 8.2 ARM64 跳转指令
+
+在 ARM64 架构上，常用的跳转方式：
+
+```c
+// 方式1: B 指令 (±128MB 范围)
+// B <offset>
+// 4 字节，范围有限
+
+// 方式2: LDR + BR 组合 (任意地址)
+// LDR X17, #8    ; 加载后面的地址到 X17
+// BR X17         ; 跳转到 X17
+// .quad <addr>   ; 64位目标地址
+// 共 16 字节
+
+// 方式3: ADRP + ADD + BR (±4GB 范围)
+// ADRP X17, <page>
+// ADD X17, X17, <offset>
+// BR X17
+// 12 字节
+```
+
+### 8.3 主流 Inline Hook 框架
+
+#### Substrate (Cydia Substrate)
+
+最早的 iOS/Android Hook 框架，业界标准。
+
+```c
+// Substrate API
+#include <substrate.h>
+
+// 原函数指针
+static int (*orig_open)(const char *path, int flags, ...);
+
+// Hook 函数
+int hook_open(const char *path, int flags, ...) {
+    // 自定义逻辑
+    __android_log_print(ANDROID_LOG_DEBUG, "HOOK", "open: %s", path);
+
+    // 调用原函数
+    return orig_open(path, flags);
+}
+
+// 安装 Hook
+MSHookFunction((void *)open, (void *)hook_open, (void **)&orig_open);
+```
+
+#### Dobby
+
+跨平台的轻量级 Hook 框架，支持 ARM/ARM64/x86/x86_64。
+
+```c
+// Dobby API
+#include "dobby.h"
+
+// 原函数指针
+static int (*orig_open)(const char *path, int flags, mode_t mode);
+
+// Hook 函数
+int hook_open(const char *path, int flags, mode_t mode) {
+    LOG("open: %s", path);
+    return orig_open(path, flags, mode);
+}
+
+// 安装 Hook
+DobbyHook((void *)open, (void *)hook_open, (void **)&orig_open);
+
+// 卸载 Hook
+DobbyDestroy((void *)open);
+```
+
+#### xHook (爱奇艺开源)
+
+基于 PLT/GOT 的 Hook 框架，稳定性好，但只能 Hook 外部函数调用。
+
+```c
+// xHook API
+#include "xhook.h"
+
+// Hook 函数
+int my_open(const char *path, int flags, ...) {
+    LOG("xhook open: %s", path);
+    // 调用原函数需要使用 xhook 的方式
+    return XHOOK_CALL_ORIG(open, path, flags);
+}
+
+// 注册 Hook
+xhook_register(".*\\.so$", "open", my_open, NULL);
+
+// 刷新 Hook
+xhook_refresh(0);
+```
+
+#### bhook (字节跳动开源)
+
+PLT Hook 框架，支持自动管理 Hook 代理。
+
+```c
+// bhook API
+#include "bytehook.h"
+
+// Hook 函数
+int my_open(const char *path, int flags, mode_t mode) {
+    LOG("bhook open: %s", path);
+
+    // 调用原函数
+    BYTEHOOK_CALL_PREV(my_open, path, flags, mode);
+    return result;
+}
+
+// 注册 Hook
+bytehook_hook_single(
+    "libc.so",           // 目标库
+    NULL,                // 调用者 (NULL = 所有)
+    "open",              // 函数名
+    (void *)my_open,     // Hook 函数
+    NULL,                // 回调
+    NULL                 // 用户数据
+);
+```
+
+#### ShadowHook (字节跳动开源)
+
+真正的 Inline Hook 框架，支持 Hook 任意函数。
+
+```c
+// ShadowHook API
+#include "shadowhook.h"
+
+// 原函数类型
+typedef int (*open_t)(const char *, int, mode_t);
+static open_t orig_open;
+
+// Hook 函数
+int hook_open(const char *path, int flags, mode_t mode) {
+    LOG("shadowhook open: %s", path);
+    return orig_open(path, flags, mode);
+}
+
+// 安装 Inline Hook
+void *stub = shadowhook_hook_func_addr(
+    (void *)open,           // 目标函数地址
+    (void *)hook_open,      // Hook 函数
+    (void **)&orig_open     // 原函数指针
+);
+
+// 卸载 Hook
+shadowhook_unhook(stub);
+```
+
+#### And-Hook
+
+轻量级 Android Inline Hook 库。
+
+```c
+// And-Hook API
+#include "And64InlineHook.hpp"
+
+// Hook
+A64HookFunction((void *)target_func, (void *)hook_func, (void **)&orig_func);
+```
+
+#### Whale
+
+支持多种 Hook 模式的框架。
+
+```c
+// Whale API - Inline Hook
+WInlineHookFunction((void *)open, (void *)hook_open, (void **)&orig_open);
+
+// Whale API - Import Hook (类似 PLT Hook)
+WImportHookFunction("libnative.so", "open", (void *)hook_open, (void **)&orig_open);
+```
+
+### 8.4 框架选型对比
+
+| 框架 | Hook 类型 | 架构支持 | 稳定性 | 性能 | 适用场景 |
+|------|----------|---------|--------|------|---------|
+| **Substrate** | Inline | ARM/ARM64/x86 | ★★★★★ | ★★★★ | 通用 Hook，Xposed/Cydia |
+| **Dobby** | Inline | ARM/ARM64/x86/x64 | ★★★★ | ★★★★★ | 跨平台，轻量级 |
+| **xHook** | PLT/GOT | ARM/ARM64/x86/x64 | ★★★★★ | ★★★★ | 外部函数 Hook |
+| **bhook** | PLT/GOT | ARM/ARM64 | ★★★★★ | ★★★★★ | 外部函数 Hook，自动代理 |
+| **ShadowHook** | Inline | ARM/ARM64 | ★★★★ | ★★★★★ | 任意函数 Hook |
+| **And-Hook** | Inline | ARM/ARM64 | ★★★ | ★★★★ | 简单场景 |
+| **Whale** | Inline/Import | ARM/ARM64 | ★★★ | ★★★ | 多模式需求 |
+
+### 8.5 选型建议
+
+1. **只需要 Hook 外部函数调用** → 优先选择 **bhook** 或 **xHook**
+   - 稳定性高，兼容性好
+   - 不需要处理指令重定位
+
+2. **需要 Hook 任意函数地址** → 选择 **ShadowHook** 或 **Dobby**
+   - ShadowHook 对 Android 优化更好
+   - Dobby 跨平台能力强
+
+3. **Xposed 模块开发** → 使用 **Substrate** 或 **Dobby**
+   - Substrate 是 Xposed 默认使用的框架
+   - Dobby 作为替代方案也很成熟
+
+4. **性能敏感场景** → **bhook** > **ShadowHook** > **Dobby**
+   - PLT Hook 性能开销最小
+   - Inline Hook 需要更多处理
+
+### 8.6 Frida 中的 Inline Hook
+
+Frida 的 `Interceptor.attach` 内部也是使用 Inline Hook 实现的：
+
+```javascript
+// Frida 使用内置的 Inline Hook 引擎
+Interceptor.attach(Module.findExportByName("libc.so", "open"), {
+    onEnter: function(args) {
+        console.log("open:", args[0].readCString());
+    },
+    onLeave: function(retval) {
+        console.log("  -> fd:", retval);
+    }
+});
+
+// Frida 也支持直接替换函数
+Interceptor.replace(targetAddr, new NativeCallback(function(arg0, arg1) {
+    console.log("Replaced function called");
+    return 0;
+}, 'int', ['pointer', 'int']));
+```
+
+### 8.7 实战示例：使用 Dobby Hook JNI 函数
+
+```c
+#include <jni.h>
+#include <android/log.h>
+#include "dobby.h"
+
+#define LOG(...) __android_log_print(ANDROID_LOG_DEBUG, "DobbyHook", __VA_ARGS__)
+
+// 原函数指针
+static jstring (*orig_NewStringUTF)(JNIEnv *env, const char *bytes);
+
+// Hook 函数
+jstring hook_NewStringUTF(JNIEnv *env, const char *bytes) {
+    LOG("NewStringUTF: %s", bytes);
+
+    // 可以修改字符串
+    if (strstr(bytes, "secret") != NULL) {
+        return orig_NewStringUTF(env, "hooked!");
+    }
+
+    return orig_NewStringUTF(env, bytes);
+}
+
+// 获取 JNI 函数地址
+void *get_jni_func(JNIEnv *env, const char *name) {
+    // JNINativeInterface 结构体偏移
+    // NewStringUTF 在 JNINativeInterface 中的偏移是 167
+    void **jni_funcs = *(void ***)env;
+    return jni_funcs[167];  // NewStringUTF offset
+}
+
+// 初始化 Hook
+void init_hooks(JNIEnv *env) {
+    void *NewStringUTF_addr = get_jni_func(env, "NewStringUTF");
+
+    DobbyHook(
+        NewStringUTF_addr,
+        (void *)hook_NewStringUTF,
+        (void **)&orig_NewStringUTF
+    );
+
+    LOG("Hook installed at %p", NewStringUTF_addr);
+}
+
+JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *reserved) {
+    JNIEnv *env;
+    vm->GetEnv((void **)&env, JNI_VERSION_1_6);
+
+    init_hooks(env);
+
+    return JNI_VERSION_1_6;
+}
+```
+
+### 8.8 注意事项
+
+1. **线程安全**：Hook 安装时需要考虑多线程并发执行
+2. **指令对齐**：ARM 指令需要 4 字节对齐，Thumb 需要 2 字节对齐
+3. **指令重定位**：被覆盖的指令如果包含 PC 相对寻址，需要重新计算
+4. **缓存刷新**：修改代码后需要刷新 CPU 指令缓存
+5. **权限检查**：需要确保内存页有可写权限 (mprotect)
+
+---
+
 ## 总结
 
 Native 层 Hook 是 Android 逆向的核心技能之一。通过 Hook libc 函数（如 open、dlopen、memcpy、strcmp 等），我们可以：
@@ -396,4 +720,10 @@ Native 层 Hook 是 Android 逆向的核心技能之一。通过 Hook libc 函�
 3. 分析字符串比较，绕过安全检测
 4. 进行脱壳分析，提取被保护的 DEX 文件
 
-在实践中，需要根据目标应用的具体行为来选择合适的 Hook 点。
+在技术选型时：
+
+- **PLT/GOT Hook** (xHook, bhook)：稳定性好，适合 Hook 外部函数调用
+- **Inline Hook** (Dobby, ShadowHook)：灵活性强，可以 Hook 任意地址
+- **Frida Interceptor**：开发效率高，适合快速分析和原型验证
+
+在实践中，需要根据目标应用的具体行为和需求来选择合适的 Hook 技术和框架。

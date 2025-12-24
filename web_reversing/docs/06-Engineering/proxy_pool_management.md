@@ -14,8 +14,8 @@
 
 ```python
 proxies = {
-    'http': 'http://proxy_ip:port',
-    'https': 'https://proxy_ip:port'
+'http': 'http://proxy_ip:port',
+'https': 'https://proxy_ip:port'
 }
 
 response = requests.get(url, proxies=proxies)
@@ -28,8 +28,8 @@ response = requests.get(url, proxies=proxies)
 ```python
 # 需要安装 requests[socks]
 proxies = {
-    'http': 'socks5://proxy_ip:port',
-    'https': 'socks5://proxy_ip:port'
+'http': 'socks5://proxy_ip:port',
+'https': 'socks5://proxy_ip:port'
 }
 ```
 
@@ -53,34 +53,34 @@ proxies = {
 
 ```
 ┌──────────────────────────────────┐
-│        Proxy Fetcher             │
-│  - 从多个源获取代理               │
-│  - 免费代理网站                   │
-│  - 付费代理 API                   │
+│ Proxy Fetcher │
+│ - 从多个源获取代理 │
+│ - 免费代理网站 │
+│ - 付费代理 API │
 └──────────┬───────────────────────┘
-           │
-           ▼
+│
+▼
 ┌──────────────────────────────────┐
-│       Proxy Validator            │
-│  - 验证代理有效性                 │
-│  - 测试响应时间                   │
-│  - 检查匿名性                     │
+│ Proxy Validator │
+│ - 验证代理有效性 │
+│ - 测试响应时间 │
+│ - 检查匿名性 │
 └──────────┬───────────────────────┘
-           │
-           ▼
+│
+▼
 ┌──────────────────────────────────┐
-│        Redis Storage             │
-│  - 可用代理池                     │
-│  - 代理评分                       │
-│  - 使用统计                       │
+│ Redis Storage │
+│ - 可用代理池 │
+│ - 代理评分 │
+│ - 使用统计 │
 └──────────┬───────────────────────┘
-           │
-           ▼
+│
+▼
 ┌──────────────────────────────────┐
-│       Proxy Scheduler            │
-│  - 智能分配代理                   │
-│  - 失败重试                       │
-│  - 动态调整                       │
+│ Proxy Scheduler │
+│ - 智能分配代理 │
+│ - 失败重试 │
+│ - 动态调整 │
 └──────────────────────────────────┘
 ```
 
@@ -101,114 +101,114 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 class ProxyPool:
-    def __init__(self):
-        self.r = redis.Redis(host='localhost', port=6379, decode_responses=True)
-        self.test_url = 'http://httpbin.org/ip'
-        self.timeout = 5
+def __init__(self):
+self.r = redis.Redis(host='localhost', port=6379, decode_responses=True)
+self.test_url = 'http://httpbin.org/ip'
+self.timeout = 5
 
-    def fetch_proxies(self) -> List[str]:
-        """从多个源获取代理"""
-        proxies = []
-        proxies.extend(self._fetch_from_free_proxy())
-        proxies.extend(self._fetch_from_paid_api())
-        return list(set(proxies))
+def fetch_proxies(self) -> List[str]:
+"""从多个源获取代理"""
+proxies = []
+proxies.extend(self._fetch_from_free_proxy())
+proxies.extend(self._fetch_from_paid_api())
+return list(set(proxies))
 
-    def _fetch_from_free_proxy(self) -> List[str]:
-        """从免费代理网站获取"""
-        proxies = []
-        try:
-            response = requests.get('https://www.kuaidaili.com/free/', timeout=10)
-            # 解析页面，提取代理
-        except Exception as e:
-            logger.error(f'Fetch free proxy failed: {e}')
-        return proxies
+def _fetch_from_free_proxy(self) -> List[str]:
+"""从免费代理网站获取"""
+proxies = []
+try:
+response = requests.get('https://www.kuaidaili.com/free/', timeout=10)
+# 解析页面，提取代理
+except Exception as e:
+logger.error(f'Fetch free proxy failed: {e}')
+return proxies
 
-    def _fetch_from_paid_api(self) -> List[str]:
-        """从付费 API 获取"""
-        proxies = []
-        try:
-            response = requests.get('http://api.proxy.com/get?num=100', timeout=10)
-            data = response.json()
-            proxies = [f"{item['ip']}:{item['port']}" for item in data]
-        except Exception as e:
-            logger.error(f'Fetch paid proxy failed: {e}')
-        return proxies
+def _fetch_from_paid_api(self) -> List[str]:
+"""从付费 API 获取"""
+proxies = []
+try:
+response = requests.get('http://api.proxy.com/get?num=100', timeout=10)
+data = response.json()
+proxies = [f"{item['ip']}:{item['port']}" for item in data]
+except Exception as e:
+logger.error(f'Fetch paid proxy failed: {e}')
+return proxies
 
-    def validate_proxy(self, proxy: str) -> bool:
-        """验证代理可用性"""
-        proxies = {
-            'http': f'http://{proxy}',
-            'https': f'http://{proxy}'
-        }
+def validate_proxy(self, proxy: str) -> bool:
+"""验证代理可用性"""
+proxies = {
+'http': f'http://{proxy}',
+'https': f'http://{proxy}'
+}
 
-        try:
-            start_time = time.time()
-            response = requests.get(
-                self.test_url,
-                proxies=proxies,
-                timeout=self.timeout
-            )
-            response_time = time.time() - start_time
+try:
+start_time = time.time()
+response = requests.get(
+self.test_url,
+proxies=proxies,
+timeout=self.timeout
+)
+response_time = time.time() - start_time
 
-            if response.status_code == 200:
-                self.r.zadd('proxy_pool', {proxy: response_time})
-                logger.info(f'Valid proxy: {proxy} ({response_time:.2f}s)')
-                return True
-        except:
-            pass
-        return False
+if response.status_code == 200:
+self.r.zadd('proxy_pool', {proxy: response_time})
+logger.info(f'Valid proxy: {proxy} ({response_time:.2f}s)')
+return True
+except:
+pass
+return False
 
-    def batch_validate(self, proxies: List[str]):
-        """批量验证代理"""
-        from concurrent.futures import ThreadPoolExecutor
-        with ThreadPoolExecutor(max_workers=50) as executor:
-            executor.map(self.validate_proxy, proxies)
+def batch_validate(self, proxies: List[str]):
+"""批量验证代理"""
+from concurrent.futures import ThreadPoolExecutor
+with ThreadPoolExecutor(max_workers=50) as executor:
+executor.map(self.validate_proxy, proxies)
 
-    def get_proxy(self) -> str:
-        """获取最快的代理"""
-        result = self.r.zrange('proxy_pool', 0, 0)
-        if result:
-            return result[0]
-        return None
+def get_proxy(self) -> str:
+"""获取最快的代理"""
+result = self.r.zrange('proxy_pool', 0, 0)
+if result:
+return result[0]
+return None
 
-    def get_random_proxy(self) -> str:
-        """随机获取代理"""
-        import random
-        proxies = self.r.zrange('proxy_pool', 0, -1)
-        if proxies:
-            return random.choice(proxies)
-        return None
+def get_random_proxy(self) -> str:
+"""随机获取代理"""
+import random
+proxies = self.r.zrange('proxy_pool', 0, -1)
+if proxies:
+return random.choice(proxies)
+return None
 
-    def remove_proxy(self, proxy: str):
-        """移除失效代理"""
-        self.r.zrem('proxy_pool', proxy)
-        logger.info(f'Removed proxy: {proxy}')
+def remove_proxy(self, proxy: str):
+"""移除失效代理"""
+self.r.zrem('proxy_pool', proxy)
+logger.info(f'Removed proxy: {proxy}')
 
-    def get_pool_size(self) -> int:
-        """获取代理池大小"""
-        return self.r.zcard('proxy_pool')
+def get_pool_size(self) -> int:
+"""获取代理池大小"""
+return self.r.zcard('proxy_pool')
 
-    def run(self):
-        """运行代理池"""
-        logger.info('Starting proxy pool...')
-        while True:
-            logger.info('Fetching proxies...')
-            proxies = self.fetch_proxies()
-            logger.info(f'Fetched {len(proxies)} proxies')
+def run(self):
+"""运行代理池"""
+logger.info('Starting proxy pool...')
+while True:
+logger.info('Fetching proxies...')
+proxies = self.fetch_proxies()
+logger.info(f'Fetched {len(proxies)} proxies')
 
-            logger.info('Validating proxies...')
-            self.batch_validate(proxies)
+logger.info('Validating proxies...')
+self.batch_validate(proxies)
 
-            self.cleanup_old_proxies()
+self.cleanup_old_proxies()
 
-            pool_size = self.get_pool_size()
-            logger.info(f'Current pool size: {pool_size}')
+pool_size = self.get_pool_size()
+logger.info(f'Current pool size: {pool_size}')
 
-            time.sleep(300)
+time.sleep(300)
 
-    def cleanup_old_proxies(self):
-        """清理响应时间过长的代理"""
-        self.r.zremrangebyscore('proxy_pool', 10, float('inf'))
+def cleanup_old_proxies(self):
+"""清理响应时间过长的代理"""
+self.r.zremrangebyscore('proxy_pool', 10, float('inf'))
 ```
 
 ---
@@ -219,29 +219,29 @@ class ProxyPool:
 
 ```python
 def crawl_with_proxy(url):
-    """使用代理爬取"""
-    pool = ProxyPool()
-    max_retries = 3
+"""使用代理爬取"""
+pool = ProxyPool()
+max_retries = 3
 
-    for i in range(max_retries):
-        proxy = pool.get_proxy()
-        if not proxy:
-            logger.error('No available proxy!')
-            break
+for i in range(max_retries):
+proxy = pool.get_proxy()
+if not proxy:
+logger.error('No available proxy!')
+break
 
-        proxies = {
-            'http': f'http://{proxy}',
-            'https': f'http://{proxy}'
-        }
+proxies = {
+'http': f'http://{proxy}',
+'https': f'http://{proxy}'
+}
 
-        try:
-            response = requests.get(url, proxies=proxies, timeout=10)
-            return response
-        except Exception as e:
-            logger.warning(f'Proxy {proxy} failed: {e}')
-            pool.remove_proxy(proxy)
+try:
+response = requests.get(url, proxies=proxies, timeout=10)
+return response
+except Exception as e:
+logger.warning(f'Proxy {proxy} failed: {e}')
+pool.remove_proxy(proxy)
 
-    return None
+return None
 ```
 
 ### 与 Scrapy 集成
@@ -249,22 +249,22 @@ def crawl_with_proxy(url):
 ```python
 # middlewares.py
 class ProxyMiddleware:
-    def __init__(self):
-        self.pool = ProxyPool()
+def __init__(self):
+self.pool = ProxyPool()
 
-    def process_request(self, request, spider):
-        """为请求设置代理"""
-        proxy = self.pool.get_proxy()
-        if proxy:
-            request.meta['proxy'] = f'http://{proxy}'
-            spider.logger.info(f'Using proxy: {proxy}')
+def process_request(self, request, spider):
+"""为请求设置代理"""
+proxy = self.pool.get_proxy()
+if proxy:
+request.meta['proxy'] = f'http://{proxy}'
+spider.logger.info(f'Using proxy: {proxy}')
 
-    def process_exception(self, request, exception, spider):
-        """处理代理失败"""
-        proxy = request.meta.get('proxy', '').replace('http://', '')
-        if proxy:
-            self.pool.remove_proxy(proxy)
-            spider.logger.warning(f'Removed failed proxy: {proxy}')
+def process_exception(self, request, exception, spider):
+"""处理代理失败"""
+proxy = request.meta.get('proxy', '').replace('http://', '')
+if proxy:
+self.pool.remove_proxy(proxy)
+spider.logger.warning(f'Removed failed proxy: {proxy}')
 ```
 
 ---
@@ -273,33 +273,33 @@ class ProxyMiddleware:
 
 ### 推荐服务商
 
-| 服务商                     | 类型            | 价格     | 特点                |
+| 服务商 | 类型 | 价格 | 特点 |
 | -------------------------- | --------------- | -------- | ------------------- |
-| **Luminati (Bright Data)** | 住宅代理        | $500+/月 | 质量最高，IP 池最大 |
-| **Smartproxy**             | 住宅代理        | $75+/月  | 性价比高            |
-| **Oxylabs**                | 数据中心 + 住宅 | $300+/月 | 稳定可靠            |
-| **ProxyMesh**              | 数据中心        | $10+/月  | 便宜入门            |
-| **站大爷**                 | 数据中心        | ¥100+/月 | 国内服务            |
+| **Luminati (Bright Data)** | 住宅代理 | $500+/月 | 质量最高，IP 池最大 |
+| **Smartproxy** | 住宅代理 | $75+/月 | 性价比高 |
+| **Oxylabs** | 数据中心 + 住宅 | $300+/月 | 稳定可靠 |
+| **ProxyMesh** | 数据中心 | $10+/月 | 便宜入门 |
+| **站大爷** | 数据中心 | ¥100+/月 | 国内服务 |
 
 ### API 集成示例
 
 ```python
 class LuminatiProxy:
-    def __init__(self, username, password, port=22225):
-        self.username = username
-        self.password = password
-        self.host = 'zproxy.lum-superproxy.io'
-        self.port = port
+def __init__(self, username, password, port=22225):
+self.username = username
+self.password = password
+self.host = 'zproxy.lum-superproxy.io'
+self.port = port
 
-    def get_proxy(self, country='us', session_id=None):
-        """获取代理"""
-        if session_id:
-            username = f'{self.username}-country-{country}-session-{session_id}'
-        else:
-            username = f'{self.username}-country-{country}'
+def get_proxy(self, country='us', session_id=None):
+"""获取代理"""
+if session_id:
+username = f'{self.username}-country-{country}-session-{session_id}'
+else:
+username = f'{self.username}-country-{country}'
 
-        proxy = f'http://{username}:{self.password}@{self.host}:{self.port}'
-        return {'http': proxy, 'https': proxy}
+proxy = f'http://{username}:{self.password}@{self.host}:{self.port}'
+return {'http': proxy, 'https': proxy}
 
 # 使用
 proxy_provider = LuminatiProxy('your_username', 'your_password')
@@ -315,41 +315,41 @@ response = requests.get(url, proxies=proxies)
 
 ```python
 class ProxyScorer:
-    def __init__(self):
-        self.r = redis.Redis(decode_responses=True)
+def __init__(self):
+self.r = redis.Redis(decode_responses=True)
 
-    def record_success(self, proxy):
-        """记录成功"""
-        self.r.hincrby(f'proxy:{proxy}', 'success', 1)
-        self.update_score(proxy)
+def record_success(self, proxy):
+"""记录成功"""
+self.r.hincrby(f'proxy:{proxy}', 'success', 1)
+self.update_score(proxy)
 
-    def record_failure(self, proxy):
-        """记录失败"""
-        self.r.hincrby(f'proxy:{proxy}', 'failure', 1)
-        self.update_score(proxy)
+def record_failure(self, proxy):
+"""记录失败"""
+self.r.hincrby(f'proxy:{proxy}', 'failure', 1)
+self.update_score(proxy)
 
-    def update_score(self, proxy):
-        """更新评分"""
-        success = int(self.r.hget(f'proxy:{proxy}', 'success') or 0)
-        failure = int(self.r.hget(f'proxy:{proxy}', 'failure') or 0)
+def update_score(self, proxy):
+"""更新评分"""
+success = int(self.r.hget(f'proxy:{proxy}', 'success') or 0)
+failure = int(self.r.hget(f'proxy:{proxy}', 'failure') or 0)
 
-        total = success + failure
-        if total > 0:
-            score = success / total
-            self.r.hset(f'proxy:{proxy}', 'score', score)
+total = success + failure
+if total > 0:
+score = success / total
+self.r.hset(f'proxy:{proxy}', 'score', score)
 
-    def get_best_proxies(self, count=10):
-        """获取评分最高的代理"""
-        all_proxies = self.r.keys('proxy:*')
-        scored_proxies = []
+def get_best_proxies(self, count=10):
+"""获取评分最高的代理"""
+all_proxies = self.r.keys('proxy:*')
+scored_proxies = []
 
-        for key in all_proxies:
-            proxy = key.replace('proxy:', '')
-            score = float(self.r.hget(key, 'score') or 0)
-            scored_proxies.append((proxy, score))
+for key in all_proxies:
+proxy = key.replace('proxy:', '')
+score = float(self.r.hget(key, 'score') or 0)
+scored_proxies.append((proxy, score))
 
-        scored_proxies.sort(key=lambda x: x[1], reverse=True)
-        return scored_proxies[:count]
+scored_proxies.sort(key=lambda x: x[1], reverse=True)
+return scored_proxies[:count]
 ```
 
 ---

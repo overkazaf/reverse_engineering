@@ -61,11 +61,11 @@ docker exec -it container_name sh
 ```yaml
 # docker-compose.yml
 services:
-  app:
-    image: myapp:latest
-    command: python app.py  # 确保命令正确
-    # 或使用数组格式
-    command: ["python", "app.py"]
+app:
+image: myapp:latest
+command: python app.py # 确保命令正确
+# 或使用数组格式
+command: ["python", "app.py"]
 ```
 
 ---
@@ -85,10 +85,10 @@ docker run --dns 8.8.8.8 --dns 8.8.4.4 myimage
 
 # 3. docker-compose.yml 中配置
 services:
-  app:
-    dns:
-      - 8.8.8.8
-      - 8.8.4.4
+app:
+dns:
+- 8.8.8.8
+- 8.8.4.4
 
 # 4. 检查 Docker 网络设置
 docker network ls
@@ -103,20 +103,20 @@ docker network inspect bridge
 # 1. 确保在同一网络中
 docker-compose.yml:
 services:
-  app:
-    networks:
-      - mynetwork
-  db:
-    networks:
-      - mynetwork
+app:
+networks:
+- mynetwork
+db:
+networks:
+- mynetwork
 
 networks:
-  mynetwork:
-    driver: bridge
+mynetwork:
+driver: bridge
 
 # 2. 使用服务名访问
 # 在 app 容器中访问 db 容器
-ping db  # 而不是 localhost
+ping db # 而不是 localhost
 
 # 3. 检查防火墙
 sudo ufw status
@@ -138,17 +138,17 @@ Error: Bind for 0.0.0.0:8080 failed: port is already allocated
 
 ```bash
 # 1. 查看端口占用
-lsof -i :8080  # Linux/Mac
-netstat -ano | findstr :8080  # Windows
+lsof -i :8080 # Linux/Mac
+netstat -ano | findstr :8080 # Windows
 
 # 2. 修改端口映射
-docker run -p 8081:8080 myimage  # 使用其他主机端口
+docker run -p 8081:8080 myimage # 使用其他主机端口
 
 # 3. docker-compose.yml
 services:
-  app:
-    ports:
-      - "8081:8080"  # host:container
+app:
+ports:
+- "8081:8080" # host:container
 
 # 4. 停止占用端口的容器
 docker ps | grep 8080
@@ -177,7 +177,7 @@ WORKDIR /app
 
 # 创建非 root 用户
 RUN useradd -m -u 1000 appuser && \
-    chown -R appuser:appuser /app
+chown -R appuser:appuser /app
 
 # 切换用户
 USER appuser
@@ -188,10 +188,10 @@ COPY --chown=appuser:appuser . .
 ```yaml
 # 2. docker-compose.yml 中指定用户
 services:
-  app:
-    user: "1000:1000" # UID:GID
-    volumes:
-      - ./data:/app/data
+app:
+user: "1000:1000" # UID:GID
+volumes:
+- ./data:/app/data
 ```
 
 ```bash
@@ -215,26 +215,26 @@ Error: invalid mount config: volume driver not found
 ```yaml
 # 1. 使用绝对路径
 services:
-  app:
-    volumes:
-      - /absolute/path/to/data:/app/data  # Linux/Mac
-      - C:/absolute/path/to/data:/app/data  # Windows
+app:
+volumes:
+- /absolute/path/to/data:/app/data # Linux/Mac
+- C:/absolute/path/to/data:/app/data # Windows
 
 # 2. 使用相对路径
 services:
-  app:
-    volumes:
-      - ./data:/app/data  # 相对于 docker-compose.yml
+app:
+volumes:
+- ./data:/app/data # 相对于 docker-compose.yml
 
 # 3. 使用命名卷
 services:
-  app:
-    volumes:
-      - mydata:/app/data
+app:
+volumes:
+- mydata:/app/data
 
 volumes:
-  mydata:
-    driver: local
+mydata:
+driver: local
 
 # 4. Windows 路径转换
 # Windows 下需要共享驱动器
@@ -321,11 +321,11 @@ WORKDIR /app
 
 # 3. 清理缓存
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends gcc && \
-    pip install -r requirements.txt && \
-    apt-get purge -y gcc && \
-    apt-get autoremove -y && \
-    rm -rf /var/lib/apt/lists/*
+apt-get install -y --no-install-recommends gcc && \
+pip install -r requirements.txt && \
+apt-get purge -y gcc && \
+apt-get autoremove -y && \
+rm -rf /var/lib/apt/lists/*
 
 # 4. 使用 .dockerignore
 .git/
@@ -359,19 +359,19 @@ Container killed due to memory limit
 ```yaml
 # docker-compose.yml
 services:
-  app:
-    deploy:
-      resources:
-        limits:
-          memory: 512M
-        reservations:
-          memory: 256M
+app:
+deploy:
+resources:
+limits:
+memory: 512M
+reservations:
+memory: 256M
 
 # 或使用旧语法
 services:
-  app:
-    mem_limit: 512m
-    mem_reservation: 256m
+app:
+mem_limit: 512m
+mem_reservation: 256m
 ```
 
 ```bash
@@ -386,18 +386,18 @@ docker stats container_name
 
 ```yaml
 services:
-  app:
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'  # 限制使用 0.5 个 CPU
-        reservations:
-          cpus: '0.25'
+app:
+deploy:
+resources:
+limits:
+cpus: '0.5' # 限制使用 0.5 个 CPU
+reservations:
+cpus: '0.25'
 
 # 或
 services:
-  app:
-    cpus: 0.5
+app:
+cpus: 0.5
 ```
 
 ---
@@ -411,23 +411,23 @@ services:
 ```yaml
 # 1. docker-compose.yml 中设置
 services:
-  app:
-    environment:
-      - DEBUG=true
-      - DB_HOST=database
+app:
+environment:
+- DEBUG=true
+- DB_HOST=database
 
 # 2. 从 .env 文件加载
 services:
-  app:
-    env_file:
-      - .env
-      - .env.local
+app:
+env_file:
+- .env
+- .env.local
 
 # 3. 从主机环境继承
 services:
-  app:
-    environment:
-      - HOME  # 从主机继承 HOME 变量
+app:
+environment:
+- HOME # 从主机继承 HOME 变量
 ```
 
 ```bash
@@ -450,26 +450,26 @@ docker exec container_name env
 
 ```yaml
 services:
-  app:
-    depends_on:
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
+app:
+depends_on:
+db:
+condition: service_healthy
+redis:
+condition: service_healthy
 
-  db:
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+db:
+healthcheck:
+test: ["CMD", "pg_isready", "-U", "postgres"]
+interval: 5s
+timeout: 5s
+retries: 5
 
-  redis:
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
-      timeout: 3s
-      retries: 5
+redis:
+healthcheck:
+test: ["CMD", "redis-cli", "ping"]
+interval: 5s
+timeout: 3s
+retries: 5
 ```
 
 ### 配置文件重载
@@ -497,19 +497,19 @@ docker-compose config
 ```dockerfile
 # Dockerfile
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:8000/health || exit 1
+CMD curl -f http://localhost:8000/health || exit 1
 ```
 
 ```yaml
 # docker-compose.yml
 services:
-  app:
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
+app:
+healthcheck:
+test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+interval: 30s
+timeout: 10s
+retries: 3
+start_period: 40s
 ```
 
 ```bash
@@ -531,12 +531,12 @@ docker inspect --format='{{.State.Health.Status}}' container_name
 ```yaml
 # docker-compose.yml
 services:
-  app:
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
+app:
+logging:
+driver: "json-file"
+options:
+max-size: "10m"
+max-file: "3"
 ```
 
 ```bash
@@ -548,11 +548,11 @@ truncate -s 0 /var/lib/docker/containers/*/*-json.log
 
 # 全局配置 /etc/docker/daemon.json
 {
-  "log-driver": "json-file",
-  "log-opts": {
-    "max-size": "10m",
-    "max-file": "3"
-  }
+"log-driver": "json-file",
+"log-opts": {
+"max-size": "10m",
+"max-file": "3"
+}
 }
 ```
 
@@ -571,8 +571,8 @@ RUN apt-get install -y package2
 
 # ✅ 合并层
 RUN apt-get update && \
-    apt-get install -y package1 package2 && \
-    rm -rf /var/lib/apt/lists/*
+apt-get install -y package1 package2 && \
+rm -rf /var/lib/apt/lists/*
 
 # 2. 使用缓存
 FROM python:3.11
@@ -654,7 +654,7 @@ telnet other_container 3306
 
 ---
 
-## 📚 相关章节
+## 相关章节
 
 - [Docker 部署](../06-Engineering/docker_deployment.md)
 - [Docker 配置模板](../09-Templates/docker_setup.md)

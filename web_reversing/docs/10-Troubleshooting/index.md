@@ -4,9 +4,9 @@
 
 ---
 
-## 🔍 问题分类
+## 问题分类
 
-### [🌐 网络和请求问题](./network_issues.md)
+### [ 网络和请求问题](./network_issues.md)
 
 - 请求超时
 - 连接被拒绝
@@ -14,7 +14,7 @@
 - 代理配置问题
 - Cookie 失效
 
-### [🔒 反爬虫问题](./anti_scraping_issues.md)
+### [ 反爬虫问题](./anti_scraping_issues.md)
 
 - IP 被封禁
 - 验证码拦截
@@ -22,7 +22,7 @@
 - JavaScript 挑战
 - 频率限制
 
-### [🐛 JavaScript 调试问题](./javascript_debugging.md)
+### [ JavaScript 调试问题](./javascript_debugging.md)
 
 - 断点不生效
 - 变量查看失败
@@ -30,7 +30,7 @@
 - 混淆代码调试
 - 异步代码跟踪
 
-### [🔧 工具使用问题](./tool_issues.md)
+### [ 工具使用问题](./tool_issues.md)
 
 - Chrome DevTools 问题
 - Burp Suite 配置
@@ -38,7 +38,7 @@
 - Postman 脚本错误
 - Node.js 环境问题
 
-### [💾 数据处理问题](./data_issues.md)
+### [ 数据处理问题](./data_issues.md)
 
 - 编码错误
 - JSON 解析失败
@@ -46,7 +46,7 @@
 - 文件读写错误
 - 内存溢出
 
-### [🐳 Docker 部署问题](./docker_issues.md)
+### [ Docker 部署问题](./docker_issues.md)
 
 - 容器启动失败
 - 网络连接问题
@@ -60,16 +60,16 @@
 
 ### 按错误信息查找
 
-| 错误信息                        | 可能原因         | 解决方案                                                    |
+| 错误信息 | 可能原因 | 解决方案 |
 | ------------------------------- | ---------------- | ----------------------------------------------------------- |
-| `Connection refused`            | 目标服务器不可用 | [网络问题](./network_issues.md#连接被拒绝)                  |
-| `SSL certificate verify failed` | SSL 证书验证失败 | [SSL 问题](./network_issues.md#ssl-证书错误)                |
-| `403 Forbidden`                 | 被反爬虫拦截     | [反爬问题](./anti_scraping_issues.md#403-forbidden)         |
-| `429 Too Many Requests`         | 请求频率过高     | [频率限制](./anti_scraping_issues.md#429-too-many-requests) |
-| `JSONDecodeError`               | JSON 格式错误    | [JSON 问题](./data_issues.md#json-解析失败)                 |
-| `UnicodeDecodeError`            | 编码问题         | [编码问题](./data_issues.md#编码错误)                       |
-| `TimeoutError`                  | 请求超时         | [超时问题](./network_issues.md#请求超时)                    |
-| `ModuleNotFoundError`           | 模块未安装       | [环境问题](./tool_issues.md#python-环境问题)                |
+| `Connection refused` | 目标服务器不可用 | [网络问题](./network_issues.md#连接被拒绝) |
+| `SSL certificate verify failed` | SSL 证书验证失败 | [SSL 问题](./network_issues.md#ssl-证书错误) |
+| `403 Forbidden` | 被反爬虫拦截 | [反爬问题](./anti_scraping_issues.md#403-forbidden) |
+| `429 Too Many Requests` | 请求频率过高 | [频率限制](./anti_scraping_issues.md#429-too-many-requests) |
+| `JSONDecodeError` | JSON 格式错误 | [JSON 问题](./data_issues.md#json-解析失败) |
+| `UnicodeDecodeError` | 编码问题 | [编码问题](./data_issues.md#编码错误) |
+| `TimeoutError` | 请求超时 | [超时问题](./network_issues.md#请求超时) |
+| `ModuleNotFoundError` | 模块未安装 | [环境问题](./tool_issues.md#python-环境问题) |
 
 ### 按场景查找
 
@@ -81,21 +81,21 @@
 
 ---
 
-## 🛠️ 调试技巧
+## 调试技巧
 
 ### 1. 系统化排查
 
 ```
 问题出现
-   ↓
+↓
 查看错误日志
-   ↓
+↓
 确定问题类型
-   ↓
+↓
 查阅相关文档
-   ↓
+↓
 尝试解决方案
-   ↓
+↓
 验证修复
 ```
 
@@ -108,12 +108,12 @@ import logging
 
 # 配置详细日志
 logging.basicConfig(
-    level=logging.DEBUG,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler('debug.log'),
-        logging.StreamHandler()
-    ]
+level=logging.DEBUG,
+format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+handlers=[
+logging.FileHandler('debug.log'),
+logging.StreamHandler()
+]
 )
 
 logger = logging.getLogger(__name__)
@@ -138,9 +138,9 @@ from urllib3.util.retry import Retry
 # 配置重试策略
 session = requests.Session()
 retry = Retry(
-    total=3,
-    backoff_factor=1,
-    status_forcelist=[500, 502, 503, 504]
+total=3,
+backoff_factor=1,
+status_forcelist=[500, 502, 503, 504]
 )
 adapter = HTTPAdapter(max_retries=retry)
 session.mount('http://', adapter)
@@ -160,8 +160,8 @@ http.client.HTTPConnection.debuglevel = 1
 
 // 2. 使用 debugger 语句
 function suspiciousFunction() {
-  debugger; // 代码会在这里暂停
-  // ... 可疑代码
+debugger; // 代码会在这里暂停
+// ... 可疑代码
 }
 
 // 3. 监控变量变化
@@ -173,7 +173,7 @@ function suspiciousFunction() {
 
 ---
 
-## 📋 常见问题 FAQ
+## 常见问题 FAQ
 
 ### Q: 为什么我的代理不生效？
 
@@ -221,34 +221,34 @@ function suspiciousFunction() {
 
 ---
 
-## 💡 预防措施
+## 预防措施
 
 ### 代码质量
 
 ```python
 # 1. 异常处理
 try:
-    response = requests.get(url, timeout=10)
-    response.raise_for_status()
+response = requests.get(url, timeout=10)
+response.raise_for_status()
 except requests.exceptions.Timeout:
-    logger.error(f"Request timeout: {url}")
+logger.error(f"Request timeout: {url}")
 except requests.exceptions.HTTPError as e:
-    logger.error(f"HTTP error: {e.response.status_code}")
+logger.error(f"HTTP error: {e.response.status_code}")
 except Exception as e:
-    logger.exception(f"Unexpected error: {e}")
+logger.exception(f"Unexpected error: {e}")
 
 # 2. 参数验证
 def process_data(data):
-    if not data:
-        raise ValueError("Data cannot be empty")
-    if not isinstance(data, dict):
-        raise TypeError("Data must be a dictionary")
-    # 处理数据...
+if not data:
+raise ValueError("Data cannot be empty")
+if not isinstance(data, dict):
+raise TypeError("Data must be a dictionary")
+# 处理数据...
 
 # 3. 资源管理
 with open('file.txt', 'r') as f:
-    data = f.read()
-    # 文件自动关闭
+data = f.read()
+# 文件自动关闭
 ```
 
 ### 日志记录
@@ -276,7 +276,7 @@ logger.info(f"Operation took {time.time() - start:.2f}s")
 
 ---
 
-## 🔗 相关资源
+## 相关资源
 
 - [Chrome DevTools 指南](../02-Tooling/browser_devtools.md)
 - [调试技巧](../03-Basic-Recipes/debugging_techniques.md)
@@ -296,4 +296,4 @@ logger.info(f"Operation took {time.time() - start:.2f}s")
 
 ---
 
-记住：**调试是一门艺术，耐心是关键！** 🎯
+记住：**调试是一门艺术，耐心是关键！** 

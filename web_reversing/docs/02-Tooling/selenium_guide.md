@@ -41,11 +41,11 @@ driver.get("https://example.com")
 
 ```python
 driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
-  "source": """
-    Object.defineProperty(navigator, 'webdriver', {
-      get: () => undefined
-    })
-  """
+"source": """
+Object.defineProperty(navigator, 'webdriver', {
+get: () => undefined
+})
+"""
 })
 ```
 
@@ -71,9 +71,9 @@ driver.get('https://nowsecure.nl') # 这是一个高强度检测站
 
 ## 3. 为什么逆向中可以较少用 Selenium？
 
-1.  **指纹严重**: Selenium 留下的特征比 Puppeteer 多得多（如 `cdc_` 变量）。
-2.  **Hook 不便**: 虽然可以通过 CDP 注入，但原生 API 对 Request Interception 的支持不如 Puppeteer 优雅。
-3.  **环境重**: 需要下载对应版本的 WebDriver，容易出现版本不兼容问题。
+1. **指纹严重**: Selenium 留下的特征比 Puppeteer 多得多（如 `cdc_` 变量）。
+2. **Hook 不便**: 虽然可以通过 CDP 注入，但原生 API 对 Request Interception 的支持不如 Puppeteer 优雅。
+3. **环境重**: 需要下载对应版本的 WebDriver，容易出现版本不兼容问题。
 
 ---
 

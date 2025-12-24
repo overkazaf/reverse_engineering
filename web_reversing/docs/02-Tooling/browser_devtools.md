@@ -1,6 +1,6 @@
 # 浏览器开发者工具 (DevTools)
 
-## 💭 思考时刻
+## 思考时刻
 
 在深入学习 DevTools 之前，先思考：
 
@@ -44,7 +44,7 @@ DevTools 是逆向工程师最顺手的兵器。除了基础的查看元素和�
 - `debug(fn)`: 当指定函数 `fn` 被调用时，自动断点。
 - `monitor(fn)`: 当 `fn` 被调用时，自动 Log 输出参数。
 - `queryObjects(Constructor)`: **强力工具**。查找所有该构造函数的实例。
-  - 例如：`queryObjects(WebSocket)` 可以列出当前页面所有的 WebSocket 连接对象。
+- 例如：`queryObjects(WebSocket)` 可以列出当前页面所有的 WebSocket 连接对象。
 - `getEventListeners(node)`: 获取 DOM 节点绑定的所有事件监听器。
 
 ### 当前上下文 (Context)
@@ -78,10 +78,10 @@ Console 左上角可以选择 Execution Context。如果网页使用了 iframe �
 
 **逆向神器**。允许你修改线上的 JS 文件并在本地保存，刷新页面后依然生效。
 
-1.  除了 "Overrides" 标签页，选择一个本地文件夹。
-2.  在 "Network" 或 "Sources" 面板找到 JS 文件，右键 -> "Save for overrides"。
-3.  直接编辑代码，Ctrl+S 保存。
-4.  **用途**: 删除混淆代码中的反调试逻辑、注入 Log 代码、修改加密函数的返回值。
+1. 除了 "Overrides" 标签页，选择一个本地文件夹。
+2. 在 "Network" 或 "Sources" 面板找到 JS 文件，右键 -> "Save for overrides"。
+3. 直接编辑代码，Ctrl+S 保存。
+4. **用途**: 删除混淆代码中的反调试逻辑、注入 Log 代码、修改加密函数的返回值。
 
 ---
 

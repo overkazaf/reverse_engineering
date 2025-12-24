@@ -19,12 +19,12 @@ JavaScript 是单线程的（主线程），为了不阻塞 UI 渲染，它采�
 
 ### 执行顺序
 
-1.  执行同步代码（Main Script）。
-2.  执行所有 **MicroTasks**（清空微任务队列）。
-3.  执行 **一个** MacroTask。
-4.  执行所有 **MicroTasks**。
-5.  更新 UI 渲染。
-6.  回到步骤 3。
+1. 执行同步代码（Main Script）。
+2. 执行所有 **MicroTasks**（清空微任务队列）。
+3. 执行 **一个** MacroTask。
+4. 执行所有 **MicroTasks**。
+5. 更新 UI 渲染。
+6. 回到步骤 3。
 
 ### [Reverse Engineering Context] 反调试陷阱
 
@@ -35,12 +35,12 @@ JavaScript 是单线程的（主线程），为了不阻塞 UI 渲染，它采�
 console.log("Start");
 
 setTimeout(() => {
-  console.log("Timeout"); // 宏任务
+console.log("Timeout"); // 宏任务
 }, 0);
 
 Promise.resolve().then(() => {
-  console.log("Promise"); // 微任务
-  // 恶意代码可能插在这里，优先于 setTimeout 执行
+console.log("Promise"); // 微任务
+// 恶意代码可能插在这里，优先于 setTimeout 执行
 });
 
 console.log("End");
@@ -58,10 +58,10 @@ Chrome 和 Node.js 都使用 V8 引擎。
 
 ### 编译流水线
 
-1.  **Parse**: 源码 -> AST (抽象语法树)。
-2.  **Ignition (解释器)**: AST -> Bytecode (字节码) 并执行。
-3.  **TurboFan (优化编译器)**: 将热点 Bytecode 编译成高效的 Machine Code (机器码)。
-4.  **Deoptimization (去优化)**: 如果假设失败（例如变量类型变了），从机器码退回到字节码。
+1. **Parse**: 源码 -> AST (抽象语法树)。
+2. **Ignition (解释器)**: AST -> Bytecode (字节码) 并执行。
+3. **TurboFan (优化编译器)**: 将热点 Bytecode 编译成高效的 Machine Code (机器码)。
+4. **Deoptimization (去优化)**: 如果假设失败（例如变量类型变了），从机器码退回到字节码。
 
 ### [Reverse Engineering Context] JIT 带来的现象
 
@@ -114,17 +114,17 @@ new Function("return 1")(); // 只能访问全局作用域
 // Hook eval
 window._eval = window.eval;
 window.eval = function (str) {
-  console.log("[eval]", str);
-  return window._eval(str);
+console.log("[eval]", str);
+return window._eval(str);
 };
 
 // Hook Function
 // 注意：Function 不仅仅是函数，它本身也是构造器
 var _Function = window.Function;
 window.Function = function (...args) {
-  let body = args[args.length - 1];
-  console.log("[Function]", body);
-  return _Function.apply(this, args);
+let body = args[args.length - 1];
+console.log("[Function]", body);
+return _Function.apply(this, args);
 };
 // 保持原型链，防止检测
 window.Function.prototype = _Function.prototype;

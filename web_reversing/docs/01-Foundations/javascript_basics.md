@@ -44,11 +44,11 @@ let bigNum = 1234567890123456789012345678901234567890n;
 ```javascript
 // Object
 let obj = {
-  name: "John",
-  age: 30,
-  greet: function () {
-    console.log("Hello");
-  },
+name: "John",
+age: 30,
+greet: function () {
+console.log("Hello");
+},
 };
 
 // Array
@@ -57,7 +57,7 @@ let mixed = [1, "two", true, null, { key: "value" }];
 
 // Function
 function myFunc() {
-  return "Hello";
+return "Hello";
 }
 
 // Date
@@ -77,26 +77,26 @@ let regex = /pattern/gi;
 // var: 函数作用域，存在变量提升
 var x = 1;
 if (true) {
-  var x = 2; // 同一个变量
-  console.log(x); // 2
+var x = 2; // 同一个变量
+console.log(x); // 2
 }
 console.log(x); // 2
 
 // let: 块作用域，无变量提升
 let y = 1;
 if (true) {
-  let y = 2; // 不同的变量
-  console.log(y); // 2
+let y = 2; // 不同的变量
+console.log(y); // 2
 }
 console.log(y); // 1
 
 // const: 块作用域，常量（引用不可变）
 const z = 1;
-// z = 2;  // 错误：不能重新赋值
+// z = 2; // 错误：不能重新赋值
 
 const obj = { name: "John" };
 obj.name = "Jane"; // 可以修改对象属性
-// obj = {};  // 错误：不能重新赋值
+// obj = {}; // 错误：不能重新赋值
 ```
 
 ---
@@ -109,16 +109,16 @@ obj.name = "Jane"; // 可以修改对象属性
 let global = "global";
 
 function outer() {
-  let outerVar = "outer";
+let outerVar = "outer";
 
-  function inner() {
-    let innerVar = "inner";
-    console.log(global); // "global"
-    console.log(outerVar); // "outer"
-    console.log(innerVar); // "inner"
-  }
+function inner() {
+let innerVar = "inner";
+console.log(global); // "global"
+console.log(outerVar); // "outer"
+console.log(innerVar); // "inner"
+}
 
-  inner();
+inner();
 }
 
 outer();
@@ -128,21 +128,21 @@ outer();
 
 ```javascript
 function createCounter() {
-  let count = 0;
+let count = 0;
 
-  return {
-    increment: function () {
-      count++;
-      return count;
-    },
-    decrement: function () {
-      count--;
-      return count;
-    },
-    getCount: function () {
-      return count;
-    },
-  };
+return {
+increment: function () {
+count++;
+return count;
+},
+decrement: function () {
+count--;
+return count;
+},
+getCount: function () {
+return count;
+},
+};
 }
 
 let counter = createCounter();
@@ -162,21 +162,21 @@ console.log(counter.getCount()); // 2
 ```javascript
 // 1. 默认绑定 - 指向全局对象（严格模式下为 undefined）
 function defaultBinding() {
-  console.log(this); // window (浏览器) 或 global (Node.js)
+console.log(this); // window (浏览器) 或 global (Node.js)
 }
 
 // 2. 隐式绑定 - 指向调用对象
 let obj = {
-  name: "John",
-  greet: function () {
-    console.log(this.name);
-  },
+name: "John",
+greet: function () {
+console.log(this.name);
+},
 };
 obj.greet(); // "John"
 
 // 3. 显式绑定 - 使用 call/apply/bind
 function greet() {
-  console.log(this.name);
+console.log(this.name);
 }
 let person = { name: "Jane" };
 greet.call(person); // "Jane"
@@ -186,22 +186,22 @@ boundGreet(); // "Jane"
 
 // 4. new 绑定 - 指向新创建的对象
 function Person(name) {
-  this.name = name;
+this.name = name;
 }
 let p = new Person("Bob");
 console.log(p.name); // "Bob"
 
 // 5. 箭头函数 - 继承外层作用域的 this
 let obj2 = {
-  name: "Alice",
-  greet: () => {
-    console.log(this.name); // undefined（继承外层 this）
-  },
-  greet2: function () {
-    setTimeout(() => {
-      console.log(this.name); // "Alice"（继承 greet2 的 this）
-    }, 100);
-  },
+name: "Alice",
+greet: () => {
+console.log(this.name); // undefined（继承外层 this）
+},
+greet2: function () {
+setTimeout(() => {
+console.log(this.name); // "Alice"（继承 greet2 的 this）
+}, 100);
+},
 };
 ```
 
@@ -213,12 +213,12 @@ let obj2 = {
 
 ```javascript
 function Person(name) {
-  this.name = name;
+this.name = name;
 }
 
 // 在原型上定义方法
 Person.prototype.greet = function () {
-  console.log(`Hello, I'm ${this.name}`);
+console.log(`Hello, I'm ${this.name}`);
 };
 
 let p1 = new Person("John");
@@ -248,28 +248,28 @@ console.log(obj.toString); // [Function: toString] (来自 Object.prototype)
 
 ```javascript
 class Person {
-  constructor(name) {
-    this.name = name;
-  }
+constructor(name) {
+this.name = name;
+}
 
-  greet() {
-    console.log(`Hello, I'm ${this.name}`);
-  }
+greet() {
+console.log(`Hello, I'm ${this.name}`);
+}
 
-  static species() {
-    return "Homo sapiens";
-  }
+static species() {
+return "Homo sapiens";
+}
 }
 
 class Student extends Person {
-  constructor(name, grade) {
-    super(name);
-    this.grade = grade;
-  }
+constructor(name, grade) {
+super(name);
+this.grade = grade;
+}
 
-  study() {
-    console.log(`${this.name} is studying in grade ${this.grade}`);
-  }
+study() {
+console.log(`${this.name} is studying in grade ${this.grade}`);
+}
 }
 
 let student = new Student("Alice", 10);
@@ -285,13 +285,13 @@ student.study(); // "Alice is studying in grade 10"
 
 ```javascript
 function fetchData(callback) {
-  setTimeout(() => {
-    callback("Data loaded");
-  }, 1000);
+setTimeout(() => {
+callback("Data loaded");
+}, 1000);
 }
 
 fetchData((data) => {
-  console.log(data); // "Data loaded" (1秒后)
+console.log(data); // "Data loaded" (1秒后)
 });
 ```
 
@@ -299,41 +299,41 @@ fetchData((data) => {
 
 ```javascript
 function fetchData() {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      let success = true;
-      if (success) {
-        resolve("Data loaded");
-      } else {
-        reject("Error occurred");
-      }
-    }, 1000);
-  });
+return new Promise((resolve, reject) => {
+setTimeout(() => {
+let success = true;
+if (success) {
+resolve("Data loaded");
+} else {
+reject("Error occurred");
+}
+}, 1000);
+});
 }
 
 // 使用 .then()
 fetchData()
-  .then((data) => console.log(data))
-  .catch((error) => console.error(error));
+.then((data) => console.log(data))
+.catch((error) => console.error(error));
 
 // Promise 链式调用
 fetch("https://api.example.com/data")
-  .then((response) => response.json())
-  .then((data) => console.log(data))
-  .catch((error) => console.error(error));
+.then((response) => response.json())
+.then((data) => console.log(data))
+.catch((error) => console.error(error));
 ```
 
 ### Async/Await（ES2017+）
 
 ```javascript
 async function loadData() {
-  try {
-    let response = await fetch("https://api.example.com/data");
-    let data = await response.json();
-    console.log(data);
-  } catch (error) {
-    console.error(error);
-  }
+try {
+let response = await fetch("https://api.example.com/data");
+let data = await response.json();
+console.log(data);
+} catch (error) {
+console.error(error);
+}
 }
 
 loadData();
@@ -402,9 +402,9 @@ str.toLowerCase(); // "hello world"
 str.toUpperCase(); // "HELLO WORLD"
 
 // 去空格
-"  hello  ".trim(); // "hello"
-"  hello  ".trimStart(); // "hello  "
-"  hello  ".trimEnd(); // "  hello"
+" hello ".trim(); // "hello"
+" hello ".trimStart(); // "hello "
+" hello ".trimEnd(); // " hello"
 ```
 
 ### Object 方法
@@ -467,11 +467,11 @@ str.split(/\s+/); // ["Hello", "World", "123"]
 
 ```javascript
 // 数字
-/\d+/  // 一个或多个数字
-/^\d+$/  // 整行都是数字
+/\d+/ // 一个或多个数字
+/^\d+$/ // 整行都是数字
 
 // 字母
-/[a-zA-Z]+/  // 一个或多个字母
+/[a-zA-Z]+/ // 一个或多个字母
 
 // 邮箱
 /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
@@ -497,29 +497,29 @@ let match = "2024-12-17".match(/(\d{4})-(\d{2})-(\d{2})/);
 ```javascript
 // try-catch
 try {
-  // 可能出错的代码
-  let result = riskyOperation();
+// 可能出错的代码
+let result = riskyOperation();
 } catch (error) {
-  console.error("Error occurred:", error.message);
+console.error("Error occurred:", error.message);
 } finally {
-  // 无论是否出错都会执行
-  cleanup();
+// 无论是否出错都会执行
+cleanup();
 }
 
 // 抛出错误
 function divide(a, b) {
-  if (b === 0) {
-    throw new Error("Division by zero");
-  }
-  return a / b;
+if (b === 0) {
+throw new Error("Division by zero");
+}
+return a / b;
 }
 
 // 自定义错误
 class CustomError extends Error {
-  constructor(message) {
-    super(message);
-    this.name = "CustomError";
-  }
+constructor(message) {
+super(message);
+this.name = "CustomError";
+}
 }
 
 throw new CustomError("Something went wrong");
@@ -534,13 +534,13 @@ throw new CustomError("Something went wrong");
 ```javascript
 // math.js
 export function add(a, b) {
-  return a + b;
+return a + b;
 }
 
 export const PI = 3.14159;
 
 export default class Calculator {
-  // ...
+// ...
 }
 
 // main.js
@@ -557,12 +557,12 @@ let calc = new Calculator();
 ```javascript
 // math.js
 function add(a, b) {
-  return a + b;
+return a + b;
 }
 
 module.exports = {
-  add,
-  PI: 3.14159,
+add,
+PI: 3.14159,
 };
 
 // main.js
@@ -591,15 +591,15 @@ console.log(math.add(1, 2)); // 3
 // Hook 原生方法
 const originalFetch = window.fetch;
 window.fetch = function (...args) {
-  console.log("Fetch called with:", args);
-  return originalFetch.apply(this, args);
+console.log("Fetch called with:", args);
+return originalFetch.apply(this, args);
 };
 
 // Hook 对象方法
 const originalPush = Array.prototype.push;
 Array.prototype.push = function (...items) {
-  console.log("Array push:", items);
-  return originalPush.apply(this, items);
+console.log("Array push:", items);
+return originalPush.apply(this, items);
 };
 ```
 
@@ -608,8 +608,8 @@ Array.prototype.push = function (...items) {
 ```javascript
 // 使用 debugger 语句
 function suspiciousFunction() {
-  debugger; // 执行到这里会自动断点
-  // ...
+debugger; // 执行到这里会自动断点
+// ...
 }
 
 // 条件断点

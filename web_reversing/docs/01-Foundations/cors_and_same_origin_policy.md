@@ -12,9 +12,9 @@
 
 两个 URL 说它们是“同源”的，必须满足三个条件完全相同：
 
-1.  **协议 (Protocol)**: 都是 `http` 或都是 `https`。
-2.  **域名 (Domain)**: 如 `www.example.com`。
-3.  **端口 (Port)**: 如 `80`, `443`。
+1. **协议 (Protocol)**: 都是 `http` 或都是 `https`。
+2. **域名 (Domain)**: 如 `www.example.com`。
+3. **端口 (Port)**: 如 `80`, `443`。
 
 如果不同源，浏览器会限制：
 
@@ -39,12 +39,12 @@ CORS 是一种机制，它使用额外的 HTTP 头来告诉浏览器：让运行
 
 - **简单请求**: (GET, POST, HEAD, 且 Content-Type 是 application/x-www-form-urlencoded, multipart/form-data, text/plain 之一)。
 
-  - 浏览器直接发请求。
-  - 看响应头有没有 `Access-Control-Allow-Origin`。
+- 浏览器直接发请求。
+- 看响应头有没有 `Access-Control-Allow-Origin`。
 
 - **预检请求 (Preflight)**: (带自定义 Header, 或 Content-Type 是 application/json 等)。
-  - 浏览器先发一个 `OPTIONS` 方法的请求。
-  - 服务器同意了 (`Access-Control-Allow-Methods`, `Access-Control-Allow-Headers`)，浏览器才发真正的请求。
+- 浏览器先发一个 `OPTIONS` 方法的请求。
+- 服务器同意了 (`Access-Control-Allow-Methods`, `Access-Control-Allow-Headers`)，浏览器才发真正的请求。
 
 ### 2. 关键响应头
 

@@ -1,10 +1,10 @@
-# Xposed 框架入门指南
+# Xposed 框架入门
 
 Xposed 是一个在 Android 平台上广受欢迎的动态代码 Hook 框架。与 Frida 主要用于实时、临时的分析不同，Xposed 旨在对系统和应用进行**永久性**的修改。它通过替换一个核心系统进程 (`app_process`)，在应用启动时加载自定义模块，从而实现对任意方法的高效 Hook。
 
 ## 目录
 
-- [Xposed 框架入门指南](#xposed-框架入门指南)
+- [Xposed 框架入门](#xposed-框架入门)
   - [Xposed 是一个在 Android 平台上广受欢迎的动态代码 Hook 框架。与 Frida 主要用于实时、临时的分析不同，Xposed 旨在对系统和应用进行**永久性**的修改。它通过替换一个核心系统进程 (`app_process`)，在应用启动时加载自定义模块，从而实现对任意方法的高效 Hook。](#xposed-是一个在-android-平台上广受欢迎的动态代码-hook-框架与-frida-主要用于实时临时的分析不同xposed-旨在对系统和应用进行永久性的修改它通过替换一个核心系统进程-app_process在应用启动时加载自定义模块从而实现对任意方法的高效-hook)
   - [目录](#目录)
     - [核心原理](#核心原理)
@@ -47,17 +47,17 @@ Xposed 的工作基础是它能够在 Android 系统启动的核心阶段介入�
 当前，LSPosed 是社区中最主流、兼容性最好的 Xposed 框架实现，它基于 Riru/Zygisk，以 Magisk 模块的形式工作。
 
 1. **前提条件**:
-    - 一台已解锁并刷入 Magisk 的 Android 设备（Android 8.1+）。
+   - 一台已解锁并刷入 Magisk 的 Android 设备（Android 8.1+）。
 2. **安装 Riru 或启用 Zygisk**:
-    - **Zygisk (推荐)**: 在 Magisk Manager 中，进入设置，开启 `Zygisk` 选项。
-    - **Riru (备选)**: 在 Magisk Manager 的"模块"部分，搜索并安装 `Riru` 模块。
+   - **Zygisk (推荐)**: 在 Magisk Manager 中，进入设置，开启 `Zygisk` 选项。
+   - **Riru (备选)**: 在 Magisk Manager 的"模块"部分，搜索并安装 `Riru` 模块。
 3. **安装 LSPosed**:
-    - 从 [LSPosed 的 GitHub Releases](https://github.com/LSPosed/LSPosed/releases) 页面下载最新的 Zygisk 版本 ZIP 包。
-    - 在 Magisk Manager 的"模块"页，选择"从本地安装"，然后选中下载的 LSPosed ZIP 包。
-    - 安装完成后，点击右下角的"重启"按钮。
+   - 从 [LSPosed 的 GitHub Releases](https://github.com/LSPosed/LSPosed/releases) 页面下载最新的 Zygisk 版本 ZIP 包。
+   - 在 Magisk Manager 的"模块"页，选择"从本地安装"，然后选中下载的 LSPosed ZIP 包。
+   - 安装完成后，点击右下角的"重启"按钮。
 4. **验证安装**:
-    - 重启后，桌面上会出现 LSPosed 的管理程序图标。
-    - 打开 LSPosed，如果状态显示为"已激活"，则表示框架安装成功。
+   - 重启后，桌面上会出现 LSPosed 的管理程序图标。
+   - 打开 LSPosed，如果状态显示为"已激活"，则表示框架安装成功。
 
 ---
 
@@ -77,7 +77,6 @@ Xposed 的工作基础是它能够在 Android 系统启动的核心阶段介入�
   // 'compileOnly' is used because the framework is already provided by the system, only needed at compile time
   }
   ```
-
 
 * 创建一个新的 Java 类，例如 `ClockHook`，并让它实现 `IXposedHookLoadPackage` 接口。
 
@@ -149,70 +148,77 @@ android:value="52" />
 1. **构建 APK**: 在 Android Studio 中构建你的项目，生成 APK。
 2. **安装 APK**: 将 APK 安装到你的测试设备上。
 3. **激活模块**:
-    - 打开 LSPosed Manager。
-    - 进入"模块"部分，找到你刚刚安装的模块。
-    - 点击它，然后**启用**模块。
-    - 在作用域列表中，勾选"**SystemUI**"。
+   - 打开 LSPosed Manager。
+   - 进入"模块"部分，找到你刚刚安装的模块。
+   - 点击它，然后**启用**模块。
+   - 在作用域列表中，勾选"**SystemUI**"。
 4. **重启目标进程**:
-    - 在 LSPosed 的状态页右上角，点击三个点菜单，选择"软重启"或"重启 SystemUI"，或者直接重启手机。
+   - 在 LSPosed 的状态页右上角，点击三个点菜单，选择"软重启"或"重启 SystemUI"，或者直接重启手机。
 5. **查看效果**: 查看你的状态栏时钟，它现在应该带有一个 小尾巴了！你也可以在 LSPosed 的日志中看到 `XposedBridge.log` 输出的信息。
+
 ---
+
 ### 核心 API 详解
 
 #### `IXposedHookLoadPackage`
+
 这是所有模块的入口点。它只有一个方法 `handleLoadPackage(LoadPackageParam lpparam)`。当任何一个 App 启动时，Xposed 都会调用这个方法，并传入 `lpparam` 对象，其中包含了非常有用的信息：
 
-* `lpparam.packageName`: 当前加载的 App 的包名。
+- `lpparam.packageName`: 当前加载的 App 的包名。
 
-* `lpparam.processName`: 当前进程名。
+- `lpparam.processName`: 当前进程名。
 
-* `lpparam.classLoader`: 当前 App 的 ClassLoader，这是 Hook App 内部类的**必需品**。
+- `lpparam.classLoader`: 当前 App 的 ClassLoader，这是 Hook App 内部类的**必需品**。
 
 #### `XposedHelpers`
+
 一个包含大量静态辅助方法的工具类，极大简化了反射操作。
 
-* `findAndHookMethod(String className, ClassLoader classLoader, String methodName, Object... parameterTypesAndCallback)`: 最核心的 Hook 方法。最后一个参数必须是 `XC_MethodHook` 回调。
+- `findAndHookMethod(String className, ClassLoader classLoader, String methodName, Object... parameterTypesAndCallback)`: 最核心的 Hook 方法。最后一个参数必须是 `XC_MethodHook` 回调。
 
-* `findClass(String className, ClassLoader classLoader)`: 查找一个类。
+- `findClass(String className, ClassLoader classLoader)`: 查找一个类。
 
-* `getObjectField(Object obj, String fieldName)` / `setObjectField(Object obj, String fieldName, Object value)`: 获取/设置对象的成员变量。
+- `getObjectField(Object obj, String fieldName)` / `setObjectField(Object obj, String fieldName, Object value)`: 获取/设置对象的成员变量。
 
-* `callMethod(Object obj, String methodName, Object... args)`: 调用一个对象的方法。
+- `callMethod(Object obj, String methodName, Object... args)`: 调用一个对象的方法。
 
-* `getStaticObjectField(...)` / `callStaticMethod(...)`: 用于操作静态变量和静态方法。
+- `getStaticObjectField(...)` / `callStaticMethod(...)`: 用于操作静态变量和静态方法。
 
 #### `XC_MethodHook`
+
 这是一个抽象类，你需要继承它并重写它的两个核心方法。
 
-* `beforeHookedMethod(MethodHookParam param)`: 在原方法执行**前**被调用。
+- `beforeHookedMethod(MethodHookParam param)`: 在原方法执行**前**被调用。
 
-* `afterHookedMethod(MethodHookParam param)`: 在原方法执行**后**被调用。
+- `afterHookedMethod(MethodHookParam param)`: 在原方法执行**后**被调用。
 
 这两个方法都接收一个 `MethodHookParam` 对象，它包含了本次方法调用的所有上下文信息：
 
-* `param.thisObject`: `this` 指针，即方法所属的对象实例。
+- `param.thisObject`: `this` 指针，即方法所属的对象实例。
 
-* `param.args`: `Object[]` 数组，包含了方法被调用时的所有参数。你可以在 `beforeHookedMethod` 中修改它。
+- `param.args`: `Object[]` 数组，包含了方法被调用时的所有参数。你可以在 `beforeHookedMethod` 中修改它。
 
-* `param.getResult()`: 获取原方法的返回值。只能在 `afterHookedMethod` 中调用。
+- `param.getResult()`: 获取原方法的返回值。只能在 `afterHookedMethod` 中调用。
 
-* `param.setResult(Object result)`: 设置一个新的返回值。如果在 `beforeHookedMethod` 中调用，原方法将**不会被执行**。如果在 `afterHookedMethod` 中调用，它会覆盖原方法的返回值。
+- `param.setResult(Object result)`: 设置一个新的返回值。如果在 `beforeHookedMethod` 中调用，原方法将**不会被执行**。如果在 `afterHookedMethod` 中调用，它会覆盖原方法的返回值。
 
-* `param.getThrowable()` / `param.setThrowable(Throwable t)`: 用于获取/设置方法抛出的异常。
+- `param.getThrowable()` / `param.setThrowable(Throwable t)`: 用于获取/设置方法抛出的异常。
+
 ---
+
 ### 常见应用场景
 
-* **UI 定制**: 修改系统或应用的外观，如状态栏、通知、锁屏等（代表作：`GravityBox`）。
+- **UI 定制**: 修改系统或应用的外观，如状态栏、通知、锁屏等（代表作：`GravityBox`）。
 
-* **功能增强**: 为应用添加原生不支持的功能，如为微信添加防撤回、自动抢红包功能。
+- **功能增强**: 为应用添加原生不支持的功能，如为微信添加防撤回、自动抢红包功能。
 
-* **去除限制**: 破解应用的付费功能、去除截图限制、去除广告等。
+- **去除限制**: 破解应用的付费功能、去除截图限制、去除广告等。
 
-* **隐私保护**: 拦截应用获取敏感信息的请求（如定位、联系人、设备ID），并返回虚假或空数据（代表作：`XPrivacyLua`）。
+- **隐私保护**: 拦截应用获取敏感信息的请求（如定位、联系人、设备 ID），并返回虚假或空数据（代表作：`XPrivacyLua`）。
 
-* **安全分析**:
-* 绕过 SSL Pinning（尽管 Frida 更灵活）。
+- **安全分析**:
+- 绕过 SSL Pinning（尽管 Frida 更灵活）。
 
-* 禁用 Root 检测或反调试机制。
+- 禁用 Root 检测或反调试机制。
 
-* 日志记录：打印关键方法的参数和返回值，分析应用行为。
+- 日志记录：打印关键方法的参数和返回值，分析应用行为。

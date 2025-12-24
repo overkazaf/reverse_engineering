@@ -1,6 +1,6 @@
 # TLS 指纹识别 (JA3/JA4)
 
-## 💭 思考时刻
+## 思考时刻
 
 在学习 TLS 指纹之前，先挑战你的认知：
 
@@ -10,6 +10,21 @@
 4. **实战场景：** 某网站封禁了所有 Python requests 的访问（返回 403），但用浏览器访问正常。你连一个请求都没发，它是怎么知道的？
 
 TLS 指纹，是应用层之下的"暗战"。
+
+---
+
+## 📚 前置知识
+
+在开始本配方之前，建议先掌握以下内容：
+
+| 知识领域 | 重要程度 | 参考资料 |
+|----------|---------|---------|
+| TLS/SSL 握手 | 必需 | [TLS/SSL 握手](../01-Foundations/tls_ssl_handshake.md) |
+| HTTP/HTTPS 协议 | 必需 | [HTTP/HTTPS 协议](../01-Foundations/http_https_protocol.md) |
+| Wireshark 使用 | 必需 | [Wireshark 指南](../02-Tooling/wireshark_guide.md) |
+| 浏览器指纹识别 | 推荐 | [浏览器指纹识别](./browser_fingerprinting.md) |
+
+> ⚠️ **重要提示**: TLS 指纹是**应用层之下**的检测手段，无法通过修改 HTTP 头来伪装。如果你的爬虫被 TLS 指纹识别封禁，需要使用特殊的网络库或浏览器自动化方案。
 
 ---
 
@@ -23,7 +38,7 @@ TLS 握手过程中，客户端会发送一系列参数（如支持的加密套�
 
 ```
 Client -----> ClientHello (包含加密套件、扩展等) -----> Server
-Client <----- ServerHello (选择加密套件)        <----- Server
+Client <----- ServerHello (选择加密套件) <----- Server
 ...
 ```
 
@@ -58,7 +73,7 @@ TLS版本, 加密套件列表, 扩展列表, 椭圆曲线列表, 椭圆曲线点
 
 ```
 JA3 = md5("771,49195-49199-...")
-    = "3b5074b1b5d032e5620f69f9f700ff0e"
+= "3b5074b1b5d032e5620f69f9f700ff0e"
 ```
 
 ### 2. 用途
@@ -109,7 +124,7 @@ print(response.text)
 import "github.com/refraction-networking/utls"
 
 config := &utls.Config{
-    ServerName: "example.com",
+ServerName: "example.com",
 }
 conn := utls.UClient(tcpConn, config, utls.HelloChrome_Auto)
 ```
@@ -122,12 +137,12 @@ conn := utls.UClient(tcpConn, config, utls.HelloChrome_Auto)
 const puppeteer = require("puppeteer");
 
 (async () => {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-  await page.goto("https://example.com");
-  const content = await page.content();
-  console.log(content);
-  await browser.close();
+const browser = await puppeteer.launch();
+const page = await browser.newPage();
+await page.goto("https://example.com");
+const content = await page.content();
+console.log(content);
+await browser.close();
 })();
 ```
 
@@ -137,12 +152,12 @@ const puppeteer = require("puppeteer");
 
 ### 与 JA3 的区别
 
-| 特性         | JA3         | JA4               |
+| 特性 | JA3 | JA4 |
 | ------------ | ----------- | ----------------- |
-| **格式**     | MD5 哈希    | 人类可读字符串    |
+| **格式** | MD5 哈希 | 人类可读字符串 |
 | **协议支持** | TLS 1.0-1.3 | TLS 1.0-1.3, QUIC |
-| **细粒度**   | 中          | 高                |
-| **可读性**   | 低（哈希）  | 高（分段字符串）  |
+| **细粒度** | 中 | 高 |
+| **可读性** | 低（哈希） | 高（分段字符串） |
 
 **JA4 示例**:
 
@@ -191,7 +206,7 @@ import requests
 
 # Python requests 的 TLS 指纹
 response = requests.get('https://tls.peet.ws/api/clean')
-print(response.json())  # 查看 JA3
+print(response.json()) # 查看 JA3
 ```
 
 对比浏览器访问 `https://tls.peet.ws/api/clean` 的结果。
@@ -217,12 +232,12 @@ from curl_cffi import requests
 
 # 使用 curl_cffi 模拟 Chrome 的 TLS 指纹
 response = requests.get(
-    'https://api.socialmedia.com/user/info',
-    headers={'User-Agent': 'Mozilla/5.0 ...'},
-    cookies={'session': 'xxx'},
-    impersonate='chrome110'
+'https://api.socialmedia.com/user/info',
+headers={'User-Agent': 'Mozilla/5.0 ...'},
+cookies={'session': 'xxx'},
+impersonate='chrome110'
 )
-print(response.text)  # 成功！
+print(response.text) # 成功！
 ```
 
 ---

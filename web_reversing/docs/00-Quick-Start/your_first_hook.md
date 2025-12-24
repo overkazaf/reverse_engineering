@@ -1,18 +1,31 @@
 # 配方：你的第一个 Hook
 
-## 📊 配方信息
+## 配方信息
 
-| 项目         | 说明                   |
+| 项目 | 说明 |
 | ------------ | ---------------------- |
-| **难度**     | ⭐ (入门级)            |
-| **预计时间** | 15 分钟                |
-| **所需工具** | Chrome 浏览器          |
+| **难度** | ⭐ (入门级) |
+| **预计时间** | 15 分钟 |
+| **所需工具** | Chrome 浏览器 |
 | **适用场景** | 监控网站的所有网络请求 |
-| **前置知识** | 无需编程基础           |
+| **前置知识** | 无需编程基础 |
 
 ---
 
-## 🎯 你将学到
+## 📚 前置知识
+
+本配方是**零基础入门**，无需任何编程经验即可开始学习。
+
+| 知识领域 | 重要程度 | 说明 |
+|----------|---------|------|
+| 基础计算机操作 | 必需 | 能够使用浏览器和键盘快捷键 |
+| 英语阅读能力 | 推荐 | 代码和控制台信息多为英文 |
+
+> 💡 **新手提示**: 这是你进入 Web 逆向世界的第一步！完成本配方后，建议继续学习 [解密 API 参数](./decrypt_api_params.md) 和 [Hook 技术详解](../03-Basic-Recipes/hooking_techniques.md)。
+
+---
+
+## 你将学到
 
 完成这个配方后，你将能够：
 
@@ -24,7 +37,7 @@
 
 ---
 
-## 📝 准备工作
+## 准备工作
 
 ### 检查清单
 
@@ -48,7 +61,7 @@ Hook（钩子）就像在数据流动的管道上安装一个"监听器"，可�
 
 ---
 
-## 🚀 步骤详解
+## 步骤详解
 
 ### Step 1: 打开开发者工具
 
@@ -56,15 +69,15 @@ Hook（钩子）就像在数据流动的管道上安装一个"监听器"，可�
 
 2. **访问测试网站**:
 
-   ```
-   https://jsonplaceholder.typicode.com/
-   ```
+```
+https://jsonplaceholder.typicode.com/
+```
 
 3. **打开开发者工具**（三种方式任选其一）:
 
-   - 按 `F12` 键
-   - 按 `Ctrl+Shift+I` (Windows) 或 `Cmd+Option+I` (Mac)
-   - 右键页面 → "检查"
+- 按 `F12` 键
+- 按 `Ctrl+Shift+I` (Windows) 或 `Cmd+Option+I` (Mac)
+- 右键页面 → "检查"
 
 4. **切换到 Console 标签**
 
@@ -79,65 +92,65 @@ Hook（钩子）就像在数据流动的管道上安装一个"监听器"，可�
 1. **复制以下代码**:
 
 ```javascript
-// 🎣 Universal Network Monitor Hook
+// Universal Network Monitor Hook
 (function () {
-  console.log("🎣 Network Hook已启动！");
+console.log(" Network Hook已启动！");
 
-  // Hook XMLHttpRequest
-  const originalXHROpen = XMLHttpRequest.prototype.open;
-  const originalXHRSend = XMLHttpRequest.prototype.send;
+// Hook XMLHttpRequest
+const originalXHROpen = XMLHttpRequest.prototype.open;
+const originalXHRSend = XMLHttpRequest.prototype.send;
 
-  XMLHttpRequest.prototype.open = function (method, url) {
-    this._method = method;
-    this._url = url;
-    return originalXHROpen.apply(this, arguments);
-  };
+XMLHttpRequest.prototype.open = function (method, url) {
+this._method = method;
+this._url = url;
+return originalXHROpen.apply(this, arguments);
+};
 
-  XMLHttpRequest.prototype.send = function (body) {
-    console.log("📤 [XHR 请求]", {
-      method: this._method,
-      url: this._url,
-      body: body,
-    });
+XMLHttpRequest.prototype.send = function (body) {
+console.log(" [XHR 请求]", {
+method: this._method,
+url: this._url,
+body: body,
+});
 
-    // Hook 响应
-    this.addEventListener("load", function () {
-      console.log("📥 [XHR 响应]", {
-        url: this._url,
-        status: this.status,
-        response: this.responseText.substring(0, 200) + "...",
-      });
-    });
+// Hook 响应
+this.addEventListener("load", function () {
+console.log(" [XHR 响应]", {
+url: this._url,
+status: this.status,
+response: this.responseText.substring(0, 200) + "...",
+});
+});
 
-    return originalXHRSend.apply(this, arguments);
-  };
+return originalXHRSend.apply(this, arguments);
+};
 
-  // Hook Fetch API
-  const originalFetch = window.fetch;
-  window.fetch = function (...args) {
-    console.log("📤 [Fetch 请求]", {
-      url: args[0],
-      options: args[1],
-    });
+// Hook Fetch API
+const originalFetch = window.fetch;
+window.fetch = function (...args) {
+console.log(" [Fetch 请求]", {
+url: args[0],
+options: args[1],
+});
 
-    return originalFetch.apply(this, args).then((response) => {
-      console.log("📥 [Fetch 响应]", {
-        url: response.url,
-        status: response.status,
-      });
+return originalFetch.apply(this, args).then((response) => {
+console.log(" [Fetch 响应]", {
+url: response.url,
+status: response.status,
+});
 
-      // Clone response 避免消耗它
-      return response
-        .clone()
-        .text()
-        .then((body) => {
-          console.log("📥 [Fetch 内容]", body.substring(0, 200) + "...");
-          return response;
-        });
-    });
-  };
+// Clone response 避免消耗它
+return response
+.clone()
+.text()
+.then((body) => {
+console.log(" [Fetch 内容]", body.substring(0, 200) + "...");
+return response;
+});
+});
+};
 
-  console.log("✅ Hook 安装成功！现在所有请求都会被记录。");
+console.log("✅ Hook 安装成功！现在所有请求都会被记录。");
 })();
 ```
 
@@ -153,24 +166,24 @@ Hook（钩子）就像在数据流动的管道上安装一个"监听器"，可�
 
 1. **在测试网站中点击示例链接**:
 
-   - 点击 `/posts`
-   - 点击 `/comments`
-   - 点击 `/users`
+- 点击 `/posts`
+- 点击 `/comments`
+- 点击 `/users`
 
 2. **观察 Console 输出**:
 
 你会看到类似这样的输出：
 
 ```
-📤 [Fetch 请求] {url: "https://jsonplaceholder.typicode.com/posts", options: undefined}
-📥 [Fetch 响应] {url: "https://jsonplaceholder.typicode.com/posts", status: 200}
-📥 [Fetch 内容] [{"userId":1,"id":1,"title":"sunt aut facere...
+[Fetch 请求] {url: "https://jsonplaceholder.typicode.com/posts", options: undefined}
+[Fetch 响应] {url: "https://jsonplaceholder.typicode.com/posts", status: 200}
+[Fetch 内容] [{"userId":1,"id":1,"title":"sunt aut facere...
 ```
 
 3. **分析输出信息**:
-   - 📤 表示发送的请求
-   - 📥 表示收到的响应
-   - 可以看到 URL、HTTP 方法、状态码、响应内容
+    - 表示发送的请求
+    - 表示收到的响应
+    - 可以看到 URL、HTTP 方法、状态码、响应内容
 
 ✅ **验证**: 每次点击链接都能在 Console 看到请求和响应记录
 
@@ -191,14 +204,14 @@ Hook（钩子）就像在数据流动的管道上安装一个"监听器"，可�
 完成后，检查以下项目：
 
 - ☐ Console 中看到 "✅ Hook 安装成功！"
-- ☐ 点击链接后能看到 📤 和 📥 的日志
+- ☐ 点击链接后能看到 和 的日志
 - ☐ 日志中包含 URL 和状态码
 - ☐ 能看到响应内容的前 200 个字符
 - ☐ 成功保存了日志文件
 
 ---
 
-## 🎓 进阶练习
+## 进阶练习
 
 ### 练习 1: Hook 其他网站
 
@@ -217,7 +230,7 @@ Hook（钩子）就像在数据流动的管道上安装一个"监听器"，可�
 ```javascript
 // 只记录包含特定关键词的请求
 if (this._url.includes("/api/")) {
-  console.log("📤 API 请求", this._url);
+console.log(" API 请求", this._url);
 }
 ```
 
@@ -229,12 +242,12 @@ if (this._url.includes("/api/")) {
 let requestCount = 0;
 // 在发送请求时
 requestCount++;
-console.log(`📊 总请求数: ${requestCount}`);
+console.log(` 总请求数: ${requestCount}`);
 ```
 
 ---
 
-## ❗ 常见问题
+## 常见问题
 
 ### Q1: 刷新页面后 Hook 失效了？
 
@@ -278,7 +291,7 @@ console.log(`📊 总请求数: ${requestCount}`);
 
 ---
 
-## 🔍 原理解析
+## 原理解析
 
 ### Hook 是如何工作的？
 
@@ -288,8 +301,8 @@ const original = XMLHttpRequest.prototype.send;
 
 // 2. 用我们的函数替换
 XMLHttpRequest.prototype.send = function (...args) {
-  console.log("拦截到了！"); // 我们的代码
-  return original.apply(this, args); // 调用原函数
+console.log("拦截到了！"); // 我们的代码
+return original.apply(this, args); // 调用原函数
 };
 ```
 
@@ -302,7 +315,7 @@ XMLHttpRequest.prototype.send = function (...args) {
 
 ---
 
-## 📚 相关配方
+## 相关配方
 
 ### 基础配方
 
@@ -319,7 +332,7 @@ XMLHttpRequest.prototype.send = function (...args) {
 
 ---
 
-## 🎉 恭喜！
+## 恭喜！
 
 你已经完成了第一个 Web 逆向配方！
 
@@ -339,4 +352,4 @@ XMLHttpRequest.prototype.send = function (...args) {
 - 尝试在不同网站使用，观察它们的请求模式
 - 加入逆向工程社区，分享你的发现
 
-Happy Hacking! 🎣
+Happy Hacking! 

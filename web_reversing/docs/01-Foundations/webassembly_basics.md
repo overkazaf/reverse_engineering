@@ -22,7 +22,7 @@ Wasm 模块需要 JS 来加载和实例化。
 ```javascript
 // 这里可以 Hook !
 WebAssembly.instantiate(buffer, imports).then((results) => {
-  // results.instance.exports 包含 Wasm 导出的函数
+// results.instance.exports 包含 Wasm 导出的函数
 });
 ```
 
@@ -41,24 +41,24 @@ WebAssembly.instantiate(buffer, imports).then((results) => {
 拿到 `.wasm` 文件后，需要将其还原为可读代码。
 
 - **wasm2wat (WABT 工具包)**: 转换为 `.wat` 汇编。
-  ```lisp
-  (func $add (param $p0 i32) (param $p1 i32) (result i32)
-    local.get $p0
-    local.get $p1
-    i32.add)
-  ```
+```lisp
+(func $add (param $p0 i32) (param $p1 i32) (result i32)
+local.get $p0
+local.get $p1
+i32.add)
+```
 - **Decompilers (反编译器)**: 尝试还原为类 C 代码（伪代码）。
-  - **JEB Decompiler**: 商业软件，反编译效果较好。
-  - **Ghidra**: 需要安装 Wasm 插件。
-  - **wasm-decompile**: WABT 自带，输出类似 C 的伪代码。
+- **JEB Decompiler**: 商业软件，反编译效果较好。
+- **Ghidra**: 需要安装 Wasm 插件。
+- **wasm-decompile**: WABT 自带，输出类似 C 的伪代码。
 
 ### 3. 动态调试
 
 Chrome DevTools 已经很好地支持 Wasm 调试。
 
-1.  Sources 面板 -> 找到 `wasm` 文件（通常在 `wasm://` 协议下）。
-2.  点击代码行号下断点。
-3.  单步调试，观察 Stack（栈）和 Memory（内存）的变化。
+1. Sources 面板 -> 找到 `wasm` 文件（通常在 `wasm://` 协议下）。
+2. 点击代码行号下断点。
+3. 单步调试，观察 Stack（栈）和 Memory（内存）的变化。
 
 ---
 
@@ -79,11 +79,11 @@ Wasm 经常需要调用 JS 函数（因为 Wasm 不能直接操作 DOM 或发送
 Wasm 的内存是一个 `WebAssembly.Memory` 对象，本质上是 JS 的 `ArrayBuffer`。
 
 - 任何时候，你都可以通过 JS 读取这块内存：
-  ```javascript
-  let mem = instance.exports.memory;
-  let view = new Uint8Array(mem.buffer);
-  console.log(view.slice(0, 100)); // 查看前100字节
-  ```
+```javascript
+let mem = instance.exports.memory;
+let view = new Uint8Array(mem.buffer);
+console.log(view.slice(0, 100)); // 查看前100字节
+```
 - 如果 Wasm 在进行加密操作，密钥往往就在这块内存里。
 
 ---

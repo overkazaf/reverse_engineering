@@ -14,25 +14,25 @@
 const puppeteer = require("puppeteer");
 
 (async () => {
-  // 启动浏览器
-  const browser = await puppeteer.launch({
-    headless: false, // 显示浏览器窗口
-    devtools: true, // 打开 DevTools
-  });
+// 启动浏览器
+const browser = await puppeteer.launch({
+headless: false, // 显示浏览器窗口
+devtools: true, // 打开 DevTools
+});
 
-  // 打开新页面
-  const page = await browser.newPage();
+// 打开新页面
+const page = await browser.newPage();
 
-  // 访问网站
-  await page.goto("https://example.com", {
-    waitUntil: "networkidle2", // 等待网络空闲
-  });
+// 访问网站
+await page.goto("https://example.com", {
+waitUntil: "networkidle2", // 等待网络空闲
+});
 
-  // 截图
-  await page.screenshot({ path: "screenshot.png" });
+// 截图
+await page.screenshot({ path: "screenshot.png" });
 
-  // 关闭浏览器
-  await browser.close();
+// 关闭浏览器
+await browser.close();
 })();
 ```
 
@@ -42,28 +42,28 @@ const puppeteer = require("puppeteer");
 const puppeteer = require("puppeteer");
 
 async function login(username, password) {
-  const browser = await puppeteer.launch({ headless: false });
-  const page = await browser.newPage();
+const browser = await puppeteer.launch({ headless: false });
+const page = await browser.newPage();
 
-  // 访问登录页
-  await page.goto("https://example.com/login");
+// 访问登录页
+await page.goto("https://example.com/login");
 
-  // 填写表单
-  await page.type("#username", username);
-  await page.type("#password", password);
+// 填写表单
+await page.type("#username", username);
+await page.type("#password", password);
 
-  // 点击登录按钮
-  await page.click("#login-button");
+// 点击登录按钮
+await page.click("#login-button");
 
-  // 等待跳转
-  await page.waitForNavigation();
+// 等待跳转
+await page.waitForNavigation();
 
-  // 获取 Cookie
-  const cookies = await page.cookies();
-  console.log("Cookies:", cookies);
+// 获取 Cookie
+const cookies = await page.cookies();
+console.log("Cookies:", cookies);
 
-  await browser.close();
-  return cookies;
+await browser.close();
+return cookies;
 }
 
 login("myuser", "mypassword");
@@ -73,23 +73,23 @@ login("myuser", "mypassword");
 
 ```javascript
 async function scrollToBottom(page) {
-  await page.evaluate(async () => {
-    await new Promise((resolve) => {
-      let totalHeight = 0;
-      const distance = 100;
+await page.evaluate(async () => {
+await new Promise((resolve) => {
+let totalHeight = 0;
+const distance = 100;
 
-      const timer = setInterval(() => {
-        const scrollHeight = document.body.scrollHeight;
-        window.scrollBy(0, distance);
-        totalHeight += distance;
+const timer = setInterval(() => {
+const scrollHeight = document.body.scrollHeight;
+window.scrollBy(0, distance);
+totalHeight += distance;
 
-        if (totalHeight >= scrollHeight) {
-          clearInterval(timer);
-          resolve();
-        }
-      }, 100);
-    });
-  });
+if (totalHeight >= scrollHeight) {
+clearInterval(timer);
+resolve();
+}
+}, 100);
+});
+});
 }
 
 // 使用
@@ -102,31 +102,31 @@ await scrollToBottom(page);
 
 ```javascript
 async function solveSlider(page) {
-  // 等待滑块出现
-  await page.waitForSelector(".slider");
+// 等待滑块出现
+await page.waitForSelector(".slider");
 
-  // 获取滑块和轨道元素
-  const slider = await page.$(".slider-button");
-  const track = await page.$(".slider-track");
+// 获取滑块和轨道元素
+const slider = await page.$(".slider-button");
+const track = await page.$(".slider-track");
 
-  // 获取轨道宽度
-  const trackBox = await track.boundingBox();
-  const distance = trackBox.width - 40; // 减去滑块宽度
+// 获取轨道宽度
+const trackBox = await track.boundingBox();
+const distance = trackBox.width - 40; // 减去滑块宽度
 
-  // 模拟人类拖动轨迹
-  await slider.hover();
-  await page.mouse.down();
+// 模拟人类拖动轨迹
+await slider.hover();
+await page.mouse.down();
 
-  // 生成贝塞尔曲线轨迹
-  const steps = 20;
-  for (let i = 0; i <= steps; i++) {
-    const x = (distance / steps) * i;
-    const y = Math.sin((i / steps) * Math.PI) * 10; // 添加随机抖动
-    await page.mouse.move(trackBox.x + x, trackBox.y + y);
-    await page.waitForTimeout(Math.random() * 10 + 5);
-  }
+// 生成贝塞尔曲线轨迹
+const steps = 20;
+for (let i = 0; i <= steps; i++) {
+const x = (distance / steps) * i;
+const y = Math.sin((i / steps) * Math.PI) * 10; // 添加随机抖动
+await page.mouse.move(trackBox.x + x, trackBox.y + y);
+await page.waitForTimeout(Math.random() * 10 + 5);
+}
 
-  await page.mouse.up();
+await page.mouse.up();
 }
 ```
 
@@ -139,26 +139,26 @@ const page = await browser.newPage();
 await page.setRequestInterception(true);
 
 page.on("request", (request) => {
-  // 拦截特定 URL
-  if (request.url().includes("/api/data")) {
-    // 修改请求头
-    request.continue({
-      headers: {
-        ...request.headers(),
-        "X-Custom-Header": "MyValue",
-      },
-    });
-  } else {
-    request.continue();
-  }
+// 拦截特定 URL
+if (request.url().includes("/api/data")) {
+// 修改请求头
+request.continue({
+headers: {
+...request.headers(),
+"X-Custom-Header": "MyValue",
+},
+});
+} else {
+request.continue();
+}
 });
 
 page.on("response", async (response) => {
-  const url = response.url();
-  if (url.includes("/api/data")) {
-    const data = await response.json();
-    console.log("API Response:", data);
-  }
+const url = response.url();
+if (url.includes("/api/data")) {
+const data = await response.json();
+console.log("API Response:", data);
+}
 });
 
 await page.goto("https://example.com");
@@ -171,20 +171,20 @@ const page = await browser.newPage();
 
 // 在页面加载前注入脚本
 await page.evaluateOnNewDocument(() => {
-  // Hook fetch
-  const originalFetch = window.fetch;
-  window.fetch = async function (...args) {
-    console.log("[Fetch]", args[0]);
-    const response = await originalFetch.apply(this, args);
-    return response;
-  };
+// Hook fetch
+const originalFetch = window.fetch;
+window.fetch = async function (...args) {
+console.log("[Fetch]", args[0]);
+const response = await originalFetch.apply(this, args);
+return response;
+};
 
-  // Hook localStorage
-  const originalSetItem = localStorage.setItem;
-  localStorage.setItem = function (key, value) {
-    console.log("[LocalStorage]", key, "=", value);
-    return originalSetItem.apply(this, arguments);
-  };
+// Hook localStorage
+const originalSetItem = localStorage.setItem;
+localStorage.setItem = function (key, value) {
+console.log("[LocalStorage]", key, "=", value);
+return originalSetItem.apply(this, arguments);
+};
 });
 
 await page.goto("https://example.com");
@@ -199,26 +199,26 @@ const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 puppeteer.use(StealthPlugin());
 
 const browser = await puppeteer.launch({
-  headless: false,
-  args: [
-    "--disable-blink-features=AutomationControlled",
-    "--disable-dev-shm-usage",
-    "--no-sandbox",
-  ],
+headless: false,
+args: [
+"--disable-blink-features=AutomationControlled",
+"--disable-dev-shm-usage",
+"--no-sandbox",
+],
 });
 
 const page = await browser.newPage();
 
 // 隐藏 webdriver 特征
 await page.evaluateOnNewDocument(() => {
-  Object.defineProperty(navigator, "webdriver", {
-    get: () => undefined,
-  });
+Object.defineProperty(navigator, "webdriver", {
+get: () => undefined,
+});
 
-  // 伪造 Chrome 插件
-  Object.defineProperty(navigator, "plugins", {
-    get: () => [1, 2, 3, 4, 5],
-  });
+// 伪造 Chrome 插件
+Object.defineProperty(navigator, "plugins", {
+get: () => [1, 2, 3, 4, 5],
+});
 });
 
 await page.goto("https://bot-detection.com");
@@ -234,14 +234,14 @@ await page.goto("https://bot-detection.com");
 const { chromium } = require("playwright");
 
 (async () => {
-  const browser = await chromium.launch({ headless: false });
-  const context = await browser.newContext();
-  const page = await context.newPage();
+const browser = await chromium.launch({ headless: false });
+const context = await browser.newContext();
+const page = await context.newPage();
 
-  await page.goto("https://example.com");
-  await page.screenshot({ path: "screenshot.png" });
+await page.goto("https://example.com");
+await page.screenshot({ path: "screenshot.png" });
 
-  await browser.close();
+await browser.close();
 })();
 ```
 
@@ -251,16 +251,16 @@ const { chromium } = require("playwright");
 const { chromium, firefox, webkit } = require("playwright");
 
 async function testAllBrowsers(url) {
-  for (const browserType of [chromium, firefox, webkit]) {
-    const browser = await browserType.launch();
-    const page = await browser.newPage();
-    await page.goto(url);
+for (const browserType of [chromium, firefox, webkit]) {
+const browser = await browserType.launch();
+const page = await browser.newPage();
+await page.goto(url);
 
-    const title = await page.title();
-    console.log(`${browserType.name()}: ${title}`);
+const title = await page.title();
+console.log(`${browserType.name()}: ${title}`);
 
-    await browser.close();
-  }
+await browser.close();
+}
 }
 
 testAllBrowsers("https://example.com");
@@ -275,10 +275,10 @@ const iPhone = devices["iPhone 12"];
 
 const browser = await chromium.launch();
 const context = await browser.newContext({
-  ...iPhone,
-  locale: "zh-CN",
-  geolocation: { longitude: 116.4, latitude: 39.9 }, // 北京
-  permissions: ["geolocation"],
+...iPhone,
+locale: "zh-CN",
+geolocation: { longitude: 116.4, latitude: 39.9 }, // 北京
+permissions: ["geolocation"],
 });
 
 const page = await context.newPage();
@@ -289,35 +289,35 @@ await page.goto("https://example.com");
 
 ```javascript
 async function scrapeMultiplePages(urls) {
-  const browser = await chromium.launch();
-  const context = await browser.newContext();
+const browser = await chromium.launch();
+const context = await browser.newContext();
 
-  // 并发打开多个页面
-  const promises = urls.map(async (url) => {
-    const page = await context.newPage();
-    await page.goto(url);
+// 并发打开多个页面
+const promises = urls.map(async (url) => {
+const page = await context.newPage();
+await page.goto(url);
 
-    const data = await page.evaluate(() => {
-      return {
-        title: document.title,
-        content: document.body.innerText,
-      };
-    });
+const data = await page.evaluate(() => {
+return {
+title: document.title,
+content: document.body.innerText,
+};
+});
 
-    await page.close();
-    return data;
-  });
+await page.close();
+return data;
+});
 
-  const results = await Promise.all(promises);
-  await browser.close();
+const results = await Promise.all(promises);
+await browser.close();
 
-  return results;
+return results;
 }
 
 const urls = [
-  "https://example.com/page1",
-  "https://example.com/page2",
-  "https://example.com/page3",
+"https://example.com/page1",
+"https://example.com/page2",
+"https://example.com/page3",
 ];
 
 scrapeMultiplePages(urls).then(console.log);
@@ -328,33 +328,33 @@ scrapeMultiplePages(urls).then(console.log);
 ```javascript
 // 登录并保存状态
 async function saveLoginState() {
-  const browser = await chromium.launch({ headless: false });
-  const context = await browser.newContext();
-  const page = await context.newPage();
+const browser = await chromium.launch({ headless: false });
+const context = await browser.newContext();
+const page = await context.newPage();
 
-  await page.goto("https://example.com/login");
-  await page.fill("#username", "myuser");
-  await page.fill("#password", "mypassword");
-  await page.click("#login-button");
-  await page.waitForNavigation();
+await page.goto("https://example.com/login");
+await page.fill("#username", "myuser");
+await page.fill("#password", "mypassword");
+await page.click("#login-button");
+await page.waitForNavigation();
 
-  // 保存存储状态（包含 Cookie、LocalStorage 等）
-  await context.storageState({ path: "state.json" });
-  await browser.close();
+// 保存存储状态（包含 Cookie、LocalStorage 等）
+await context.storageState({ path: "state.json" });
+await browser.close();
 }
 
 // 加载登录状态
 async function useLoginState() {
-  const browser = await chromium.launch({ headless: false });
-  const context = await browser.newContext({
-    storageState: "state.json",
-  });
-  const page = await context.newPage();
+const browser = await chromium.launch({ headless: false });
+const context = await browser.newContext({
+storageState: "state.json",
+});
+const page = await context.newPage();
 
-  // 直接访问需要登录的页面
-  await page.goto("https://example.com/dashboard");
+// 直接访问需要登录的页面
+await page.goto("https://example.com/dashboard");
 
-  await browser.close();
+await browser.close();
 }
 ```
 
@@ -362,7 +362,7 @@ async function useLoginState() {
 
 ```javascript
 const context = await browser.newContext({
-  recordHar: { path: "network.har" },
+recordHar: { path: "network.har" },
 });
 
 const page = await context.newPage();
@@ -382,23 +382,23 @@ await context.close(); // HAR 文件会自动保存
 ```javascript
 // 随机延迟
 function randomDelay(min = 100, max = 500) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
+return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 // 模拟真实打字
 async function typeHuman(page, selector, text) {
-  await page.click(selector);
-  for (const char of text) {
-    await page.type(selector, char);
-    await page.waitForTimeout(randomDelay(50, 150));
-  }
+await page.click(selector);
+for (const char of text) {
+await page.type(selector, char);
+await page.waitForTimeout(randomDelay(50, 150));
+}
 }
 
 // 随机鼠标移动
 async function randomMouseMove(page) {
-  const x = Math.floor(Math.random() * 800);
-  const y = Math.floor(Math.random() * 600);
-  await page.mouse.move(x, y);
+const x = Math.floor(Math.random() * 800);
+const y = Math.floor(Math.random() * 600);
+await page.mouse.move(x, y);
 }
 ```
 
@@ -406,24 +406,24 @@ async function randomMouseMove(page) {
 
 ```javascript
 const proxies = [
-  "http://proxy1.com:8080",
-  "http://proxy2.com:8080",
-  "http://proxy3.com:8080",
+"http://proxy1.com:8080",
+"http://proxy2.com:8080",
+"http://proxy3.com:8080",
 ];
 
 async function scrapeWithProxy(url) {
-  const proxy = proxies[Math.floor(Math.random() * proxies.length)];
+const proxy = proxies[Math.floor(Math.random() * proxies.length)];
 
-  const browser = await chromium.launch({
-    proxy: { server: proxy },
-  });
+const browser = await chromium.launch({
+proxy: { server: proxy },
+});
 
-  const page = await browser.newPage();
-  await page.goto(url);
+const page = await browser.newPage();
+await page.goto(url);
 
-  // 爬取数据...
+// 爬取数据...
 
-  await browser.close();
+await browser.close();
 }
 ```
 
@@ -431,21 +431,21 @@ async function scrapeWithProxy(url) {
 
 ```javascript
 async function retryOperation(operation, maxRetries = 3) {
-  for (let i = 0; i < maxRetries; i++) {
-    try {
-      return await operation();
-    } catch (error) {
-      console.log(`Attempt ${i + 1} failed:`, error.message);
-      if (i === maxRetries - 1) throw error;
-      await new Promise((resolve) => setTimeout(resolve, 1000 * (i + 1)));
-    }
-  }
+for (let i = 0; i < maxRetries; i++) {
+try {
+return await operation();
+} catch (error) {
+console.log(`Attempt ${i + 1} failed:`, error.message);
+if (i === maxRetries - 1) throw error;
+await new Promise((resolve) => setTimeout(resolve, 1000 * (i + 1)));
+}
+}
 }
 
 // 使用
 await retryOperation(async () => {
-  await page.goto("https://example.com");
-  await page.click("#button");
+await page.goto("https://example.com");
+await page.click("#button");
 });
 ```
 
@@ -461,61 +461,61 @@ const fs = require("fs");
 puppeteer.use(StealthPlugin());
 
 class WebScraper {
-  constructor() {
-    this.browser = null;
-    this.page = null;
-  }
+constructor() {
+this.browser = null;
+this.page = null;
+}
 
-  async init() {
-    this.browser = await puppeteer.launch({
-      headless: false,
-      args: ["--no-sandbox"],
-    });
-    this.page = await this.browser.newPage();
-    await this.page.setViewport({ width: 1920, height: 1080 });
-  }
+async init() {
+this.browser = await puppeteer.launch({
+headless: false,
+args: ["--no-sandbox"],
+});
+this.page = await this.browser.newPage();
+await this.page.setViewport({ width: 1920, height: 1080 });
+}
 
-  async login(username, password) {
-    await this.page.goto("https://example.com/login");
-    await this.page.type("#username", username, { delay: 100 });
-    await this.page.type("#password", password, { delay: 100 });
-    await this.page.click("#login-button");
-    await this.page.waitForNavigation();
-  }
+async login(username, password) {
+await this.page.goto("https://example.com/login");
+await this.page.type("#username", username, { delay: 100 });
+await this.page.type("#password", password, { delay: 100 });
+await this.page.click("#login-button");
+await this.page.waitForNavigation();
+}
 
-  async scrapeData(url) {
-    await this.page.goto(url);
+async scrapeData(url) {
+await this.page.goto(url);
 
-    const data = await this.page.evaluate(() => {
-      const items = [];
-      document.querySelectorAll(".item").forEach((item) => {
-        items.push({
-          title: item.querySelector(".title")?.innerText,
-          price: item.querySelector(".price")?.innerText,
-          link: item.querySelector("a")?.href,
-        });
-      });
-      return items;
-    });
+const data = await this.page.evaluate(() => {
+const items = [];
+document.querySelectorAll(".item").forEach((item) => {
+items.push({
+title: item.querySelector(".title")?.innerText,
+price: item.querySelector(".price")?.innerText,
+link: item.querySelector("a")?.href,
+});
+});
+return items;
+});
 
-    return data;
-  }
+return data;
+}
 
-  async close() {
-    await this.browser.close();
-  }
+async close() {
+await this.browser.close();
+}
 }
 
 // 使用
 (async () => {
-  const scraper = new WebScraper();
-  await scraper.init();
-  await scraper.login("myuser", "mypassword");
+const scraper = new WebScraper();
+await scraper.init();
+await scraper.login("myuser", "mypassword");
 
-  const data = await scraper.scrapeData("https://example.com/products");
-  fs.writeFileSync("data.json", JSON.stringify(data, null, 2));
+const data = await scraper.scrapeData("https://example.com/products");
+fs.writeFileSync("data.json", JSON.stringify(data, null, 2));
 
-  await scraper.close();
+await scraper.close();
 })();
 ```
 
@@ -548,7 +548,7 @@ class WebScraper {
 ```javascript
 // 使用示例 - 与 Puppeteer 完全兼容
 const browser = await puppeteer.connect({
-  browserWSEndpoint: "wss://chrome.browserless.io?token=YOUR_TOKEN",
+browserWSEndpoint: "wss://chrome.browserless.io?token=YOUR_TOKEN",
 });
 ```
 
@@ -589,12 +589,12 @@ const browser = await puppeteer.connect({
 ```javascript
 // Selenium 集成
 const caps = {
-  "bstack:options": {
-    userName: "YOUR_USERNAME",
-    accessKey: "YOUR_KEY",
-  },
-  browserName: "Chrome",
-  browserVersion: "latest",
+"bstack:options": {
+userName: "YOUR_USERNAME",
+accessKey: "YOUR_KEY",
+},
+browserName: "Chrome",
+browserVersion: "latest",
 };
 ```
 
@@ -636,18 +636,18 @@ const caps = {
 const Apify = require("apify");
 
 Apify.main(async () => {
-  const requestQueue = await Apify.openRequestQueue();
-  await requestQueue.addRequest({ url: "https://google.com" });
+const requestQueue = await Apify.openRequestQueue();
+await requestQueue.addRequest({ url: "https://google.com" });
 
-  const crawler = new Apify.PuppeteerCrawler({
-    requestQueue,
-    handlePageFunction: async ({ page, request }) => {
-      const title = await page.title();
-      console.log(`Title: ${title}`);
-    },
-  });
+const crawler = new Apify.PuppeteerCrawler({
+requestQueue,
+handlePageFunction: async ({ page, request }) => {
+const title = await page.title();
+console.log(`Title: ${title}`);
+},
+});
 
-  await crawler.run();
+await crawler.run();
 });
 ```
 
@@ -663,13 +663,13 @@ Apify.main(async () => {
 
 ### 2. 验证码打码服务对比
 
-| 服务商               | reCAPTCHA v2 | reCAPTCHA v3 | hCaptcha | 滑块验证码 | 价格（1000 次） | 成功率 | 速度   |
+| 服务商 | reCAPTCHA v2 | reCAPTCHA v3 | hCaptcha | 滑块验证码 | 价格（1000 次） | 成功率 | 速度 |
 | -------------------- | ------------ | ------------ | -------- | ---------- | --------------- | ------ | ------ |
-| **2Captcha**         | ✅           | ✅           | ✅       | ✅         | $2.99           | 95%+   | 10-30s |
-| **Anti-Captcha**     | ✅           | ✅           | ✅       | ✅         | $2.00           | 96%+   | 8-25s  |
-| **CapSolver**        | ✅           | ✅           | ✅       | ✅         | $1.50           | 94%+   | 15-35s |
-| **DeathByCaptcha**   | ✅           | ✅           | ❌       | ✅         | $1.39           | 92%+   | 20-40s |
-| **CapMonster Cloud** | ✅           | ✅           | ✅       | ✅         | $0.90           | 93%+   | 15-30s |
+| **2Captcha** | ✅ | ✅ | ✅ | ✅ | $2.99 | 95%+ | 10-30s |
+| **Anti-Captcha** | ✅ | ✅ | ✅ | ✅ | $2.00 | 96%+ | 8-25s |
+| **CapSolver** | ✅ | ✅ | ✅ | ✅ | $1.50 | 94%+ | 15-35s |
+| **DeathByCaptcha** | ✅ | ✅ | ❌ | ✅ | $1.39 | 92%+ | 20-40s |
+| **CapMonster Cloud** | ✅ | ✅ | ✅ | ✅ | $0.90 | 93%+ | 15-30s |
 
 #### 推荐方案
 
@@ -679,9 +679,9 @@ Apify.main(async () => {
 const solver = new Captcha.Solver("YOUR_API_KEY");
 
 const result = await solver.recaptcha({
-  pageurl: "https://example.com",
-  googlekey: "6Le-wvkSAAAAAPBMRTvw0Q4Muexq9bi0DJwx_mJ-",
-  version: "v2",
+pageurl: "https://example.com",
+googlekey: "6Le-wvkSAAAAAPBMRTvw0Q4Muexq9bi0DJwx_mJ-",
+version: "v2",
 });
 
 console.log("Token:", result.data);
@@ -777,7 +777,7 @@ console.log("Token:", result.data);
 import requests
 
 proxies = {
-    'http': 'http://YOUR_API_KEY:@proxy.crawlera.com:8011/'
+'http': 'http://YOUR_API_KEY:@proxy.crawlera.com:8011/'
 }
 
 response = requests.get('https://example.com', proxies=proxies)
@@ -841,25 +841,25 @@ response = requests.get('https://example.com', proxies=proxies)
 需要跨浏览器测试？
 ├─ 是 → BrowserStack/Sauce Labs
 └─ 否 → 需要大规模爬取？
-    ├─ 是（>10万页/天）→ 自建 + Bright Data代理
-    └─ 否 → 团队有DevOps？
-        ├─ 是 → 自建Puppeteer Cluster
-        └─ 否 → Apify/ParseHub
+├─ 是（>10万页/天）→ 自建 + Bright Data代理
+└─ 否 → 团队有DevOps？
+├─ 是 → 自建Puppeteer Cluster
+└─ 否 → Apify/ParseHub
 ```
 
 ---
 
 ### 7. 开源 vs 商业方案综合对比
 
-| 维度           | 自建开源   | 半托管（Apify） | 全托管（BrowserStack） |
+| 维度 | 自建开源 | 半托管（Apify） | 全托管（BrowserStack） |
 | -------------- | ---------- | --------------- | ---------------------- |
-| **初始成本**   | 低         | 中              | 低                     |
-| **运营成本**   | 高（人力） | 低              | 零                     |
-| **可扩展性**   | 需自行实现 | 自动扩展        | 自动扩展               |
-| **技术控制**   | 完全控制   | 部分控制        | 有限控制               |
-| **学习曲线**   | 陡峭       | 中等            | 平缓                   |
-| **反检测能力** | 需自己维护 | 平台提供        | 平台提供               |
-| **合规性**     | 自行负责   | 平台协助        | 平台负责               |
+| **初始成本** | 低 | 中 | 低 |
+| **运营成本** | 高（人力） | 低 | 零 |
+| **可扩展性** | 需自行实现 | 自动扩展 | 自动扩展 |
+| **技术控制** | 完全控制 | 部分控制 | 有限控制 |
+| **学习曲线** | 陡峭 | 中等 | 平缓 |
+| **反检测能力** | 需自己维护 | 平台提供 | 平台提供 |
+| **合规性** | 自行负责 | 平台协助 | 平台负责 |
 
 ---
 

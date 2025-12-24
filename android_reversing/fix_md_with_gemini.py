@@ -14,12 +14,12 @@ import sys
 import httpx
 
 # Gemini API 配置
-API_KEY = "AIzaSyDjV8l0sZKvHRLmVw0Jtw4y4oJMD4FEcsE"
+API_KEY = os.environ.get("GEMINI_API_KEY", "")
 MODEL_NAME = "gemini-2.5-pro"  # 使用 2.5 pro 的最新版本
 
-# 代理配置
-HTTP_PROXY = "http://127.0.0.1:1087"
-HTTPS_PROXY = "https://127.0.0.1:1087"
+# 代理配置 (可选，根据网络环境设置)
+HTTP_PROXY = os.environ.get("HTTP_PROXY", "")
+HTTPS_PROXY = os.environ.get("HTTPS_PROXY", "")
 
 # 文件清单路径
 MANIFEST_FILE = "markdown_fix_manifest.json"

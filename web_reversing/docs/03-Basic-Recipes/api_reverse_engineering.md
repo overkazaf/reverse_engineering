@@ -4,18 +4,34 @@
 
 ---
 
-## 📊 配方信息
+## 配方信息
 
-| 项目         | 说明                                 |
+| 项目 | 说明 |
 | ------------ | ------------------------------------ |
-| **难度**     | ⭐⭐⭐ (中级)                        |
-| **预计时间** | 1-4 小时                             |
-| **所需工具** | Chrome DevTools, Python/Node.js      |
+| **难度** | ⭐⭐⭐ (中级) |
+| **预计时间** | 1-4 小时 |
+| **所需工具** | Chrome DevTools, Python/Node.js |
 | **适用场景** | API 签名破解、参数加密分析、请求伪造 |
 
 ---
 
-## 🎯 学习目标
+## 📚 前置知识
+
+在开始本配方之前，建议先掌握以下内容：
+
+| 知识领域 | 重要程度 | 参考资料 |
+|----------|---------|---------|
+| HTTP/HTTPS 协议 | 必需 | [HTTP/HTTPS 协议](../01-Foundations/http_https_protocol.md) |
+| Web API 与 Ajax | 必需 | [Web API 与 Ajax](../01-Foundations/web_api_and_ajax.md) |
+| Hook 技术 | 必需 | [Hook 技术](./hooking_techniques.md) |
+| 加密算法识别 | 推荐 | [加密算法识别](./crypto_identification.md) |
+| Chrome DevTools | 推荐 | [浏览器开发者工具](../02-Tooling/browser_devtools.md) |
+
+> 💡 **提示**: API 逆向是实现自动化爬取的关键步骤。掌握本配方后，你将能够脱离浏览器，用脚本直接调用目标网站的 API。
+
+---
+
+## 学习目标
 
 完成本配方后，你将能够：
 
@@ -27,7 +43,7 @@
 
 ---
 
-## 💡 核心概念
+## 核心概念
 
 逆向的最终目的通常不是为了看代码，而是为了**调用 API**。我们需要搞清楚客户端是如何构造请求的，以便我们在脚本中脱离浏览器伪造请求。
 
@@ -62,12 +78,12 @@ import hmac
 import hashlib
 
 def generate_hmac_sign(params, secret_key):
-    message = "&".join([f"{k}={v}" for k, v in sorted(params.items())])
-    return hmac.new(
-        secret_key.encode(),
-        message.encode(),
-        hashlib.sha256
-    ).hexdigest()
+message = "&".join([f"{k}={v}" for k, v in sorted(params.items())])
+return hmac.new(
+secret_key.encode(),
+message.encode(),
+hashlib.sha256
+).hexdigest()
 ```
 
 #### 自定义签名算法
@@ -75,13 +91,13 @@ def generate_hmac_sign(params, secret_key):
 ```javascript
 // 某电商平台的魔改签名
 function customSign(params) {
-  let str = Object.keys(params)
-    .sort()
-    .map((k) => params[k])
-    .join("");
-  // 魔改的 MD5：增加了位移和异或操作
-  let hash = md5(str);
-  return hash.split("").reverse().join("").substring(0, 16);
+let str = Object.keys(params)
+.sort()
+.map((k) => params[k])
+.join("");
+// 魔改的 MD5：增加了位移和异或操作
+let hash = md5(str);
+return hash.split("").reverse().join("").substring(0, 16);
 }
 ```
 
@@ -91,11 +107,11 @@ function customSign(params) {
 
 在 Network 面板发送 5-10 个请求，记录所有参数的变化：
 
-| 请求序号 | timestamp  | nonce  | user_id | sign        |
+| 请求序号 | timestamp | nonce | user_id | sign |
 | -------- | ---------- | ------ | ------- | ----------- |
-| 1        | 1638360000 | abc123 | 1001    | 5f8e9d2a... |
-| 2        | 1638360003 | def456 | 1001    | 7a3b1c4e... |
-| 3        | 1638360005 | ghi789 | 1001    | 2d6f8e1b... |
+| 1 | 1638360000 | abc123 | 1001 | 5f8e9d2a... |
+| 2 | 1638360003 | def456 | 1001 | 7a3b1c4e... |
+| 3 | 1638360005 | ghi789 | 1001 | 2d6f8e1b... |
 
 **分析规律**:
 
@@ -131,14 +147,14 @@ encrypt;
 ```javascript
 // 注入到页面最前面（Console 或 Tampermonkey）
 (function () {
-  const _open = XMLHttpRequest.prototype.open;
-  XMLHttpRequest.prototype.open = function (method, url) {
-    console.log("[XHR]", method, url);
-    if (url.includes("/api/data")) {
-      debugger; // 发送 /api/data 请求前自动断点
-    }
-    return _open.apply(this, arguments);
-  };
+const _open = XMLHttpRequest.prototype.open;
+XMLHttpRequest.prototype.open = function (method, url) {
+console.log("[XHR]", method, url);
+if (url.includes("/api/data")) {
+debugger; // 发送 /api/data 请求前自动断点
+}
+return _open.apply(this, arguments);
+};
 })();
 ```
 
@@ -146,13 +162,13 @@ encrypt;
 
 **标准算法识别**
 
-| 特征                    | 算法        | 输出长度              |
+| 特征 | 算法 | 输出长度 |
 | ----------------------- | ----------- | --------------------- |
-| 字符集 `[0-9a-f]`       | MD5         | 32 字符               |
-| 字符集 `[0-9a-f]`       | SHA1        | 40 字符               |
-| 字符集 `[0-9a-f]`       | SHA256      | 64 字符               |
+| 字符集 `[0-9a-f]` | MD5 | 32 字符 |
+| 字符集 `[0-9a-f]` | SHA1 | 40 字符 |
+| 字符集 `[0-9a-f]` | SHA256 | 64 字符 |
 | 字符集 `[A-Za-z0-9+/=]` | Base64 编码 | 任意长度，能被 4 整除 |
-| 字符集 `[A-Za-z0-9]`    | 自定义编码  | 需要分析具体逻辑      |
+| 字符集 `[A-Za-z0-9]` | 自定义编码 | 需要分析具体逻辑 |
 
 **在代码中查找特征码**
 
@@ -176,9 +192,9 @@ modPow, BigInteger, 0x10001 (常见公钥指数)
 ```javascript
 // 浏览器中的签名函数
 function getSign(videoId, timestamp) {
-  const salt = "h5@video#2024";
-  const raw = `videoId=${videoId}&ts=${timestamp}&salt=${salt}`;
-  return md5(raw).toUpperCase();
+const salt = "h5@video#2024";
+const raw = `videoId=${videoId}&ts=${timestamp}&salt=${salt}`;
+return md5(raw).toUpperCase();
 }
 ```
 
@@ -189,16 +205,16 @@ import hashlib
 import time
 
 def get_sign(video_id, timestamp=None):
-    if timestamp is None:
-        timestamp = int(time.time())
+if timestamp is None:
+timestamp = int(time.time())
 
-    salt = "h5@video#2024"
-    raw = f"videoId={video_id}&ts={timestamp}&salt={salt}"
-    return hashlib.md5(raw.encode()).hexdigest().upper()
+salt = "h5@video#2024"
+raw = f"videoId={video_id}&ts={timestamp}&salt={salt}"
+return hashlib.md5(raw.encode()).hexdigest().upper()
 
 # 测试
 sign = get_sign("BV1xv4y1X7Yp")
-print(sign)  # 输出：E8A7F2D3C1B9...
+print(sign) # 输出：E8A7F2D3C1B9...
 ```
 
 ---
@@ -224,14 +240,14 @@ Cipher.getInstance("AES/CBC/PKCS5Padding");
 
 ```javascript
 function encryptPassword(password) {
-  const key = CryptoJS.enc.Utf8.parse("1234567890abcdef");
-  const iv = CryptoJS.enc.Utf8.parse("abcdef1234567890");
-  const encrypted = CryptoJS.AES.encrypt(password, key, {
-    iv: iv,
-    mode: CryptoJS.mode.CBC,
-    padding: CryptoJS.pad.Pkcs7,
-  });
-  return encrypted.toString(); // Base64 格式
+const key = CryptoJS.enc.Utf8.parse("1234567890abcdef");
+const iv = CryptoJS.enc.Utf8.parse("abcdef1234567890");
+const encrypted = CryptoJS.AES.encrypt(password, key, {
+iv: iv,
+mode: CryptoJS.mode.CBC,
+padding: CryptoJS.pad.Pkcs7,
+});
+return encrypted.toString(); // Base64 格式
 }
 ```
 
@@ -243,12 +259,12 @@ from Crypto.Util.Padding import pad
 import base64
 
 def encrypt_password(password):
-    key = b'1234567890abcdef'
-    iv = b'abcdef1234567890'
+key = b'1234567890abcdef'
+iv = b'abcdef1234567890'
 
-    cipher = AES.new(key, AES.MODE_CBC, iv)
-    encrypted = cipher.encrypt(pad(password.encode(), AES.block_size))
-    return base64.b64encode(encrypted).decode()
+cipher = AES.new(key, AES.MODE_CBC, iv)
+encrypted = cipher.encrypt(pad(password.encode(), AES.block_size))
+return base64.b64encode(encrypted).decode()
 
 # 测试
 print(encrypt_password("MyPassword123"))
@@ -267,7 +283,7 @@ publicKey = "-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGS..."
 // 或从接口返回
 GET /api/getPublicKey
 {
-  "key": "MIGfMA0GCSqGS..."
+"key": "MIGfMA0GCSqGS..."
 }
 ```
 
@@ -279,10 +295,10 @@ from Crypto.Cipher import PKCS1_v1_5
 import base64
 
 def rsa_encrypt(text, public_key_str):
-    public_key = RSA.import_key(public_key_str)
-    cipher = PKCS1_v1_5.new(public_key)
-    encrypted = cipher.encrypt(text.encode())
-    return base64.b64encode(encrypted).decode()
+public_key = RSA.import_key(public_key_str)
+cipher = PKCS1_v1_5.new(public_key)
+encrypted = cipher.encrypt(text.encode())
+return base64.b64encode(encrypted).decode()
 
 public_key = """-----BEGIN PUBLIC KEY-----
 MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC...
@@ -300,11 +316,11 @@ password_encrypted = rsa_encrypt("MyPassword123", public_key)
 ```javascript
 // 标准 Base64 字符表
 const stdTable =
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 // 魔改后的字符表（故意打乱）
 const customTable =
-  "LMNOPQRSTUVWXYZABCDEFGHIJKabcdefghijklmnopqrstuv0123456789wx+/yz";
+"LMNOPQRSTUVWXYZABCDEFGHIJKabcdefghijklmnopqrstuv0123456789wx+/yz";
 ```
 
 **复现方法**: 把混淆后的 Base64 编码/解码函数扣下来，改成 Python。
@@ -322,8 +338,8 @@ const customTable =
 
 ```bash
 curl 'https://api.example.com/data?user_id=123&sign=abc123' \
-  -H 'User-Agent: Mozilla/5.0' \
-  -H 'Cookie: session=xyz'
+-H 'User-Agent: Mozilla/5.0' \
+-H 'Cookie: session=xyz'
 ```
 
 **如果能拿到数据**，说明该接口：
@@ -340,29 +356,29 @@ import time
 import hashlib
 
 def generate_sign(params, salt="my_secret_salt"):
-    """生成签名"""
-    s = "&".join([f"{k}={v}" for k, v in sorted(params.items())])
-    s += f"&salt={salt}"
-    return hashlib.md5(s.encode()).hexdigest()
+"""生成签名"""
+s = "&".join([f"{k}={v}" for k, v in sorted(params.items())])
+s += f"&salt={salt}"
+return hashlib.md5(s.encode()).hexdigest()
 
 def api_request(user_id):
-    """API 请求"""
-    params = {
-        "user_id": user_id,
-        "timestamp": int(time.time()),
-        "nonce": hashlib.md5(str(time.time()).encode()).hexdigest()[:8]
-    }
-    params["sign"] = generate_sign(params)
+"""API 请求"""
+params = {
+"user_id": user_id,
+"timestamp": int(time.time()),
+"nonce": hashlib.md5(str(time.time()).encode()).hexdigest()[:8]
+}
+params["sign"] = generate_sign(params)
 
-    response = requests.get(
-        "https://api.example.com/data",
-        params=params,
-        headers={
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-            "Referer": "https://www.example.com/"
-        }
-    )
-    return response.json()
+response = requests.get(
+"https://api.example.com/data",
+params=params,
+headers={
+"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+"Referer": "https://www.example.com/"
+}
+)
+return response.json()
 
 # 测试
 print(api_request(123))
@@ -376,50 +392,50 @@ print(api_request(123))
 import requests
 
 class APIClient:
-    def __init__(self):
-        self.session = requests.Session()
-        self.session.headers.update({
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
-        })
+def __init__(self):
+self.session = requests.Session()
+self.session.headers.update({
+"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+})
 
-    def login(self, username, password):
-        """登录获取 Session"""
-        response = self.session.post(
-            "https://www.example.com/login",
-            data={
-                "username": username,
-                "password": self.encrypt_password(password)  # 使用前面的加密函数
-            }
-        )
-        if response.json()["code"] == 0:
-            print("登录成功，Session 已保存")
-            return True
-        return False
+def login(self, username, password):
+"""登录获取 Session"""
+response = self.session.post(
+"https://www.example.com/login",
+data={
+"username": username,
+"password": self.encrypt_password(password) # 使用前面的加密函数
+}
+)
+if response.json()["code"] == 0:
+print("登录成功，Session 已保存")
+return True
+return False
 
-    def get_user_data(self, user_id):
-        """调用需要登录的 API"""
-        params = {"user_id": user_id}
-        params["sign"] = self.generate_sign(params)
+def get_user_data(self, user_id):
+"""调用需要登录的 API"""
+params = {"user_id": user_id}
+params["sign"] = self.generate_sign(params)
 
-        response = self.session.get(
-            "https://api.example.com/user/data",
-            params=params
-        )
-        return response.json()
+response = self.session.get(
+"https://api.example.com/user/data",
+params=params
+)
+return response.json()
 
-    def encrypt_password(self, password):
-        # 这里调用前面写的加密函数
-        pass
+def encrypt_password(self, password):
+# 这里调用前面写的加密函数
+pass
 
-    def generate_sign(self, params):
-        # 这里调用前面写的签名函数
-        pass
+def generate_sign(self, params):
+# 这里调用前面写的签名函数
+pass
 
 # 使用
 client = APIClient()
 if client.login("myusername", "mypassword"):
-    data = client.get_user_data(123)
-    print(data)
+data = client.get_user_data(123)
+print(data)
 ```
 
 ---
@@ -437,21 +453,21 @@ if client.login("myusername", "mypassword"):
 
 ```python
 import time
-import ntplib  # pip install ntplib
+import ntplib # pip install ntplib
 
 def get_server_timestamp():
-    """获取标准时间（防止本地时钟不准）"""
-    try:
-        client = ntplib.NTPClient()
-        response = client.request('pool.ntp.org')
-        return int(response.tx_time)
-    except:
-        return int(time.time())
+"""获取标准时间（防止本地时钟不准）"""
+try:
+client = ntplib.NTPClient()
+response = client.request('pool.ntp.org')
+return int(response.tx_time)
+except:
+return int(time.time())
 
 # 使用
 params = {
-    "user_id": 123,
-    "timestamp": get_server_timestamp()  # 使用标准时间
+"user_id": 123,
+"timestamp": get_server_timestamp() # 使用标准时间
 }
 ```
 
@@ -468,13 +484,13 @@ params = {
 import uuid
 
 def generate_nonce():
-    """每次生成唯一的 nonce"""
-    return uuid.uuid4().hex  # 示例：'a8f5f167f44f4964e6c998dee827110c'
+"""每次生成唯一的 nonce"""
+return uuid.uuid4().hex # 示例：'a8f5f167f44f4964e6c998dee827110c'
 
 # 或使用时间戳 + 随机数
 import random
 def generate_nonce_v2():
-    return f"{int(time.time())}{random.randint(1000, 9999)}"
+return f"{int(time.time())}{random.randint(1000, 9999)}"
 ```
 
 ### 4.3 序列号（Sequence）校验
@@ -489,17 +505,17 @@ def generate_nonce_v2():
 
 ```python
 class WebSocketClient:
-    def __init__(self):
-        self.seq = 0  # 初始序列号
+def __init__(self):
+self.seq = 0 # 初始序列号
 
-    def send_message(self, msg_type, data):
-        self.seq += 1  # 自增序列号
-        packet = {
-            "seq": self.seq,
-            "type": msg_type,
-            "data": data
-        }
-        self.ws.send(json.dumps(packet))
+def send_message(self, msg_type, data):
+self.seq += 1 # 自增序列号
+packet = {
+"seq": self.seq,
+"type": msg_type,
+"data": data
+}
+self.ws.send(json.dumps(packet))
 ```
 
 ---
@@ -529,7 +545,7 @@ token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyMywiaWF0IjoxNjM4Mz
 
 # 解码（不验证签名）
 payload = jwt.decode(token, options={"verify_signature": False})
-print(payload)  # {'userId': 123, 'iat': 1638360000}
+print(payload) # {'userId': 123, 'iat': 1638360000}
 ```
 
 **注意**：JWT 的签名密钥（secret）在服务端，客户端无法伪造。逆向重点是**如何获取有效的 Token**（通常通过登录）。
@@ -541,10 +557,10 @@ print(payload)  # {'userId': 123, 'iat': 1638360000}
 ```javascript
 // 浏览器逻辑
 function generateToken(userId, deviceId) {
-  const timestamp = Date.now();
-  const raw = `${userId}|${deviceId}|${timestamp}`;
-  const encrypted = AES.encrypt(raw, SECRET_KEY);
-  return Base64.encode(encrypted);
+const timestamp = Date.now();
+const raw = `${userId}|${deviceId}|${timestamp}`;
+const encrypted = AES.encrypt(raw, SECRET_KEY);
+return Base64.encode(encrypted);
 }
 ```
 
@@ -556,14 +572,14 @@ import base64
 import time
 
 def generate_token(user_id, device_id):
-    timestamp = int(time.time() * 1000)
-    raw = f"{user_id}|{device_id}|{timestamp}"
+timestamp = int(time.time() * 1000)
+raw = f"{user_id}|{device_id}|{timestamp}"
 
-    # 假设逆向出的 SECRET_KEY
-    key = b'sixteen byte key'
-    cipher = AES.new(key, AES.MODE_ECB)
-    encrypted = cipher.encrypt(raw.ljust(16).encode())
-    return base64.b64encode(encrypted).decode()
+# 假设逆向出的 SECRET_KEY
+key = b'sixteen byte key'
+cipher = AES.new(key, AES.MODE_ECB)
+encrypted = cipher.encrypt(raw.ljust(16).encode())
+return base64.b64encode(encrypted).decode()
 ```
 
 ---
@@ -582,25 +598,25 @@ def generate_token(user_id, device_id):
 
 ```javascript
 // ==UserScript==
-// @name         RPC Server
-// @match        https://www.example.com/*
+// @name RPC Server
+// @match https://www.example.com/*
 // ==/UserScript==
 
 const ws = new WebSocket("ws://127.0.0.1:8765");
 
 ws.onmessage = function (event) {
-  const request = JSON.parse(event.data);
-  let result;
+const request = JSON.parse(event.data);
+let result;
 
-  try {
-    // 调用页面中的签名函数
-    if (request.method === "getSign") {
-      result = window.getSign(request.params.videoId, request.params.timestamp);
-    }
-    ws.send(JSON.stringify({ id: request.id, result: result }));
-  } catch (e) {
-    ws.send(JSON.stringify({ id: request.id, error: e.message }));
-  }
+try {
+// 调用页面中的签名函数
+if (request.method === "getSign") {
+result = window.getSign(request.params.videoId, request.params.timestamp);
+}
+ws.send(JSON.stringify({ id: request.id, result: result }));
+} catch (e) {
+ws.send(JSON.stringify({ id: request.id, error: e.message }));
+}
 };
 ```
 
@@ -612,26 +628,26 @@ import websockets
 import json
 
 class RPCClient:
-    def __init__(self):
-        self.request_id = 0
+def __init__(self):
+self.request_id = 0
 
-    async def call(self, method, params):
-        async with websockets.connect('ws://127.0.0.1:8765') as ws:
-            self.request_id += 1
-            request = {
-                'id': self.request_id,
-                'method': method,
-                'params': params
-            }
-            await ws.send(json.dumps(request))
-            response = await ws.recv()
-            return json.loads(response)['result']
+async def call(self, method, params):
+async with websockets.connect('ws://127.0.0.1:8765') as ws:
+self.request_id += 1
+request = {
+'id': self.request_id,
+'method': method,
+'params': params
+}
+await ws.send(json.dumps(request))
+response = await ws.recv()
+return json.loads(response)['result']
 
 # 使用
 async def main():
-    client = RPCClient()
-    sign = await client.call('getSign', {'videoId': 'BV1xv4y1X7Yp', 'timestamp': 1638360000})
-    print(f"签名结果: {sign}")
+client = RPCClient()
+sign = await client.call('getSign', {'videoId': 'BV1xv4y1X7Yp', 'timestamp': 1638360000})
+print(f"签名结果: {sign}")
 
 asyncio.run(main())
 ```
@@ -659,24 +675,24 @@ asyncio.run(main())
 ```python
 # Python 的字典是无序的（3.7+ 保持插入顺序）
 params = {"c": 3, "a": 1, "b": 2}
-sign = md5("&".join([f"{k}={v}" for k in params]))  # ❌ 错误
+sign = md5("&".join([f"{k}={v}" for k in params])) # ❌ 错误
 ```
 
 **正确做法**
 
 ```python
 # 必须按字典序或指定顺序排序
-sign = md5("&".join([f"{k}={params[k]}" for k in sorted(params.keys())]))  # ✅ 正确
+sign = md5("&".join([f"{k}={params[k]}" for k in sorted(params.keys())])) # ✅ 正确
 ```
 
 ### 7.2 字符编码问题
 
 ```python
 # 浏览器中可能使用 UTF-8 编码
-sign_js = md5("中文参数")  # JavaScript 默认 UTF-8
+sign_js = md5("中文参数") # JavaScript 默认 UTF-8
 
 # Python 必须显式指定编码
-sign_py = hashlib.md5("中文参数".encode('utf-8')).hexdigest()  # ✅
+sign_py = hashlib.md5("中文参数".encode('utf-8')).hexdigest() # ✅
 ```
 
 ### 7.3 浮点数精度
@@ -730,27 +746,27 @@ import hashlib
 import time
 
 def post_comment(article_id, content):
-    timestamp = int(time.time())
-    sign = hashlib.md5(
-        f"{article_id}{content}{timestamp}news_secret_2024".encode()
-    ).hexdigest()
+timestamp = int(time.time())
+sign = hashlib.md5(
+f"{article_id}{content}{timestamp}news_secret_2024".encode()
+).hexdigest()
 
-    data = {
-        "article_id": article_id,
-        "content": content,
-        "timestamp": timestamp,
-        "sign": sign
-    }
+data = {
+"article_id": article_id,
+"content": content,
+"timestamp": timestamp,
+"sign": sign
+}
 
-    response = requests.post(
-        "https://news.example.com/api/comment/add",
-        data=data,
-        headers={
-            "User-Agent": "Mozilla/5.0",
-            "Cookie": "session=YOUR_SESSION_COOKIE"
-        }
-    )
-    return response.json()
+response = requests.post(
+"https://news.example.com/api/comment/add",
+data=data,
+headers={
+"User-Agent": "Mozilla/5.0",
+"Cookie": "session=YOUR_SESSION_COOKIE"
+}
+)
+return response.json()
 
 # 测试
 result = post_comment(12345, "这篇文章写得真好！")
@@ -777,27 +793,27 @@ import base64
 import requests
 
 def encrypt_query(keyword):
-    key = b'1234567890abcdef'
-    iv = b'abcdef1234567890'
+key = b'1234567890abcdef'
+iv = b'abcdef1234567890'
 
-    cipher = AES.new(key, AES.MODE_CBC, iv)
-    encrypted = cipher.encrypt(pad(keyword.encode(), AES.block_size))
-    return base64.b64encode(encrypted).decode()
+cipher = AES.new(key, AES.MODE_CBC, iv)
+encrypted = cipher.encrypt(pad(keyword.encode(), AES.block_size))
+return base64.b64encode(encrypted).decode()
 
 def search_product(keyword):
-    encrypted_q = encrypt_query(keyword)
+encrypted_q = encrypt_query(keyword)
 
-    response = requests.get(
-        "https://shop.example.com/api/search",
-        params={"q": encrypted_q}
-    )
-    return response.json()
+response = requests.get(
+"https://shop.example.com/api/search",
+params={"q": encrypted_q}
+)
+return response.json()
 
 # 批量搜索
 keywords = ["iPhone 15", "MacBook Pro", "AirPods"]
 for keyword in keywords:
-    results = search_product(keyword)
-    print(f"{keyword}: {results['total']} 个结果")
+results = search_product(keyword)
+print(f"{keyword}: {results['total']} 个结果")
 ```
 
 ---
@@ -806,14 +822,14 @@ for keyword in keywords:
 
 ### 9.1 服务端防护手段
 
-| 防护方法         | 原理                         | 绕过难度                          |
+| 防护方法 | 原理 | 绕过难度 |
 | ---------------- | ---------------------------- | --------------------------------- |
-| **时间戳校验**   | 拒绝过期请求（± 60s）        | ⭐ 简单（同步时钟）               |
-| **Nonce 去重**   | 缓存最近的随机数             | ⭐⭐ 中等（生成唯一值）           |
-| **请求频率限制** | 单 IP/用户限制 QPS           | ⭐⭐⭐ 较难（IP 池 + 账号池）     |
-| **行为分析**     | 检测自动化特征（速度、顺序） | ⭐⭐⭐⭐ 困难（模拟人类行为）     |
-| **设备指纹**     | 绑定设备（Canvas、WebGL）    | ⭐⭐⭐⭐ 困难（伪造指纹）         |
-| **验证码**       | 人机识别（滑块、点选）       | ⭐⭐⭐⭐⭐ 极难（OCR + 打码平台） |
+| **时间戳校验** | 拒绝过期请求（± 60s） | ⭐ 简单（同步时钟） |
+| **Nonce 去重** | 缓存最近的随机数 | ⭐⭐ 中等（生成唯一值） |
+| **请求频率限制** | 单 IP/用户限制 QPS | ⭐⭐⭐ 较难（IP 池 + 账号池） |
+| **行为分析** | 检测自动化特征（速度、顺序） | ⭐⭐⭐⭐ 困难（模拟人类行为） |
+| **设备指纹** | 绑定设备（Canvas、WebGL） | ⭐⭐⭐⭐ 困难（伪造指纹） |
+| **验证码** | 人机识别（滑块、点选） | ⭐⭐⭐⭐⭐ 极难（OCR + 打码平台） |
 
 ### 9.2 逆向工程师对策
 
@@ -822,8 +838,8 @@ for keyword in keywords:
 import requests
 
 proxies = {
-    'http': 'http://proxy1.com:8080',
-    'https': 'http://proxy1.com:8080'
+'http': 'http://proxy1.com:8080',
+'https': 'http://proxy1.com:8080'
 }
 response = requests.get(url, proxies=proxies)
 
@@ -832,19 +848,19 @@ import random
 import time
 
 for i in range(100):
-    api_request()
-    time.sleep(random.uniform(2, 5))  # 2-5秒随机延迟
+api_request()
+time.sleep(random.uniform(2, 5)) # 2-5秒随机延迟
 
 # 3. 模拟真实浏览器行为
 headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-    'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
-    'Accept-Encoding': 'gzip, deflate, br',
-    'Referer': 'https://www.example.com/',
-    'DNT': '1',
-    'Connection': 'keep-alive',
-    'Upgrade-Insecure-Requests': '1'
+'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+'Accept-Encoding': 'gzip, deflate, br',
+'Referer': 'https://www.example.com/',
+'DNT': '1',
+'Connection': 'keep-alive',
+'Upgrade-Insecure-Requests': '1'
 }
 ```
 
@@ -852,14 +868,14 @@ headers = {
 
 ## 10. 工具推荐
 
-| 工具           | 用途                          | 平台    |
+| 工具 | 用途 | 平台 |
 | -------------- | ----------------------------- | ------- |
-| **Postman**    | API 调试、请求重放            | 全平台  |
-| **mitmproxy**  | 抓包、请求修改、Python 脚本   | 全平台  |
-| **Burp Suite** | 高级抓包、参数 Fuzz、重放攻击 | 全平台  |
-| **Fiddler**    | Windows 抓包神器              | Windows |
-| **Charles**    | macOS 抓包工具                | macOS   |
-| **Insomnia**   | API 调试（Postman 替代品）    | 全平台  |
+| **Postman** | API 调试、请求重放 | 全平台 |
+| **mitmproxy** | 抓包、请求修改、Python 脚本 | 全平台 |
+| **Burp Suite** | 高级抓包、参数 Fuzz、重放攻击 | 全平台 |
+| **Fiddler** | Windows 抓包神器 | Windows |
+| **Charles** | macOS 抓包工具 | macOS |
+| **Insomnia** | API 调试（Postman 替代品） | 全平台 |
 
 ---
 

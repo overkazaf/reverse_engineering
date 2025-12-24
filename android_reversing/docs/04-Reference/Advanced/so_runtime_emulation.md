@@ -8,10 +8,13 @@
 
 1. [核心架构](#核心架构)
 2. [推荐项目：unidbg](#推荐项目unidbg)
-3. [Python + Unicorn 手动实现](#python--unicorn-手动实现)
-4. [基于 chroot 与 linker 的高级仿真](#基于-chroot-与-linker-的高级仿真)
-5. [方案对比与选型](#方案对比与选型)
-6. [总结](#总结)
+3. [Qiling 框架](#qiling-框架)
+4. [AndroidNativeEmu](#androidnativeemu)
+5. [Python + Unicorn 手动实现](#python--unicorn-手动实现)
+6. [基于 chroot 与 linker 的高级仿真](#基于-chroot-与-linker-的高级仿真)
+7. [框架对比与选型](#框架对比与选型)
+8. [实战案例](#实战案例)
+9. [总结](#总结)
 
 ---
 
@@ -93,6 +96,473 @@ public class SignatureCalculator {
         emulator.close();
     }
 }
+```
+
+---
+
+## Qiling 框架
+
+Qiling 是一个高级的二进制仿真框架，基于 Unicorn 构建，支持多种操作系统和架构。相比纯 Unicorn，Qiling 提供了更完善的系统调用和库函数模拟。
+
+### Qiling 简介
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     Qiling 架构                              │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │                    用户脚本层                         │   │
+│  │     Python API / Hook / 自定义处理                    │   │
+│  └─────────────────────────────────────────────────────┘   │
+│                          ↓                                  │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │                    Qiling Core                       │   │
+│  │  ┌───────────┐ ┌───────────┐ ┌───────────┐         │   │
+│  │  │ OS 模拟   │ │ 文件系统  │ │ 系统调用  │         │   │
+│  │  │Linux/Win/ │ │ 虚拟 FS   │ │ 处理器    │         │   │
+│  │  │Android/..│ │           │ │           │         │   │
+│  │  └───────────┘ └───────────┘ └───────────┘         │   │
+│  └─────────────────────────────────────────────────────┘   │
+│                          ↓                                  │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │                 Unicorn Engine                       │   │
+│  │            CPU 仿真 (ARM/ARM64/x86/...)              │   │
+│  └─────────────────────────────────────────────────────┘   │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Qiling vs Unicorn
+
+| 特性 | Unicorn | Qiling |
+|------|---------|--------|
+| **层级** | CPU 仿真 | 操作系统仿真 |
+| **系统调用** | 需手动实现 | 内置支持 |
+| **文件系统** | 无 | 虚拟文件系统 |
+| **ELF 加载** | 需手动实现 | 自动加载 |
+| **库函数** | 需 Mock | 部分内置 |
+| **难度** | 高 | 中 |
+
+### 安装 Qiling
+
+```bash
+# 安装 Qiling
+pip install qiling
+
+# 或从源码安装（推荐，获取最新功能）
+git clone https://github.com/qilingframework/qiling.git
+cd qiling
+pip install .
+
+# 准备 rootfs（Android ARM64）
+# 可以从 qiling 仓库下载预构建的 rootfs
+# 或从真实设备提取
+```
+
+### 基础使用
+
+```python
+from qiling import Qiling
+from qiling.const import QL_VERBOSE
+
+# 创建 Qiling 实例（Linux ARM64）
+ql = Qiling(
+    argv=["./target_binary"],
+    rootfs="./rootfs/arm64_linux",
+    verbose=QL_VERBOSE.DEBUG
+)
+
+# 运行
+ql.run()
+```
+
+### Android SO 仿真
+
+```python
+from qiling import Qiling
+from qiling.const import QL_VERBOSE
+from qiling.os.mapper import QlFsMappedObject
+
+class AndroidSOEmulator:
+    """Android SO 仿真器 (基于 Qiling)"""
+
+    def __init__(self, rootfs_path):
+        self.rootfs = rootfs_path
+        self.ql = None
+
+    def setup(self, so_path):
+        """设置仿真环境"""
+        # 创建一个加载 SO 的 wrapper 程序
+        # Qiling 需要一个可执行文件作为入口
+        self.ql = Qiling(
+            argv=[so_path],
+            rootfs=self.rootfs,
+            ostype="linux",
+            archtype="arm64",
+            verbose=QL_VERBOSE.OFF
+        )
+
+        # 设置库搜索路径
+        self.ql.os.set_env("LD_LIBRARY_PATH", "/system/lib64")
+
+    def hook_function(self, func_name, callback):
+        """Hook 导出函数"""
+        def wrapper(ql):
+            # 获取参数（ARM64 调用约定）
+            args = [ql.arch.regs.x0, ql.arch.regs.x1,
+                   ql.arch.regs.x2, ql.arch.regs.x3]
+            result = callback(ql, args)
+            if result is not None:
+                ql.arch.regs.x0 = result
+        self.ql.os.set_api(func_name, wrapper)
+
+    def call_function(self, func_addr, args=None):
+        """调用指定地址的函数"""
+        if args:
+            regs = ['x0', 'x1', 'x2', 'x3', 'x4', 'x5', 'x6', 'x7']
+            for i, arg in enumerate(args[:8]):
+                setattr(self.ql.arch.regs, regs[i], arg)
+
+        # 设置返回地址
+        self.ql.arch.regs.lr = 0xDEADBEEF
+
+        # 执行
+        self.ql.run(begin=func_addr, end=0xDEADBEEF)
+
+        return self.ql.arch.regs.x0
+
+# 使用示例
+emu = AndroidSOEmulator("./android_rootfs")
+emu.setup("./libtarget.so")
+
+# Hook malloc
+def my_malloc(ql, args):
+    size = args[0]
+    print(f"[Hook] malloc({size})")
+    return ql.os.heap.alloc(size)
+
+emu.hook_function("malloc", my_malloc)
+```
+
+### Qiling Hook 机制
+
+```python
+from qiling import Qiling
+
+ql = Qiling(["./binary"], "./rootfs")
+
+# 1. 地址 Hook
+@ql.hook_address
+def hook_specific_addr(ql):
+    print(f"Hit address: {hex(ql.arch.regs.arch_pc)}")
+
+hook_specific_addr.bindto(0x1234)
+
+# 2. 代码块 Hook
+def hook_block(ql, address, size):
+    print(f"Block: {hex(address)}, size: {size}")
+
+ql.hook_block(hook_block)
+
+# 3. 指令 Hook
+def hook_code(ql, address, size):
+    # 每条指令执行前
+    print(f"Instruction: {hex(address)}")
+
+ql.hook_code(hook_code)
+
+# 4. 内存访问 Hook
+def hook_mem_read(ql, access, address, size, value):
+    print(f"Read: {hex(address)}, size: {size}")
+
+def hook_mem_write(ql, access, address, size, value):
+    print(f"Write: {hex(address)} = {hex(value)}")
+
+ql.hook_mem_read(hook_mem_read)
+ql.hook_mem_write(hook_mem_write)
+
+# 5. 系统调用 Hook
+def hook_syscall(ql, syscall_num, *args):
+    print(f"Syscall: {syscall_num}, args: {args}")
+
+ql.os.set_syscall("open", hook_syscall)
+
+ql.run()
+```
+
+### Qiling 调试功能
+
+```python
+from qiling import Qiling
+from qiling.debugger.gdb import QlGdb
+
+# 启动 GDB 调试服务器
+ql = Qiling(["./binary"], "./rootfs")
+ql.debugger = QlGdb(ql, ip="0.0.0.0", port=9999)
+ql.run()
+
+# 然后用 GDB 连接:
+# gdb-multiarch
+# (gdb) target remote localhost:9999
+```
+
+---
+
+## AndroidNativeEmu
+
+AndroidNativeEmu 是一个专门用于 Android Native 库仿真的 Python 框架，基于 Unicorn 构建，提供了完整的 JNI 环境模拟。
+
+### AndroidNativeEmu 简介
+
+| 特性 | 说明 |
+|------|------|
+| **语言** | Python |
+| **基础** | Unicorn Engine |
+| **专注** | Android Native 库 |
+| **JNI** | 完整的 JNI 环境模拟 |
+| **系统库** | 内置常用库 Mock |
+
+### 安装
+
+```bash
+# 克隆仓库
+git clone https://github.com/AeonLucid/AndroidNativeEmu.git
+cd AndroidNativeEmu
+
+# 安装依赖
+pip install -r requirements.txt
+
+# 或直接 pip 安装
+pip install androidemu
+```
+
+### 基础使用
+
+```python
+from androidemu.emulator import Emulator
+from androidemu.java.java_class_def import JavaClassDef
+from androidemu.java.java_method_def import java_method_def
+
+# 创建模拟器实例
+emulator = Emulator(
+    vfp_inst_set=True,       # 启用 VFP 指令集
+    vfs_root="./vfs"         # 虚拟文件系统根目录
+)
+
+# 加载 SO 文件
+lib_module = emulator.load_library("./libnative.so")
+
+# 查看导出函数
+for symbol in lib_module.symbols:
+    if symbol.is_export:
+        print(f"Export: {symbol.name} @ {hex(symbol.address)}")
+```
+
+### JNI 环境模拟
+
+```python
+from androidemu.emulator import Emulator
+from androidemu.java.java_class_def import JavaClassDef
+from androidemu.java.java_method_def import java_method_def
+
+# 定义 Java 类（模拟 Android 类）
+class MainActivity(metaclass=JavaClassDef,
+                   jvm_name="com/example/app/MainActivity"):
+
+    def __init__(self):
+        self.secret = "my_secret_key"
+
+    @java_method_def(
+        name="getSecret",
+        signature="()Ljava/lang/String;",
+        native=False
+    )
+    def get_secret(self, emu):
+        return self.secret
+
+    @java_method_def(
+        name="processData",
+        signature="(Ljava/lang/String;)Ljava/lang/String;",
+        native=False
+    )
+    def process_data(self, emu, data):
+        return f"processed_{data}"
+
+# 注册 Java 类
+emulator = Emulator()
+emulator.java_classloader.add_class(MainActivity)
+
+# 加载 SO
+emulator.load_library("./libnative.so")
+
+# 调用 JNI 函数
+# 假设 SO 中有: Java_com_example_app_MainActivity_nativeSign
+result = emulator.call_symbol(
+    lib_module,
+    "Java_com_example_app_MainActivity_nativeSign",
+    emulator.java_vm.jni_env.address_ptr,  # JNIEnv*
+    0,                                       # jobject (this)
+    emulator.java_vm.jni_env.add_local_reference(  # jstring
+        String("input_data")
+    )
+)
+```
+
+### 完整示例：签名函数仿真
+
+```python
+from androidemu.emulator import Emulator
+from androidemu.java.java_class_def import JavaClassDef
+from androidemu.java.java_method_def import java_method_def
+from androidemu.java.classes.string import String
+import logging
+
+# 配置日志
+logging.basicConfig(level=logging.DEBUG)
+
+class SignHelper(metaclass=JavaClassDef,
+                 jvm_name="com/example/app/SignHelper"):
+    """模拟 SignHelper Java 类"""
+
+    @java_method_def(
+        name="getDeviceId",
+        signature="()Ljava/lang/String;",
+        native=False
+    )
+    def get_device_id(self, emu):
+        return "fake_device_id_12345"
+
+    @java_method_def(
+        name="getPackageName",
+        signature="()Ljava/lang/String;",
+        native=False
+    )
+    def get_package_name(self, emu):
+        return "com.example.app"
+
+class NativeEmulator:
+    """Native 库仿真器"""
+
+    def __init__(self, so_path, vfs_root="./vfs"):
+        self.emulator = Emulator(
+            vfp_inst_set=True,
+            vfs_root=vfs_root
+        )
+
+        # 注册 Java 类
+        self.emulator.java_classloader.add_class(SignHelper)
+
+        # 加载 SO
+        self.lib_module = self.emulator.load_library(so_path)
+
+        print(f"Loaded: {so_path}")
+        print(f"Base address: {hex(self.lib_module.base)}")
+
+    def get_sign(self, input_data):
+        """调用签名函数"""
+        # 准备 JNI 参数
+        jni_env = self.emulator.java_vm.jni_env
+
+        # 创建 Java String
+        j_input = jni_env.add_local_reference(String(input_data))
+
+        # 调用 native 函数
+        result = self.emulator.call_symbol(
+            self.lib_module,
+            "Java_com_example_app_SignHelper_nativeSign",
+            jni_env.address_ptr,   # JNIEnv*
+            0,                      # jclass
+            j_input                 # jstring input
+        )
+
+        # 解析返回值（假设返回 jstring）
+        if result != 0:
+            return_str = jni_env.get_local_reference(result)
+            if isinstance(return_str, String):
+                return return_str.value
+
+        return None
+
+    def hook_function(self, symbol_name, callback):
+        """Hook 指定函数"""
+        symbol = self.lib_module.find_symbol(symbol_name)
+        if symbol:
+            self.emulator.mu.hook_add(
+                UC_HOOK_CODE,
+                callback,
+                begin=symbol.address,
+                end=symbol.address + 4
+            )
+
+# 使用示例
+if __name__ == "__main__":
+    emu = NativeEmulator("./libsign.so", "./vfs")
+
+    # 计算签名
+    sign = emu.get_sign("test_data_12345")
+    print(f"Signature: {sign}")
+```
+
+### Hook 与调试
+
+```python
+from unicorn import UC_HOOK_CODE, UC_HOOK_MEM_READ, UC_HOOK_MEM_WRITE
+
+class DebugEmulator(NativeEmulator):
+    """带调试功能的仿真器"""
+
+    def __init__(self, so_path, vfs_root="./vfs"):
+        super().__init__(so_path, vfs_root)
+        self.trace_enabled = False
+
+    def enable_trace(self, start_addr=None, end_addr=None):
+        """启用指令跟踪"""
+        def trace_hook(mu, address, size, user_data):
+            # 读取指令字节
+            code = mu.mem_read(address, size)
+            print(f"0x{address:08x}: {code.hex()}")
+
+        begin = start_addr or self.lib_module.base
+        end = end_addr or (self.lib_module.base + self.lib_module.size)
+
+        self.emulator.mu.hook_add(
+            UC_HOOK_CODE,
+            trace_hook,
+            begin=begin,
+            end=end
+        )
+        self.trace_enabled = True
+
+    def hook_memory_access(self):
+        """Hook 内存访问"""
+        def mem_read_hook(mu, access, address, size, value, user_data):
+            print(f"[MEM READ] 0x{address:08x}, size={size}")
+
+        def mem_write_hook(mu, access, address, size, value, user_data):
+            print(f"[MEM WRITE] 0x{address:08x} = 0x{value:x}, size={size}")
+
+        self.emulator.mu.hook_add(UC_HOOK_MEM_READ, mem_read_hook)
+        self.emulator.mu.hook_add(UC_HOOK_MEM_WRITE, mem_write_hook)
+
+    def dump_registers(self):
+        """打印寄存器状态"""
+        from unicorn.arm_const import (
+            UC_ARM_REG_R0, UC_ARM_REG_R1, UC_ARM_REG_R2, UC_ARM_REG_R3,
+            UC_ARM_REG_SP, UC_ARM_REG_LR, UC_ARM_REG_PC
+        )
+
+        regs = {
+            "R0": UC_ARM_REG_R0, "R1": UC_ARM_REG_R1,
+            "R2": UC_ARM_REG_R2, "R3": UC_ARM_REG_R3,
+            "SP": UC_ARM_REG_SP, "LR": UC_ARM_REG_LR,
+            "PC": UC_ARM_REG_PC
+        }
+
+        print("=== Registers ===")
+        for name, reg in regs.items():
+            value = self.emulator.mu.reg_read(reg)
+            print(f"  {name}: 0x{value:08x}")
 ```
 
 ---

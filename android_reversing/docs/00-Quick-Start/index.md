@@ -1,4 +1,4 @@
-# 快速入门指南
+# 快速入门
 
 欢迎！这个指南将帮助你在 **10 分钟内**完成第一次 Android 逆向分析。
 
@@ -268,21 +268,21 @@ adb forward tcp:27042 tcp:27042
 **排查步骤**:
 
 1. **确认应用正在运行**:
-    ```bash
-    frida-ps -U | grep YourAppPackageName
-    ```
+   ```bash
+   frida-ps -U | grep YourAppPackageName
+   ```
 2. **检查类名是否正确**:
-    - 使用 jadx-gui 反编译查看准确的类名
-    - 注意内部类的 `$` 符号(如 `OuterClass$InnerClass`)
+   - 使用 jadx-gui 反编译查看准确的类名
+   - 注意内部类的 `$` 符号(如 `OuterClass$InnerClass`)
 3. **处理方法重载**:
-    ```javascript
-    // If method has multiple overloads, need to specify parameter class type
-    YourClass.yourMethod.overload("java.lang.String").implementation = function (
-      arg
-    ) {
-      // your code here
-    };
-    ```
+   ```javascript
+   // If method has multiple overloads, need to specify parameter class type
+   YourClass.yourMethod.overload("java.lang.String").implementation = function (
+     arg
+   ) {
+     // your code here
+   };
+   ```
 
 ### Q: 应用检测到 Frida?
 

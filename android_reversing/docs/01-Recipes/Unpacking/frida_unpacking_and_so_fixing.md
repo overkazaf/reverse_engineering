@@ -471,53 +471,57 @@ python3 main.py -U com.example.app
 **解决步骤**：
 
 1. **检查魔数**
-    ```bash
-    xxd dumped.dex | head -1
-    # 应该看到: 64 65 78 0a (dex\n)
-    ```
+   ```bash
+   xxd dumped.dex | head -1
+   # 应该看到: 64 65 78 0a (dex\n)
+   ```
 2. **验证 DEX 大小**
-    ```python
-    # 验证 DEX 大小
-    with open('dumped.dex', 'rb') as f:
-        f.seek(32)  # 跳到 file_size 字段
-        size = int.from_bytes(f.read(4), 'little')
-        print(f"DEX 声明的大小: {size}")
 
-    import os
-    actual_size = os.path.getsize('dumped.dex')
-    print(f"实际文件大小: {actual_size}")
-    ```
+   ```python
+   # 验证 DEX 大小
+   with open('dumped.dex', 'rb') as f:
+       f.seek(32)  # 跳到 file_size 字段
+       size = int.from_bytes(f.read(4), 'little')
+       print(f"DEX 声明的大小: {size}")
+
+   import os
+   actual_size = os.path.getsize('dumped.dex')
+   print(f"实际文件大小: {actual_size}")
+   ```
+
 3. **使用 dexrepair 修复**
-    ```bash
-    git clone https://github.com/anestisb/dexrepair.git
-    python3 dexrepair/dexrepair.py dumped.dex fixed.dex
-    ```
+   ```bash
+   git clone https://github.com/anestisb/dexrepair.git
+   python3 dexrepair/dexrepair.py dumped.dex fixed.dex
+   ```
 
 ### ❌ 问题 3: Hook 点没有触发
 
 **检查步骤**：
 
 1. **确认 libart.so 已加载**
-    ```javascript
-    var libart = Process.findModuleByName("libart.so");
-    console.log("libart found:", libart !== null);
-    ```
+   ```javascript
+   var libart = Process.findModuleByName("libart.so");
+   console.log("libart found:", libart !== null);
+   ```
 2. **列出所有 OpenCommon 符号**
-    ```javascript
-    Module.enumerateExports("libart.so").forEach(function (exp) {
-      if (exp.name.includes("OpenCommon")) {
-        console.log(exp.name);
-      }
-    });
-    ```
+   ```javascript
+   Module.enumerateExports("libart.so").forEach(function (exp) {
+     if (exp.name.includes("OpenCommon")) {
+       console.log(exp.name);
+     }
+   });
+   ```
 3. **尝试其他 Hook 点**
-    ```javascript
-    // Android 7.0-
-    var OpenMemory = Module.findExportByName(
-      "libart.so",
-      "_ZN3art7DexFile10OpenMemoryEPKhjRKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEjPNS_6MemMapEPKNS_10OatDexFileEPS9_"
-    );
-```
+   ```javascript
+   // Android 7.0-
+   var OpenMemory = Module.findExportByName(
+     "libart.so",
+     "_ZN3art7DexFile10OpenMemoryEPKhjRKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEjPNS_6MemMapEPKNS_10OatDexFileEPS9_"
+   );
+   ```
+
+````
 
 ### ❌ 问题 4: SO 文件修复后 IDA 仍无法分析
 
@@ -556,13 +560,13 @@ python3 main.py -U com.example.app
 # 使用 Magisk Hide
 # 或使用修改版 Frida 服务器
 wget https://github.com/hluwa/strongR-frida-android/releases/download/xxx/frida-server
-```
+````
 
 ---
 
 ## 相关链接
 
-### 相关 Recipe
+### 相关配方
 
 - **[应用脱壳总览](./un-packing.md)** - 各种脱壳技术对比
 - **[Frida 反调试绕过](../Anti-Detection/frida_anti_debugging.md)** - 处理反 Frida 检测

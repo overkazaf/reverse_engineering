@@ -1,6 +1,6 @@
 # Canvas 指纹技术
 
-## 💭 思考时刻
+## 思考时刻
 
 在学习 Canvas 指纹之前，先思考：
 
@@ -10,6 +10,22 @@
 4. **实战场景：** 某电商网站限制每个用户只能抢购一件商品，你换了浏览器、清空了缓存、使用了代理，为什么还是被识别出来了？
 
 这些问题的答案，藏在浏览器的渲染引擎里。
+
+---
+
+## 📚 前置知识
+
+在开始本配方之前，建议先掌握以下内容：
+
+| 知识领域 | 重要程度 | 参考资料 |
+|----------|---------|---------|
+| 浏览器架构 | 必需 | [浏览器架构](../01-Foundations/browser_architecture.md) |
+| 浏览器指纹识别 | 必需 | [浏览器指纹识别](./browser_fingerprinting.md) |
+| JavaScript 基础 | 必需 | [JavaScript 基础](../01-Foundations/javascript_basics.md) |
+| DOM 与 BOM | 推荐 | [DOM 与 BOM](../01-Foundations/dom_and_bom.md) |
+| Hook 技术 | 推荐 | [Hook 技术](../03-Basic-Recipes/hooking_techniques.md) |
+
+> 💡 **提示**: Canvas 指纹是**最稳定**的指纹识别方式之一，因为它依赖于硬件和软件的渲染差异。了解其原理后，你可以通过 Hook Canvas API 来伪装指纹。
 
 ---
 
@@ -72,17 +88,17 @@ const fingerprint = md5(dataURL);
 // Hook toDataURL
 const originalToDataURL = HTMLCanvasElement.prototype.toDataURL;
 HTMLCanvasElement.prototype.toDataURL = function () {
-  console.log("[Canvas] toDataURL called");
-  console.trace();
-  return originalToDataURL.apply(this, arguments);
+console.log("[Canvas] toDataURL called");
+console.trace();
+return originalToDataURL.apply(this, arguments);
 };
 
 // Hook getImageData
 const originalGetImageData = CanvasRenderingContext2D.prototype.getImageData;
 CanvasRenderingContext2D.prototype.getImageData = function () {
-  console.log("[Canvas] getImageData called");
-  console.trace();
-  return originalGetImageData.apply(this, arguments);
+console.log("[Canvas] getImageData called");
+console.trace();
+return originalGetImageData.apply(this, arguments);
 };
 ```
 
@@ -113,26 +129,26 @@ CanvasRenderingContext2D.prototype.getImageData = function () {
 // 简单的随机噪点注入
 const originalToDataURL = HTMLCanvasElement.prototype.toDataURL;
 HTMLCanvasElement.prototype.toDataURL = function (...args) {
-  // 获取原始数据
-  const dataURL = originalToDataURL.apply(this, arguments);
+// 获取原始数据
+const dataURL = originalToDataURL.apply(this, arguments);
 
-  // 注入噪点（修改少量像素）
-  const canvas = this;
-  const ctx = canvas.getContext("2d");
-  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  const data = imageData.data;
+// 注入噪点（修改少量像素）
+const canvas = this;
+const ctx = canvas.getContext("2d");
+const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+const data = imageData.data;
 
-  // 随机修改 0.01% 的像素
-  for (let i = 0; i < data.length; i += 4) {
-    if (Math.random() < 0.0001) {
-      data[i] = Math.floor(Math.random() * 256); // R
-      data[i + 1] = Math.floor(Math.random() * 256); // G
-      data[i + 2] = Math.floor(Math.random() * 256); // B
-    }
-  }
+// 随机修改 0.01% 的像素
+for (let i = 0; i < data.length; i += 4) {
+if (Math.random() < 0.0001) {
+data[i] = Math.floor(Math.random() * 256); // R
+data[i + 1] = Math.floor(Math.random() * 256); // G
+data[i + 2] = Math.floor(Math.random() * 256); // B
+}
+}
 
-  ctx.putImageData(imageData, 0, 0);
-  return canvas.toDataURL();
+ctx.putImageData(imageData, 0, 0);
+return canvas.toDataURL();
 };
 ```
 
@@ -148,12 +164,12 @@ Puppeteer/Selenium 可以通过注入脚本修改 Canvas 行为：
 ```javascript
 // Puppeteer
 await page.evaluateOnNewDocument(() => {
-  const originalToDataURL = HTMLCanvasElement.prototype.toDataURL;
-  HTMLCanvasElement.prototype.toDataURL = function (...args) {
-    // 注入噪点逻辑
-    // ...
-    return originalToDataURL.apply(this, arguments);
-  };
+const originalToDataURL = HTMLCanvasElement.prototype.toDataURL;
+HTMLCanvasElement.prototype.toDataURL = function (...args) {
+// 注入噪点逻辑
+// ...
+return originalToDataURL.apply(this, arguments);
+};
 });
 ```
 
@@ -181,12 +197,12 @@ await page.evaluateOnNewDocument(() => {
 
 ## Canvas vs WebGL 指纹
 
-| 特性         | Canvas          | WebGL           |
+| 特性 | Canvas | WebGL |
 | ------------ | --------------- | --------------- |
-| **原理**     | 2D 图形渲染差异 | 3D 图形渲染差异 |
-| **区分度**   | 中              | 高              |
-| **实现难度** | 低              | 中              |
-| **常见场景** | 通用指纹        | 高级指纹        |
+| **原理** | 2D 图形渲染差异 | 3D 图形渲染差异 |
+| **区分度** | 中 | 高 |
+| **实现难度** | 低 | 中 |
+| **常见场景** | 通用指纹 | 高级指纹 |
 
 ---
 

@@ -6,6 +6,21 @@
 
 ---
 
+## 📚 前置知识
+
+在开始本配方之前，建议先掌握以下内容：
+
+| 知识领域 | 重要程度 | 参考资料 |
+|----------|---------|---------|
+| JavaScript 基础 | 必需 | [JavaScript 基础](../01-Foundations/javascript_basics.md) |
+| JavaScript 反混淆 | 必需 | [JavaScript 反混淆](./javascript_deobfuscation.md) |
+| AST 工具 | 推荐 | [AST 工具](../02-Tooling/ast_tools.md) |
+| 调试技巧 | 推荐 | [调试技巧与断点设置](../03-Basic-Recipes/debugging_techniques.md) |
+
+> 💡 **提示**: 本配方从**防御者视角**介绍前端加固技术，同时讲解逆向分析方法。了解加固原理，才能更有效地突破保护。
+
+---
+
 ## 代码混淆 (Code Obfuscation)
 
 ### 1. 变量名混淆 (Identifier Mangling)
@@ -17,14 +32,14 @@
 ```javascript
 // 原始代码
 function calculateUserAge(birthYear) {
-  const currentYear = new Date().getFullYear();
-  return currentYear - birthYear;
+const currentYear = new Date().getFullYear();
+return currentYear - birthYear;
 }
 
 // 混淆后
 function _0x3a2b(_0x1c4d, _0x5e6f) {
-  const _0x7a8b = new Date().getFullYear();
-  return _0x7a8b - _0x1c4d;
+const _0x7a8b = new Date().getFullYear();
+return _0x7a8b - _0x1c4d;
 }
 ```
 
@@ -54,7 +69,7 @@ fetch(apiUrl);
 // 混淆后
 const _0x4a2c = ["aHR0cHM6Ly9hcGkuZXhhbXBsZS5jb20vdXNlcnM="];
 const _0x1b3d = function (_0x2c4e) {
-  return atob(_0x2c4e);
+return atob(_0x2c4e);
 };
 fetch(_0x1b3d(_0x4a2c[0]));
 ```
@@ -72,9 +87,9 @@ fetch(_0x1b3d(_0x4a2c[0]));
 // Hook 解密函数
 const original_atob = window.atob;
 window.atob = function (str) {
-  const result = original_atob(str);
-  console.log("Decoded:", str, "->", result);
-  return result;
+const result = original_atob(str);
+console.log("Decoded:", str, "->", result);
+return result;
 };
 
 // 或者直接调用解密函数
@@ -90,34 +105,34 @@ _0x1b3d(_0x4a2c[0]); // 查看结果
 ```javascript
 // 原始代码
 function process(data) {
-  let result = validate(data);
-  result = transform(result);
-  result = encrypt(result);
-  return result;
+let result = validate(data);
+result = transform(result);
+result = encrypt(result);
+return result;
 }
 
 // 平坦化后
 function process(data) {
-  let _0x1 = 0;
-  let result;
-  while (true) {
-    switch (_0x1) {
-      case 0:
-        result = validate(data);
-        _0x1 = 2;
-        break;
-      case 2:
-        result = transform(result);
-        _0x1 = 1;
-        break;
-      case 1:
-        result = encrypt(result);
-        _0x1 = 3;
-        break;
-      case 3:
-        return result;
-    }
-  }
+let _0x1 = 0;
+let result;
+while (true) {
+switch (_0x1) {
+case 0:
+result = validate(data);
+_0x1 = 2;
+break;
+case 2:
+result = transform(result);
+_0x1 = 1;
+break;
+case 1:
+result = encrypt(result);
+_0x1 = 3;
+break;
+case 3:
+return result;
+}
+}
 }
 ```
 
@@ -135,20 +150,20 @@ function process(data) {
 
 ```javascript
 function login(username, password) {
-  // 真实逻辑
-  if (username && password) {
-    return authenticate(username, password);
-  }
+// 真实逻辑
+if (username && password) {
+return authenticate(username, password);
+}
 
-  // 僵尸代码（永远不会执行）
-  if (false) {
-    console.log("This code never runs");
-    fetch("/fake-endpoint");
-    const fake = CryptoJS.MD5(username).toString();
-  }
+// 僵尸代码（永远不会执行）
+if (false) {
+console.log("This code never runs");
+fetch("/fake-endpoint");
+const fake = CryptoJS.MD5(username).toString();
+}
 
-  // 更多僵尸代码
-  return void 0;
+// 更多僵尸代码
+return void 0;
 }
 ```
 
@@ -189,15 +204,15 @@ console.log(0x3e8 * 0x5 + (0x1f4 - 0x64) + (0xc8 | 0x32));
 ```javascript
 // 原始
 const config = {
-  apiKey: "secret123",
-  endpoint: "/api/data",
+apiKey: "secret123",
+endpoint: "/api/data",
 };
 
 // 混淆后
 const _0x1a = ["apiKey", "endpoint"];
 const config = {
-  [_0x1a[0]]: "secret123",
-  [_0x1a[1]]: "/api/data",
+[_0x1a[0]]: "secret123",
+[_0x1a[1]]: "/api/data",
 };
 ```
 
@@ -222,15 +237,15 @@ const config = {
 ```javascript
 // 示例字节码指令集
 const OPCODES = {
-  PUSH: 0x01, // 压栈
-  POP: 0x02, // 出栈
-  ADD: 0x03, // 加法
-  SUB: 0x04, // 减法
-  CALL: 0x05, // 函数调用
-  RET: 0x06, // 返回
-  JMP: 0x07, // 跳转
-  LOAD: 0x08, // 加载变量
-  STORE: 0x09, // 存储变量
+PUSH: 0x01, // 压栈
+POP: 0x02, // 出栈
+ADD: 0x03, // 加法
+SUB: 0x04, // 减法
+CALL: 0x05, // 函数调用
+RET: 0x06, // 返回
+JMP: 0x07, // 跳转
+LOAD: 0x08, // 加载变量
+STORE: 0x09, // 存储变量
 };
 ```
 
@@ -238,38 +253,38 @@ const OPCODES = {
 
 ```javascript
 class VM {
-  constructor(bytecode) {
-    this.bytecode = bytecode;
-    this.stack = [];
-    this.pc = 0; // Program Counter
-    this.vars = {};
-  }
+constructor(bytecode) {
+this.bytecode = bytecode;
+this.stack = [];
+this.pc = 0; // Program Counter
+this.vars = {};
+}
 
-  execute() {
-    while (this.pc < this.bytecode.length) {
-      const opcode = this.bytecode[this.pc++];
+execute() {
+while (this.pc < this.bytecode.length) {
+const opcode = this.bytecode[this.pc++];
 
-      switch (opcode) {
-        case OPCODES.PUSH:
-          const value = this.bytecode[this.pc++];
-          this.stack.push(value);
-          break;
+switch (opcode) {
+case OPCODES.PUSH:
+const value = this.bytecode[this.pc++];
+this.stack.push(value);
+break;
 
-        case OPCODES.ADD:
-          const b = this.stack.pop();
-          const a = this.stack.pop();
-          this.stack.push(a + b);
-          break;
+case OPCODES.ADD:
+const b = this.stack.pop();
+const a = this.stack.pop();
+this.stack.push(a + b);
+break;
 
-        case OPCODES.CALL:
-          const funcId = this.bytecode[this.pc++];
-          this.callFunction(funcId);
-          break;
+case OPCODES.CALL:
+const funcId = this.bytecode[this.pc++];
+this.callFunction(funcId);
+break;
 
-        // 其他指令...
-      }
-    }
-  }
+// 其他指令...
+}
+}
+}
 }
 ```
 
@@ -277,27 +292,27 @@ class VM {
 
 ```javascript
 function compile(ast) {
-  const bytecode = [];
+const bytecode = [];
 
-  function visit(node) {
-    switch (node.type) {
-      case "BinaryExpression":
-        visit(node.left);
-        visit(node.right);
-        bytecode.push(getOpcode(node.operator));
-        break;
+function visit(node) {
+switch (node.type) {
+case "BinaryExpression":
+visit(node.left);
+visit(node.right);
+bytecode.push(getOpcode(node.operator));
+break;
 
-      case "Literal":
-        bytecode.push(OPCODES.PUSH);
-        bytecode.push(node.value);
-        break;
+case "Literal":
+bytecode.push(OPCODES.PUSH);
+bytecode.push(node.value);
+break;
 
-      // 其他节点类型...
-    }
-  }
+// 其他节点类型...
+}
+}
 
-  visit(ast);
-  return bytecode;
+visit(ast);
+return bytecode;
 }
 ```
 
@@ -334,7 +349,7 @@ function compile(ast) {
 ```c
 // C 代码
 int encrypt(int data, int key) {
-    return (data ^ key) + 0x5A5A;
+return (data ^ key) + 0x5A5A;
 }
 ```
 
@@ -349,8 +364,8 @@ emcc encrypt.c -o encrypt.js -s EXPORTED_FUNCTIONS='["_encrypt"]'
 ```javascript
 const Module = require("./encrypt.js");
 Module.onRuntimeInitialized = () => {
-  const result = Module._encrypt(12345, 67890);
-  console.log("Encrypted:", result);
+const result = Module._encrypt(12345, 67890);
+console.log("Encrypted:", result);
 };
 ```
 
@@ -369,11 +384,11 @@ Module.onRuntimeInitialized = () => {
 ```javascript
 // 主文件只包含加载器
 const loader = {
-  async loadModule(name) {
-    const response = await fetch(`/modules/${name}.js`);
-    const code = await response.text();
-    return eval(code);
-  },
+async loadModule(name) {
+const response = await fetch(`/modules/${name}.js`);
+const code = await response.text();
+return eval(code);
+},
 };
 
 // 使用时动态加载
@@ -388,40 +403,40 @@ crypto.encrypt(data);
 ```javascript
 // 方法1: 检测窗口尺寸
 (function () {
-  const threshold = 160;
-  setInterval(() => {
-    if (
-      window.outerHeight - window.innerHeight > threshold ||
-      window.outerWidth - window.innerWidth > threshold
-    ) {
-      console.log("DevTools detected!");
-      debugger; // 触发断点
-    }
-  }, 1000);
+const threshold = 160;
+setInterval(() => {
+if (
+window.outerHeight - window.innerHeight > threshold ||
+window.outerWidth - window.innerWidth > threshold
+) {
+console.log("DevTools detected!");
+debugger; // 触发断点
+}
+}, 1000);
 })();
 
 // 方法2: 利用 toString 检测
 (function () {
-  const element = new Image();
-  Object.defineProperty(element, "id", {
-    get: function () {
-      console.log("DevTools detected via property access!");
-      debugger;
-    },
-  });
-  console.log(element);
+const element = new Image();
+Object.defineProperty(element, "id", {
+get: function () {
+console.log("DevTools detected via property access!");
+debugger;
+},
+});
+console.log(element);
 })();
 
 // 方法3: 检测 console
 (function () {
-  const before = new Date();
-  debugger;
-  const after = new Date();
+const before = new Date();
+debugger;
+const after = new Date();
 
-  if (after - before > 100) {
-    console.log("Debugger detected!");
-    window.location = "about:blank";
-  }
+if (after - before > 100) {
+console.log("Debugger detected!");
+window.location = "about:blank";
+}
 })();
 ```
 
@@ -430,17 +445,17 @@ crypto.encrypt(data);
 ```javascript
 // 检测 Selenium
 if (navigator.webdriver) {
-  console.log("Selenium detected!");
+console.log("Selenium detected!");
 }
 
 // 检测 Puppeteer/Playwright
 if (window.navigator.plugins.length === 0) {
-  console.log("Headless browser detected!");
+console.log("Headless browser detected!");
 }
 
 // 检测 PhantomJS
 if (window.callPhantom || window._phantom) {
-  console.log("PhantomJS detected!");
+console.log("PhantomJS detected!");
 }
 ```
 
@@ -452,14 +467,14 @@ if (window.callPhantom || window._phantom) {
 
 ```javascript
 (function () {
-  const expiryDate = new Date("2025-12-31");
-  const now = new Date();
+const expiryDate = new Date("2025-12-31");
+const now = new Date();
 
-  if (now > expiryDate) {
-    throw new Error("This code has expired");
-  }
+if (now > expiryDate) {
+throw new Error("This code has expired");
+}
 
-  // 正常逻辑
+// 正常逻辑
 })();
 ```
 
@@ -471,12 +486,12 @@ if (window.callPhantom || window._phantom) {
 
 ```javascript
 (function () {
-  const allowedDomains = ["example.com", "www.example.com"];
-  const currentDomain = window.location.hostname;
+const allowedDomains = ["example.com", "www.example.com"];
+const currentDomain = window.location.hostname;
 
-  if (!allowedDomains.includes(currentDomain)) {
-    throw new Error("Unauthorized domain");
-  }
+if (!allowedDomains.includes(currentDomain)) {
+throw new Error("Unauthorized domain");
+}
 })();
 ```
 
@@ -488,13 +503,13 @@ if (window.callPhantom || window._phantom) {
 
 ```javascript
 function checkIntegrity() {
-  const scriptContent = document.querySelector("script").textContent;
-  const hash = CryptoJS.SHA256(scriptContent).toString();
+const scriptContent = document.querySelector("script").textContent;
+const hash = CryptoJS.SHA256(scriptContent).toString();
 
-  const expectedHash = "abc123..."; // 预先计算的哈希
-  if (hash !== expectedHash) {
-    throw new Error("Code tampering detected!");
-  }
+const expectedHash = "abc123..."; // 预先计算的哈希
+if (hash !== expectedHash) {
+throw new Error("Code tampering detected!");
+}
 }
 
 checkIntegrity();
@@ -535,9 +550,9 @@ npx webcrack input.js -o output.js
 // Hook 解密函数
 const _decode = window._0x1a2b;
 window._0x1a2b = function () {
-  const result = _decode.apply(this, arguments);
-  console.log("Decoded:", result);
-  return result;
+const result = _decode.apply(this, arguments);
+console.log("Decoded:", result);
+return result;
 };
 ```
 
@@ -562,22 +577,22 @@ window._0x1a2b = function () {
 // Hook fetch
 const originalFetch = window.fetch;
 window.fetch = function (...args) {
-  console.log("Fetch:", args);
-  return originalFetch.apply(this, args);
+console.log("Fetch:", args);
+return originalFetch.apply(this, args);
 };
 
 // Hook WebSocket
 const originalWebSocket = window.WebSocket;
 window.WebSocket = function (url) {
-  console.log("WebSocket:", url);
-  return new originalWebSocket(url);
+console.log("WebSocket:", url);
+return new originalWebSocket(url);
 };
 
 // Hook eval
 const originalEval = window.eval;
 window.eval = function (code) {
-  console.log("Eval:", code);
-  return originalEval(code);
+console.log("Eval:", code);
+return originalEval(code);
 };
 ```
 
@@ -589,43 +604,45 @@ window.eval = function (code) {
 
 1. **多层防护**:
 
-   - 混淆 + 虚拟机 + WebAssembly
-   - 不要依赖单一保护
+- 混淆 + 虚拟机 + WebAssembly
+- 不要依赖单一保护
 
 2. **关键代码服务器端**:
 
-   - 敏感算法放在后端
-   - 前端只做展示
+- 敏感算法放在后端
+- 前端只做展示
 
 3. **定期更新**:
 
-   - 混淆策略定期变化
-   - 检测绕过方法并更新
+- 混淆策略定期变化
+- 检测绕过方法并更新
 
 4. **性能平衡**:
-   - 过度混淆影响性能
-   - 评估保护强度与性能损失
+
+- 过度混淆影响性能
+- 评估保护强度与性能损失
 
 ### 逆向分析者
 
 1. **自动化优先**:
 
-   - 先尝试自动化工具
-   - 节省时间成本
+- 先尝试自动化工具
+- 节省时间成本
 
 2. **动态分析为主**:
 
-   - Hook 关键函数
-   - 运行时观察行为
+- Hook 关键函数
+- 运行时观察行为
 
 3. **分模块攻克**:
 
-   - 识别核心逻辑
-   - 其他部分可以忽略
+- 识别核心逻辑
+- 其他部分可以忽略
 
 4. **合法合规**:
-   - 仅在授权范围内分析
-   - 遵守法律法规
+
+- 仅在授权范围内分析
+- 遵守法律法规
 
 ---
 
@@ -660,11 +677,11 @@ window.eval = function (code) {
 ```javascript
 // 检测特征
 const indicators = {
-  shortVarNames: /^[a-z_$][0-9]{1,4}$/.test(someVar),
-  hexStrings: code.includes("\\x"),
-  evalUsage: code.includes("eval("),
-  longLines: code.split("\n").some((l) => l.length > 500),
-  switchCases: (code.match(/switch/g) || []).length > 10,
+shortVarNames: /^[a-z_$][0-9]{1,4}$/.test(someVar),
+hexStrings: code.includes("\\x"),
+evalUsage: code.includes("eval("),
+longLines: code.split("\n").some((l) => l.length > 500),
+switchCases: (code.match(/switch/g) || []).length > 10,
 };
 
 console.log("Obfuscation indicators:", indicators);

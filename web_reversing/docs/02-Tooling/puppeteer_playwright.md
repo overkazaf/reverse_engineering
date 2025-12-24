@@ -4,9 +4,9 @@
 
 Puppeteer (基于 CDP) 和 Playwright (支持多浏览器) 是现代 Web 自动化的首选工具。在逆向中，我们需要利用它们来：
 
-1.  **动态渲染**: 抓取 SPA 页面数据。
-2.  **模拟用户**: 绕过复杂的行为验证码。
-3.  **Hook 注入**: 在页面加载前注入 JS 代码。
+1. **动态渲染**: 抓取 SPA 页面数据。
+2. **模拟用户**: 绕过复杂的行为验证码。
+3. **Hook 注入**: 在页面加载前注入 JS 代码。
 
 ---
 
@@ -16,18 +16,18 @@ Puppeteer (基于 CDP) 和 Playwright (支持多浏览器) 是现代 Web 自动�
 const puppeteer = require("puppeteer");
 
 (async () => {
-  const browser = await puppeteer.launch({
-    headless: false, // 逆向调试务必开启有头模式
-    args: [
-      "--no-sandbox",
-      "--disable-setuid-sandbox",
-      "--ignore-certificate-errors", // 忽略证书错误（配合抓包）
-      "--window-size=1920,1080",
-    ],
-  });
-  const page = await browser.newPage();
-  await page.goto("https://example.com");
-  // ...
+const browser = await puppeteer.launch({
+headless: false, // 逆向调试务必开启有头模式
+args: [
+"--no-sandbox",
+"--disable-setuid-sandbox",
+"--ignore-certificate-errors", // 忽略证书错误（配合抓包）
+"--window-size=1920,1080",
+],
+});
+const page = await browser.newPage();
+await page.goto("https://example.com");
+// ...
 })();
 ```
 
@@ -42,9 +42,9 @@ const puppeteer = require("puppeteer");
 ```javascript
 // 注入 navigator.webdriver = undefined 以绕过检测
 await page.evaluateOnNewDocument(() => {
-  Object.defineProperty(navigator, "webdriver", {
-    get: () => undefined,
-  });
+Object.defineProperty(navigator, "webdriver", {
+get: () => undefined,
+});
 });
 ```
 
@@ -55,17 +55,17 @@ await page.evaluateOnNewDocument(() => {
 ```javascript
 await page.setRequestInterception(true);
 page.on("request", (request) => {
-  if (request.resourceType() === "image") {
-    request.abort(); // 加速抓取
-  } else if (request.url().includes("sign")) {
-    // 修改 Header
-    const headers = Object.assign({}, request.headers(), {
-      "X-Custom-Token": "hacked",
-    });
-    request.continue({ headers });
-  } else {
-    request.continue();
-  }
+if (request.resourceType() === "image") {
+request.abort(); // 加速抓取
+} else if (request.url().includes("sign")) {
+// 修改 Header
+const headers = Object.assign({}, request.headers(), {
+"X-Custom-Token": "hacked",
+});
+request.continue({ headers });
+} else {
+request.continue();
+}
 });
 ```
 
@@ -78,10 +78,10 @@ const client = await page.target().createCDPSession();
 await client.send("Network.enable");
 // 模拟弱网环境
 await client.send("Network.emulateNetworkConditions", {
-  offline: false,
-  latency: 200,
-  downloadThroughput: (780 * 1024) / 8,
-  uploadThroughput: (330 * 1024) / 8,
+offline: false,
+latency: 200,
+downloadThroughput: (780 * 1024) / 8,
+uploadThroughput: (330 * 1024) / 8,
 });
 ```
 
@@ -102,13 +102,13 @@ Playwright API 设计更现代，且原生支持 WebKit (Safari)。
 
 ### 解决方案
 
-1.  **puppeteer-extra-plugin-stealth**: 必装插件。自动抹除几十种常见指纹（Chrome Runtime, Navigator Permissions, WebGL Vendor 等）。
-    ```javascript
-    const puppeteer = require("puppeteer-extra");
-    const StealthPlugin = require("puppeteer-extra-plugin-stealth");
-    puppeteer.use(StealthPlugin());
-    ```
-2.  **拟人化操作**: 不要 `page.click()` 瞬间点击，而是移动鼠标轨迹 -> 随机停顿 -> 按下 -> 抬起。可以使用 `ghost-cursor` 等库。
+1. **puppeteer-extra-plugin-stealth**: 必装插件。自动抹除几十种常见指纹（Chrome Runtime, Navigator Permissions, WebGL Vendor 等）。
+```javascript
+const puppeteer = require("puppeteer-extra");
+const StealthPlugin = require("puppeteer-extra-plugin-stealth");
+puppeteer.use(StealthPlugin());
+```
+2. **拟人化操作**: 不要 `page.click()` 瞬间点击，而是移动鼠标轨迹 -> 随机停顿 -> 按下 -> 抬起。可以使用 `ghost-cursor` 等库。
 
 ---
 

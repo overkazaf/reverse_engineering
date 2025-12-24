@@ -226,7 +226,7 @@ patch_opaque_predicates()
 
 ## 相关链接
 
-### 相关 Recipe
+### 相关配方
 
 - [OLLVM 反混淆](../Analysis/ollvm_deobfuscation.md) - 处理控制流平坦化
 - [应用脱壳总览](./un-packing.md) - 脱壳后再去花

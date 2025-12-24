@@ -8,6 +8,22 @@ JSVMP 概念最早由西北大学 2015 级硕士研究生匡凯元在其 2018 �
 
 ---
 
+## 📚 前置知识
+
+在开始本配方之前，建议先掌握以下内容：
+
+| 知识领域 | 重要程度 | 参考资料 |
+|----------|---------|---------|
+| JavaScript 反混淆 | 必需 | [JavaScript 反混淆](./javascript_deobfuscation.md) |
+| JavaScript 执行机制 | 必需 | [JavaScript 执行机制](../01-Foundations/javascript_execution_mechanism.md) |
+| V8 引擎工具 | 必需 | [V8 工具](../02-Tooling/v8_tools.md) |
+| AST 工具 | 推荐 | [AST 工具](../02-Tooling/ast_tools.md) |
+| 调试技巧 | 推荐 | [调试技巧与断点设置](../03-Basic-Recipes/debugging_techniques.md) |
+
+> ⚠️ **难度警告**: JSVMP 是目前**最复杂**的 JavaScript 保护技术之一，逆向难度极高。建议在熟练掌握常规混淆还原技术后再挑战本配方。
+
+---
+
 ## 基础概念
 
 ### 定义
@@ -37,76 +53,76 @@ JSVMP 的保护结构主要由两部分组成：
 
 ```mermaid
 graph TB
-    subgraph Source["原始 JavaScript 代码"]
-        JS[JavaScript 源代码<br/>━━━━━━━━<br/>function encrypt(data) {<br/>  return hash(data);<br/>}]
-    end
+subgraph Source["原始 JavaScript 代码"]
+JS[JavaScript 源代码<br/>━━━━━━━━<br/>function encrypt(data) {<br/> return hash(data);<br/>}]
+end
 
-    subgraph Compiler["编译阶段（离线）"]
-        Lexer[词法分析器<br/>Tokenizer]
-        Parser[语法分析器<br/>Parser]
-        AST[抽象语法树<br/>AST]
-        IRGen[中间代码生成<br/>IR Generator]
-        BytecodeGen[字节码生成<br/>Bytecode Generator]
+subgraph Compiler["编译阶段（离线）"]
+Lexer[词法分析器<br/>Tokenizer]
+Parser[语法分析器<br/>Parser]
+AST[抽象语法树<br/>AST]
+IRGen[中间代码生成<br/>IR Generator]
+BytecodeGen[字节码生成<br/>Bytecode Generator]
 
-        JS --> Lexer --> Parser --> AST
-        AST --> IRGen
-        IRGen --> BytecodeGen
-    end
+JS --> Lexer --> Parser --> AST
+AST --> IRGen
+IRGen --> BytecodeGen
+end
 
-    subgraph Output["输出产物"]
-        Bytecode[自定义字节码<br/>━━━━━━━━<br/>0x01 0x42 0x3A ...<br/>操作码序列]
+subgraph Output["输出产物"]
+Bytecode[自定义字节码<br/>━━━━━━━━<br/>0x01 0x42 0x3A ...<br/>操作码序列]
 
-        ConstPool[常量池<br/>━━━━━━━━<br/>• 数字常量<br/>• 字符串表<br/>• 函数引用]
+ConstPool[常量池<br/>━━━━━━━━<br/>• 数字常量<br/>• 字符串表<br/>• 函数引用]
 
-        VMCode[VM 解释器<br/>━━━━━━━━<br/>• WebAssembly<br/>• 混淆的 JS]
-    end
+VMCode[VM 解释器<br/>━━━━━━━━<br/>• WebAssembly<br/>• 混淆的 JS]
+end
 
-    BytecodeGen --> Bytecode
-    BytecodeGen --> ConstPool
-    BytecodeGen --> VMCode
+BytecodeGen --> Bytecode
+BytecodeGen --> ConstPool
+BytecodeGen --> VMCode
 
-    subgraph Runtime["运行时执行"]
-        VMInit[VM 初始化<br/>━━━━━━━━<br/>• 创建上下文<br/>• 加载字节码<br/>• 初始化常量池]
+subgraph Runtime["运行时执行"]
+VMInit[VM 初始化<br/>━━━━━━━━<br/>• 创建上下文<br/>• 加载字节码<br/>• 初始化常量池]
 
-        VMContext[VM 上下文<br/>━━━━━━━━<br/>• 虚拟栈<br/>• 局部变量表<br/>• PC 寄存器]
+VMContext[VM 上下文<br/>━━━━━━━━<br/>• 虚拟栈<br/>• 局部变量表<br/>• PC 寄存器]
 
-        Dispatcher[指令分发器<br/>━━━━━━━━<br/>• 读取操作码<br/>• 路由到 Handler]
+Dispatcher[指令分发器<br/>━━━━━━━━<br/>• 读取操作码<br/>• 路由到 Handler]
 
-        Handlers[指令处理器集合<br/>━━━━━━━━<br/>• Handler_PUSH<br/>• Handler_ADD<br/>• Handler_CALL<br/>• Handler_JMP<br/>• ...]
+Handlers[指令处理器集合<br/>━━━━━━━━<br/>• Handler_PUSH<br/>• Handler_ADD<br/>• Handler_CALL<br/>• Handler_JMP<br/>• ...]
 
-        VMExit[VM 退出<br/>━━━━━━━━<br/>• 返回结果<br/>• 清理资源]
+VMExit[VM 退出<br/>━━━━━━━━<br/>• 返回结果<br/>• 清理资源]
 
-        VMInit --> VMContext
-        VMContext --> Dispatcher
-        Dispatcher --> Handlers
-        Handlers --> Dispatcher
-        Dispatcher --> VMExit
-    end
+VMInit --> VMContext
+VMContext --> Dispatcher
+Dispatcher --> Handlers
+Handlers --> Dispatcher
+Dispatcher --> VMExit
+end
 
-    Bytecode -.加载.-> VMInit
-    ConstPool -.加载.-> VMInit
-    VMCode -.执行.-> Runtime
+Bytecode -.加载.-> VMInit
+ConstPool -.加载.-> VMInit
+VMCode -.执行.-> Runtime
 
-    style JS fill:#e1f5ff
-    style Bytecode fill:#f5a623
-    style VMCode fill:#bd10e0
-    style Dispatcher fill:#4a90e2
+style JS fill:#e1f5ff
+style Bytecode fill:#f5a623
+style VMCode fill:#bd10e0
+style Dispatcher fill:#4a90e2
 ```
 
 **架构组成部分**:
 
 1. **虚拟指令集（Bytecode）**
 
-   - 自定义的操作码集合
-   - 编码后的指令序列
-   - 常量池和字符串表
+- 自定义的操作码集合
+- 编码后的指令序列
+- 常量池和字符串表
 
 2. **虚拟解释器（VM Interpreter）**
-   - **VMContext**：虚拟执行上下文，维护执行状态
-   - **VMInit**：初始化模块，设置虚拟机环境
-   - **Dispatcher**：调度器，负责指令分发
-   - **Handler**：字节码处理器，执行具体指令
-   - **VMExit**：退出模块，清理虚拟机状态
+- **VMContext**：虚拟执行上下文，维护执行状态
+- **VMInit**：初始化模块，设置虚拟机环境
+- **Dispatcher**：调度器，负责指令分发
+- **Handler**：字节码处理器，执行具体指令
+- **VMExit**：退出模块，清理虚拟机状态
 
 ### 基于 WebAssembly 的实现
 
@@ -123,25 +139,25 @@ graph TB
 
 1. **指令拆分**
 
-   - 将 JavaScript 代码转换为具有原子操作特性的中间代码
-   - 模拟本地执行环境
+- 将 JavaScript 代码转换为具有原子操作特性的中间代码
+- 模拟本地执行环境
 
 2. **自定义虚拟指令集**
 
-   - 将中间代码映射到虚拟指令
-   - 编码为自定义字节码格式
+- 将中间代码映射到虚拟指令
+- 编码为自定义字节码格式
 
 3. **字符串和属性替换**
-   - 将属性名和字符串替换为数组元素索引
-   - 进一步隐藏代码语义
+- 将属性名和字符串替换为数组元素索引
+- 进一步隐藏代码语义
 
 ### 相比传统保护的优势
 
-| 保护方式  | 可绕过性                         | 安全性 |
+| 保护方式 | 可绕过性 | 安全性 |
 | --------- | -------------------------------- | ------ |
-| 代码混淆  | 可通过 AST 还原                  | 低     |
-| 代码加密  | 可通过 Hook 获取解密后代码       | 中     |
-| 反调试    | 可移除反调试代码                 | 低     |
+| 代码混淆 | 可通过 AST 还原 | 低 |
+| 代码加密 | 可通过 Hook 获取解密后代码 | 中 |
+| 反调试 | 可移除反调试代码 | 低 |
 | **JSVMP** | **移除解释器会导致功能完全丧失** | **高** |
 
 JSVMP 将目标代码转换为自定义字节码，破坏了文本语法属性，隐藏了关键逻辑。与反调试或加密等可以通过移除保护结构来绕过的方法不同，移除 JSVMP 解释器会导致原始功能完全失去恢复能力。
@@ -156,24 +172,24 @@ JSVMP 将目标代码转换为自定义字节码，破坏了文本语法属性�
 
 1. **RPC 远程调用**
 
-   - 在真实浏览器环境中执行 JSVMP 保护的函数
-   - 通过网络接口暴露功能
-   - 优点：实现简单，稳定性高
-   - 缺点：需要维护浏览器环境，性能开销大
+- 在真实浏览器环境中执行 JSVMP 保护的函数
+- 通过网络接口暴露功能
+- 优点：实现简单，稳定性高
+- 缺点：需要维护浏览器环境，性能开销大
 
 2. **环境补充（补环境）**
 
-   - 在 Node.js 中模拟浏览器环境
-   - 补充缺失的 DOM、BOM API
-   - 优点：执行效率高
-   - 缺点：需要大量环境适配工作
+- 在 Node.js 中模拟浏览器环境
+- 补充缺失的 DOM、BOM API
+- 优点：执行效率高
+- 缺点：需要大量环境适配工作
 
 3. **插桩还原算法**
-   - 通过日志输出关键参数
-   - 从结果反推生成逻辑
-   - 实现纯算法还原
-   - 优点：不依赖原始代码，可移植性强
-   - 缺点：工作量大，需要深入理解算法
+- 通过日志输出关键参数
+- 从结果反推生成逻辑
+- 实现纯算法还原
+- 优点：不依赖原始代码，可移植性强
+- 缺点：工作量大，需要深入理解算法
 
 ### 关键调试技巧
 
@@ -196,7 +212,7 @@ const ast = parser.parse(code);
 
 // 进行 AST 转换
 traverse(ast, {
-  // 添加反混淆规则
+// 添加反混淆规则
 });
 
 // 生成还原后的代码
@@ -211,26 +227,26 @@ fs.writeFileSync("deobfuscated.js", output);
 ```javascript
 // 原始 JSVMP 解释器代码（示例）
 function vmExecute(bytecode, context) {
-  // 插桩：记录字节码执行过程
-  console.log("Executing bytecode:", bytecode);
-  console.log("Context:", JSON.stringify(context));
+// 插桩：记录字节码执行过程
+console.log("Executing bytecode:", bytecode);
+console.log("Context:", JSON.stringify(context));
 
-  let pc = 0;
-  while (pc < bytecode.length) {
-    const opcode = bytecode[pc];
+let pc = 0;
+while (pc < bytecode.length) {
+const opcode = bytecode[pc];
 
-    // 插桩：记录每条指令
-    console.log(`PC: ${pc}, Opcode: ${opcode}`);
+// 插桩：记录每条指令
+console.log(`PC: ${pc}, Opcode: ${opcode}`);
 
-    switch (opcode) {
-      case OP_LOAD:
-        // 插桩：记录加载操作
-        console.log("LOAD operation:", bytecode[pc + 1]);
-        break;
-      // ... 其他指令
-    }
-    pc++;
-  }
+switch (opcode) {
+case OP_LOAD:
+// 插桩：记录加载操作
+console.log("LOAD operation:", bytecode[pc + 1]);
+break;
+// ... 其他指令
+}
+pc++;
+}
 }
 ```
 
@@ -247,13 +263,13 @@ function vmExecute(bytecode, context) {
 
 // 示例：Hook JSVMP 解释器
 (function () {
-  const originalVMExecute = window.vmExecute;
-  window.vmExecute = function (...args) {
-    console.log("VM Execute called with:", args);
-    const result = originalVMExecute.apply(this, args);
-    console.log("VM Execute result:", result);
-    return result;
-  };
+const originalVMExecute = window.vmExecute;
+window.vmExecute = function (...args) {
+console.log("VM Execute called with:", args);
+const result = originalVMExecute.apply(this, args);
+console.log("VM Execute result:", result);
+return result;
+};
 })();
 ```
 
@@ -268,13 +284,13 @@ function vmExecute(bytecode, context) {
 // 条件断点示例：
 // 当某个变量等于特定值时暂停
 if (context.register[0] === 0x1234) {
-  debugger;
+debugger;
 }
 
 // 记录执行路径
 const executionTrace = [];
 function traceExecution(pc, opcode) {
-  executionTrace.push({ pc, opcode, timestamp: Date.now() });
+executionTrace.push({ pc, opcode, timestamp: Date.now() });
 }
 ```
 
@@ -286,17 +302,17 @@ function traceExecution(pc, opcode) {
 // Hook Function.prototype.apply
 const originalApply = Function.prototype.apply;
 Function.prototype.apply = function (thisArg, args) {
-  // 记录 apply 调用
-  console.log("Apply called:");
-  console.log("  Function:", this.name || "anonymous");
-  console.log("  This:", thisArg);
-  console.log("  Args:", args);
+// 记录 apply 调用
+console.log("Apply called:");
+console.log(" Function:", this.name || "anonymous");
+console.log(" This:", thisArg);
+console.log(" Args:", args);
 
-  // 调用原始方法
-  const result = originalApply.call(this, thisArg, args);
+// 调用原始方法
+const result = originalApply.call(this, thisArg, args);
 
-  console.log("  Result:", result);
-  return result;
+console.log(" Result:", result);
+return result;
 };
 
 // 在日志中分析算法逻辑，避免大量动态调试
@@ -329,20 +345,20 @@ const bytecodeMatch = code.match(/new\s+Uint8Array\(\[[\d,\s]+\]\)/);
 ```javascript
 // 在 Dispatcher 中插入日志
 function dispatcher(opcode, operand) {
-  console.log(`Opcode: 0x${opcode.toString(16)}, Operand: ${operand}`);
+console.log(`Opcode: 0x${opcode.toString(16)}, Operand: ${operand}`);
 
-  switch (opcode) {
-    case 0x01: // LOAD
-      console.log("  Action: LOAD from", operand);
-      break;
-    case 0x02: // STORE
-      console.log("  Action: STORE to", operand);
-      break;
-    case 0x10: // ADD
-      console.log("  Action: ADD");
-      break;
-    // ... 更多指令
-  }
+switch (opcode) {
+case 0x01: // LOAD
+console.log(" Action: LOAD from", operand);
+break;
+case 0x02: // STORE
+console.log(" Action: STORE to", operand);
+break;
+case 0x10: // ADD
+console.log(" Action: ADD");
+break;
+// ... 更多指令
+}
 }
 ```
 
@@ -353,38 +369,38 @@ function dispatcher(opcode, operand) {
 ```javascript
 // 从 JSVMP 字节码执行日志中还原的算法
 function generateXBogus(params) {
-  // 步骤 1: 参数序列化
-  const serialized = serializeParams(params);
+// 步骤 1: 参数序列化
+const serialized = serializeParams(params);
 
-  // 步骤 2: MD5 哈希
-  const hash = md5(serialized);
+// 步骤 2: MD5 哈希
+const hash = md5(serialized);
 
-  // 步骤 3: 时间戳处理
-  const timestamp = Math.floor(Date.now() / 1000);
+// 步骤 3: 时间戳处理
+const timestamp = Math.floor(Date.now() / 1000);
 
-  // 步骤 4: 混合编码
-  const mixed = mixEncode(hash, timestamp);
+// 步骤 4: 混合编码
+const mixed = mixEncode(hash, timestamp);
 
-  // 步骤 5: Base64 变种编码
-  const encoded = customBase64(mixed);
+// 步骤 5: Base64 变种编码
+const encoded = customBase64(mixed);
 
-  return encoded;
+return encoded;
 }
 
 // 辅助函数实现
 function serializeParams(params) {
-  return Object.keys(params)
-    .sort()
-    .map((key) => `${key}=${params[key]}`)
-    .join("&");
+return Object.keys(params)
+.sort()
+.map((key) => `${key}=${params[key]}`)
+.join("&");
 }
 
 function mixEncode(hash, timestamp) {
-  const result = [];
-  for (let i = 0; i < hash.length; i++) {
-    result.push(hash.charCodeAt(i) ^ (timestamp & 0xff));
-  }
-  return result;
+const result = [];
+for (let i = 0; i < hash.length; i++) {
+result.push(hash.charCodeAt(i) ^ (timestamp & 0xff));
+}
+return result;
 }
 ```
 
@@ -396,39 +412,39 @@ function mixEncode(hash, timestamp) {
 
 1. **合理选择保护范围**
 
-   - 仅对核心算法和敏感逻辑使用 JSVMP
-   - 避免保护整个应用，影响性能和调试
-   - 考虑保护粒度与性能的平衡
+- 仅对核心算法和敏感逻辑使用 JSVMP
+- 避免保护整个应用，影响性能和调试
+- 考虑保护粒度与性能的平衡
 
 2. **性能优化**
 
-   - 使用 WebAssembly 实现解释器以提升性能
-   - 对热点代码路径进行优化
-   - 实现指令缓存机制
+- 使用 WebAssembly 实现解释器以提升性能
+- 对热点代码路径进行优化
+- 实现指令缓存机制
 
 3. **多层防护**
-   - JSVMP 结合代码混淆
-   - 添加反调试和环境检测
-   - 实施完整性校验
+- JSVMP 结合代码混淆
+- 添加反调试和环境检测
+- 实施完整性校验
 
 ### 对于逆向分析者
 
 1. **选择合适的逆向方法**
 
-   - 简单场景使用 RPC 调用
-   - 复杂场景考虑算法还原
-   - 根据具体需求权衡成本和收益
+- 简单场景使用 RPC 调用
+- 复杂场景考虑算法还原
+- 根据具体需求权衡成本和收益
 
 2. **工具化分析流程**
 
-   - 开发自动化插桩工具
-   - 建立 JSVMP 特征库
-   - 积累常见指令集模式
+- 开发自动化插桩工具
+- 建立 JSVMP 特征库
+- 积累常见指令集模式
 
 3. **团队协作**
-   - 分享 JSVMP 解释器特征
-   - 共享逆向工具和脚本
-   - 建立案例知识库
+- 分享 JSVMP 解释器特征
+- 共享逆向工具和脚本
+- 建立案例知识库
 
 ---
 
@@ -463,14 +479,14 @@ JSVMP 的目标是提高攻击成本，而非完全防止逆向。
 
 **A**: 主要区别：
 
-| 特性     | 代码混淆               | JSVMP            |
+| 特性 | 代码混淆 | JSVMP |
 | -------- | ---------------------- | ---------------- |
-| 原理     | 重命名、控制流平坦化等 | 代码虚拟化       |
-| 可读性   | 降低但仍可理解         | 完全失去语法属性 |
-| 执行方式 | 直接执行               | 虚拟机解释执行   |
-| 性能影响 | 较小（0-50%）          | 较大（2-10 倍）  |
-| 逆向难度 | 中                     | 高               |
-| 可还原性 | AST 可部分还原         | 难以完全还原     |
+| 原理 | 重命名、控制流平坦化等 | 代码虚拟化 |
+| 可读性 | 降低但仍可理解 | 完全失去语法属性 |
+| 执行方式 | 直接执行 | 虚拟机解释执行 |
+| 性能影响 | 较小（0-50%） | 较大（2-10 倍） |
+| 逆向难度 | 中 | 高 |
+| 可还原性 | AST 可部分还原 | 难以完全还原 |
 
 ### Q: 学习 JSVMP 逆向需要哪些基础？
 

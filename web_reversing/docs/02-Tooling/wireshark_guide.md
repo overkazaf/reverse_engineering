@@ -6,8 +6,8 @@ Wireshark 是网络协议分析的“显微镜”。与 Burp/Charles 这种 HTTP
 
 在逆向中，我们主要用它来：
 
-1.  分析非 HTTP 的私有协议（如 WebSocket 里面的二进制流，或者 TCP 长连接）。
-2.  在无法设置代理的情况下（如某些 APP 开启了 VPN 检测或不走系统代理）强制抓包。
+1. 分析非 HTTP 的私有协议（如 WebSocket 里面的二进制流，或者 TCP 长连接）。
+2. 在无法设置代理的情况下（如某些 APP 开启了 VPN 检测或不走系统代理）强制抓包。
 
 ---
 
@@ -36,14 +36,14 @@ Wireshark 的过滤器语法是必须掌握的。
 
 Chrome 和 Firefox 支持将 TLS 会话密钥导出到文件。
 
-1.  **设置环境变量**:
+1. **设置环境变量**:
     - Windows: `set SSLKEYLOGFILE=C:\keys\ssl.log`
     - Mac/Linux: `export SSLKEYLOGFILE=~/ssl.log`
-2.  **启动浏览器**: 在同一个终端中启动浏览器（`open -a "Google Chrome"`）。
-3.  **配置 Wireshark**:
+2. **启动浏览器**: 在同一个终端中启动浏览器（`open -a "Google Chrome"`）。
+3. **配置 Wireshark**:
     - `Preferences -> Protocols -> TLS (或 SSL)`。
     - 在 `(Pre)-Master-Secret log filename` 中选择刚才的 `ssl.log` 文件。
-4.  此时，Wireshark 中的 TLS 包会自动变成解密后的 HTTP2/HTTP1.1 明文。
+4. 此时，Wireshark 中的 TLS 包会自动变成解密后的 HTTP2/HTTP1.1 明文。
 
 ### 移动端环境
 

@@ -24,22 +24,22 @@ Cookie 是最早的客户端存储机制，主要用于 HTTP 状态管理。
 ### 2. [Reverse Engineering Context] Cookie 逆向
 
 - **Hook Setter**: 如前文所述，Hook `document.cookie` 的 setter 可以定位 JS 是在哪里生成/设置 Cookie 的。
-  ```javascript
-  var cookie_cache = document.cookie;
-  Object.defineProperty(document, "cookie", {
-    get: function () {
-      return cookie_cache;
-    },
-    set: function (val) {
-      console.log("Setting cookie", val);
-      cookie_cache = val;
-      return val;
-    },
-  });
-  ```
+```javascript
+var cookie_cache = document.cookie;
+Object.defineProperty(document, "cookie", {
+get: function () {
+return cookie_cache;
+},
+set: function (val) {
+console.log("Setting cookie", val);
+cookie_cache = val;
+return val;
+},
+});
+```
 - **HttpOnly Bypass?**: 如果 Cookie 是 HttpOnly 的，你无法通过 JS Hook 拿到（因为浏览器内核阻止了）。但你可以：
-  1.  抓包（Burp/Fiddler/Network Panel）。
-  2.  如果是 Electron 应用，可以尝试调试主进程或使用 Protocol Monitor。
+1. 抓包（Burp/Fiddler/Network Panel）。
+2. 如果是 Electron 应用，可以尝试调试主进程或使用 Protocol Monitor。
 
 ---
 
@@ -67,11 +67,11 @@ HTML5 引入的键值对存储，比 Cookie 更大（~5MB），接口更简单�
 // 简单的 Hook 监控 setItem
 const originalSetItem = localStorage.setItem;
 localStorage.setItem = function (key, value) {
-  if (key === "token") {
-    console.log("[LocalStorage] Token detected:", value);
-    debugger;
-  }
-  return originalSetItem.apply(this, arguments);
+if (key === "token") {
+console.log("[LocalStorage] Token detected:", value);
+debugger;
+}
+return originalSetItem.apply(this, arguments);
 };
 ```
 
@@ -97,11 +97,11 @@ localStorage.setItem = function (key, value) {
 
 ## 总结
 
-| 存储类型           | 容量 | 生命周期    | JS 可访问性     | 逆向关注点           |
+| 存储类型 | 容量 | 生命周期 | JS 可访问性 | 逆向关注点 |
 | :----------------- | :--- | :---------- | :-------------- | :------------------- |
-| **Cookie**         | 4KB  | 可设 / 会话 | 取决于 HttpOnly | Session ID, 签名参数 |
-| **LocalStorage**   | 5MB  | 永久        | 是              | JWT Token, 用户配置  |
-| **SessionStorage** | 5MB  | Tab 关闭    | 是              | 临时状态             |
-| **IndexedDB**      | 无限 | 永久        | 是              | 大量业务数据         |
+| **Cookie** | 4KB | 可设 / 会话 | 取决于 HttpOnly | Session ID, 签名参数 |
+| **LocalStorage** | 5MB | 永久 | 是 | JWT Token, 用户配置 |
+| **SessionStorage** | 5MB | Tab 关闭 | 是 | 临时状态 |
+| **IndexedDB** | 无限 | 永久 | 是 | 大量业务数据 |
 
 **逆向第一步**: F12 -> Application 面板，把这几个地方翻一遍，看看有没有名为 `token`, `auth`, `sign`, `key` 的可疑字段。

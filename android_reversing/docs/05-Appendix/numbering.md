@@ -8,144 +8,154 @@
 
 ## 章节编号规则
 
-本书分为六大部分，每部分有独立的编号前缀：
+本书分为八大部分，每部分有独立的编号前缀：
 
-| 编号前缀 | 章节名称 | 内容定位 | 示例 |
-|---------|---------|---------|------|
-| **R** | Recipes | 场景化解决方案（核心内容） | R01, R02... |
-| **T** | Tools | 工具使用指南与原理 | T01, T02... |
-| **C** | Case Studies | 实战案例分析 | C01, C02... |
-| **F** | Foundations | 基础知识参考 | F01, F02... |
-| **A** | Advanced | 高级主题参考 | A01, A02... |
-| **E** | Engineering | 工程化参考 | E01, E02... |
-| **X** | Appendix | 附录资源与索引 | X01, X02... |
+| 编号前缀 | 章节名称     | 内容定位                   | 数量 |
+| -------- | ------------ | -------------------------- | ---- |
+| **Q**    | Quick Start  | 快速入门                   | 3    |
+| **R**    | Recipes      | 场景化解决方案（核心内容） | 35   |
+| **T**    | Tools        | 工具使用指南与原理         | 10   |
+| **C**    | Case Studies | 实战案例分析               | 8    |
+| **F**    | Foundations  | 基础知识参考               | 13   |
+| **A**    | Advanced     | 高级主题参考               | 7    |
+| **E**    | Engineering  | 工程化参考                 | 10   |
+| **X**    | Appendix     | 附录资源与索引             | 5    |
 
 ---
 
-## Recipes 分类编号
+## Quick Start 编号 (Q)
 
-**Recipes**（配方）是本书的核心内容，按照问题场景分类：
+快速入门章节，帮助新读者快速上手。
 
-### 01-Recipes/Network (NET)
-**网络与加密相关配方**
+| 编号 | 名称     | 内容说明           |
+| ---- | -------- | ------------------ |
+| Q01  | 关于本书 | 本书介绍与阅读指南 |
+| Q02  | 快速入门 | 10 分钟快速入门    |
+| Q03  | 环境配置 | 开发环境搭建       |
 
-| 配方编号 | 配方名称 | 解决的问题 |
-|---------|---------|-----------|
-| NET-01 | Network Sniffing | 网络抓包与协议分析 |
-| NET-02 | Crypto Analysis | 加密算法分析与还原 |
-| NET-03 | TLS Fingerprinting | TLS 指纹识别与处理 |
-| NET-04 | JA3 Fingerprinting | JA3 指纹分析 |
-| NET-05 | JA4 Fingerprinting | JA4 指纹分析 |
+---
 
-### 01-Recipes/Anti-Detection (AD)
-**反检测与对抗相关配方**
+## Recipes 编号 (R)
 
-| 配方编号 | 配方名称 | 解决的问题 |
-|---------|---------|-----------|
-| AD-01 | Frida Anti Debugging | Frida 反调试检测绕过 |
-| AD-02 | Xposed Anti Debugging | Xposed 反检测绕过 |
-| AD-03 | Captcha Bypassing | 验证码识别与绕过 |
-| AD-04 | App Hardening ID | 加固方案识别 |
-| AD-05 | Device Fingerprinting | 设备指纹采集与绕过 |
-| AD-06 | Mobile App Security | 移动端安全与反机器人 |
+**Recipes**（配方）是本书的核心内容，共 35 个配方：
 
-### 01-Recipes/Unpacking (UNP)
-**脱壳与修复相关配方**
+### 入门基础 (R01-R03)
 
-| 配方编号 | 配方名称 | 解决的问题 |
-|---------|---------|-----------|
-| UNP-01 | Unpacking | 通用脱壳技术 |
-| UNP-02 | Frida Unpacking | Frida 脱壳与 SO 修复 |
-| UNP-03 | SO Deobfuscation | SO 文件反混淆 |
-| UNP-04 | SO String Deobfuscation | SO 字符串解密 |
+| 编号 | 配方名称             | 解决的问题              |
+| ---- | -------------------- | ----------------------- |
+| R01  | 逆向工程完整工作流程 | 标准化的逆向分析流程    |
+| R02  | 网络抓包分析         | 网络请求捕获与分析      |
+| R03  | Objection 快速分析   | 使用 Objection 快速分析 |
 
-### 01-Recipes/Analysis (ANA)
-**分析与调试相关配方**
+### 核心分析 (R04-R08)
 
-| 配方编号 | 配方名称 | 解决的问题 |
-|---------|---------|-----------|
-| ANA-01 | RE Workflow | 逆向工程标准工作流 |
-| ANA-02 | Static Analysis | 静态分析深入 |
-| ANA-03 | Dynamic Analysis | 动态分析深入 |
-| ANA-04 | OLLVM Deobfuscation | OLLVM 混淆还原 |
-| ANA-05 | VMP Analysis | 虚拟机保护分析 |
-| ANA-06 | JS Obfuscator | JavaScript 混淆分析 |
-| ANA-07 | JS VMP | JavaScript 虚拟机保护 |
-| ANA-08 | Native String | Native 字符串混淆 |
+| 编号 | 配方名称       | 解决的问题            |
+| ---- | -------------- | --------------------- |
+| R04  | 静态分析深入   | 深入静态分析技术      |
+| R05  | 动态分析深入   | 深入动态分析技术      |
+| R06  | Frida 常用脚本 | 实用 Frida 脚本集合   |
+| R07  | JNI 开发原理   | JNI 接口与调用原理    |
+| R08  | SO 编译与加载  | Native 库编译加载流程 |
 
-### 01-Recipes/Automation (AUTO)
-**自动化与规模化相关配方**
+### 脱壳与解密 (R09-R13)
 
-| 配方编号 | 配方名称 | 解决的问题 |
-|---------|---------|-----------|
-| AUTO-01 | Device Farming | 自动化与设备群控 |
-| AUTO-02 | Dial Up Proxy | 动态拨号代理池 |
-| AUTO-03 | Proxy Pool Design | 代理池架构设计 |
-| AUTO-04 | Scrapy | Scrapy 爬虫框架 |
-| AUTO-05 | Scrapy Redis | 分布式 Scrapy |
-| AUTO-06 | Docker Deployment | Docker 容器部署 |
-| AUTO-07 | Virtualization | 虚拟化与容器技术 |
-| AUTO-08 | Web Anti Scraping | Web 反爬虫对抗 |
+| 编号 | 配方名称          | 解决的问题              |
+| ---- | ----------------- | ----------------------- |
+| R09  | 脱壳技术概述      | 通用脱壳技术与原理      |
+| R10  | Frida 脱壳实战    | 使用 Frida 进行脱壳     |
+| R11  | 加密算法分析      | 加密算法识别与还原      |
+| R12  | SO 字符串解密     | SO 文件字符串解密       |
+| R13  | Native 字符串混淆 | Native 层字符串混淆分析 |
 
-### 01-Recipes/Scripts (SCR)
-**脚本集合**
+### 反检测对抗 (R14-R18)
 
-| 配方编号 | 配方名称 | 内容说明 |
-|---------|---------|---------|
-| SCR-01 | Frida Examples | Frida 脚本示例集 |
-| SCR-02 | Frida Common | Frida 常用脚本 |
-| SCR-03 | Automation Scripts | 自动化脚本集 |
-| SCR-04 | Native Hooking | Native Hook 模式 |
-| SCR-05 | Objection Snippets | Objection 代码片段 |
-| SCR-06 | C For Emulation | C 语言仿真代码 |
+| 编号 | 配方名称          | 解决的问题          |
+| ---- | ----------------- | ------------------- |
+| R14  | 应用加固识别      | 识别各类加固方案    |
+| R15  | Frida 反调试绕过  | 绕过 Frida 检测     |
+| R16  | Xposed 反调试绕过 | 绕过 Xposed 检测    |
+| R17  | 设备指纹与绕过    | 设备指纹采集与伪造  |
+| R18  | Native Hook 技术  | Native 层 Hook 实现 |
+
+### 高级反混淆 (R19-R22)
+
+| 编号 | 配方名称        | 解决的问题           |
+| ---- | --------------- | -------------------- |
+| R19  | SO 混淆与反混淆 | SO 文件混淆还原      |
+| R20  | OLLVM 反混淆    | OLLVM 混淆分析与还原 |
+| R21  | VMP 虚拟机分析  | 虚拟机保护分析       |
+| R22  | C 语言仿真脚本  | C 语言算法仿真       |
+
+### 网络与协议 (R23-R27)
+
+| 编号 | 配方名称       | 解决的问题           |
+| ---- | -------------- | -------------------- |
+| R23  | TLS 指纹识别   | TLS 指纹分析与处理   |
+| R24  | JA3 指纹技术   | JA3 指纹原理与应用   |
+| R25  | JA4 指纹技术   | JA4 指纹原理与应用   |
+| R26  | 验证码绕过技术 | 滑块与点选验证码绕过 |
+| R27  | 移动安全与反爬 | 移动端风控与反机器人 |
+
+### 自动化工程 (R28-R35)
+
+| 编号 | 配方名称            | 解决的问题       |
+| ---- | ------------------- | ---------------- |
+| R28  | 自动化脚本          | 自动化脚本编写   |
+| R29  | Scrapy 爬虫框架     | Scrapy 框架使用  |
+| R30  | Scrapy-Redis 分布式 | 分布式爬虫架构   |
+| R31  | 代理池设计          | 代理池架构与实现 |
+| R32  | 拨号代理池          | 动态拨号代理     |
+| R33  | Docker 部署         | 容器化部署方案   |
+| R34  | 虚拟化与容器        | 虚拟化技术应用   |
+| R35  | 自动化设备农场      | 设备群控与自动化 |
 
 ---
 
 ## Tools 编号 (T)
 
-工具使用指南和原理剖析，按功能分类。
+工具使用指南和原理剖析，共 10 个章节。
 
 ### Dynamic - 动态分析工具
 
-| 编号 | 工具名称 | 内容类型 |
-|-----|---------|---------|
-| T01 | Frida Guide | 使用指南 |
-| T02 | Frida Internals | 内部原理 |
-| T03 | Xposed Guide | 使用指南 |
-| T04 | Xposed Internals | 内部原理 |
-| T05 | Unidbg Guide | 使用指南 |
-| T06 | Unidbg Internals | 内部原理 |
+| 编号 | 工具名称        | 内容类型 |
+| ---- | --------------- | -------- |
+| T01  | Frida 使用指南  | 使用指南 |
+| T02  | Frida 内部原理  | 原理剖析 |
+| T03  | Xposed 使用指南 | 使用指南 |
+| T04  | Xposed 内部原理 | 原理剖析 |
+| T05  | Unidbg 使用指南 | 使用指南 |
+| T06  | Unidbg 内部原理 | 原理剖析 |
 
 ### Static - 静态分析工具
 
-| 编号 | 工具名称 | 内容类型 |
-|-----|---------|---------|
-| T07 | Ghidra Guide | 使用指南 |
-| T08 | IDA Pro Guide | 使用指南 |
-| T09 | Radare2 Guide | 使用指南 |
+| 编号 | 工具名称     | 内容类型 |
+| ---- | ------------ | -------- |
+| T07  | Ghidra 入门  | 使用指南 |
+| T08  | IDA Pro 入门 | 使用指南 |
+| T09  | Radare2 入门 | 使用指南 |
 
 ### Cheatsheets - 速查表
 
-| 编号 | 名称 | 内容说明 |
-|-----|-----|---------|
-| T10 | ADB Cheatsheet | ADB 命令速查 |
+| 编号 | 名称         | 内容说明     |
+| ---- | ------------ | ------------ |
+| T10  | ADB 命令速查 | ADB 常用命令 |
 
 ---
 
 ## Case Studies 编号 (C)
 
-真实场景的案例分析，综合运用各类技术。
+真实场景的案例分析，共 8 个案例。
 
-| 编号 | 案例名称 | 分析对象 |
-|-----|---------|---------|
-| C01 | Anti Analysis Techniques | 反分析技术案例 |
-| C02 | Music Apps | 音乐 App 分析 |
-| C03 | Social Media & Anti Bot | 社交媒体与风控 |
-| C04 | App Encryption | 应用加密案例 |
-| C05 | Video Apps & DRM | 视频 App 与 DRM |
-| C06 | Unity Games (Il2Cpp) | Unity 游戏分析 |
-| C07 | Flutter Apps | Flutter 应用分析 |
-| C08 | Malware Analysis | 恶意软件分析 |
+| 编号 | 案例名称                 | 分析对象         |
+| ---- | ------------------------ | ---------------- |
+| C01  | 反分析技术案例           | 各类反分析技术   |
+| C02  | 音乐 App 案例            | 音乐平台加密分析 |
+| C03  | 社交媒体与风控案例       | 社交平台风控策略 |
+| C04  | App 加密签名案例         | 请求签名算法分析 |
+| C05  | 视频 App 与 DRM 案例     | 视频加密与 DRM   |
+| C06  | Unity 游戏 (Il2Cpp) 案例 | Unity 游戏分析   |
+| C07  | Flutter 应用案例         | Flutter 应用分析 |
+| C08  | 恶意软件分析案例         | 恶意软件行为分析 |
 
 ---
 
@@ -155,45 +165,48 @@
 
 ### Foundations 基础知识 (F)
 
-| 编号 | 主题 | 内容说明 |
-|-----|-----|---------|
-| F01 | APK Structure | APK 文件结构 |
-| F02 | Android Components | 四大组件 |
-| F03 | Android Manifest | 清单文件解析 |
-| F04 | Android Studio Debug Tools | 调试工具 |
-| F05 | DEX Format | DEX 文件格式 |
-| F06 | Smali Syntax | Smali 语法 |
-| F07 | SO ELF Format | ELF 文件格式 |
-| F08 | ART Runtime | ART 运行时 |
-| F09 | ARM Assembly | ARM 汇编 |
-| F10 | x86 & ARM Assembly Basics | 汇编基础 |
-| F11 | TOTP | 时间动态密码原理 |
+| 编号 | 主题                    | 内容说明       |
+| ---- | ----------------------- | -------------- |
+| F01  | APK 文件结构            | APK 内部组成   |
+| F02  | Android 四大组件        | 组件原理与通信 |
+| F03  | AndroidManifest 解析    | 清单文件详解   |
+| F04  | Android Studio 调试工具 | 调试工具使用   |
+| F05  | DEX 文件格式            | DEX 结构详解   |
+| F06  | Smali 语法入门          | Smali 语法基础 |
+| F07  | SO/ELF 文件格式         | ELF 格式详解   |
+| F08  | ART 运行时              | ART 虚拟机原理 |
+| F09  | ARM 汇编入门            | ARM 指令集基础 |
+| F10  | x86 与 ARM 汇编基础     | 汇编对比学习   |
+| F11  | TOTP 时间动态密码       | TOTP 算法原理  |
+| F12  | SELinux 安全机制        | SELinux 原理与绕过 |
+| F13  | 二进制分析工具链        | Unicorn/Capstone/Keystone |
 
 ### Advanced 高级主题 (A)
 
-| 编号 | 主题 | 内容说明 |
-|-----|-----|---------|
-| A01 | Android Sandbox Implementation | 沙箱实现原理 |
-| A02 | AOSP & System Customization | AOSP 系统定制 |
-| A03 | AOSP Device Modification | 设备修改 |
-| A04 | Minimal Android Rootfs | 最小化根文件系统 |
-| A05 | SO Anti Debugging & Obfuscation | SO 反调试与混淆 |
-| A06 | SO Runtime Emulation | SO 运行时仿真 |
+| 编号 | 主题                  | 内容说明              |
+| ---- | --------------------- | --------------------- |
+| A01  | Android 沙箱实现      | 沙箱原理与实现        |
+| A02  | AOSP 与系统定制       | AOSP 编译与定制       |
+| A03  | AOSP 深度改机         | 设备指纹修改          |
+| A04  | 最小化 Android RootFS | 精简系统构建          |
+| A05  | SO 反调试与混淆       | Native 保护技术       |
+| A06  | SO 运行时仿真         | 离线仿真执行          |
+| A07  | Magisk 与 LSPosed     | Root 与 Hook 框架原理 |
 
 ### Engineering 工程化 (E)
 
-| 编号 | 主题 | 内容说明 |
-|-----|-----|---------|
-| E01 | Frameworks & Middleware | 框架与中间件 |
-| E02 | Message Queues | 消息队列 |
-| E03 | Redis | Redis 数据库 |
-| E04 | Risk Control SDK Build Guide | 风控 SDK 构建 |
-| E05 | Data Warehousing & Processing | 数据仓库与处理 |
-| E06 | Flink | 流处理框架 |
-| E07 | HBase | 分布式数据库 |
-| E08 | Hive | 数据仓库 |
-| E09 | Spark | 大数据处理 |
-| E10 | Automation vs API Reverse | 群控与API逆向对比 |
+| 编号 | 主题                | 内容说明       |
+| ---- | ------------------- | -------------- |
+| E01  | 框架与中间件        | 常用框架介绍   |
+| E02  | 消息队列            | MQ 技术选型    |
+| E03  | Redis 常用命令      | Redis 操作指南 |
+| E04  | 风控 SDK 编译指南   | SDK 构建流程   |
+| E05  | 数据仓库与处理      | 大数据基础     |
+| E06  | Apache Flink        | 流处理框架     |
+| E07  | HBase 数据库        | 分布式存储     |
+| E08  | Apache Hive         | 数据仓库       |
+| E09  | Apache Spark        | 大数据计算     |
+| E10  | 群控与 API 逆向对比 | 方案选型分析   |
 
 ---
 
@@ -201,12 +214,13 @@
 
 附录资源和社区资源。
 
-| 编号 | 名称 | 内容说明 |
-|-----|-----|---------|
-| X01 | Github Projects | 开源项目推荐 |
-| X02 | Learning Resources | 学习资源汇总 |
-| X03 | CTF Platforms | CTF 平台推荐 |
-| X04 | Glossary | 术语表 |
+| 编号 | 名称            | 内容说明     |
+| ---- | --------------- | ------------ |
+| X01  | GitHub 开源项目 | 优质项目推荐 |
+| X02  | 学习资源        | 学习资料汇总 |
+| X03  | CTF 练习平台    | CTF 平台推荐 |
+| X04  | 术语表          | 专业术语解释 |
+| X05  | 配方编号系统    | 本文档       |
 
 ---
 
@@ -216,19 +230,19 @@
 
 在讨论或笔记中，你可以使用简短的编号引用特定配方：
 
-- "参考 R02 了解加密分析方法"
-- "这个问题可以用 R06 的方法解决"
-- "代码示例见 R32"
-- "工具使用参考 T01"
+- "参考 R11 (加密算法分析) 了解加密分析方法"
+- "这个问题可以用 R15 (Frida 反调试绕过) 的方法解决"
+- "代码示例见 R06 (Frida 常用脚本)"
+- "工具使用参考 T01 (Frida 使用指南)"
 
 ### 交叉引用
 
 本书各章节之间存在大量交叉引用，编号系统帮助你快速定位：
 
 ```
-分析加密算法时 (R02)，可能需要先脱壳 (R12)，
-然后使用 Frida (T01) 进行动态分析 (R18)，
-参考 C04 了解完整案例。
+分析加密算法时 (R11: 加密算法分析)，可能需要先脱壳 (R09: 脱壳技术概述)，
+然后使用 Frida (T01: Frida 使用指南) 进行动态分析 (R05: 动态分析深入)，
+参考 C04 (App 加密签名案例) 了解完整案例。
 ```
 
 ### 学习路径规划
@@ -236,18 +250,26 @@
 你可以根据编号规划自己的学习路径：
 
 **初学者路径**：
+
 ```
-F01 → F05 → T01 → R01 → R06
+Q01 (关于本书) → Q02 (快速入门) → F01 (APK 文件结构) →
+F05 (DEX 文件格式) → T01 (Frida 使用指南) → R01 (逆向工程完整工作流程) →
+R05 (动态分析深入)
 ```
 
 **爬虫开发者路径**：
+
 ```
-R01 → R02 → R10 → R27 → R28
+R01 (逆向工程完整工作流程) → R02 (网络抓包分析) → R11 (加密算法分析) →
+R26 (验证码绕过技术) → R27 (移动安全与反爬) → R29 (Scrapy 爬虫框架) →
+R30 (Scrapy-Redis 分布式)
 ```
 
 **安全研究员路径**：
+
 ```
-R16 → R12 → R19 → A05 → C08
+R15 (Frida 反调试绕过) → R09 (脱壳技术概述) → R18 (Native Hook 技术) →
+R21 (VMP 虚拟机分析) → A05 (SO 反调试与混淆) → C08 (恶意软件分析案例)
 ```
 
 ---
@@ -256,10 +278,22 @@ R16 → R12 → R19 → A05 → C08
 
 本编号系统会随着内容更新而扩展。新增配方将获得新的编号，已有配方的编号保持不变，确保引用的稳定性。
 
-当前版本：**v1.0**
+当前版本：**v2.0**
+
+| 章节             | 数量   |
+| ---------------- | ------ |
+| Quick Start (Q)  | 3      |
+| Recipes (R)      | 35     |
+| Tools (T)        | 10     |
+| Case Studies (C) | 8      |
+| Foundations (F)  | 13     |
+| Advanced (A)     | 7      |
+| Engineering (E)  | 10     |
+| Appendix (X)     | 5      |
+| **总计**         | **91** |
 
 ---
 
 **现在你已经了解了本书的组织结构，开始你的学习之旅吧！**
 
-**推荐下一步**：[10 分钟快速入门](./index.md)
+**推荐下一步**：[快速入门](../00-Quick-Start/index.md)

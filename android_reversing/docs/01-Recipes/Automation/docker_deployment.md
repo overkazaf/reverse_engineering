@@ -114,7 +114,7 @@ services:
       - mongo
     environment:
       - REDIS_HOST=redis
-      - MONGO_URI=mongodb://admin:password@mongo:27017
+      - MONGO_URI=mongodb://admin:${MONGO_PASSWORD}@mongo:27017
     # 想要开启多个爬虫节点？直接 scale
     deploy:
       replicas: 3

@@ -2,30 +2,30 @@
 
 ## 常用元字符
 
-| 元字符 | 说明                   | 示例                               |
+| 元字符 | 说明 | 示例 |
 | ------ | ---------------------- | ---------------------------------- | ---- | -------------------- |
-| `.`    | 任意单个字符（除换行） | `a.c` 匹配 `abc`, `a1c`            |
-| `*`    | 0 次或多次             | `ab*` 匹配 `a`, `ab`, `abb`        |
-| `+`    | 1 次或多次             | `ab+` 匹配 `ab`, `abb` (不匹配`a`) |
-| `?`    | 0 次或 1 次            | `ab?` 匹配 `a`, `ab`               |
-| `^`    | 行首                   | `^hello` 匹配行首的 hello          |
-| `$`    | 行尾                   | `world$` 匹配行尾的 world          |
-| `\`    | 转义字符               | `\.` 匹配点号                      |
-| `      | `                      | 或                                 | `cat | dog` 匹配 cat 或 dog |
-| `[]`   | 字符集                 | `[abc]` 匹配 a 或 b 或 c           |
-| `[^]`  | 否定字符集             | `[^abc]` 不匹配 a,b,c              |
-| `()`   | 分组                   | `(ab)+` 匹配 ab, abab              |
+| `.` | 任意单个字符（除换行） | `a.c` 匹配 `abc`, `a1c` |
+| `*` | 0 次或多次 | `ab*` 匹配 `a`, `ab`, `abb` |
+| `+` | 1 次或多次 | `ab+` 匹配 `ab`, `abb` (不匹配`a`) |
+| `?` | 0 次或 1 次 | `ab?` 匹配 `a`, `ab` |
+| `^` | 行首 | `^hello` 匹配行首的 hello |
+| `$` | 行尾 | `world$` 匹配行尾的 world |
+| `\` | 转义字符 | `\.` 匹配点号 |
+| ` | ` | 或 | `cat | dog` 匹配 cat 或 dog |
+| `[]` | 字符集 | `[abc]` 匹配 a 或 b 或 c |
+| `[^]` | 否定字符集 | `[^abc]` 不匹配 a,b,c |
+| `()` | 分组 | `(ab)+` 匹配 ab, abab |
 
 ## 预定义字符类
 
-| 字符类 | 等价于           | 说明       |
+| 字符类 | 等价于 | 说明 |
 | ------ | ---------------- | ---------- |
-| `\d`   | `[0-9]`          | 数字       |
-| `\D`   | `[^0-9]`         | 非数字     |
-| `\w`   | `[a-zA-Z0-9_]`   | 单词字符   |
-| `\W`   | `[^a-zA-Z0-9_]`  | 非单词字符 |
-| `\s`   | `[ \t\n\r\f\v]`  | 空白字符   |
-| `\S`   | `[^ \t\n\r\f\v]` | 非空白字符 |
+| `\d` | `[0-9]` | 数字 |
+| `\D` | `[^0-9]` | 非数字 |
+| `\w` | `[a-zA-Z0-9_]` | 单词字符 |
+| `\W` | `[^a-zA-Z0-9_]` | 非单词字符 |
+| `\s` | `[ \t\n\r\f\v]` | 空白字符 |
+| `\S` | `[^ \t\n\r\f\v]` | 非空白字符 |
 
 ## Web 逆向常用模式
 
@@ -180,22 +180,22 @@ function\s+(\w+)\s*\([^)]*\)
 const pattern = /pattern/flags;
 
 // 常用方法
-pattern.test(str)           // 返回 true/false
-str.match(pattern)          // 返回匹配数组
+pattern.test(str) // 返回 true/false
+str.match(pattern) // 返回匹配数组
 str.replace(pattern, replacement)
-pattern.exec(str)           // 返回详细匹配信息
+pattern.exec(str) // 返回详细匹配信息
 ```
 
 ### Flags (标志)
 
-| Flag | 说明                         |
+| Flag | 说明 |
 | ---- | ---------------------------- |
-| `g`  | 全局匹配                     |
-| `i`  | 忽略大小写                   |
-| `m`  | 多行模式                     |
-| `s`  | dotAll 模式（.匹配所有字符） |
-| `u`  | Unicode 模式                 |
-| `y`  | 粘性匹配                     |
+| `g` | 全局匹配 |
+| `i` | 忽略大小写 |
+| `m` | 多行模式 |
+| `s` | dotAll 模式（.匹配所有字符） |
+| `u` | Unicode 模式 |
+| `y` | 粘性匹配 |
 
 ### 示例
 
@@ -221,20 +221,20 @@ import re
 pattern = re.compile(r'pattern')
 
 # 常用方法
-re.search(pattern, string)      # 查找第一个匹配
-re.findall(pattern, string)     # 查找所有匹配
-re.finditer(pattern, string)    # 返回迭代器
-re.sub(pattern, repl, string)   # 替换
-re.split(pattern, string)       # 分割
+re.search(pattern, string) # 查找第一个匹配
+re.findall(pattern, string) # 查找所有匹配
+re.finditer(pattern, string) # 返回迭代器
+re.sub(pattern, repl, string) # 替换
+re.split(pattern, string) # 分割
 ```
 
 ### Flags
 
 ```python
-re.IGNORECASE  # 或 re.I  - 忽略大小写
-re.MULTILINE   # 或 re.M  - 多行模式
-re.DOTALL      # 或 re.S  - .匹配所有字符
-re.VERBOSE     # 或 re.X  - 详细模式（可以写注释）
+re.IGNORECASE # 或 re.I - 忽略大小写
+re.MULTILINE # 或 re.M - 多行模式
+re.DOTALL # 或 re.S - .匹配所有字符
+re.VERBOSE # 或 re.X - 详细模式（可以写注释）
 ```
 
 ### 示例
@@ -244,10 +244,10 @@ re.VERBOSE     # 或 re.X  - 详细模式（可以写注释）
 code = 'sign=md5("user"+password+"secret")'
 match = re.search(r'sign=(\w+)\("([^"]+)"\+(\w+)\+"([^"]+)"\)', code)
 if match:
-    algorithm = match.group(1)  # 'md5'
-    param1 = match.group(2)      # 'user'
-    param2 = match.group(3)      # 'password'
-    secret = match.group(4)      # 'secret'
+algorithm = match.group(1) # 'md5'
+param1 = match.group(2) # 'user'
+param2 = match.group(3) # 'password'
+secret = match.group(4) # 'secret'
 ```
 
 ## 高级技巧
@@ -275,16 +275,16 @@ if match:
 
 ```regex
 # 正向前瞻 (?=pattern)
-\w+(?=\d)       # 匹配后面跟数字的单词
+\w+(?=\d) # 匹配后面跟数字的单词
 
 # 负向前瞻 (?!pattern)
-\w+(?!\d)       # 匹配后面不跟数字的单词
+\w+(?!\d) # 匹配后面不跟数字的单词
 
 # 正向后顾 (?<=pattern)
-(?<=\$)\d+      # 匹配前面有$符号的数字
+(?<=\$)\d+ # 匹配前面有$符号的数字
 
 # 负向后顾 (?<!pattern)
-(?<!\$)\d+      # 匹配前面没有$符号的数字
+(?<!\$)\d+ # 匹配前面没有$符号的数字
 ```
 
 ### 命名分组
@@ -293,8 +293,8 @@ if match:
 # Python
 pattern = r'(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})'
 match = re.search(pattern, '2024-01-15')
-print(match.group('year'))   # '2024'
-print(match.group('month'))  # '01'
+print(match.group('year')) # '2024'
+print(match.group('month')) # '01'
 ```
 
 ```javascript
@@ -373,10 +373,10 @@ vars = re.findall(r'_0x[a-f0-9]+', code)
 # 如果要多次使用，先编译
 pattern = re.compile(r'complex_pattern')
 for text in texts:
-    matches = pattern.findall(text)  # 更快
+matches = pattern.findall(text) # 更快
 ```
 
-## 📚 相关章节
+## 相关章节
 
 - [常用命令](./common_commands.md)
 - [JavaScript 反混淆](../04-Advanced-Recipes/javascript_deobfuscation.md)

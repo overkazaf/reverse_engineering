@@ -34,10 +34,10 @@ v8 --print-bytecode script.js
 Parameter count 2
 Register count 1
 Frame size 8
-   12 E> 0x... @    0 : a0                StackCheck
-   23 S> 0x... @    1 : 25 02             Ldar a1
-   25 E> 0x... @    3 : 34 03 00          Add a0, [0]
-   30 S> 0x... @    6 : a4                Return
+12 E> 0x... @ 0 : a0 StackCheck
+23 S> 0x... @ 1 : 25 02 Ldar a1
+25 E> 0x... @ 3 : 34 03 00 Add a0, [0]
+30 S> 0x... @ 6 : a4 Return
 ```
 
 通过阅读 Bytecode，我们可以还原出数学运算逻辑。
@@ -50,9 +50,9 @@ Frame size 8
 
 一个用于可视化 V8 TurboFan (优化编译器) 优化流程的工具。
 
-1.  生成 JSON 日志: `v8 --trace-turbo script.js`
-2.  打开在线工具或本地部署的 Turbolizer，加载生成的 `turbo.cfg` 或 `json` 文件。
-3.  **用途**: 通过查看控制流图 (Control Flow Graph)，可以非常清晰地看到代码的真实执行路径，无视源码层面的控制流平坦化混淆。
+1. 生成 JSON 日志: `v8 --trace-turbo script.js`
+2. 打开在线工具或本地部署的 Turbolizer，加载生成的 `turbo.cfg` 或 `json` 文件。
+3. **用途**: 通过查看控制流图 (Control Flow Graph)，可以非常清晰地看到代码的真实执行路径，无视源码层面的控制流平坦化混淆。
 
 ---
 

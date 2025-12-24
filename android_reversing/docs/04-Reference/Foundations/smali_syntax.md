@@ -1,4 +1,4 @@
-# Smali 语法入门指南
+# Smali 语法入门
 
 Smali/Baksmali 是 Dalvik 虚拟机字节码的汇编器/反汇编器。Smali 是对 DEX 格式的一种人类可读的表示，允许我们精确地查看和修改应用的行为。理解 Smali 是进行 Android 应用静态 patching（修改后重打包）的关键。
 
@@ -18,8 +18,8 @@ Smali/Baksmali 是 Dalvik 虚拟机字节码的汇编器/反汇编器。Smali �
 
 Dalvik VM 是基于寄存器的。方法内的局部变量存储在寄存器中。
 
-| 寄存器类型 | 说明 |
-|-----------|------|
+| 寄存器类型          | 说明           |
+| ------------------- | -------------- |
 | `v0`, `v1`, `v2`... | 本地变量寄存器 |
 | `p0`, `p1`, `p2`... | 方法参数寄存器 |
 
@@ -29,17 +29,18 @@ Dalvik VM 是基于寄存器的。方法内的局部变量存储在寄存器中�
 - 对于**静态方法**，参数从 `p0` 开始
 
 **示例**：一个有两个参数的非静态方法：
+
 - `p0` = `this`
 - `p1` = 第一个参数
 - `p2` = 第二个参数
 
 ### 常用声明
 
-| 声明 | 说明 |
-|------|------|
-| `.locals` | 声明方法使用的本地变量寄存器数量 |
-| `.prologue` | 方法体的序言部分 |
-| `.line` | 对应原始 Java 代码的行号，用于调试 |
+| 声明        | 说明                               |
+| ----------- | ---------------------------------- |
+| `.locals`   | 声明方法使用的本地变量寄存器数量   |
+| `.prologue` | 方法体的序言部分                   |
+| `.line`     | 对应原始 Java 代码的行号，用于调试 |
 
 ---
 
@@ -47,28 +48,28 @@ Dalvik VM 是基于寄存器的。方法内的局部变量存储在寄存器中�
 
 Smali 使用特定的描述符来表示 Java 中的数据类型。
 
-| Smali 类型 | Java 类型 | 描述 |
-|-----------|----------|------|
-| `V` | `void` | 空返回类型 |
-| `Z` | `boolean` | 布尔值 |
-| `B` | `byte` | 字节 |
-| `S` | `short` | 短整型 |
-| `C` | `char` | 字符 |
-| `I` | `int` | 整型 |
-| `J` | `long` | 长整型（占用两个寄存器） |
-| `F` | `float` | 浮点型 |
-| `D` | `double` | 双精度浮点型（占用两个寄存器） |
+| Smali 类型        | Java 类型           | 描述                            |
+| ----------------- | ------------------- | ------------------------------- |
+| `V`               | `void`              | 空返回类型                      |
+| `Z`               | `boolean`           | 布尔值                          |
+| `B`               | `byte`              | 字节                            |
+| `S`               | `short`             | 短整型                          |
+| `C`               | `char`              | 字符                            |
+| `I`               | `int`               | 整型                            |
+| `J`               | `long`              | 长整型（占用两个寄存器）        |
+| `F`               | `float`             | 浮点型                          |
+| `D`               | `double`            | 双精度浮点型（占用两个寄存器）  |
 | `L<包名>/<类名>;` | `package.ClassName` | 对象类型，以 `L` 开头，`;` 结尾 |
-| `[<类型>` | `type[]` | 数组类型 |
+| `[<类型>`         | `type[]`            | 数组类型                        |
 
 ### 类型表示示例
 
-| Smali | Java |
-|-------|------|
-| `Ljava/lang/String;` | `java.lang.String` |
-| `[I` | `int[]` |
+| Smali                  | Java                   |
+| ---------------------- | ---------------------- |
+| `Ljava/lang/String;`   | `java.lang.String`     |
+| `[I`                   | `int[]`                |
 | `[[Ljava/lang/Object;` | `java.lang.Object[][]` |
-| `[Ljava/lang/String;` | `String[]` |
+| `[Ljava/lang/String;`  | `String[]`             |
 
 ---
 
@@ -129,55 +130,55 @@ Smali 使用特定的描述符来表示 Java 中的数据类型。
 
 ### 赋值与移动指令
 
-| 指令 | 说明 |
-|------|------|
-| `const-string v1, "Hello"` | 将字符串 "Hello" 赋值给 `v1` |
-| `const/4 v0, 0x1` | 将 4 位常量 1 赋值给 `v0` |
-| `const/16 v0, 0x100` | 将 16 位常量赋值给 `v0` |
-| `move-result-object v0` | 将上一个 `invoke` 返回的对象结果移动到 `v0` |
-| `move-result v0` | 将上一个 `invoke` 返回的非对象结果移动到 `v0` |
-| `move-exception v0` | 在 `catch` 块中，将捕获的异常对象移动到 `v0` |
+| 指令                       | 说明                                          |
+| -------------------------- | --------------------------------------------- |
+| `const-string v1, "Hello"` | 将字符串 "Hello" 赋值给 `v1`                  |
+| `const/4 v0, 0x1`          | 将 4 位常量 1 赋值给 `v0`                     |
+| `const/16 v0, 0x100`       | 将 16 位常量赋值给 `v0`                       |
+| `move-result-object v0`    | 将上一个 `invoke` 返回的对象结果移动到 `v0`   |
+| `move-result v0`           | 将上一个 `invoke` 返回的非对象结果移动到 `v0` |
+| `move-exception v0`        | 在 `catch` 块中，将捕获的异常对象移动到 `v0`  |
 
 ### 对象操作指令
 
-| 指令 | 说明 |
-|------|------|
-| `new-instance v0, Ljava/lang/StringBuilder;` | 创建新实例 |
-| `iget-object v0, p0, Lcom/example/MyClass;->myField:Ljava/lang/String;` | 获取实例字段 |
-| `iput-object v1, p0, Lcom/example/MyClass;->myField:Ljava/lang/String;` | 设置实例字段 |
+| 指令                                                                      | 说明         |
+| ------------------------------------------------------------------------- | ------------ |
+| `new-instance v0, Ljava/lang/StringBuilder;`                              | 创建新实例   |
+| `iget-object v0, p0, Lcom/example/MyClass;->myField:Ljava/lang/String;`   | 获取实例字段 |
+| `iput-object v1, p0, Lcom/example/MyClass;->myField:Ljava/lang/String;`   | 设置实例字段 |
 | `sget-object v0, Lcom/example/Constants;->SOME_STRING:Ljava/lang/String;` | 获取静态字段 |
 | `sput-object v0, Lcom/example/Constants;->SOME_STRING:Ljava/lang/String;` | 设置静态字段 |
 
 ### 方法调用指令
 
-| 指令 | 说明 |
-|------|------|
-| `invoke-virtual {p0, p1}, Lcom/example/MyClass;->myMethod(I)V` | 调用虚方法（公有/保护方法） |
-| `invoke-direct {p0}, Ljava/lang/Object;-><init>()V` | 调用直接方法（私有方法或构造函数） |
-| `invoke-static {v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I` | 调用静态方法 |
-| `invoke-super {p0, p1}, Landroid/app/Activity;->onCreate(Landroid/os/Bundle;)V` | 调用父类方法 |
-| `invoke-interface {p0, v0}, Ljava/util/List;->add(Ljava/lang/Object;)Z` | 调用接口方法 |
+| 指令                                                                               | 说明                               |
+| ---------------------------------------------------------------------------------- | ---------------------------------- |
+| `invoke-virtual {p0, p1}, Lcom/example/MyClass;->myMethod(I)V`                     | 调用虚方法（公有/保护方法）        |
+| `invoke-direct {p0}, Ljava/lang/Object;-><init>()V`                                | 调用直接方法（私有方法或构造函数） |
+| `invoke-static {v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I` | 调用静态方法                       |
+| `invoke-super {p0, p1}, Landroid/app/Activity;->onCreate(Landroid/os/Bundle;)V`    | 调用父类方法                       |
+| `invoke-interface {p0, v0}, Ljava/util/List;->add(Ljava/lang/Object;)Z`            | 调用接口方法                       |
 
 ### 跳转/条件指令
 
-| 指令 | 说明 |
-|------|------|
-| `goto :label_10` | 无条件跳转到 `:label_10` |
-| `if-eqz v0, :label_10` | 如果 `v0 == 0`（或 `false`/`null`），则跳转 |
-| `if-nez v0, :label_10` | 如果 `v0 != 0`（或 `true`/`not null`），则跳转 |
-| `if-eq v0, v1, :label_10` | 如果 `v0 == v1`，则跳转 |
-| `if-ne v0, v1, :label_10` | 如果 `v0 != v1`，则跳转 |
-| `if-lt v0, v1, :label_10` | 如果 `v0 < v1`，则跳转 |
-| `if-ge v0, v1, :label_10` | 如果 `v0 >= v1`，则跳转 |
+| 指令                      | 说明                                           |
+| ------------------------- | ---------------------------------------------- |
+| `goto :label_10`          | 无条件跳转到 `:label_10`                       |
+| `if-eqz v0, :label_10`    | 如果 `v0 == 0`（或 `false`/`null`），则跳转    |
+| `if-nez v0, :label_10`    | 如果 `v0 != 0`（或 `true`/`not null`），则跳转 |
+| `if-eq v0, v1, :label_10` | 如果 `v0 == v1`，则跳转                        |
+| `if-ne v0, v1, :label_10` | 如果 `v0 != v1`，则跳转                        |
+| `if-lt v0, v1, :label_10` | 如果 `v0 < v1`，则跳转                         |
+| `if-ge v0, v1, :label_10` | 如果 `v0 >= v1`，则跳转                        |
 
 ### 运算指令
 
-| 指令 | 说明 |
-|------|------|
-| `add-int v0, v1, v2` | `v0 = v1 + v2`（整型加法） |
-| `sub-int v0, v1, v2` | `v0 = v1 - v2`（整型减法） |
-| `mul-int v0, v1, v2` | `v0 = v1 * v2`（整型乘法） |
-| `div-int v0, v1, v2` | `v0 = v1 / v2`（整型除法） |
+| 指令                   | 说明                                   |
+| ---------------------- | -------------------------------------- |
+| `add-int v0, v1, v2`   | `v0 = v1 + v2`（整型加法）             |
+| `sub-int v0, v1, v2`   | `v0 = v1 - v2`（整型减法）             |
+| `mul-int v0, v1, v2`   | `v0 = v1 * v2`（整型乘法）             |
+| `div-int v0, v1, v2`   | `v0 = v1 / v2`（整型除法）             |
 | `mul-int/2addr v0, v1` | `v0 = v0 * v1`（结果存回第一个寄存器） |
 
 ---

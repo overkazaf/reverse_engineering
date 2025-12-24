@@ -56,9 +56,9 @@ img.getAttribute("src");
 
 #### 事件流
 
-1.  **捕获阶段 (Capturing)**: 从 window 往下传导到目标元素。
-2.  **目标阶段 (Target)**: 到达实际触发事件的元素。
-3.  **冒泡阶段 (Bubbling)**: 从目标元素往上传导回 window。
+1. **捕获阶段 (Capturing)**: 从 window 往下传导到目标元素。
+2. **目标阶段 (Target)**: 到达实际触发事件的元素。
+3. **冒泡阶段 (Bubbling)**: 从目标元素往上传导回 window。
 
 ```javascript
 element.addEventListener("click", handler, false); // false 表示在冒泡阶段触发（默认）
@@ -70,10 +70,10 @@ element.addEventListener("click", handler, false); // false 表示在冒泡阶�
 
 **方法**:
 
-1.  **DevTools -> Elements 面板**: 选中元素，右侧 "Event Listeners" 标签。可以看到绑定的事件，点击链接跳转到 JS 代码。
-    - _注意_: 如果使用了 jQuery 或 Vue/React 框架，监听器可能绑定在 `document` 或父节点上（事件委托）。
-2.  **DevTools -> Sources -> Event Listener Breakpoints**: 勾选 `Mouse -> click`。点击按钮时断点会停在事件处理函数的第一行。
-3.  **DOM 断点**:
+1. **DevTools -> Elements 面板**: 选中元素，右侧 "Event Listeners" 标签。可以看到绑定的事件，点击链接跳转到 JS 代码。
+- _注意_: 如果使用了 jQuery 或 Vue/React 框架，监听器可能绑定在 `document` 或父节点上（事件委托）。
+2. **DevTools -> Sources -> Event Listener Breakpoints**: 勾选 `Mouse -> click`。点击按钮时断点会停在事件处理函数的第一行。
+3. **DOM 断点**:
     - **Subtree modifications**: 监听子节点变化（如动态插入了加密后的 token）。
     - **Attribute modifications**: 监听属性变化（如 class 改变）。
     - **Node removal**: 监听节点被删除。
@@ -118,28 +118,30 @@ history.pushState({}, "", "/new-path"); // 修改 URL 但不刷新
 
 很多站点会检测 BOM 属性来判断是否处于调试模式。
 
-1.  **检测窗口大小**: 开发者工具打开时，网页可视区域 (`window.innerWidth` / `innerHeight`) 会变小。
+1. **检测窗口大小**: 开发者工具打开时，网页可视区域 (`window.innerWidth` / `innerHeight`) 会变小。
 
-    ```javascript
-    setInterval(() => {
-      if (window.outerWidth - window.innerWidth > 160) {
-        console.log("DevTools opened!");
-      }
-    }, 1000);
-    ```
+```javascript
+setInterval(() => {
+if (window.outerWidth - window.innerWidth > 160) {
+console.log("DevTools opened!");
+}
+}, 1000);
+```
 
-2.  **检测 Console**: 重写 `console.log` 或利用 `console.table` 等方法的特殊行为。
+2. **检测 Console**: 重写 `console.log` 或利用 `console.table` 等方法的特殊行为。
 
-3.  **debugger 语句**:
-    ```javascript
-    setInterval(() => {
-      debugger; // 如果开启了 DevTools，会无限断点卡住页面
-    }, 100);
-    ```
-    - **对抗**:
-      - "Never pause here" (DevTools 右键断点行)。
-      - Hook `Function.prototype.constructor` (如果是 `Function("debugger")()` 这种形式)。
-      - 本地替换 (Local Override) 删除 `debugger` 语句。
+3. **debugger 语句**:
+
+```javascript
+setInterval(() => {
+    debugger; // 如果开启了 DevTools，会无限断点卡住页面
+}, 100);
+```
+
+**对抗**:
+- "Never pause here" (DevTools 右键断点行)。
+- Hook `Function.prototype.constructor` (如果是 `Function("debugger")()` 这种形式)。
+- 本地替换 (Local Override) 删除 `debugger` 语句。
 
 ---
 

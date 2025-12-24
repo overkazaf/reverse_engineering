@@ -4,11 +4,11 @@
 
 ---
 
-## 🎯 学习路径
+## 学习路径
 
 我们为你准备了三个渐进式的快速配方：
 
-### 1️⃣ [你的第一个 Hook](./your_first_hook.md)
+### 1. [你的第一个 Hook](./your_first_hook.md)
 
 **难度**: ⭐
 **时间**: 15 分钟
@@ -25,7 +25,7 @@
 
 ---
 
-### 2️⃣ [解密 API 参数](./decrypt_api_params.md)
+### 2. [解密 API 参数](./decrypt_api_params.md)
 
 **难度**: ⭐⭐
 **时间**: 30 分钟
@@ -42,7 +42,7 @@
 
 ---
 
-### 3️⃣ [绕过简单验证码](./bypass_simple_captcha.md)
+### 3. [绕过简单验证码](./bypass_simple_captcha.md)
 
 **难度**: ⭐⭐
 **时间**: 30 分钟
@@ -59,7 +59,7 @@
 
 ---
 
-## 📚 开始之前
+## 开始之前
 
 ### 必备工具
 
@@ -84,7 +84,7 @@ npm install -g @babel/cli @babel/core
 
 ---
 
-## 🎓 学习建议
+## 学习建议
 
 ### 对于完全新手
 
@@ -101,25 +101,25 @@ npm install -g @babel/cli @babel/core
 
 ---
 
-## 💡 如何使用这些配方
+## 如何使用这些配方
 
 每个配方都采用统一的结构：
 
 ```
-📊 配方信息
+配方信息
 ├── 难度 (⭐-⭐⭐⭐⭐⭐)
 ├── 预计时间
 └── 所需工具
 
-🎯 你将学到
+你将学到
 ├── 技能点1
 ├── 技能点2
 └── 技能点3
 
-📝 准备工作
+准备工作
 └── 前置条件清单
 
-🚀 步骤
+步骤
 ├── Step 1
 ├── Step 2
 └── Step 3
@@ -127,13 +127,13 @@ npm install -g @babel/cli @babel/core
 ✅ 验证清单
 └── 如何确认成功
 
-❗ 常见问题
+常见问题
 └── FAQ
 ```
 
 ---
 
-## 🔥 常见问题
+## 常见问题
 
 ### Q: 我需要多少编程基础？
 
@@ -166,17 +166,17 @@ npm install -g @babel/cli @babel/core
 
 ---
 
-## 🚀 准备好了吗？
+## 准备好了吗？
 
 选择你的第一个配方：
 
-1. 🎣 [你的第一个 Hook](./your_first_hook.md) - 推荐从这里开始
-2. 🔐 [解密 API 参数](./decrypt_api_params.md)
-3. 🤖 [绕过简单验证码](./bypass_simple_captcha.md)
+1. [你的第一个 Hook](./your_first_hook.md) - 推荐从这里开始
+2. [解密 API 参数](./decrypt_api_params.md)
+3. [绕过简单验证码](./bypass_simple_captcha.md)
 
 ---
 
-## 📖 相关章节
+## 相关章节
 
 完成快速入门后，你可以继续深入学习：
 
@@ -186,6 +186,6 @@ npm install -g @babel/cli @babel/core
 
 ---
 
-**Happy Cooking!** 🎉
+**Happy Cooking!** 
 
 让我们开始你的 Web 逆向工程之旅吧！

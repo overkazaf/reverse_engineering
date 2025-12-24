@@ -14,22 +14,22 @@
 
 ```
 源代码 (String)
-    ↓ @babel/parser
+↓ @babel/parser
 AST (抽象语法树)
-    ↓ @babel/traverse (遍历和修改)
+↓ @babel/traverse (遍历和修改)
 修改后的 AST
-    ↓ @babel/generator
+↓ @babel/generator
 新代码 (String)
 ```
 
 ### 1.1 四个核心包
 
-| 包名                 | 作用          | 主要 API                                 |
+| 包名 | 作用 | 主要 API |
 | -------------------- | ------------- | ---------------------------------------- |
-| **@babel/parser**    | 代码 → AST    | `parse(code)`                            |
-| **@babel/traverse**  | 遍历/修改 AST | `traverse(ast, visitor)`                 |
-| **@babel/generator** | AST → 代码    | `generate(ast)`                          |
-| **@babel/types**     | 创建/判断节点 | `t.isIdentifier()`, `t.numericLiteral()` |
+| **@babel/parser** | 代码 → AST | `parse(code)` |
+| **@babel/traverse** | 遍历/修改 AST | `traverse(ast, visitor)` |
+| **@babel/generator** | AST → 代码 | `generate(ast)` |
+| **@babel/types** | 创建/判断节点 | `t.isIdentifier()`, `t.numericLiteral()` |
 
 ### 1.2 示例代码框架
 
@@ -46,18 +46,18 @@ const ast = parser.parse(code);
 
 // 2. 遍历并修改
 traverse(ast, {
-  // 你的还原插件写在这里
-  StringLiteral(path) {
-    // 例如：将十六进制字符串 "\x61" 还原为 "a"
-    if (path.node.extra && path.node.extra.raw.startsWith('"\\x')) {
-      delete path.node.extra;
-    }
-  },
+// 你的还原插件写在这里
+StringLiteral(path) {
+// 例如：将十六进制字符串 "\x61" 还原为 "a"
+if (path.node.extra && path.node.extra.raw.startsWith('"\\x')) {
+delete path.node.extra;
+}
+},
 });
 
 // 3. 生成新代码
 const output = generator(ast, {
-  jsescOption: { minimal: true }, // 使用最少的转义
+jsescOption: { minimal: true }, // 使用最少的转义
 });
 
 fs.writeFileSync("deobfuscated.js", output.code);
@@ -76,16 +76,16 @@ console.log("反混淆完成！");
 
 ```javascript
 traverse(ast, {
-  BinaryExpression(path) {
-    // 尝试求值
-    const result = path.evaluate();
+BinaryExpression(path) {
+// 尝试求值
+const result = path.evaluate();
 
-    // 如果可以计算出确定的值
-    if (result.confident) {
-      // 替换为字面量节点
-      path.replaceWith(t.valueToNode(result.value));
-    }
-  },
+// 如果可以计算出确定的值
+if (result.confident) {
+// 替换为字面量节点
+path.replaceWith(t.valueToNode(result.value));
+}
+},
 });
 ```
 
@@ -109,26 +109,26 @@ const str = "Hello";
 
 ```javascript
 traverse(ast, {
-  IfStatement(path) {
-    // 获取条件表达式的值
-    const test = path.get("test").evaluate();
+IfStatement(path) {
+// 获取条件表达式的值
+const test = path.get("test").evaluate();
 
-    if (test.confident) {
-      if (test.value) {
-        // 条件恒为 true，替换为 consequent（if 块）
-        path.replaceWithMultiple(path.node.consequent.body);
-      } else {
-        // 条件恒为 false
-        if (path.node.alternate) {
-          // 有 else 块，替换为 alternate
-          path.replaceWithMultiple(path.node.alternate.body);
-        } else {
-          // 没有 else，直接删除整个 if 语句
-          path.remove();
-        }
-      }
-    }
-  },
+if (test.confident) {
+if (test.value) {
+// 条件恒为 true，替换为 consequent（if 块）
+path.replaceWithMultiple(path.node.consequent.body);
+} else {
+// 条件恒为 false
+if (path.node.alternate) {
+// 有 else 块，替换为 alternate
+path.replaceWithMultiple(path.node.alternate.body);
+} else {
+// 没有 else，直接删除整个 if 语句
+path.remove();
+}
+}
+}
+},
 });
 ```
 
@@ -137,10 +137,10 @@ traverse(ast, {
 ```javascript
 // 混淆前
 if (false) {
-  console.log("I am dead code");
+console.log("I am dead code");
 }
 if (true) {
-  console.log("I will always run");
+console.log("I will always run");
 }
 
 // 反混淆后
@@ -151,14 +151,14 @@ console.log("I will always run");
 
 ```javascript
 traverse(ast, {
-  VariableDeclarator(path) {
-    const binding = path.scope.getBinding(path.node.id.name);
+VariableDeclarator(path) {
+const binding = path.scope.getBinding(path.node.id.name);
 
-    // 如果变量从未被引用
-    if (binding && !binding.referenced) {
-      path.remove();
-    }
-  },
+// 如果变量从未被引用
+if (binding && !binding.referenced) {
+path.remove();
+}
+},
 });
 ```
 
@@ -172,7 +172,7 @@ traverse(ast, {
 const _0x1234 = ["name", "age", "hello"];
 
 function greet() {
-  console.log(_0x1234[2]); // 'hello'
+console.log(_0x1234[2]); // 'hello'
 }
 ```
 
@@ -182,31 +182,31 @@ function greet() {
 let stringArray = null;
 
 traverse(ast, {
-  // 第一步：提取字符串数组
-  VariableDeclarator(path) {
-    if (
-      path.node.id.name === "_0x1234" &&
-      t.isArrayExpression(path.node.init)
-    ) {
-      stringArray = path.node.init.elements.map((e) => e.value);
-      console.log("找到字符串数组:", stringArray);
-    }
-  },
+// 第一步：提取字符串数组
+VariableDeclarator(path) {
+if (
+path.node.id.name === "_0x1234" &&
+t.isArrayExpression(path.node.init)
+) {
+stringArray = path.node.init.elements.map((e) => e.value);
+console.log("找到字符串数组:", stringArray);
+}
+},
 });
 
 traverse(ast, {
-  // 第二步：替换所有引用
-  MemberExpression(path) {
-    // _0x1234[2] 形式
-    if (
-      t.isIdentifier(path.node.object, { name: "_0x1234" }) &&
-      t.isNumericLiteral(path.node.property)
-    ) {
-      const index = path.node.property.value;
-      const str = stringArray[index];
-      path.replaceWith(t.stringLiteral(str));
-    }
-  },
+// 第二步：替换所有引用
+MemberExpression(path) {
+// _0x1234[2] 形式
+if (
+t.isIdentifier(path.node.object, { name: "_0x1234" }) &&
+t.isNumericLiteral(path.node.property)
+) {
+const index = path.node.property.value;
+const str = stringArray[index];
+path.replaceWith(t.stringLiteral(str));
+}
+},
 });
 ```
 
@@ -214,7 +214,7 @@ traverse(ast, {
 
 ```javascript
 function greet() {
-  console.log("hello");
+console.log("hello");
 }
 ```
 
@@ -227,19 +227,19 @@ function greet() {
 ```javascript
 let _state = 0;
 while (true) {
-  switch (_state) {
-    case 0:
-      console.log("step 1");
-      _state = 1;
-      break;
-    case 1:
-      console.log("step 2");
-      _state = 2;
-      break;
-    case 2:
-      console.log("step 3");
-      return;
-  }
+switch (_state) {
+case 0:
+console.log("step 1");
+_state = 1;
+break;
+case 1:
+console.log("step 2");
+_state = 2;
+break;
+case 2:
+console.log("step 3");
+return;
+}
 }
 ```
 
@@ -248,28 +248,28 @@ while (true) {
 ```javascript
 // 简化版：提取顺序执行的 case
 traverse(ast, {
-  WhileStatement(path) {
-    const body = path.node.body;
+WhileStatement(path) {
+const body = path.node.body;
 
-    // 检查是否是 switch 语句
-    if (t.isSwitchStatement(body.body[0])) {
-      const switchNode = body.body[0];
-      const cases = switchNode.cases;
+// 检查是否是 switch 语句
+if (t.isSwitchStatement(body.body[0])) {
+const switchNode = body.body[0];
+const cases = switchNode.cases;
 
-      // 按 case 值排序
-      const sortedCases = cases.sort((a, b) => {
-        return a.test.value - b.test.value;
-      });
+// 按 case 值排序
+const sortedCases = cases.sort((a, b) => {
+return a.test.value - b.test.value;
+});
 
-      // 提取所有 case 的 body（去除 break）
-      const statements = sortedCases.flatMap((c) => {
-        return c.consequent.filter((s) => !t.isBreakStatement(s));
-      });
+// 提取所有 case 的 body（去除 break）
+const statements = sortedCases.flatMap((c) => {
+return c.consequent.filter((s) => !t.isBreakStatement(s));
+});
 
-      // 替换整个 while 语句
-      path.replaceWithMultiple(statements);
-    }
-  },
+// 替换整个 while 语句
+path.replaceWithMultiple(statements);
+}
+},
 });
 ```
 
@@ -283,16 +283,16 @@ traverse(ast, {
 let counter = 0;
 
 traverse(ast, {
-  Scope(path) {
-    // 遍历作用域中的所有绑定
-    Object.keys(path.scope.bindings).forEach((name) => {
-      // 如果是混淆的名字（短或十六进制）
-      if (name.match(/^[a-z]$|^_0x[0-9a-f]+$/i)) {
-        const newName = `var_${counter++}`;
-        path.scope.rename(name, newName);
-      }
-    });
-  },
+Scope(path) {
+// 遍历作用域中的所有绑定
+Object.keys(path.scope.bindings).forEach((name) => {
+// 如果是混淆的名字（短或十六进制）
+if (name.match(/^[a-z]$|^_0x[0-9a-f]+$/i)) {
+const newName = `var_${counter++}`;
+path.scope.rename(name, newName);
+}
+});
+},
 });
 ```
 
@@ -301,12 +301,12 @@ traverse(ast, {
 ```javascript
 // 混淆前
 function a(b, c) {
-  return b + c;
+return b + c;
 }
 
 // 反混淆后
 function var_0(var_1, var_2) {
-  return var_1 + var_2;
+return var_1 + var_2;
 }
 ```
 
@@ -320,25 +320,25 @@ function var_0(var_1, var_2) {
 
 ```javascript
 const visitor = {
-  // 进入节点时调用
-  enter(path) {
-    console.log("进入:", path.type);
-  },
+// 进入节点时调用
+enter(path) {
+console.log("进入:", path.type);
+},
 
-  // 离开节点时调用
-  exit(path) {
-    console.log("离开:", path.type);
-  },
+// 离开节点时调用
+exit(path) {
+console.log("离开:", path.type);
+},
 
-  // 针对特定节点类型
-  FunctionDeclaration(path) {
-    console.log("找到函数:", path.node.id.name);
-  },
+// 针对特定节点类型
+FunctionDeclaration(path) {
+console.log("找到函数:", path.node.id.name);
+},
 
-  // 简写形式（只有 enter）
-  CallExpression(path) {
-    console.log("函数调用:", path.node.callee.name);
-  },
+// 简写形式（只有 enter）
+CallExpression(path) {
+console.log("函数调用:", path.node.callee.name);
+},
 };
 
 traverse(ast, visitor);
@@ -346,17 +346,17 @@ traverse(ast, visitor);
 
 ### 3.2 Path 对象常用方法
 
-| 方法                      | 作用              | 示例                                            |
+| 方法 | 作用 | 示例 |
 | ------------------------- | ----------------- | ----------------------------------------------- |
-| `path.node`               | 获取当前 AST 节点 | `path.node.id.name`                             |
-| `path.parent`             | 获取父节点        | `path.parent`                                   |
-| `path.scope`              | 获取作用域信息    | `path.scope.bindings`                           |
-| `path.get('key')`         | 获取子路径        | `path.get('params.0')`                          |
-| `path.replaceWith(node)`  | 替换节点          | `path.replaceWith(t.numericLiteral(123))`       |
-| `path.remove()`           | 删除节点          | `path.remove()`                                 |
-| `path.insertBefore(node)` | 在前面插入节点    | `path.insertBefore(t.expressionStatement(...))` |
-| `path.insertAfter(node)`  | 在后面插入节点    | `path.insertAfter(t.expressionStatement(...))`  |
-| `path.evaluate()`         | 尝试求值          | `const result = path.evaluate()`                |
+| `path.node` | 获取当前 AST 节点 | `path.node.id.name` |
+| `path.parent` | 获取父节点 | `path.parent` |
+| `path.scope` | 获取作用域信息 | `path.scope.bindings` |
+| `path.get('key')` | 获取子路径 | `path.get('params.0')` |
+| `path.replaceWith(node)` | 替换节点 | `path.replaceWith(t.numericLiteral(123))` |
+| `path.remove()` | 删除节点 | `path.remove()` |
+| `path.insertBefore(node)` | 在前面插入节点 | `path.insertBefore(t.expressionStatement(...))` |
+| `path.insertAfter(node)` | 在后面插入节点 | `path.insertAfter(t.expressionStatement(...))` |
+| `path.evaluate()` | 尝试求值 | `const result = path.evaluate()` |
 
 ### 3.3 Scope 作用域分析
 
@@ -364,21 +364,21 @@ traverse(ast, visitor);
 
 ```javascript
 traverse(ast, {
-  FunctionDeclaration(path) {
-    const funcName = path.node.id.name;
+FunctionDeclaration(path) {
+const funcName = path.node.id.name;
 
-    // 获取函数作用域
-    const scope = path.scope;
+// 获取函数作用域
+const scope = path.scope;
 
-    // 查找变量绑定
-    const binding = scope.getBinding("someVariable");
+// 查找变量绑定
+const binding = scope.getBinding("someVariable");
 
-    if (binding) {
-      console.log("变量定义于:", binding.path.node.loc);
-      console.log("引用次数:", binding.references);
-      console.log("是否被引用:", binding.referenced);
-    }
-  },
+if (binding) {
+console.log("变量定义于:", binding.path.node.loc);
+console.log("引用次数:", binding.references);
+console.log("是否被引用:", binding.referenced);
+}
+},
 });
 ```
 
@@ -386,11 +386,11 @@ traverse(ast, {
 
 ```javascript
 traverse(ast, {
-  Identifier(path) {
-    if (path.node.name === "oldName") {
-      path.scope.rename("oldName", "newName");
-    }
-  },
+Identifier(path) {
+if (path.node.name === "oldName") {
+path.scope.rename("oldName", "newName");
+}
+},
 });
 ```
 
@@ -400,15 +400,15 @@ traverse(ast, {
 
 ```javascript
 if (t.isIdentifier(node)) {
-  console.log("这是一个标识符");
+console.log("这是一个标识符");
 }
 
 if (t.isIdentifier(node, { name: "foo" })) {
-  console.log("这是名为 foo 的标识符");
+console.log("这是名为 foo 的标识符");
 }
 
 if (t.isFunctionDeclaration(node)) {
-  console.log("这是一个函数声明");
+console.log("这是一个函数声明");
 }
 ```
 
@@ -426,12 +426,12 @@ const id = t.identifier("myVar");
 
 // 创建函数调用
 const call = t.callExpression(t.identifier("console.log"), [
-  t.stringLiteral("hello"),
+t.stringLiteral("hello"),
 ]);
 
 // 创建变量声明
 const varDecl = t.variableDeclaration("const", [
-  t.variableDeclarator(t.identifier("x"), t.numericLiteral(10)),
+t.variableDeclarator(t.identifier("x"), t.numericLiteral(10)),
 ]);
 ```
 
@@ -454,12 +454,12 @@ const ast = parser.parse(code);
 
 // ========== 步骤 1: 常量折叠 ==========
 traverse(ast, {
-  BinaryExpression(path) {
-    const result = path.evaluate();
-    if (result.confident) {
-      path.replaceWith(t.valueToNode(result.value));
-    }
-  },
+BinaryExpression(path) {
+const result = path.evaluate();
+if (result.confident) {
+path.replaceWith(t.valueToNode(result.value));
+}
+},
 });
 
 // ========== 步骤 2: 字符串数组还原 ==========
@@ -467,89 +467,89 @@ let stringArray = null;
 
 // 提取字符串数组
 traverse(ast, {
-  VariableDeclarator(path) {
-    if (
-      t.isArrayExpression(path.node.init) &&
-      path.node.init.elements.every((e) => t.isStringLiteral(e))
-    ) {
-      stringArray = path.node.init.elements.map((e) => e.value);
-      console.log(`[字符串数组] 找到 ${stringArray.length} 个字符串`);
+VariableDeclarator(path) {
+if (
+t.isArrayExpression(path.node.init) &&
+path.node.init.elements.every((e) => t.isStringLiteral(e))
+) {
+stringArray = path.node.init.elements.map((e) => e.value);
+console.log(`[字符串数组] 找到 ${stringArray.length} 个字符串`);
 
-      // 记录数组名
-      const arrayName = path.node.id.name;
+// 记录数组名
+const arrayName = path.node.id.name;
 
-      // 替换所有引用
-      path.scope.traverse(path.scope.block, {
-        MemberExpression(innerPath) {
-          if (
-            t.isIdentifier(innerPath.node.object, { name: arrayName }) &&
-            t.isNumericLiteral(innerPath.node.property)
-          ) {
-            const index = innerPath.node.property.value;
-            if (index < stringArray.length) {
-              innerPath.replaceWith(t.stringLiteral(stringArray[index]));
-            }
-          }
-        },
-      });
+// 替换所有引用
+path.scope.traverse(path.scope.block, {
+MemberExpression(innerPath) {
+if (
+t.isIdentifier(innerPath.node.object, { name: arrayName }) &&
+t.isNumericLiteral(innerPath.node.property)
+) {
+const index = innerPath.node.property.value;
+if (index < stringArray.length) {
+innerPath.replaceWith(t.stringLiteral(stringArray[index]));
+}
+}
+},
+});
 
-      // 删除数组定义
-      path.remove();
-    }
-  },
+// 删除数组定义
+path.remove();
+}
+},
 });
 
 // ========== 步骤 3: 死代码消除 ==========
 traverse(ast, {
-  IfStatement(path) {
-    const test = path.get("test").evaluate();
-    if (test.confident) {
-      if (test.value) {
-        path.replaceWithMultiple(path.node.consequent.body);
-      } else {
-        if (path.node.alternate) {
-          path.replaceWithMultiple(path.node.alternate.body);
-        } else {
-          path.remove();
-        }
-      }
-    }
-  },
+IfStatement(path) {
+const test = path.get("test").evaluate();
+if (test.confident) {
+if (test.value) {
+path.replaceWithMultiple(path.node.consequent.body);
+} else {
+if (path.node.alternate) {
+path.replaceWithMultiple(path.node.alternate.body);
+} else {
+path.remove();
+}
+}
+}
+},
 });
 
 // ========== 步骤 4: 删除未使用的变量 ==========
 traverse(ast, {
-  VariableDeclarator(path) {
-    const binding = path.scope.getBinding(path.node.id.name);
-    if (binding && !binding.referenced) {
-      console.log(`[删除] 未使用的变量: ${path.node.id.name}`);
-      path.remove();
-    }
-  },
+VariableDeclarator(path) {
+const binding = path.scope.getBinding(path.node.id.name);
+if (binding && !binding.referenced) {
+console.log(`[删除] 未使用的变量: ${path.node.id.name}`);
+path.remove();
+}
+},
 });
 
 // ========== 步骤 5: 函数调用内联 (简单情况) ==========
 traverse(ast, {
-  CallExpression(path) {
-    // 如果调用的是 IIFE（立即执行函数）
-    if (
-      t.isFunctionExpression(path.node.callee) &&
-      path.node.callee.params.length === 0
-    ) {
-      // 替换为函数体
-      const body = path.node.callee.body.body;
-      if (body.length === 1 && t.isReturnStatement(body[0])) {
-        path.replaceWith(body[0].argument);
-      }
-    }
-  },
+CallExpression(path) {
+// 如果调用的是 IIFE（立即执行函数）
+if (
+t.isFunctionExpression(path.node.callee) &&
+path.node.callee.params.length === 0
+) {
+// 替换为函数体
+const body = path.node.callee.body.body;
+if (body.length === 1 && t.isReturnStatement(body[0])) {
+path.replaceWith(body[0].argument);
+}
+}
+},
 });
 
 // 生成代码
 const output = generator(ast, {
-  jsescOption: { minimal: true },
-  compact: false, // 不压缩
-  comments: false, // 去除注释
+jsescOption: { minimal: true },
+compact: false, // 不压缩
+comments: false, // 去除注释
 });
 
 fs.writeFileSync("deobfuscated.js", output.code);
@@ -572,9 +572,9 @@ traverse(ast, { CallExpression() {} });
 
 // ✅ 快（单次遍历）
 traverse(ast, {
-  BinaryExpression() {},
-  IfStatement() {},
-  CallExpression() {},
+BinaryExpression() {},
+IfStatement() {},
+CallExpression() {},
 });
 ```
 
@@ -582,12 +582,12 @@ traverse(ast, {
 
 ```javascript
 traverse(ast, {
-  FunctionDeclaration(path) {
-    if (path.node.id.name === "targetFunction") {
-      // 找到目标函数，停止遍历
-      path.stop();
-    }
-  },
+FunctionDeclaration(path) {
+if (path.node.id.name === "targetFunction") {
+// 找到目标函数，停止遍历
+path.stop();
+}
+},
 });
 ```
 
@@ -595,12 +595,12 @@ traverse(ast, {
 
 ```javascript
 traverse(ast, {
-  enter(path) {
-    // 只遍历第一层
-    if (path.node.loc.start.line > 100) {
-      path.skip(); // 跳过子节点
-    }
-  },
+enter(path) {
+// 只遍历第一层
+if (path.node.loc.start.line > 100) {
+path.skip(); // 跳过子节点
+}
+},
 });
 ```
 
@@ -637,19 +637,19 @@ AST 输出（简化）:
 
 ```json
 {
-  "type": "VariableDeclaration",
-  "declarations": [
-    {
-      "type": "VariableDeclarator",
-      "id": { "type": "Identifier", "name": "x" },
-      "init": {
-        "type": "BinaryExpression",
-        "operator": "+",
-        "left": { "type": "NumericLiteral", "value": 1 },
-        "right": { "type": "NumericLiteral", "value": 2 }
-      }
-    }
-  ]
+"type": "VariableDeclaration",
+"declarations": [
+{
+"type": "VariableDeclarator",
+"id": { "type": "Identifier", "name": "x" },
+"init": {
+"type": "BinaryExpression",
+"operator": "+",
+"left": { "type": "NumericLiteral", "value": 1 },
+"right": { "type": "NumericLiteral", "value": 2 }
+}
+}
+]
 }
 ```
 
@@ -667,7 +667,7 @@ AST 输出（简化）:
 const _0x1234 = ["sign", "md5", "timestamp"];
 
 function _0xabcd(a, b) {
-  return _0x1234[0] + a + _0x1234[2] + b;
+return _0x1234[0] + a + _0x1234[2] + b;
 }
 ```
 
@@ -681,7 +681,7 @@ function _0xabcd(a, b) {
 
 ```javascript
 function _0xabcd(a, b) {
-  return "sign" + a + "timestamp" + b;
+return "sign" + a + "timestamp" + b;
 }
 ```
 
@@ -689,7 +689,7 @@ function _0xabcd(a, b) {
 
 ```javascript
 function generateSignString(user_id, timestamp) {
-  return "sign" + user_id + "timestamp" + timestamp;
+return "sign" + user_id + "timestamp" + timestamp;
 }
 ```
 
@@ -700,16 +700,16 @@ function generateSignString(user_id, timestamp) {
 ```javascript
 let _state = "init";
 while (_state !== "end") {
-  switch (_state) {
-    case "init":
-      console.log("Start");
-      _state = "middle";
-      break;
-    case "middle":
-      console.log("Process");
-      _state = "end";
-      break;
-  }
+switch (_state) {
+case "init":
+console.log("Start");
+_state = "middle";
+break;
+case "middle":
+console.log("Process");
+_state = "end";
+break;
+}
 }
 ```
 
@@ -726,37 +726,37 @@ console.log("Process");
 
 ## 7. 常见 AST 节点类型
 
-| 类型                    | 说明         | 示例代码             |
+| 类型 | 说明 | 示例代码 |
 | ----------------------- | ------------ | -------------------- |
-| **Program**             | 整个程序     | `整个 JS 文件`       |
-| **FunctionDeclaration** | 函数声明     | `function foo() {}`  |
-| **VariableDeclaration** | 变量声明     | `const x = 1;`       |
-| **ExpressionStatement** | 表达式语句   | `console.log();`     |
-| **CallExpression**      | 函数调用     | `foo()`              |
-| **BinaryExpression**    | 二元表达式   | `1 + 2`              |
-| **Identifier**          | 标识符       | `foo`, `x`           |
-| **NumericLiteral**      | 数字字面量   | `123`                |
-| **StringLiteral**       | 字符串字面量 | `'hello'`            |
-| **ArrayExpression**     | 数组表达式   | `[1, 2, 3]`          |
-| **ObjectExpression**    | 对象表达式   | `{a: 1, b: 2}`       |
-| **MemberExpression**    | 成员访问     | `obj.prop`, `arr[0]` |
-| **IfStatement**         | if 语句      | `if (x) {...}`       |
-| **WhileStatement**      | while 循环   | `while (true) {...}` |
-| **ForStatement**        | for 循环     | `for (;;) {...}`     |
-| **ReturnStatement**     | return 语句  | `return x;`          |
+| **Program** | 整个程序 | `整个 JS 文件` |
+| **FunctionDeclaration** | 函数声明 | `function foo() {}` |
+| **VariableDeclaration** | 变量声明 | `const x = 1;` |
+| **ExpressionStatement** | 表达式语句 | `console.log();` |
+| **CallExpression** | 函数调用 | `foo()` |
+| **BinaryExpression** | 二元表达式 | `1 + 2` |
+| **Identifier** | 标识符 | `foo`, `x` |
+| **NumericLiteral** | 数字字面量 | `123` |
+| **StringLiteral** | 字符串字面量 | `'hello'` |
+| **ArrayExpression** | 数组表达式 | `[1, 2, 3]` |
+| **ObjectExpression** | 对象表达式 | `{a: 1, b: 2}` |
+| **MemberExpression** | 成员访问 | `obj.prop`, `arr[0]` |
+| **IfStatement** | if 语句 | `if (x) {...}` |
+| **WhileStatement** | while 循环 | `while (true) {...}` |
+| **ForStatement** | for 循环 | `for (;;) {...}` |
+| **ReturnStatement** | return 语句 | `return x;` |
 
 ---
 
 ## 8. 工具与资源
 
-| 资源               | 类型           | 链接                                          |
+| 资源 | 类型 | 链接 |
 | ------------------ | -------------- | --------------------------------------------- |
-| **AST Explorer**   | 在线工具       | https://astexplorer.net/                      |
-| **Babel 文档**     | 官方文档       | https://babeljs.io/docs/                      |
-| **Babel Handbook** | 深度教程       | https://github.com/jamiebuilds/babel-handbook |
-| **jsjiami 还原**   | 开源工具       | GitHub: javascript-obfuscator-deobfuscator    |
-| **webcrack**       | Webpack 反打包 | https://github.com/j4k0xb/webcrack            |
-| **de4js**          | 在线反混淆     | https://lelinhtinh.github.io/de4js/           |
+| **AST Explorer** | 在线工具 | https://astexplorer.net/ |
+| **Babel 文档** | 官方文档 | https://babeljs.io/docs/ |
+| **Babel Handbook** | 深度教程 | https://github.com/jamiebuilds/babel-handbook |
+| **jsjiami 还原** | 开源工具 | GitHub: javascript-obfuscator-deobfuscator |
+| **webcrack** | Webpack 反打包 | https://github.com/j4k0xb/webcrack |
+| **de4js** | 在线反混淆 | https://lelinhtinh.github.io/de4js/ |
 
 ---
 

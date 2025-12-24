@@ -2,51 +2,51 @@
 
 ## 常见请求头 (Request Headers)
 
-| Header                | 说明              | 示例                                           |
+| Header | 说明 | 示例 |
 | --------------------- | ----------------- | ---------------------------------------------- |
-| **User-Agent**        | 客户端信息        | `Mozilla/5.0 (Windows NT 10.0; Win64; x64)...` |
-| **Accept**            | 可接受的内容类型  | `application/json, text/plain, */*`            |
-| **Accept-Language**   | 可接受的语言      | `zh-CN,zh;q=0.9,en;q=0.8`                      |
-| **Accept-Encoding**   | 可接受的编码      | `gzip, deflate, br`                            |
-| **Content-Type**      | 请求体内容类型    | `application/json; charset=UTF-8`              |
-| **Content-Length**    | 请求体长度        | `1234`                                         |
-| **Authorization**     | 认证信息          | `Bearer eyJhbGciOiJIUzI1NiIs...`               |
-| **Cookie**            | Cookie 数据       | `session_id=abc123; user=admin`                |
-| **Referer**           | 来源页面          | `https://example.com/page1`                    |
-| **Origin**            | 请求来源          | `https://example.com`                          |
-| **Host**              | 目标主机          | `api.example.com`                              |
-| **Connection**        | 连接方式          | `keep-alive`                                   |
-| **Cache-Control**     | 缓存控制          | `no-cache, no-store`                           |
-| **Pragma**            | HTTP/1.0 缓存控制 | `no-cache`                                     |
-| **If-Modified-Since** | 条件请求          | `Wed, 21 Oct 2025 07:28:00 GMT`                |
-| **If-None-Match**     | ETag 条件请求     | `"686897696a7c876b7e"`                         |
-| **Range**             | 范围请求          | `bytes=0-1024`                                 |
-| **X-Requested-With**  | 标识 AJAX 请求    | `XMLHttpRequest`                               |
-| **X-CSRF-Token**      | CSRF 令牌         | `abc123def456`                                 |
+| **User-Agent** | 客户端信息 | `Mozilla/5.0 (Windows NT 10.0; Win64; x64)...` |
+| **Accept** | 可接受的内容类型 | `application/json, text/plain, */*` |
+| **Accept-Language** | 可接受的语言 | `zh-CN,zh;q=0.9,en;q=0.8` |
+| **Accept-Encoding** | 可接受的编码 | `gzip, deflate, br` |
+| **Content-Type** | 请求体内容类型 | `application/json; charset=UTF-8` |
+| **Content-Length** | 请求体长度 | `1234` |
+| **Authorization** | 认证信息 | `Bearer eyJhbGciOiJIUzI1NiIs...` |
+| **Cookie** | Cookie 数据 | `session_id=abc123; user=admin` |
+| **Referer** | 来源页面 | `https://example.com/page1` |
+| **Origin** | 请求来源 | `https://example.com` |
+| **Host** | 目标主机 | `api.example.com` |
+| **Connection** | 连接方式 | `keep-alive` |
+| **Cache-Control** | 缓存控制 | `no-cache, no-store` |
+| **Pragma** | HTTP/1.0 缓存控制 | `no-cache` |
+| **If-Modified-Since** | 条件请求 | `Wed, 21 Oct 2025 07:28:00 GMT` |
+| **If-None-Match** | ETag 条件请求 | `"686897696a7c876b7e"` |
+| **Range** | 范围请求 | `bytes=0-1024` |
+| **X-Requested-With** | 标识 AJAX 请求 | `XMLHttpRequest` |
+| **X-CSRF-Token** | CSRF 令牌 | `abc123def456` |
 
 ## 常见响应头 (Response Headers)
 
-| Header                           | 说明          | 示例                                  |
+| Header | 说明 | 示例 |
 | -------------------------------- | ------------- | ------------------------------------- |
-| **Content-Type**                 | 响应内容类型  | `application/json; charset=utf-8`     |
-| **Content-Length**               | 响应体长度    | `1234`                                |
-| **Content-Encoding**             | 响应编码      | `gzip`                                |
-| **Set-Cookie**                   | 设置 Cookie   | `session_id=abc123; Path=/; HttpOnly` |
-| **Cache-Control**                | 缓存策略      | `max-age=3600, must-revalidate`       |
-| **Expires**                      | 过期时间      | `Wed, 21 Oct 2025 07:28:00 GMT`       |
-| **ETag**                         | 资源标识      | `"686897696a7c876b7e"`                |
-| **Last-Modified**                | 最后修改时间  | `Wed, 21 Oct 2025 07:28:00 GMT`       |
-| **Location**                     | 重定向地址    | `https://example.com/new-page`        |
-| **Server**                       | 服务器信息    | `nginx/1.18.0`                        |
-| **X-Powered-By**                 | 技术栈        | `PHP/7.4.0`                           |
-| **Access-Control-Allow-Origin**  | CORS 允许来源 | `*` 或 `https://example.com`          |
-| **Access-Control-Allow-Methods** | CORS 允许方法 | `GET, POST, PUT, DELETE`              |
-| **Access-Control-Allow-Headers** | CORS 允许头   | `Content-Type, Authorization`         |
-| **Access-Control-Max-Age**       | CORS 预检缓存 | `3600`                                |
-| **Strict-Transport-Security**    | HSTS          | `max-age=31536000; includeSubDomains` |
-| **X-Frame-Options**              | 防点击劫持    | `DENY`                                |
-| **X-Content-Type-Options**       | 防 MIME 嗅探  | `nosniff`                             |
-| **X-XSS-Protection**             | XSS 过滤器    | `1; mode=block`                       |
+| **Content-Type** | 响应内容类型 | `application/json; charset=utf-8` |
+| **Content-Length** | 响应体长度 | `1234` |
+| **Content-Encoding** | 响应编码 | `gzip` |
+| **Set-Cookie** | 设置 Cookie | `session_id=abc123; Path=/; HttpOnly` |
+| **Cache-Control** | 缓存策略 | `max-age=3600, must-revalidate` |
+| **Expires** | 过期时间 | `Wed, 21 Oct 2025 07:28:00 GMT` |
+| **ETag** | 资源标识 | `"686897696a7c876b7e"` |
+| **Last-Modified** | 最后修改时间 | `Wed, 21 Oct 2025 07:28:00 GMT` |
+| **Location** | 重定向地址 | `https://example.com/new-page` |
+| **Server** | 服务器信息 | `nginx/1.18.0` |
+| **X-Powered-By** | 技术栈 | `PHP/7.4.0` |
+| **Access-Control-Allow-Origin** | CORS 允许来源 | `*` 或 `https://example.com` |
+| **Access-Control-Allow-Methods** | CORS 允许方法 | `GET, POST, PUT, DELETE` |
+| **Access-Control-Allow-Headers** | CORS 允许头 | `Content-Type, Authorization` |
+| **Access-Control-Max-Age** | CORS 预检缓存 | `3600` |
+| **Strict-Transport-Security** | HSTS | `max-age=31536000; includeSubDomains` |
+| **X-Frame-Options** | 防点击劫持 | `DENY` |
+| **X-Content-Type-Options** | 防 MIME 嗅探 | `nosniff` |
+| **X-XSS-Protection** | XSS 过滤器 | `1; mode=block` |
 
 ## 安全相关头
 
@@ -93,25 +93,25 @@ Permissions-Policy: geolocation=(), camera=()
 
 ### 请求/响应通用
 
-| Content-Type                        | 说明       | 用途              |
+| Content-Type | 说明 | 用途 |
 | ----------------------------------- | ---------- | ----------------- |
-| `application/json`                  | JSON 数据  | API 请求/响应     |
-| `application/x-www-form-urlencoded` | 表单数据   | 传统表单提交      |
-| `multipart/form-data`               | 文件上传   | 含文件的表单      |
-| `text/html`                         | HTML 文档  | 网页              |
-| `text/plain`                        | 纯文本     | 文本文件          |
-| `text/css`                          | CSS 样式   | 样式表            |
-| `text/javascript`                   | JavaScript | JS 文件           |
-| `application/javascript`            | JavaScript | JS 文件（新标准） |
-| `application/xml`                   | XML 数据   | XML 格式          |
-| `text/xml`                          | XML 文本   | XML 文本          |
-| `application/octet-stream`          | 二进制流   | 文件下载          |
-| `image/jpeg`                        | JPEG 图片  | 图片              |
-| `image/png`                         | PNG 图片   | 图片              |
-| `image/gif`                         | GIF 图片   | 动图              |
-| `image/svg+xml`                     | SVG 图片   | 矢量图            |
-| `video/mp4`                         | MP4 视频   | 视频              |
-| `audio/mpeg`                        | MP3 音频   | 音频              |
+| `application/json` | JSON 数据 | API 请求/响应 |
+| `application/x-www-form-urlencoded` | 表单数据 | 传统表单提交 |
+| `multipart/form-data` | 文件上传 | 含文件的表单 |
+| `text/html` | HTML 文档 | 网页 |
+| `text/plain` | 纯文本 | 文本文件 |
+| `text/css` | CSS 样式 | 样式表 |
+| `text/javascript` | JavaScript | JS 文件 |
+| `application/javascript` | JavaScript | JS 文件（新标准） |
+| `application/xml` | XML 数据 | XML 格式 |
+| `text/xml` | XML 文本 | XML 文本 |
+| `application/octet-stream` | 二进制流 | 文件下载 |
+| `image/jpeg` | JPEG 图片 | 图片 |
+| `image/png` | PNG 图片 | 图片 |
+| `image/gif` | GIF 图片 | 动图 |
+| `image/svg+xml` | SVG 图片 | 矢量图 |
+| `video/mp4` | MP4 视频 | 视频 |
+| `audio/mpeg` | MP3 音频 | 音频 |
 
 ## 自定义头示例
 
@@ -224,14 +224,14 @@ Set-Cookie: session_id=abc123; Domain=example.com; Path=/; Expires=Wed, 21 Oct 2
 
 **属性说明**:
 
-| 属性       | 说明                           |
+| 属性 | 说明 |
 | ---------- | ------------------------------ |
-| `Domain`   | Cookie 的作用域                |
-| `Path`     | Cookie 的作用路径              |
-| `Expires`  | 过期时间（绝对时间）           |
-| `Max-Age`  | 存活时间（秒）                 |
-| `Secure`   | 仅 HTTPS 传输                  |
-| `HttpOnly` | 禁止 JavaScript 访问           |
+| `Domain` | Cookie 的作用域 |
+| `Path` | Cookie 的作用路径 |
+| `Expires` | 过期时间（绝对时间） |
+| `Max-Age` | 存活时间（秒） |
+| `Secure` | 仅 HTTPS 传输 |
+| `HttpOnly` | 禁止 JavaScript 访问 |
 | `SameSite` | 跨站请求策略 (Strict/Lax/None) |
 
 ## Cache-Control 指令
@@ -239,26 +239,26 @@ Set-Cookie: session_id=abc123; Domain=example.com; Path=/; Expires=Wed, 21 Oct 2
 ### 请求指令
 
 ```http
-Cache-Control: no-cache          # 不使用缓存
-Cache-Control: no-store          # 不存储缓存
-Cache-Control: max-age=0         # 立即过期
-Cache-Control: max-stale=3600    # 可接受过期的缓存
-Cache-Control: min-fresh=600     # 必须新鲜的缓存
-Cache-Control: only-if-cached    # 只使用缓存
+Cache-Control: no-cache # 不使用缓存
+Cache-Control: no-store # 不存储缓存
+Cache-Control: max-age=0 # 立即过期
+Cache-Control: max-stale=3600 # 可接受过期的缓存
+Cache-Control: min-fresh=600 # 必须新鲜的缓存
+Cache-Control: only-if-cached # 只使用缓存
 ```
 
 ### 响应指令
 
 ```http
-Cache-Control: public                    # 可被任何缓存存储
-Cache-Control: private                   # 只能被浏览器缓存
-Cache-Control: no-cache                  # 需要验证
-Cache-Control: no-store                  # 不能缓存
-Cache-Control: max-age=3600              # 缓存3600秒
-Cache-Control: s-maxage=3600             # 共享缓存时间
-Cache-Control: must-revalidate           # 过期后必须验证
-Cache-Control: proxy-revalidate          # 代理缓存需验证
-Cache-Control: immutable                 # 不会改变
+Cache-Control: public # 可被任何缓存存储
+Cache-Control: private # 只能被浏览器缓存
+Cache-Control: no-cache # 需要验证
+Cache-Control: no-store # 不能缓存
+Cache-Control: max-age=3600 # 缓存3600秒
+Cache-Control: s-maxage=3600 # 共享缓存时间
+Cache-Control: must-revalidate # 过期后必须验证
+Cache-Control: proxy-revalidate # 代理缓存需验证
+Cache-Control: immutable # 不会改变
 ```
 
 ## Python 设置 Headers
@@ -267,15 +267,15 @@ Cache-Control: immutable                 # 不会改变
 import requests
 
 headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-    'Accept': 'application/json',
-    'Accept-Language': 'zh-CN,zh;q=0.9',
-    'Accept-Encoding': 'gzip, deflate',
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer your_token_here',
-    'X-Requested-With': 'XMLHttpRequest',
-    'Referer': 'https://example.com',
-    'Origin': 'https://example.com'
+'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+'Accept': 'application/json',
+'Accept-Language': 'zh-CN,zh;q=0.9',
+'Accept-Encoding': 'gzip, deflate',
+'Content-Type': 'application/json',
+'Authorization': 'Bearer your_token_here',
+'X-Requested-With': 'XMLHttpRequest',
+'Referer': 'https://example.com',
+'Origin': 'https://example.com'
 }
 
 response = requests.get('https://api.example.com/data', headers=headers)
@@ -286,13 +286,13 @@ response = requests.get('https://api.example.com/data', headers=headers)
 ```javascript
 // Fetch API
 fetch("https://api.example.com/data", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: "Bearer your_token_here",
-    "X-Custom-Header": "custom_value",
-  },
-  body: JSON.stringify({ key: "value" }),
+method: "POST",
+headers: {
+"Content-Type": "application/json",
+Authorization: "Bearer your_token_here",
+"X-Custom-Header": "custom_value",
+},
+body: JSON.stringify({ key: "value" }),
 });
 
 // XHR
@@ -307,35 +307,35 @@ xhr.send(JSON.stringify({ key: "value" }));
 
 ```bash
 curl https://api.example.com/data \
-  -H "User-Agent: Mozilla/5.0..." \
-  -H "Accept: application/json" \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer your_token_here" \
-  -H "X-Custom-Header: custom_value" \
-  -d '{"key":"value"}'
+-H "User-Agent: Mozilla/5.0..." \
+-H "Accept: application/json" \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer your_token_here" \
+-H "X-Custom-Header: custom_value" \
+-d '{"key":"value"}'
 ```
 
 ## 常见状态码对照
 
-| 状态码 | 说明                               |
+| 状态码 | 说明 |
 | ------ | ---------------------------------- |
-| 200    | OK - 成功                          |
-| 201    | Created - 已创建                   |
-| 204    | No Content - 无内容                |
-| 301    | Moved Permanently - 永久重定向     |
-| 302    | Found - 临时重定向                 |
-| 304    | Not Modified - 未修改（缓存有效）  |
-| 400    | Bad Request - 请求错误             |
-| 401    | Unauthorized - 未授权              |
-| 403    | Forbidden - 禁止访问               |
-| 404    | Not Found - 未找到                 |
-| 405    | Method Not Allowed - 方法不允许    |
-| 429    | Too Many Requests - 请求过多       |
-| 500    | Internal Server Error - 服务器错误 |
-| 502    | Bad Gateway - 网关错误             |
-| 503    | Service Unavailable - 服务不可用   |
+| 200 | OK - 成功 |
+| 201 | Created - 已创建 |
+| 204 | No Content - 无内容 |
+| 301 | Moved Permanently - 永久重定向 |
+| 302 | Found - 临时重定向 |
+| 304 | Not Modified - 未修改（缓存有效） |
+| 400 | Bad Request - 请求错误 |
+| 401 | Unauthorized - 未授权 |
+| 403 | Forbidden - 禁止访问 |
+| 404 | Not Found - 未找到 |
+| 405 | Method Not Allowed - 方法不允许 |
+| 429 | Too Many Requests - 请求过多 |
+| 500 | Internal Server Error - 服务器错误 |
+| 502 | Bad Gateway - 网关错误 |
+| 503 | Service Unavailable - 服务不可用 |
 
-## 📚 相关章节
+## 相关章节
 
 - [HTTP/HTTPS 协议](../01-Foundations/http_https_protocol.md)
 - [API 逆向](../03-Basic-Recipes/api_reverse_engineering.md)

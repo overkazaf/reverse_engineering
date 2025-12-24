@@ -1,0 +1,137 @@
+baseURL: "https://overkazaf.github.io/reverse_engineering/"
+languageCode: "zh-CN"
+title: "逆向工程 Cookbook"
+theme: "PaperMod"
+
+# 启用中文支持
+hasCJKLanguage: true
+
+# 输出配置
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+
+# 菜单配置
+menu:
+  main:
+    - identifier: home
+      name: 首页
+      url: /
+      weight: 1
+    - identifier: android
+      name: Android 逆向
+      url: /android/
+      weight: 10
+    - identifier: web
+      name: Web 逆向
+      url: /web/
+      weight: 20
+    - identifier: search
+      name: 搜索
+      url: /search/
+      weight: 100
+
+# PaperMod 主题配置
+params:
+  env: production
+  title: "逆向工程 Cookbook"
+  description: "Android 与 Web 逆向工程实战手册"
+  keywords: [逆向工程, Android, Web, Frida, 安全研究]
+  author: "overkazaf"
+
+  defaultTheme: auto
+  disableThemeToggle: false
+
+  ShowReadingTime: true
+  ShowShareButtons: false
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  ShowWordCount: true
+  ShowRssButtonInSectionTermList: true
+  UseHugoToc: true
+  disableSpecialInlineStyles: true
+  disableScrollToTop: false
+  comments: false
+  hidemeta: false
+  hideSummary: false
+  showtoc: true
+  tocopen: true
+
+  # 首页配置
+  homeInfoParams:
+    Title: "逆向工程 Cookbook"
+    Content: |
+      Android 与 Web 逆向工程实战手册。
+
+      - **Android RE Cookbook**: Frida、Xposed、脱壳、反混淆等
+      - **Web RE Cookbook**: JavaScript 反混淆、反爬虫、抓包分析等
+
+  # 社交链接
+  socialIcons:
+    - name: github
+      url: "https://github.com/overkazaf/reverse_engineering"
+
+  # 搜索配置
+  fuseOpts:
+    isCaseSensitive: false
+    shouldSort: true
+    location: 0
+    distance: 1000
+    threshold: 0.4
+    minMatchCharLength: 0
+    keys: ["title", "permalink", "summary", "content"]
+
+  # 封面图片配置
+  cover:
+    hidden: false
+    hiddenInList: false
+    hiddenInSingle: false
+
+  # 编辑链接
+  editPost:
+    URL: "https://github.com/overkazaf/reverse_engineering/tree/master/site/content"
+    Text: "编辑此页"
+    appendFilePath: true
+
+# Markdown 渲染配置
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+  highlight:
+    style: monokai
+    lineNos: false
+    noClasses: false
+    guessSyntax: true
+
+# 分类配置
+taxonomies:
+  category: categories
+  tag: tags
+  series: series
+
+# 隐私配置
+privacy:
+  vimeo:
+    disabled: false
+    simple: true
+  x:
+    disabled: false
+    enableDNT: true
+    simple: true
+  instagram:
+    disabled: false
+    simple: true
+  youtube:
+    disabled: false
+    privacyEnhanced: true
+
+# 服务配置
+services:
+  instagram:
+    disableInlineCSS: true
+  x:
+    disableInlineCSS: true

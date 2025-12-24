@@ -96,31 +96,31 @@ Content-Length: 42
 
 ### 请求头
 
-| Header            | 说明             | 示例                                        |
+| Header | 说明 | 示例 |
 | ----------------- | ---------------- | ------------------------------------------- |
-| `User-Agent`      | 客户端标识       | `Mozilla/5.0 (Windows NT 10.0; Win64; x64)` |
-| `Accept`          | 可接受的内容类型 | `application/json, text/html`               |
-| `Accept-Encoding` | 可接受的编码     | `gzip, deflate, br`                         |
-| `Accept-Language` | 可接受的语言     | `zh-CN,zh;q=0.9,en;q=0.8`                   |
-| `Cookie`          | Cookie 信息      | `session_id=abc123; token=xyz`              |
-| `Referer`         | 来源页面         | `https://example.com/page1`                 |
-| `Origin`          | 请求来源         | `https://example.com`                       |
-| `Authorization`   | 认证信息         | `Bearer eyJhbGciOiJIUzI1NiIs...`            |
-| `Content-Type`    | 请求体类型       | `application/json`                          |
-| `Content-Length`  | 请求体长度       | `256`                                       |
+| `User-Agent` | 客户端标识 | `Mozilla/5.0 (Windows NT 10.0; Win64; x64)` |
+| `Accept` | 可接受的内容类型 | `application/json, text/html` |
+| `Accept-Encoding` | 可接受的编码 | `gzip, deflate, br` |
+| `Accept-Language` | 可接受的语言 | `zh-CN,zh;q=0.9,en;q=0.8` |
+| `Cookie` | Cookie 信息 | `session_id=abc123; token=xyz` |
+| `Referer` | 来源页面 | `https://example.com/page1` |
+| `Origin` | 请求来源 | `https://example.com` |
+| `Authorization` | 认证信息 | `Bearer eyJhbGciOiJIUzI1NiIs...` |
+| `Content-Type` | 请求体类型 | `application/json` |
+| `Content-Length` | 请求体长度 | `256` |
 
 ### 响应头
 
-| Header                        | 说明          | 示例                                         |
+| Header | 说明 | 示例 |
 | ----------------------------- | ------------- | -------------------------------------------- |
-| `Content-Type`                | 响应内容类型  | `application/json; charset=utf-8`            |
-| `Content-Length`              | 响应体长度    | `1024`                                       |
-| `Set-Cookie`                  | 设置 Cookie   | `session_id=abc; Path=/; HttpOnly`           |
-| `Cache-Control`               | 缓存控制      | `no-cache, no-store, must-revalidate`        |
-| `Access-Control-Allow-Origin` | CORS 允许的源 | `*` 或 `https://example.com`                 |
-| `Location`                    | 重定向地址    | `https://example.com/new-page`               |
-| `Content-Encoding`            | 内容编码      | `gzip`                                       |
-| `ETag`                        | 资源标识      | `"33a64df551425fcc55e4d42a148795d9f25f89d4"` |
+| `Content-Type` | 响应内容类型 | `application/json; charset=utf-8` |
+| `Content-Length` | 响应体长度 | `1024` |
+| `Set-Cookie` | 设置 Cookie | `session_id=abc; Path=/; HttpOnly` |
+| `Cache-Control` | 缓存控制 | `no-cache, no-store, must-revalidate` |
+| `Access-Control-Allow-Origin` | CORS 允许的源 | `*` 或 `https://example.com` |
+| `Location` | 重定向地址 | `https://example.com/new-page` |
+| `Content-Encoding` | 内容编码 | `gzip` |
+| `ETag` | 资源标识 | `"33a64df551425fcc55e4d42a148795d9f25f89d4"` |
 
 ---
 
@@ -175,10 +175,10 @@ mitmproxy --mode transparent --set console_mouse=false
 ```javascript
 // Hook Java 的证书验证 (Android)
 Java.perform(function () {
-  var TrustManager = Java.use("javax.net.ssl.X509TrustManager");
-  TrustManager.checkServerTrusted.implementation = function (chain, authType) {
-    console.log("Certificate pinning bypassed");
-  };
+var TrustManager = Java.use("javax.net.ssl.X509TrustManager");
+TrustManager.checkServerTrusted.implementation = function (chain, authType) {
+console.log("Certificate pinning bypassed");
+};
 });
 ```
 
@@ -190,14 +190,14 @@ Java.perform(function () {
 import requests
 
 headers = {
-    'User-Agent': 'Mozilla/5.0',
-    'Authorization': 'Bearer token123'
+'User-Agent': 'Mozilla/5.0',
+'Authorization': 'Bearer token123'
 }
 
 response = requests.post(
-    'https://api.example.com/data',
-    headers=headers,
-    json={'key': 'value'}
+'https://api.example.com/data',
+headers=headers,
+json={'key': 'value'}
 )
 ```
 
@@ -208,20 +208,20 @@ response = requests.post(
 ```javascript
 // 常见的签名生成流程
 function generateSignature(params) {
-  // 1. 参数排序
-  const sorted = Object.keys(params).sort();
+// 1. 参数排序
+const sorted = Object.keys(params).sort();
 
-  // 2. 拼接字符串
-  let str = "";
-  sorted.forEach((key) => {
-    str += key + "=" + params[key] + "&";
-  });
+// 2. 拼接字符串
+let str = "";
+sorted.forEach((key) => {
+str += key + "=" + params[key] + "&";
+});
 
-  // 3. 加上密钥
-  str += "secret_key";
+// 3. 加上密钥
+str += "secret_key";
 
-  // 4. MD5/SHA256 哈希
-  return md5(str);
+// 4. MD5/SHA256 哈希
+return md5(str);
 }
 ```
 

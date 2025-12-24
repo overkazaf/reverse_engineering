@@ -4,40 +4,40 @@
 
 ---
 
-## 📁 项目结构
+## 项目结构
 
 ```
 basic_scraper/
 ├── config/
-│   ├── __init__.py
-│   ├── settings.py          # 配置参数
-│   └── logging.conf         # 日志配置
+│ ├── __init__.py
+│ ├── settings.py # 配置参数
+│ └── logging.conf # 日志配置
 ├── scrapers/
-│   ├── __init__.py
-│   ├── base_scraper.py      # 基础爬虫类
-│   └── target_scraper.py    # 目标网站爬虫
+│ ├── __init__.py
+│ ├── base_scraper.py # 基础爬虫类
+│ └── target_scraper.py # 目标网站爬虫
 ├── utils/
-│   ├── __init__.py
-│   ├── crypto.py            # 加密解密工具
-│   ├── headers.py           # 请求头生成
-│   └── parser.py            # 数据解析
+│ ├── __init__.py
+│ ├── crypto.py # 加密解密工具
+│ ├── headers.py # 请求头生成
+│ └── parser.py # 数据解析
 ├── data/
-│   ├── raw/                 # 原始数据
-│   └── processed/           # 处理后数据
-├── logs/                    # 日志目录
+│ ├── raw/ # 原始数据
+│ └── processed/ # 处理后数据
+├── logs/ # 日志目录
 ├── tests/
-│   ├── __init__.py
-│   └── test_scraper.py      # 测试用例
-├── .env.example             # 环境变量示例
+│ ├── __init__.py
+│ └── test_scraper.py # 测试用例
+├── .env.example # 环境变量示例
 ├── .gitignore
 ├── requirements.txt
 ├── README.md
-└── main.py                  # 入口文件
+└── main.py # 入口文件
 ```
 
 ---
 
-## 📄 文件内容
+## 文件内容
 
 ### 1. requirements.txt
 
@@ -75,22 +75,22 @@ API_BASE_URL = "https://api.example.com"
 # 请求配置
 REQUEST_TIMEOUT = 30
 MAX_RETRIES = 3
-RETRY_DELAY = 2  # 秒
+RETRY_DELAY = 2 # 秒
 
 # 请求头配置
 DEFAULT_HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-    'Accept': 'application/json, text/plain, */*',
-    'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
-    'Accept-Encoding': 'gzip, deflate, br',
+'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+'Accept': 'application/json, text/plain, */*',
+'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+'Accept-Encoding': 'gzip, deflate, br',
 }
 
 # 代理配置
 USE_PROXY = os.getenv('USE_PROXY', 'false').lower() == 'true'
 PROXY_URL = os.getenv('PROXY_URL', '')
 PROXIES = {
-    'http': PROXY_URL,
-    'https': PROXY_URL,
+'http': PROXY_URL,
+'https': PROXY_URL,
 } if USE_PROXY and PROXY_URL else None
 
 # 数据库配置
@@ -115,11 +115,11 @@ LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO')
 
 # 创建必要的目录
 for directory in [DATA_DIR, RAW_DATA_DIR, PROCESSED_DATA_DIR, LOG_DIR]:
-    directory.mkdir(parents=True, exist_ok=True)
+directory.mkdir(parents=True, exist_ok=True)
 
 # 业务配置
-BATCH_SIZE = 100  # 批处理大小
-SLEEP_INTERVAL = (1, 3)  # 请求间隔（秒）范围
+BATCH_SIZE = 100 # 批处理大小
+SLEEP_INTERVAL = (1, 3) # 请求间隔（秒）范围
 ```
 
 ### 3. config/logging.conf
@@ -141,30 +141,30 @@ logger.remove()
 
 # 添加控制台输出
 logger.add(
-    sys.stdout,
-    colorize=True,
-    format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <level>{level: <8}</level> | <cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>",
-    level="INFO"
+sys.stdout,
+colorize=True,
+format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <level>{level: <8}</level> | <cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>",
+level="INFO"
 )
 
 # 添加文件输出 - INFO 级别
 logger.add(
-    LOG_DIR / "info_{time:YYYY-MM-DD}.log",
-    rotation="00:00",  # 每天午夜轮转
-    retention="30 days",  # 保留30天
-    encoding="utf-8",
-    format="{time:YYYY-MM-DD HH:mm:ss} | {level: <8} | {name}:{function}:{line} - {message}",
-    level="INFO"
+LOG_DIR / "info_{time:YYYY-MM-DD}.log",
+rotation="00:00", # 每天午夜轮转
+retention="30 days", # 保留30天
+encoding="utf-8",
+format="{time:YYYY-MM-DD HH:mm:ss} | {level: <8} | {name}:{function}:{line} - {message}",
+level="INFO"
 )
 
 # 添加文件输出 - ERROR 级别
 logger.add(
-    LOG_DIR / "error_{time:YYYY-MM-DD}.log",
-    rotation="00:00",
-    retention="90 days",  # 错误日志保留90天
-    encoding="utf-8",
-    format="{time:YYYY-MM-DD HH:mm:ss} | {level: <8} | {name}:{function}:{line} - {message}",
-    level="ERROR"
+LOG_DIR / "error_{time:YYYY-MM-DD}.log",
+rotation="00:00",
+retention="90 days", # 错误日志保留90天
+encoding="utf-8",
+format="{time:YYYY-MM-DD HH:mm:ss} | {level: <8} | {name}:{function}:{line} - {message}",
+level="ERROR"
 )
 ```
 
@@ -183,94 +183,94 @@ from config.logging import logger
 
 
 class BaseScraper:
-    """基础爬虫类"""
+"""基础爬虫类"""
 
-    def __init__(self):
-        self.session = requests.Session()
-        self.session.headers.update(DEFAULT_HEADERS)
+def __init__(self):
+self.session = requests.Session()
+self.session.headers.update(DEFAULT_HEADERS)
 
-    def request(
-        self,
-        method: str,
-        url: str,
-        **kwargs
-    ) -> Optional[requests.Response]:
-        """
-        发送 HTTP 请求（带重试）
+def request(
+self,
+method: str,
+url: str,
+**kwargs
+) -> Optional[requests.Response]:
+"""
+发送 HTTP 请求（带重试）
 
-        Args:
-            method: HTTP 方法 (GET, POST, etc.)
-            url: 请求 URL
-            **kwargs: 其他请求参数
+Args:
+method: HTTP 方法 (GET, POST, etc.)
+url: 请求 URL
+**kwargs: 其他请求参数
 
-        Returns:
-            Response 对象或 None
-        """
-        for attempt in range(MAX_RETRIES):
-            try:
-                # 合并代理配置
-                if PROXIES:
-                    kwargs.setdefault('proxies', PROXIES)
+Returns:
+Response 对象或 None
+"""
+for attempt in range(MAX_RETRIES):
+try:
+# 合并代理配置
+if PROXIES:
+kwargs.setdefault('proxies', PROXIES)
 
-                # 设置超时
-                kwargs.setdefault('timeout', REQUEST_TIMEOUT)
+# 设置超时
+kwargs.setdefault('timeout', REQUEST_TIMEOUT)
 
-                # 发送请求
-                response = self.session.request(method, url, **kwargs)
-                response.raise_for_status()
+# 发送请求
+response = self.session.request(method, url, **kwargs)
+response.raise_for_status()
 
-                logger.info(f"请求成功: {method} {url} - {response.status_code}")
-                return response
+logger.info(f"请求成功: {method} {url} - {response.status_code}")
+return response
 
-            except requests.exceptions.RequestException as e:
-                logger.warning(f"请求失败 (尝试 {attempt + 1}/{MAX_RETRIES}): {e}")
+except requests.exceptions.RequestException as e:
+logger.warning(f"请求失败 (尝试 {attempt + 1}/{MAX_RETRIES}): {e}")
 
-                if attempt < MAX_RETRIES - 1:
-                    time.sleep(RETRY_DELAY * (attempt + 1))
-                else:
-                    logger.error(f"请求最终失败: {method} {url}")
-                    return None
+if attempt < MAX_RETRIES - 1:
+time.sleep(RETRY_DELAY * (attempt + 1))
+else:
+logger.error(f"请求最终失败: {method} {url}")
+return None
 
-    def get(self, url: str, **kwargs) -> Optional[requests.Response]:
-        """GET 请求"""
-        return self.request('GET', url, **kwargs)
+def get(self, url: str, **kwargs) -> Optional[requests.Response]:
+"""GET 请求"""
+return self.request('GET', url, **kwargs)
 
-    def post(self, url: str, **kwargs) -> Optional[requests.Response]:
-        """POST 请求"""
-        return self.request('POST', url, **kwargs)
+def post(self, url: str, **kwargs) -> Optional[requests.Response]:
+"""POST 请求"""
+return self.request('POST', url, **kwargs)
 
-    def sleep(self):
-        """随机休眠"""
-        sleep_time = random.uniform(*SLEEP_INTERVAL)
-        logger.debug(f"休眠 {sleep_time:.2f} 秒")
-        time.sleep(sleep_time)
+def sleep(self):
+"""随机休眠"""
+sleep_time = random.uniform(*SLEEP_INTERVAL)
+logger.debug(f"休眠 {sleep_time:.2f} 秒")
+time.sleep(sleep_time)
 
-    def save_json(self, data: Dict[Any, Any], filename: str):
-        """保存 JSON 数据"""
-        import json
-        filepath = PROCESSED_DATA_DIR / filename
+def save_json(self, data: Dict[Any, Any], filename: str):
+"""保存 JSON 数据"""
+import json
+filepath = PROCESSED_DATA_DIR / filename
 
-        with open(filepath, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
+with open(filepath, 'w', encoding='utf-8') as f:
+json.dump(data, f, ensure_ascii=False, indent=2)
 
-        logger.info(f"数据已保存: {filepath}")
+logger.info(f"数据已保存: {filepath}")
 
-    def save_csv(self, data: list, filename: str):
-        """保存 CSV 数据"""
-        import csv
+def save_csv(self, data: list, filename: str):
+"""保存 CSV 数据"""
+import csv
 
-        if not data:
-            logger.warning("没有数据可保存")
-            return
+if not data:
+logger.warning("没有数据可保存")
+return
 
-        filepath = PROCESSED_DATA_DIR / filename
+filepath = PROCESSED_DATA_DIR / filename
 
-        with open(filepath, 'w', encoding='utf-8', newline='') as f:
-            writer = csv.DictWriter(f, fieldnames=data[0].keys())
-            writer.writeheader()
-            writer.writerows(data)
+with open(filepath, 'w', encoding='utf-8', newline='') as f:
+writer = csv.DictWriter(f, fieldnames=data[0].keys())
+writer.writeheader()
+writer.writerows(data)
 
-        logger.info(f"数据已保存: {filepath} ({len(data)} 条)")
+logger.info(f"数据已保存: {filepath} ({len(data)} 条)")
 ```
 
 ### 5. scrapers/target_scraper.py
@@ -286,96 +286,96 @@ from config.logging import logger
 
 
 class TargetScraper(BaseScraper):
-    """目标网站爬虫"""
+"""目标网站爬虫"""
 
-    def __init__(self):
-        super().__init__()
-        self.base_url = TARGET_URL
+def __init__(self):
+super().__init__()
+self.base_url = TARGET_URL
 
-    def scrape_list(self, page: int = 1):
-        """
-        抓取列表页
+def scrape_list(self, page: int = 1):
+"""
+抓取列表页
 
-        Args:
-            page: 页码
+Args:
+page: 页码
 
-        Returns:
-            列表数据
-        """
-        url = f"{self.base_url}/list?page={page}"
-        response = self.get(url)
+Returns:
+列表数据
+"""
+url = f"{self.base_url}/list?page={page}"
+response = self.get(url)
 
-        if not response:
-            return []
+if not response:
+return []
 
-        soup = BeautifulSoup(response.text, 'lxml')
-        items = []
+soup = BeautifulSoup(response.text, 'lxml')
+items = []
 
-        # TODO: 实现具体的解析逻辑
-        for item in soup.select('.item'):
-            data = {
-                'title': item.select_one('.title').text.strip(),
-                'link': item.select_one('a')['href'],
-                # 添加更多字段...
-            }
-            items.append(data)
+# TODO: 实现具体的解析逻辑
+for item in soup.select('.item'):
+data = {
+'title': item.select_one('.title').text.strip(),
+'link': item.select_one('a')['href'],
+# 添加更多字段...
+}
+items.append(data)
 
-        logger.info(f"页面 {page} 抓取到 {len(items)} 条数据")
-        return items
+logger.info(f"页面 {page} 抓取到 {len(items)} 条数据")
+return items
 
-    def scrape_detail(self, url: str):
-        """
-        抓取详情页
+def scrape_detail(self, url: str):
+"""
+抓取详情页
 
-        Args:
-            url: 详情页 URL
+Args:
+url: 详情页 URL
 
-        Returns:
-            详情数据
-        """
-        response = self.get(url)
+Returns:
+详情数据
+"""
+response = self.get(url)
 
-        if not response:
-            return None
+if not response:
+return None
 
-        soup = BeautifulSoup(response.text, 'lxml')
+soup = BeautifulSoup(response.text, 'lxml')
 
-        # TODO: 实现具体的解析逻辑
-        data = {
-            'url': url,
-            'title': soup.select_one('h1').text.strip(),
-            'content': soup.select_one('.content').text.strip(),
-            # 添加更多字段...
-        }
+# TODO: 实现具体的解析逻辑
+data = {
+'url': url,
+'title': soup.select_one('h1').text.strip(),
+'content': soup.select_one('.content').text.strip(),
+# 添加更多字段...
+}
 
-        logger.info(f"详情页抓取成功: {url}")
-        return data
+logger.info(f"详情页抓取成功: {url}")
+return data
 
-    def run(self, start_page: int = 1, end_page: int = 10):
-        """
-        运行爬虫
+def run(self, start_page: int = 1, end_page: int = 10):
+"""
+运行爬虫
 
-        Args:
-            start_page: 起始页
-            end_page: 结束页
-        """
-        logger.info(f"开始抓取: 页面 {start_page} 到 {end_page}")
+Args:
+start_page: 起始页
+end_page: 结束页
+"""
+logger.info(f"开始抓取: 页面 {start_page} 到 {end_page}")
 
-        all_items = []
+all_items = []
 
-        for page in range(start_page, end_page + 1):
-            # 抓取列表
-            items = self.scrape_list(page)
-            all_items.extend(items)
+for page in range(start_page, end_page + 1):
+# 抓取列表
+items = self.scrape_list(page)
+all_items.extend(items)
 
-            # 休眠
-            self.sleep()
+# 休眠
+self.sleep()
 
-        # 保存数据
-        self.save_json(all_items, 'list_data.json')
-        self.save_csv(all_items, 'list_data.csv')
+# 保存数据
+self.save_json(all_items, 'list_data.json')
+self.save_csv(all_items, 'list_data.csv')
 
-        logger.info(f"抓取完成: 共 {len(all_items)} 条数据")
+logger.info(f"抓取完成: 共 {len(all_items)} 条数据")
 ```
 
 ### 6. main.py
@@ -389,30 +389,30 @@ from config.logging import logger
 
 
 def main():
-    """主函数"""
-    logger.info("=" * 50)
-    logger.info("爬虫程序启动")
-    logger.info("=" * 50)
+"""主函数"""
+logger.info("=" * 50)
+logger.info("爬虫程序启动")
+logger.info("=" * 50)
 
-    try:
-        # 创建爬虫实例
-        scraper = TargetScraper()
+try:
+# 创建爬虫实例
+scraper = TargetScraper()
 
-        # 运行爬虫
-        scraper.run(start_page=1, end_page=5)
+# 运行爬虫
+scraper.run(start_page=1, end_page=5)
 
-        logger.info("=" * 50)
-        logger.info("爬虫程序结束")
-        logger.info("=" * 50)
+logger.info("=" * 50)
+logger.info("爬虫程序结束")
+logger.info("=" * 50)
 
-    except KeyboardInterrupt:
-        logger.warning("用户中断程序")
-    except Exception as e:
-        logger.exception(f"程序异常: {e}")
+except KeyboardInterrupt:
+logger.warning("用户中断程序")
+except Exception as e:
+logger.exception(f"程序异常: {e}")
 
 
 if __name__ == '__main__':
-    main()
+main()
 ```
 
 ### 7. .env.example
@@ -566,7 +566,7 @@ MIT
 
 ---
 
-## 🚀 使用此模板
+## 使用此模板
 
 ```bash
 # 1. 复制模板
@@ -575,9 +575,9 @@ cd my_project
 
 # 2. 创建虚拟环境
 python -m venv venv
-source venv/bin/activate  # Linux/Mac
+source venv/bin/activate # Linux/Mac
 # or
-venv\Scripts\activate  # Windows
+venv\Scripts\activate # Windows
 
 # 3. 安装依赖
 pip install -r requirements.txt
@@ -593,7 +593,7 @@ python main.py
 
 ---
 
-## 📚 相关模板
+## 相关模板
 
 - [逆向分析项目](./reverse_project.md)
 - [Docker 部署](./docker_setup.md)

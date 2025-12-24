@@ -44,10 +44,10 @@ session = requests.Session()
 
 # 配置重试策略
 retry_strategy = Retry(
-    total=3,                    # 总重试次数
-    backoff_factor=2,          # 重试间隔倍数
-    status_forcelist=[429, 500, 502, 503, 504],
-    allowed_methods=["HEAD", "GET", "OPTIONS", "POST"]
+total=3, # 总重试次数
+backoff_factor=2, # 重试间隔倍数
+status_forcelist=[429, 500, 502, 503, 504],
+allowed_methods=["HEAD", "GET", "OPTIONS", "POST"]
 )
 
 adapter = HTTPAdapter(max_retries=retry_strategy)
@@ -65,18 +65,18 @@ import asyncio
 import aiohttp
 
 async def fetch(session, url):
-    try:
-        async with session.get(url, timeout=30) as response:
-            return await response.text()
-    except asyncio.TimeoutError:
-        print(f"Timeout: {url}")
-        return None
+try:
+async with session.get(url, timeout=30) as response:
+return await response.text()
+except asyncio.TimeoutError:
+print(f"Timeout: {url}")
+return None
 
 async def main():
-    async with aiohttp.ClientSession() as session:
-        tasks = [fetch(session, url) for url in urls]
-        results = await asyncio.gather(*tasks)
-        return results
+async with aiohttp.ClientSession() as session:
+tasks = [fetch(session, url) for url in urls]
+results = await asyncio.gather(*tasks)
+return results
 
 results = asyncio.run(main())
 ```
@@ -124,22 +124,22 @@ from urllib.parse import urlparse
 url = "https://example.com:443/path"
 parsed = urlparse(url)
 
-print(f"Scheme: {parsed.scheme}")    # https
-print(f"Host: {parsed.netloc}")      # example.com:443
-print(f"Port: {parsed.port}")        # 443
-print(f"Path: {parsed.path}")        # /path
+print(f"Scheme: {parsed.scheme}") # https
+print(f"Host: {parsed.netloc}") # example.com:443
+print(f"Port: {parsed.port}") # 443
+print(f"Path: {parsed.path}") # /path
 
 # 确保 URL 格式正确
 if not url.startswith(('http://', 'https://')):
-    url = 'https://' + url
+url = 'https://' + url
 ```
 
 #### 3. 配置代理
 
 ```python
 proxies = {
-    'http': 'http://proxy.com:8080',
-    'https': 'http://proxy.com:8080',
+'http': 'http://proxy.com:8080',
+'https': 'http://proxy.com:8080',
 }
 
 response = requests.get(url, proxies=proxies)
@@ -203,8 +203,8 @@ context.verify_mode = ssl.CERT_NONE
 
 # 使用 urllib3
 http = urllib3.PoolManager(
-    ssl_context=context,
-    cert_reqs='CERT_NONE'
+ssl_context=context,
+cert_reqs='CERT_NONE'
 )
 
 response = http.request('GET', url)
@@ -227,8 +227,8 @@ response = http.request('GET', url)
 ```python
 # 基础代理
 proxies = {
-    'http': 'http://proxy.com:8080',
-    'https': 'http://proxy.com:8080',
+'http': 'http://proxy.com:8080',
+'https': 'http://proxy.com:8080',
 }
 
 response = requests.get(url, proxies=proxies)
@@ -239,8 +239,8 @@ response = requests.get(url, proxies=proxies)
 ```python
 # 需要安装: pip install requests[socks]
 proxies = {
-    'http': 'socks5://127.0.0.1:1080',
-    'https': 'socks5://127.0.0.1:1080',
+'http': 'socks5://127.0.0.1:1080',
+'https': 'socks5://127.0.0.1:1080',
 }
 
 response = requests.get(url, proxies=proxies)
@@ -251,8 +251,8 @@ response = requests.get(url, proxies=proxies)
 ```python
 # 带用户名密码的代理
 proxies = {
-    'http': 'http://username:password@proxy.com:8080',
-    'https': 'http://username:password@proxy.com:8080',
+'http': 'http://username:password@proxy.com:8080',
+'https': 'http://username:password@proxy.com:8080',
 }
 
 response = requests.get(url, proxies=proxies)
@@ -272,7 +272,7 @@ set HTTPS_PROXY=http://proxy.com:8080
 
 ```python
 # 自动使用环境变量中的代理
-response = requests.get(url)  # 会自动读取 HTTP_PROXY
+response = requests.get(url) # 会自动读取 HTTP_PROXY
 ```
 
 #### 5. 验证代理配置
@@ -281,23 +281,23 @@ response = requests.get(url)  # 会自动读取 HTTP_PROXY
 import requests
 
 def test_proxy(proxy_url):
-    """测试代理是否可用"""
-    proxies = {
-        'http': proxy_url,
-        'https': proxy_url,
-    }
+"""测试代理是否可用"""
+proxies = {
+'http': proxy_url,
+'https': proxy_url,
+}
 
-    try:
-        response = requests.get(
-            'http://httpbin.org/ip',
-            proxies=proxies,
-            timeout=10
-        )
-        print(f"✅ Proxy working: {response.json()}")
-        return True
-    except Exception as e:
-        print(f"❌ Proxy failed: {e}")
-        return False
+try:
+response = requests.get(
+'http://httpbin.org/ip',
+proxies=proxies,
+timeout=10
+)
+print(f"✅ Proxy working: {response.json()}")
+return True
+except Exception as e:
+print(f"❌ Proxy failed: {e}")
+return False
 
 test_proxy('http://127.0.0.1:7890')
 ```
@@ -324,8 +324,8 @@ session = requests.Session()
 
 # 登录 (Cookie 会自动保存)
 session.post('https://example.com/login', data={
-    'username': 'user',
-    'password': 'pass'
+'username': 'user',
+'password': 'pass'
 })
 
 # 后续请求会自动带上 Cookie
@@ -352,8 +352,8 @@ cookie_str = "session_id=abc123; user_id=456; token=xyz"
 # 转换为字典
 cookies = {}
 for item in cookie_str.split('; '):
-    key, value = item.split('=', 1)
-    cookies[key] = value
+key, value = item.split('=', 1)
+cookies[key] = value
 
 response = requests.get(url, cookies=cookies)
 ```
@@ -365,12 +365,12 @@ import pickle
 
 # 保存 Cookie
 with open('cookies.pkl', 'wb') as f:
-    pickle.dump(session.cookies, f)
+pickle.dump(session.cookies, f)
 
 # 加载 Cookie
 with open('cookies.pkl', 'rb') as f:
-    cookies = pickle.load(f)
-    session.cookies.update(cookies)
+cookies = pickle.load(f)
+session.cookies.update(cookies)
 ```
 
 #### 5. Cookie 调试
@@ -383,10 +383,10 @@ session = requests.Session()
 # 查看当前 Cookie
 print("Current cookies:")
 for cookie in session.cookies:
-    print(f"  {cookie.name} = {cookie.value}")
-    print(f"    Domain: {cookie.domain}")
-    print(f"    Path: {cookie.path}")
-    print(f"    Expires: {cookie.expires}")
+print(f" {cookie.name} = {cookie.value}")
+print(f" Domain: {cookie.domain}")
+print(f" Path: {cookie.path}")
+print(f" Expires: {cookie.expires}")
 ```
 
 ---
@@ -397,7 +397,7 @@ for cookie in session.cookies:
 
 ```python
 # 乱码输出
-print(response.text)  # 输出: �����
+print(response.text) # 输出: �����
 ```
 
 ### 解决方案
@@ -414,7 +414,7 @@ response = requests.get(url)
 encoding = detect(response.content)['encoding']
 response.encoding = encoding
 
-print(response.text)  # 正确显示中文
+print(response.text) # 正确显示中文
 ```
 
 #### 2. 手动指定编码
@@ -462,8 +462,8 @@ print(f"Location: {response.headers.get('Location')}")
 
 # 手动处理重定向
 if response.status_code in [301, 302, 303, 307, 308]:
-    redirect_url = response.headers['Location']
-    response = requests.get(redirect_url)
+redirect_url = response.headers['Location']
+response = requests.get(redirect_url)
 ```
 
 #### 2. 查看重定向历史
@@ -473,7 +473,7 @@ response = requests.get(url)
 
 # 查看重定向链
 for r in response.history:
-    print(f"{r.status_code} -> {r.url}")
+print(f"{r.status_code} -> {r.url}")
 
 print(f"Final: {response.status_code} -> {response.url}")
 ```
@@ -493,13 +493,13 @@ print(f"Final: {response.status_code} -> {response.url}")
 
 ```python
 headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-    'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
-    'Accept-Encoding': 'gzip, deflate, br',
-    'Connection': 'keep-alive',
-    'Referer': 'https://example.com/',
-    'Origin': 'https://example.com',
+'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+'Accept-Encoding': 'gzip, deflate, br',
+'Connection': 'keep-alive',
+'Referer': 'https://example.com/',
+'Origin': 'https://example.com',
 }
 
 response = requests.get(url, headers=headers)
@@ -510,15 +510,15 @@ response = requests.get(url, headers=headers)
 ```javascript
 // 浏览器控制台执行
 copy(
-  JSON.stringify(
-    Object.fromEntries(
-      [
-        ...document.querySelector(".request-headers").querySelectorAll("tr"),
-      ].map((r) => [r.cells[0].textContent, r.cells[1].textContent])
-    ),
-    null,
-    2
-  )
+JSON.stringify(
+Object.fromEntries(
+[
+...document.querySelector(".request-headers").querySelectorAll("tr"),
+].map((r) => [r.cells[0].textContent, r.cells[1].textContent])
+),
+null,
+2
+)
 );
 ```
 
@@ -535,7 +535,7 @@ print(response.headers)
 
 ---
 
-## 📚 相关章节
+## 相关章节
 
 - [HTTP/HTTPS 协议](../01-Foundations/http_https_protocol.md)
 - [HTTP Headers 速查](../08-Cheat-Sheets/http_headers.md)

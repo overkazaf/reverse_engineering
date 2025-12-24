@@ -6,6 +6,20 @@
 
 ---
 
+## 📚 前置知识
+
+在开始本配方之前，建议先掌握以下内容：
+
+| 知识领域 | 重要程度 | 参考资料 |
+|----------|---------|---------|
+| Chrome DevTools 基础 | 必需 | [浏览器开发者工具](../02-Tooling/browser_devtools.md) |
+| JavaScript 基础 | 必需 | [JavaScript 基础](../01-Foundations/javascript_basics.md) |
+| JavaScript 执行机制 | 推荐 | [JavaScript 执行机制](../01-Foundations/javascript_execution_mechanism.md) |
+
+> 💡 **提示**: 调试是逆向工程的基本功。本配方详细介绍各种断点类型和调试技巧，是深入分析混淆代码的必备技能。
+
+---
+
 ## 断点类型
 
 ### 1. 行断点 (Line Breakpoint)
@@ -149,13 +163,13 @@ token
 
 ### 快捷键
 
-| 操作          | Windows/Linux | Mac         | 说明                 |
+| 操作 | Windows/Linux | Mac | 说明 |
 | ------------- | ------------- | ----------- | -------------------- |
-| **Step Over** | `F10`         | `F10`       | 跳过函数，执行下一行 |
-| **Step Into** | `F11`         | `F11`       | 进入函数内部         |
-| **Step Out**  | `Shift+F11`   | `Shift+F11` | 跳出当前函数         |
-| **Continue**  | `F8`          | `F8`        | 继续执行到下一个断点 |
-| **Resume**    | `F8`          | `F8`        | 恢复脚本执行         |
+| **Step Over** | `F10` | `F10` | 跳过函数，执行下一行 |
+| **Step Into** | `F11` | `F11` | 进入函数内部 |
+| **Step Out** | `Shift+F11` | `Shift+F11` | 跳出当前函数 |
+| **Continue** | `F8` | `F8` | 继续执行到下一个断点 |
+| **Resume** | `F8` | `F8` | 恢复脚本执行 |
 
 ### 使用技巧
 
@@ -182,9 +196,9 @@ token
 
 ```
 generateRequest (main.js:123)
-  |- getData (utils.js:45)
-       |- onClick (app.js:789)
-            |- <anonymous>
+|- getData (utils.js:45)
+|- onClick (app.js:789)
+|- <anonymous>
 ```
 
 ### 使用技巧
@@ -224,7 +238,7 @@ generateRequest (main.js:123)
 ```javascript
 // 只有当条件满足时才输出
 if (user_id === 12345) {
-  console.log("Target user:", user_id);
+console.log("Target user:", user_id);
 }
 ```
 
@@ -241,8 +255,8 @@ console.groupEnd();
 
 ```javascript
 const users = [
-  { id: 1, name: "Alice" },
-  { id: 2, name: "Bob" },
+{ id: 1, name: "Alice" },
+{ id: 2, name: "Bob" },
 ];
 console.table(users);
 ```
@@ -326,7 +340,7 @@ console.trace("Where am I?");
 
 ```javascript
 setInterval(() => {
-  debugger;
+debugger;
 }, 100);
 ```
 
@@ -342,10 +356,10 @@ setInterval(() => {
 
 ```javascript
 setInterval(() => {
-  if (window.outerWidth - window.innerWidth > 160) {
-    alert("DevTools detected!");
-    window.location.href = "about:blank";
-  }
+if (window.outerWidth - window.innerWidth > 160) {
+alert("DevTools detected!");
+window.location.href = "about:blank";
+}
 }, 1000);
 ```
 
@@ -363,7 +377,7 @@ let start = Date.now();
 debugger;
 let end = Date.now();
 if (end - start > 100) {
-  console.log("Debugger detected!");
+console.log("Debugger detected!");
 }
 ```
 

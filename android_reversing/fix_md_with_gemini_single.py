@@ -10,15 +10,15 @@ import sys
 import argparse
 
 # Gemini API 配置
-API_KEY = "AIzaSyDjV8l0sZKvHRLmVw0Jtw4y4oJMD4FEcsE"
+API_KEY = os.environ.get("GEMINI_API_KEY", "")
 MODEL_NAME = "gemini-2.5-pro"
 
-# 代理配置
-HTTP_PROXY = "http://127.0.0.1:1087"
-HTTPS_PROXY = "https://127.0.0.1:1087"
+# 代理配置 (可选，根据网络环境设置)
+# 如需代理，请设置环境变量 HTTP_PROXY 和 HTTPS_PROXY
 
-os.environ['HTTP_PROXY'] = HTTP_PROXY
-os.environ['HTTPS_PROXY'] = HTTPS_PROXY
+if not API_KEY:
+    print("错误: 请设置 GEMINI_API_KEY 环境变量")
+    sys.exit(1)
 
 genai.configure(api_key=API_KEY)
 

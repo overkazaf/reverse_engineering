@@ -28,40 +28,40 @@ XHR 对象通过 `readyState` 属性表示请求状态：
 
 ```javascript
 (function () {
-  let originalOpen = XMLHttpRequest.prototype.open;
-  let originalSend = XMLHttpRequest.prototype.send;
+let originalOpen = XMLHttpRequest.prototype.open;
+let originalSend = XMLHttpRequest.prototype.send;
 
-  XMLHttpRequest.prototype.open = function (
-    method,
-    url,
-    async,
-    user,
-    password
-  ) {
-    // 记录或修改 URL/Method
-    this._url = url; // 保存 URL 供 send 使用
-    console.log(`[XHR Open] ${method} ${url}`);
+XMLHttpRequest.prototype.open = function (
+method,
+url,
+async,
+user,
+password
+) {
+// 记录或修改 URL/Method
+this._url = url; // 保存 URL 供 send 使用
+console.log(`[XHR Open] ${method} ${url}`);
 
-    // 调用原始方法
-    return originalOpen.apply(this, arguments);
-  };
+// 调用原始方法
+return originalOpen.apply(this, arguments);
+};
 
-  XMLHttpRequest.prototype.send = function (body) {
-    // 记录或修改请求体
-    console.log(`[XHR Send] to ${this._url}:`, body);
+XMLHttpRequest.prototype.send = function (body) {
+// 记录或修改请求体
+console.log(`[XHR Send] to ${this._url}:`, body);
 
-    // 如果需要监听响应，可以绑定 onreadystatechange
-    this.addEventListener("readystatechange", function () {
-      if (this.readyState === 4) {
-        console.log(
-          `[XHR Response] from ${this.responseURL}:`,
-          this.responseText.slice(0, 100)
-        );
-      }
-    });
+// 如果需要监听响应，可以绑定 onreadystatechange
+this.addEventListener("readystatechange", function () {
+if (this.readyState === 4) {
+console.log(
+`[XHR Response] from ${this.responseURL}:`,
+this.responseText.slice(0, 100)
+);
+}
+});
 
-    return originalSend.apply(this, arguments);
-  };
+return originalSend.apply(this, arguments);
+};
 })();
 ```
 
@@ -73,12 +73,12 @@ Fetch 是基于 Promise 的新一代网络请求 API，语法更简洁，处理�
 
 ```javascript
 fetch("https://api.example.com/data", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ id: 1 }),
+method: "POST",
+headers: { "Content-Type": "application/json" },
+body: JSON.stringify({ id: 1 }),
 })
-  .then((response) => response.json()) // 解析 JSON
-  .then((data) => console.log(data));
+.then((response) => response.json()) // 解析 JSON
+.then((data) => console.log(data));
 ```
 
 #### [Reverse Engineering Context] Hook Fetch
@@ -87,27 +87,27 @@ Fetch 是全局 `window` 对象的一个方法，Hook 起来相对简单。
 
 ```javascript
 (function () {
-  let originalFetch = window.fetch;
+let originalFetch = window.fetch;
 
-  window.fetch = async function (url, options) {
-    console.log(`[Fetch] ${url}`, options);
+window.fetch = async function (url, options) {
+console.log(`[Fetch] ${url}`, options);
 
-    // 修改请求参数
-    if (url.includes("/api/sign")) {
-      // options.headers['X-Modified'] = 'true';
-    }
+// 修改请求参数
+if (url.includes("/api/sign")) {
+// options.headers['X-Modified'] = 'true';
+}
 
-    // 调用原始 fetch
-    let response = await originalFetch(url, options);
+// 调用原始 fetch
+let response = await originalFetch(url, options);
 
-    // 拦截响应（注意：response流只能读取一次，需要clone）
-    let clone = response.clone();
-    clone.text().then((body) => {
-      console.log(`[Fetch Response]`, body.slice(0, 100));
-    });
+// 拦截响应（注意：response流只能读取一次，需要clone）
+let clone = response.clone();
+clone.text().then((body) => {
+console.log(`[Fetch Response]`, body.slice(0, 100));
+});
 
-    return response;
-  };
+return response;
+};
 })();
 ```
 
@@ -121,44 +121,44 @@ WebSocket 提供全双工通信通道。逆向中常用于分析实时数据流�
 
 ```javascript
 (function () {
-  let OriginalWebSocket = window.WebSocket;
+let OriginalWebSocket = window.WebSocket;
 
-  window.WebSocket = function (url, protocols) {
-    let ws = new OriginalWebSocket(url, protocols);
-    console.log(`[WebSocket] Connecting to ${url}`);
+window.WebSocket = function (url, protocols) {
+let ws = new OriginalWebSocket(url, protocols);
+console.log(`[WebSocket] Connecting to ${url}`);
 
-    // Hook 发送
-    let originalSend = ws.send;
-    ws.send = function (data) {
-      console.log(`[WebSocket Send]`, data);
-      return originalSend.apply(this, arguments);
-    };
+// Hook 发送
+let originalSend = ws.send;
+ws.send = function (data) {
+console.log(`[WebSocket Send]`, data);
+return originalSend.apply(this, arguments);
+};
 
-    // Hook 接收
-    // WebSocket 的 onmessage 属性通常在实例创建后被赋值
-    // 使用 Object.defineProperty 拦截 setter 是一种更通用的方法
-    let onmessageVal;
-    Object.defineProperty(ws, "onmessage", {
-      configurable: true,
-      enumerable: true,
-      get() {
-        return onmessageVal;
-      },
-      set(fn) {
-        onmessageVal = function (event) {
-          console.log(`[WebSocket Recv]`, event.data);
-          return fn.apply(this, arguments);
-        };
-      },
-    });
+// Hook 接收
+// WebSocket 的 onmessage 属性通常在实例创建后被赋值
+// 使用 Object.defineProperty 拦截 setter 是一种更通用的方法
+let onmessageVal;
+Object.defineProperty(ws, "onmessage", {
+configurable: true,
+enumerable: true,
+get() {
+return onmessageVal;
+},
+set(fn) {
+onmessageVal = function (event) {
+console.log(`[WebSocket Recv]`, event.data);
+return fn.apply(this, arguments);
+};
+},
+});
 
-    return ws;
-  };
+return ws;
+};
 
-  // 复制原型链，保持 instanceof 检查通过
-  window.WebSocket.prototype = OriginalWebSocket.prototype;
-  window.WebSocket.CONNECTING = OriginalWebSocket.CONNECTING;
-  // ... 其他静态属性
+// 复制原型链，保持 instanceof 检查通过
+window.WebSocket.prototype = OriginalWebSocket.prototype;
+window.WebSocket.CONNECTING = OriginalWebSocket.CONNECTING;
+// ... 其他静态属性
 })();
 ```
 
@@ -171,19 +171,19 @@ WebSocket 提供全双工通信通道。逆向中常用于分析实时数据流�
 Web 应用常用本地存储来保存 Session ID、Token 或加密密钥。
 
 - **localStorage / sessionStorage**: 键值对存储。
-  - 逆向关注点：`localStorage.getItem('token')`。
+- 逆向关注点：`localStorage.getItem('token')`。
 - **Cookie**: 这个比较特殊，通常作为 HTTP 头发送。
-  - 逆向关注点：`document.cookie` 的读写。Hook `document.cookie` 的 setter 可以追踪 Cookie 的生成位置。
+- 逆向关注点：`document.cookie` 的读写。Hook `document.cookie` 的 setter 可以追踪 Cookie 的生成位置。
 
 ```javascript
 // Hook Cookie Setter
 Object.defineProperty(document, "cookie", {
-  set: function (val) {
-    console.log("[Cookie Set]", val);
-    debugger; // 在此处断点，查看调用栈
-    // 实际设置 cookie 的逻辑需要小心处理，防止无限递归或失效
-    // 通常在 hook 中不真正设置，或者通过 document->proto->cookie setter
-  },
+set: function (val) {
+console.log("[Cookie Set]", val);
+debugger; // 在此处断点，查看调用栈
+// 实际设置 cookie 的逻辑需要小心处理，防止无限递归或失效
+// 通常在 hook 中不真正设置，或者通过 document->proto->cookie setter
+},
 });
 ```
 
@@ -215,8 +215,8 @@ otherWindow.postMessage(message, targetOrigin);
 
 // 接收消息
 window.addEventListener("message", (event) => {
-  if (event.origin !== "http://trusted.com") return;
-  console.log(event.data);
+if (event.origin !== "http://trusted.com") return;
+console.log(event.data);
 });
 ```
 

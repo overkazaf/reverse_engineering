@@ -40,18 +40,18 @@ window[_0x1234[2]][_0x1234[3]](_0xa, _0xb);
 ```javascript
 var _0x1 = 0;
 while (true) {
-  switch (_0x1) {
-    case 0:
-      console.log("A");
-      _0x1 = 1;
-      break;
-    case 1:
-      console.log("B");
-      _0x1 = 2;
-      break;
-    case 2:
-      return;
-  }
+switch (_0x1) {
+case 0:
+console.log("A");
+_0x1 = 1;
+break;
+case 1:
+console.log("B");
+_0x1 = 2;
+break;
+case 2:
+return;
+}
 }
 ```
 
@@ -61,11 +61,11 @@ while (true) {
 
 ```javascript
 function real() {
-  var fake1 = 123;
-  if (false) {
-    /* 永远不会执行的代码 */
-  }
-  return "real";
+var fake1 = 123;
+if (false) {
+/* 永远不会执行的代码 */
+}
+return "real";
 }
 ```
 
@@ -136,7 +136,7 @@ const ast = parser.parse(code);
 
 // 3. 遍历和转换
 traverse(ast, {
-  // 在这里添加转换规则
+// 在这里添加转换规则
 });
 
 // 4. 生成代码
@@ -150,15 +150,15 @@ fs.writeFileSync("deobfuscated.js", output.code);
 
 ```javascript
 traverse(ast, {
-  BinaryExpression(path) {
-    // 如果两个操作数都是字面量
-    if (t.isLiteral(path.node.left) && t.isLiteral(path.node.right)) {
-      // 计算结果
-      const result = eval(path.toString());
-      // 替换为结果
-      path.replaceWith(t.valueToNode(result));
-    }
-  },
+BinaryExpression(path) {
+// 如果两个操作数都是字面量
+if (t.isLiteral(path.node.left) && t.isLiteral(path.node.right)) {
+// 计算结果
+const result = eval(path.toString());
+// 替换为结果
+path.replaceWith(t.valueToNode(result));
+}
+},
 });
 ```
 
@@ -180,28 +180,28 @@ var a = 3;
 let stringArray = [];
 
 traverse(ast, {
-  // 第一步：找到字符串数组
-  VariableDeclarator(path) {
-    if (t.isArrayExpression(path.node.init)) {
-      const name = path.node.id.name;
-      stringArray = path.node.init.elements.map((e) => e.value);
-    }
-  },
+// 第一步：找到字符串数组
+VariableDeclarator(path) {
+if (t.isArrayExpression(path.node.init)) {
+const name = path.node.id.name;
+stringArray = path.node.init.elements.map((e) => e.value);
+}
+},
 
-  // 第二步：替换数组访问
-  MemberExpression(path) {
-    // _0x1234[0] => stringArray[0]
-    if (
-      t.isIdentifier(path.node.object) &&
-      t.isNumericLiteral(path.node.property)
-    ) {
-      const index = path.node.property.value;
-      const value = stringArray[index];
-      if (value !== undefined) {
-        path.replaceWith(t.stringLiteral(value));
-      }
-    }
-  },
+// 第二步：替换数组访问
+MemberExpression(path) {
+// _0x1234[0] => stringArray[0]
+if (
+t.isIdentifier(path.node.object) &&
+t.isNumericLiteral(path.node.property)
+) {
+const index = path.node.property.value;
+const value = stringArray[index];
+if (value !== undefined) {
+path.replaceWith(t.stringLiteral(value));
+}
+}
+},
 });
 ```
 
@@ -223,17 +223,17 @@ console["log"]("Hello");
 
 ```javascript
 traverse(ast, {
-  MemberExpression(path) {
-    // 如果是 obj['prop'] 形式
-    if (path.node.computed && t.isStringLiteral(path.node.property)) {
-      const propName = path.node.property.value;
-      // 检查是否是合法标识符
-      if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(propName)) {
-        path.node.computed = false;
-        path.node.property = t.identifier(propName);
-      }
-    }
-  },
+MemberExpression(path) {
+// 如果是 obj['prop'] 形式
+if (path.node.computed && t.isStringLiteral(path.node.property)) {
+const propName = path.node.property.value;
+// 检查是否是合法标识符
+if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(propName)) {
+path.node.computed = false;
+path.node.property = t.identifier(propName);
+}
+}
+},
 });
 ```
 
@@ -253,18 +253,18 @@ console.log("Hello");
 
 ```javascript
 traverse(ast, {
-  IfStatement(path) {
-    // 如果条件是 false
-    if (t.isBooleanLiteral(path.node.test, { value: false })) {
-      // 删除整个 if 语句
-      path.remove();
-    }
-    // 如果条件是 true
-    else if (t.isBooleanLiteral(path.node.test, { value: true })) {
-      // 用 consequent 替换整个 if
-      path.replaceWithMultiple(path.node.consequent.body);
-    }
-  },
+IfStatement(path) {
+// 如果条件是 false
+if (t.isBooleanLiteral(path.node.test, { value: false })) {
+// 删除整个 if 语句
+path.remove();
+}
+// 如果条件是 true
+else if (t.isBooleanLiteral(path.node.test, { value: true })) {
+// 用 consequent 替换整个 if
+path.replaceWithMultiple(path.node.consequent.body);
+}
+},
 });
 ```
 
@@ -276,28 +276,28 @@ traverse(ast, {
 const functionMap = {};
 
 traverse(ast, {
-  // 收集函数定义
-  FunctionDeclaration(path) {
-    const name = path.node.id.name;
-    // 只处理简单的返回语句函数
-    if (
-      path.node.body.body.length === 1 &&
-      t.isReturnStatement(path.node.body.body[0])
-    ) {
-      functionMap[name] = path.node.body.body[0].argument;
-    }
-  },
+// 收集函数定义
+FunctionDeclaration(path) {
+const name = path.node.id.name;
+// 只处理简单的返回语句函数
+if (
+path.node.body.body.length === 1 &&
+t.isReturnStatement(path.node.body.body[0])
+) {
+functionMap[name] = path.node.body.body[0].argument;
+}
+},
 
-  // 替换函数调用
-  CallExpression(path) {
-    if (t.isIdentifier(path.node.callee)) {
-      const name = path.node.callee.name;
-      if (functionMap[name]) {
-        // 替换为函数体
-        path.replaceWith(functionMap[name]);
-      }
-    }
-  },
+// 替换函数调用
+CallExpression(path) {
+if (t.isIdentifier(path.node.callee)) {
+const name = path.node.callee.name;
+if (functionMap[name]) {
+// 替换为函数体
+path.replaceWith(functionMap[name]);
+}
+}
+},
 });
 ```
 
@@ -315,87 +315,87 @@ const generator = require("@babel/generator").default;
 const t = require("@babel/types");
 
 function deobfuscate(inputFile, outputFile) {
-  console.log(`[1/5] 读取文件: ${inputFile}`);
-  const code = fs.readFileSync(inputFile, "utf-8");
+console.log(`[1/5] 读取文件: ${inputFile}`);
+const code = fs.readFileSync(inputFile, "utf-8");
 
-  console.log("[2/5] 解析 AST");
-  const ast = parser.parse(code);
+console.log("[2/5] 解析 AST");
+const ast = parser.parse(code);
 
-  console.log("[3/5] 常量折叠");
-  constantFolding(ast);
+console.log("[3/5] 常量折叠");
+constantFolding(ast);
 
-  console.log("[4/5] 字符串数组还原");
-  restoreStringArray(ast);
+console.log("[4/5] 字符串数组还原");
+restoreStringArray(ast);
 
-  console.log("[5/5] 清理和格式化");
-  cleanup(ast);
+console.log("[5/5] 清理和格式化");
+cleanup(ast);
 
-  const output = generator(ast, { comments: false }, code);
-  fs.writeFileSync(outputFile, output.code);
-  console.log(`✅ 完成! 输出到: ${outputFile}`);
+const output = generator(ast, { comments: false }, code);
+fs.writeFileSync(outputFile, output.code);
+console.log(`✅ 完成! 输出到: ${outputFile}`);
 }
 
 function constantFolding(ast) {
-  traverse(ast, {
-    BinaryExpression(path) {
-      if (path.isConstantExpression()) {
-        const result = path.evaluate();
-        if (result.confident) {
-          path.replaceWith(t.valueToNode(result.value));
-        }
-      }
-    },
-  });
+traverse(ast, {
+BinaryExpression(path) {
+if (path.isConstantExpression()) {
+const result = path.evaluate();
+if (result.confident) {
+path.replaceWith(t.valueToNode(result.value));
+}
+}
+},
+});
 }
 
 function restoreStringArray(ast) {
-  let stringArray = [];
-  let arrayName = "";
+let stringArray = [];
+let arrayName = "";
 
-  traverse(ast, {
-    VariableDeclarator(path) {
-      if (t.isArrayExpression(path.node.init)) {
-        arrayName = path.node.id.name;
-        stringArray = path.node.init.elements.map((e) => e.value);
-      }
-    },
-  });
+traverse(ast, {
+VariableDeclarator(path) {
+if (t.isArrayExpression(path.node.init)) {
+arrayName = path.node.id.name;
+stringArray = path.node.init.elements.map((e) => e.value);
+}
+},
+});
 
-  if (stringArray.length === 0) return;
+if (stringArray.length === 0) return;
 
-  traverse(ast, {
-    MemberExpression(path) {
-      if (
-        t.isIdentifier(path.node.object, { name: arrayName }) &&
-        t.isNumericLiteral(path.node.property)
-      ) {
-        const index = path.node.property.value;
-        const value = stringArray[index];
-        if (value !== undefined) {
-          path.replaceWith(t.stringLiteral(value));
-        }
-      }
-    },
-  });
+traverse(ast, {
+MemberExpression(path) {
+if (
+t.isIdentifier(path.node.object, { name: arrayName }) &&
+t.isNumericLiteral(path.node.property)
+) {
+const index = path.node.property.value;
+const value = stringArray[index];
+if (value !== undefined) {
+path.replaceWith(t.stringLiteral(value));
+}
+}
+},
+});
 }
 
 function cleanup(ast) {
-  traverse(ast, {
-    // 删除空语句
-    EmptyStatement(path) {
-      path.remove();
-    },
-    // obj['prop'] -> obj.prop
-    MemberExpression(path) {
-      if (path.node.computed && t.isStringLiteral(path.node.property)) {
-        const prop = path.node.property.value;
-        if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(prop)) {
-          path.node.computed = false;
-          path.node.property = t.identifier(prop);
-        }
-      }
-    },
-  });
+traverse(ast, {
+// 删除空语句
+EmptyStatement(path) {
+path.remove();
+},
+// obj['prop'] -> obj.prop
+MemberExpression(path) {
+if (path.node.computed && t.isStringLiteral(path.node.property)) {
+const prop = path.node.property.value;
+if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(prop)) {
+path.node.computed = false;
+path.node.property = t.identifier(prop);
+}
+}
+},
+});
 }
 
 // 使用示例
@@ -412,10 +412,10 @@ deobfuscate("obfuscated.js", "deobfuscated.js");
 
 ```javascript
 var _0x1234 = function () {
-  /* ... */
+/* ... */
 };
 (function (_0xabc, _0xdef) {
-  /* ... */
+/* ... */
 })(_0x1234, 0x123);
 ```
 
@@ -434,8 +434,8 @@ webcrack bundle.js -o output/
 
 ```javascript
 function decode_jjencode(encoded) {
-  // JJencode 使用颜文字编码
-  return eval(encoded);
+// JJencode 使用颜文字编码
+return eval(encoded);
 }
 ```
 
@@ -458,32 +458,33 @@ console[_0x1a2b[0]](_0x1a2b[1]);
 
 1. **字符串数组提取**:
 
-   ```javascript
-   // _0x1a2b = ['log', '价格']
-   ```
+```javascript
+// _0x1a2b = ['log', '价格']
+```
 
 2. **替换引用**:
 
-   ```javascript
-   console["log"]("价格");
-   ```
+```javascript
+console["log"]("价格");
+```
 
 3. **成员表达式优化**:
-   ```javascript
-   console.log("价格");
-   ```
+
+```javascript
+console.log("价格");
+```
 
 ---
 
 ## 工具集合
 
-| 工具             | 用途           | 链接                                |
+| 工具 | 用途 | 链接 |
 | ---------------- | -------------- | ----------------------------------- |
-| **Prettier**     | 格式化         | https://prettier.io/                |
-| **de4js**        | 综合反混淆     | https://lelinhtinh.github.io/de4js/ |
-| **webcrack**     | Webpack 反打包 | https://github.com/j4k0xb/webcrack  |
-| **Babel**        | AST 操作       | https://babeljs.io/                 |
-| **AST Explorer** | 可视化 AST     | https://astexplorer.net/            |
+| **Prettier** | 格式化 | https://prettier.io/ |
+| **de4js** | 综合反混淆 | https://lelinhtinh.github.io/de4js/ |
+| **webcrack** | Webpack 反打包 | https://github.com/j4k0xb/webcrack |
+| **Babel** | AST 操作 | https://babeljs.io/ |
+| **AST Explorer** | 可视化 AST | https://astexplorer.net/ |
 
 ---
 
@@ -635,12 +636,12 @@ webcrack bundle.js -o output/
 
 ### 3. 代码美化与格式化工具
 
-| 工具              | 类型     | 特点               | 价格    | 推荐指数   |
+| 工具 | 类型 | 特点 | 价格 | 推荐指数 |
 | ----------------- | -------- | ------------------ | ------- | ---------- |
-| **Prettier**      | 开源     | 业界标准代码格式化 | 免费    | ⭐⭐⭐⭐⭐ |
-| **JS Beautifier** | 开源     | 老牌工具，功能稳定 | 免费    | ⭐⭐⭐⭐   |
-| **WebStorm**      | 商业 IDE | 内置强大格式化     | $149/年 | ⭐⭐⭐⭐   |
-| **ReSharper**     | 商业插件 | Visual Studio 集成 | $149/年 | ⭐⭐⭐     |
+| **Prettier** | 开源 | 业界标准代码格式化 | 免费 | ⭐⭐⭐⭐⭐ |
+| **JS Beautifier** | 开源 | 老牌工具，功能稳定 | 免费 | ⭐⭐⭐⭐ |
+| **WebStorm** | 商业 IDE | 内置强大格式化 | $149/年 | ⭐⭐⭐⭐ |
+| **ReSharper** | 商业插件 | Visual Studio 集成 | $149/年 | ⭐⭐⭐ |
 
 **推荐组合**: Prettier（格式化）+ webcrack（解包）+ Babel（AST 处理）
 
@@ -686,12 +687,12 @@ webcrack bundle.js -o output/
 
 #### Esprima vs Acorn
 
-| 特性         | Esprima  | Acorn  |
+| 特性 | Esprima | Acorn |
 | ------------ | -------- | ------ |
-| **速度**     | 中等     | 快     |
-| **标准兼容** | ES2021   | ES2023 |
-| **插件系统** | 有限     | 丰富   |
-| **维护状态** | 活跃度低 | 活跃   |
+| **速度** | 中等 | 快 |
+| **标准兼容** | ES2021 | ES2023 |
+| **插件系统** | 有限 | 丰富 |
+| **维护状态** | 活跃度低 | 活跃 |
 
 **推荐**: 新项目使用 Acorn 或 Babel
 
@@ -784,14 +785,14 @@ webcrack bundle.js -o output/
 
 ### 7. 开源 vs 商业方案决策矩阵
 
-| 因素         | 推荐开源      | 推荐商业       |
+| 因素 | 推荐开源 | 推荐商业 |
 | ------------ | ------------- | -------------- |
-| **项目规模** | < 10,000 文件 | > 50,000 文件  |
-| **团队规模** | < 5 人        | > 10 人        |
-| **预算**     | < $10,000/年  | > $50,000/年   |
-| **技术能力** | 有 AST 经验   | 无专业逆向团队 |
-| **合规要求** | 无特殊要求    | 需审计报告     |
-| **时间压力** | 可灵活安排    | 紧急交付       |
+| **项目规模** | < 10,000 文件 | > 50,000 文件 |
+| **团队规模** | < 5 人 | > 10 人 |
+| **预算** | < $10,000/年 | > $50,000/年 |
+| **技术能力** | 有 AST 经验 | 无专业逆向团队 |
+| **合规要求** | 无特殊要求 | 需审计报告 |
+| **时间压力** | 可灵活安排 | 紧急交付 |
 
 ---
 

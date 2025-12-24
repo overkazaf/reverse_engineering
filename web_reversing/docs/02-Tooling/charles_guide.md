@@ -10,12 +10,12 @@ Charles 是 Mac/Windows 上最流行的抓包工具之一，以其界面简洁�
 
 ### 抓取 HTTPS
 
-1.  **PC 端安装证书**: `Help -> SSL Proxying -> Install Charles Root Certificate`。
-2.  **移动端安装证书**:
+1. **PC 端安装证书**: `Help -> SSL Proxying -> Install Charles Root Certificate`。
+2. **移动端安装证书**:
     - `Help -> SSL Proxying -> Install Charles Root Certificate on a Mobile Device or Remote Browser`。
     - 手机设置代理到 Charles，浏览器访问 `chls.pro/ssl` 下载安装。
     - **注意**: Android 7.0+ 默认不信任用户安装的证书，需要将证书安装到系统分区（需 Root），或使用 VirtualXposed / Frida Hook 绕过。
-3.  **开启 SSL 代理**: `Proxy -> SSL Proxying Settings`，添加 `*:443`。
+3. **开启 SSL 代理**: `Proxy -> SSL Proxying Settings`，添加 `*:443`。
 
 ---
 
@@ -39,9 +39,9 @@ Charles 是 Mac/Windows 上最流行的抓包工具之一，以其界面简洁�
 
 - **操作**: `Tools -> Rewrite`。
 - **功能**:
-  - **Add Header**: 添加 `Cookie` 或 `Token`。
-  - **Modify Body**: 正则替换响应体内容。
-  - **Modify Status**: 比如把服务器的 `403` 强行改成 `200`。
+- **Add Header**: 添加 `Cookie` 或 `Token`。
+- **Modify Body**: 正则替换响应体内容。
+- **Modify Status**: 比如把服务器的 `403` 强行改成 `200`。
 
 ### Breakpoints (断点)
 

@@ -33,9 +33,10 @@ node --inspect-brk=0.0.0.0:9229 script.js
 **方法 1: chrome://inspect**
 
 1. 启动调试模式后，终端显示：
-   ```
-   Debugger listening on ws://127.0.0.1:9229/unique-id
-   ```
+
+```
+Debugger listening on ws://127.0.0.1:9229/unique-id
+```
 2. 打开 Chrome 浏览器，访问 `chrome://inspect`
 3. 在 "Remote Target" 下点击 "inspect" 按钮
 4. 自动打开 DevTools，可以像调试网页一样调试 Node.js
@@ -59,10 +60,10 @@ chrome-devtools://devtools/bundled/js_app.html?ws=127.0.0.1:9229/unique-id
 const crypto = require("crypto");
 
 function encrypt(text, key) {
-  const cipher = crypto.createCipheriv("aes-128-cbc", key, Buffer.alloc(16));
-  let encrypted = cipher.update(text, "utf8", "hex");
-  encrypted += cipher.final("hex");
-  return encrypted;
+const cipher = crypto.createCipheriv("aes-128-cbc", key, Buffer.alloc(16));
+let encrypted = cipher.update(text, "utf8", "hex");
+encrypted += cipher.final("hex");
+return encrypted;
 }
 
 const key = Buffer.from("1234567890abcdef");
@@ -95,9 +96,10 @@ node --inspect-brk encrypt.js
 2. 点击侧边栏 "Run and Debug" (Ctrl+Shift+D)
 3. 点击 "JavaScript Debug Terminal"
 4. 在终端中运行：
-   ```bash
-   node script.js
-   ```
+
+```bash
+node script.js
+```
 5. VSCode 自动 Attach 并停在你打的断点上
 
 ### 2.2 launch.json 配置
@@ -108,32 +110,32 @@ node --inspect-brk encrypt.js
 
 ```json
 {
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "调试当前文件",
-      "skipFiles": ["<node_internals>/**"],
-      "program": "${file}",
-      "console": "integratedTerminal"
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "调试 NPM Script",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "start"],
-      "console": "integratedTerminal"
-    },
-    {
-      "type": "node",
-      "request": "attach",
-      "name": "附加到进程",
-      "port": 9229,
-      "restart": true
-    }
-  ]
+"version": "0.2.0",
+"configurations": [
+{
+"type": "node",
+"request": "launch",
+"name": "调试当前文件",
+"skipFiles": ["<node_internals>/**"],
+"program": "${file}",
+"console": "integratedTerminal"
+},
+{
+"type": "node",
+"request": "launch",
+"name": "调试 NPM Script",
+"runtimeExecutable": "npm",
+"runtimeArgs": ["run", "start"],
+"console": "integratedTerminal"
+},
+{
+"type": "node",
+"request": "attach",
+"name": "附加到进程",
+"port": 9229,
+"restart": true
+}
+]
 }
 ```
 
@@ -151,19 +153,19 @@ node --inspect-brk encrypt.js
 
 ```javascript
 module.exports = {
-  entry: "./src/index.js",
-  output: {
-    filename: "bundle.js",
-    path: __dirname + "/dist",
-  },
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        use: "./my-custom-loader.js", // 自定义 Loader
-      },
-    ],
-  },
+entry: "./src/index.js",
+output: {
+filename: "bundle.js",
+path: __dirname + "/dist",
+},
+module: {
+rules: [
+{
+test: /\.js$/,
+use: "./my-custom-loader.js", // 自定义 Loader
+},
+],
+},
 };
 ```
 
@@ -173,12 +175,12 @@ module.exports = {
 
 ```json
 {
-  "type": "node",
-  "request": "launch",
-  "name": "调试 Webpack",
-  "program": "${workspaceFolder}/node_modules/webpack/bin/webpack.js",
-  "args": ["--mode", "development"],
-  "console": "integratedTerminal"
+"type": "node",
+"request": "launch",
+"name": "调试 Webpack",
+"program": "${workspaceFolder}/node_modules/webpack/bin/webpack.js",
+"args": ["--mode", "development"],
+"console": "integratedTerminal"
 }
 ```
 
@@ -186,10 +188,10 @@ module.exports = {
 
 ```javascript
 module.exports = function (source) {
-  debugger; // 自动断在这里
-  console.log("正在处理:", this.resourcePath);
-  // 你的 Loader 逻辑
-  return source;
+debugger; // 自动断在这里
+console.log("正在处理:", this.resourcePath);
+// 你的 Loader 逻辑
+return source;
 };
 ```
 
@@ -207,10 +209,10 @@ module.exports = function (source) {
 
 ```json
 {
-  "skipFiles": [
-    // "<node_internals>/**",  // 注释掉这行
-    // "node_modules/**"       // 注释掉这行
-  ]
+"skipFiles": [
+// "<node_internals>/**", // 注释掉这行
+// "node_modules/**" // 注释掉这行
+]
 }
 ```
 
@@ -218,11 +220,11 @@ module.exports = function (source) {
 
 ```json
 {
-  "skipFiles": [
-    "<node_internals>/**",
-    "node_modules/express/**", // 跳过 express
-    "node_modules/lodash/**" // 跳过 lodash
-  ]
+"skipFiles": [
+"<node_internals>/**",
+"node_modules/express/**", // 跳过 express
+"node_modules/lodash/**" // 跳过 lodash
+]
 }
 ```
 
@@ -329,9 +331,9 @@ expensiveEncryptFunction();
 
 // 停止并保存
 session.post("Profiler.stop", (err, { profile }) => {
-  fs.writeFileSync("profile.cpuprofile", JSON.stringify(profile));
-  console.log("性能分析已保存");
-  session.disconnect();
+fs.writeFileSync("profile.cpuprofile", JSON.stringify(profile));
+console.log("性能分析已保存");
+session.disconnect();
 });
 ```
 
@@ -374,15 +376,15 @@ console.log(`加密耗时: ${measure.duration}ms`);
 ```javascript
 // ❌ 难以调试
 fetch(url)
-  .then((res) => res.json())
-  .then((data) => process(data))
-  .catch((err) => console.error(err));
+.then((res) => res.json())
+.then((data) => process(data))
+.catch((err) => console.error(err));
 
 // ✅ 易于调试
 async function fetchData() {
-  const res = await fetch(url); // 断点
-  const data = await res.json(); // 断点
-  return process(data); // 断点
+const res = await fetch(url); // 断点
+const data = await res.json(); // 断点
+return process(data); // 断点
 }
 ```
 
@@ -400,22 +402,22 @@ async function fetchData() {
 const async_hooks = require("async_hooks");
 
 const hooks = async_hooks.createHook({
-  init(asyncId, type, triggerAsyncId) {
-    console.log(`[Init] ${type} (id=${asyncId}, trigger=${triggerAsyncId})`);
-  },
-  before(asyncId) {
-    console.log(`[Before] ${asyncId}`);
-  },
-  after(asyncId) {
-    console.log(`[After] ${asyncId}`);
-  },
+init(asyncId, type, triggerAsyncId) {
+console.log(`[Init] ${type} (id=${asyncId}, trigger=${triggerAsyncId})`);
+},
+before(asyncId) {
+console.log(`[Before] ${asyncId}`);
+},
+after(asyncId) {
+console.log(`[After] ${asyncId}`);
+},
 });
 
 hooks.enable();
 
 // 运行你的异步代码
 setTimeout(() => {
-  console.log("Timeout executed");
+console.log("Timeout executed");
 }, 1000);
 ```
 
@@ -430,17 +432,17 @@ const timers = new Set();
 
 const originalSetInterval = global.setInterval;
 global.setInterval = function (...args) {
-  const timer = originalSetInterval(...args);
-  timers.add(timer);
-  console.log("[setInterval]", args[1], "已创建", timers.size, "个定时器");
-  return timer;
+const timer = originalSetInterval(...args);
+timers.add(timer);
+console.log("[setInterval]", args[1], "已创建", timers.size, "个定时器");
+return timer;
 };
 
 const originalClearInterval = global.clearInterval;
 global.clearInterval = function (timer) {
-  timers.delete(timer);
-  console.log("[clearInterval] 已清理", timers.size, "个定时器剩余");
-  return originalClearInterval(timer);
+timers.delete(timer);
+console.log("[clearInterval] 已清理", timers.size, "个定时器剩余");
+return originalClearInterval(timer);
 };
 ```
 
@@ -457,7 +459,7 @@ global.clearInterval = function (timer) {
 ```json
 // package.json
 {
-  "type": "module"
+"type": "module"
 }
 ```
 
@@ -491,10 +493,10 @@ node --inspect-brk -r ts-node/register script.ts
 
 ```json
 {
-  "compilerOptions": {
-    "sourceMap": true,
-    "outDir": "./dist"
-  }
+"compilerOptions": {
+"sourceMap": true,
+"outDir": "./dist"
+}
 }
 ```
 
@@ -502,13 +504,13 @@ node --inspect-brk -r ts-node/register script.ts
 
 ```json
 {
-  "type": "node",
-  "request": "launch",
-  "name": "调试 TypeScript",
-  "program": "${workspaceFolder}/src/index.ts",
-  "preLaunchTask": "tsc: build - tsconfig.json",
-  "outFiles": ["${workspaceFolder}/dist/**/*.js"],
-  "sourceMaps": true
+"type": "node",
+"request": "launch",
+"name": "调试 TypeScript",
+"program": "${workspaceFolder}/src/index.ts",
+"preLaunchTask": "tsc: build - tsconfig.json",
+"outFiles": ["${workspaceFolder}/dist/**/*.js"],
+"sourceMaps": true
 }
 ```
 
@@ -572,15 +574,15 @@ docker run -p 9229:9229 -p 3000:3000 my-app
 ```yaml
 version: "3"
 services:
-  app:
-    build: .
-    ports:
-      - "3000:3000"
-      - "9229:9229"
-    command: node --inspect=0.0.0.0:9229 server.js
-    volumes:
-      - .:/app
-      - /app/node_modules # 避免覆盖
+app:
+build: .
+ports:
+- "3000:3000"
+- "9229:9229"
+command: node --inspect=0.0.0.0:9229 server.js
+volumes:
+- .:/app
+- /app/node_modules # 避免覆盖
 ```
 
 ---
@@ -597,7 +599,7 @@ user_id === 123;
 
 // 或在代码中
 if (user_id === 123) {
-  debugger;
+debugger;
 }
 ```
 
@@ -626,7 +628,7 @@ new Date(timestamp);
 
 ```bash
 # 设置环境变量
-export DEBUG=*  # 启用所有 debug 日志
+export DEBUG=* # 启用所有 debug 日志
 export NODE_ENV=development
 
 # 在代码中读取
@@ -639,10 +641,10 @@ console.log(process.env.DEBUG);
 const debug = require("debug")("app:encrypt");
 
 function encrypt(data, key) {
-  debug("加密开始, data=%s, key=%s", data, key.toString("hex"));
-  // ...
-  debug("加密完成, result=%s", result);
-  return result;
+debug("加密开始, data=%s, key=%s", data, key.toString("hex"));
+// ...
+debug("加密完成, result=%s", result);
+return result;
 }
 ```
 
@@ -660,18 +662,18 @@ DEBUG=app:* node script.js
 const repl = require("repl");
 
 function complexFunction(data) {
-  const step1 = process1(data);
+const step1 = process1(data);
 
-  // 进入 REPL 检查中间结果
-  if (process.env.DEBUG) {
-    console.log("进入 REPL 调试...");
-    const r = repl.start("> ");
-    r.context.step1 = step1; // 导出变量到 REPL
-    r.context.data = data;
-  }
+// 进入 REPL 检查中间结果
+if (process.env.DEBUG) {
+console.log("进入 REPL 调试...");
+const r = repl.start("> ");
+r.context.step1 = step1; // 导出变量到 REPL
+r.context.data = data;
+}
 
-  const step2 = process2(step1);
-  return step2;
+const step2 = process2(step1);
+return step2;
 }
 ```
 
@@ -683,7 +685,7 @@ DEBUG=1 node script.js
 # 在 REPL 中
 > step1
 > JSON.stringify(step1)
-> .exit  // 退出 REPL 继续执行
+> .exit // 退出 REPL 继续执行
 ```
 
 ---
@@ -713,7 +715,7 @@ webcrack app.bundle.js -o ./unpacked
 
 ```javascript
 function encrypt(data) {
-  // 复杂的加密逻辑
+// 复杂的加密逻辑
 }
 ```
 
@@ -735,9 +737,9 @@ node --inspect-brk test.js
 ```
 
 6. **在 DevTools 中**:
-   - 单步调试 `encrypt` 函数
-   - 查看中间变量
-   - 提取密钥/算法
+    - 单步调试 `encrypt` 函数
+    - 查看中间变量
+    - 提取密钥/算法
 
 ### 案例 2：调试 Electron 应用
 
@@ -784,8 +786,8 @@ chrome://inspect
 ```
 
 5. **分析加密逻辑**:
-   - 在 `main.js` 或 `renderer.js` 中搜索加密相关函数
-   - 打断点调试
+    - 在 `main.js` 或 `renderer.js` 中搜索加密相关函数
+    - 打断点调试
 
 ### 案例 3：Hook require() 追踪模块加载
 
@@ -797,15 +799,15 @@ const Module = require("module");
 const originalRequire = Module.prototype.require;
 
 Module.prototype.require = function (id) {
-  console.log("[require]", id);
+console.log("[require]", id);
 
-  // 拦截特定模块
-  if (id === "crypto") {
-    console.log("[Hook] 拦截 crypto 模块");
-    debugger; // 断点
-  }
+// 拦截特定模块
+if (id === "crypto") {
+console.log("[Hook] 拦截 crypto 模块");
+debugger; // 断点
+}
 
-  return originalRequire.apply(this, arguments);
+return originalRequire.apply(this, arguments);
 };
 
 // 加载目标脚本
@@ -822,13 +824,13 @@ node --inspect-brk hook-require.js
 
 ## 10. 工具推荐
 
-| 工具                    | 用途                          | 安装                              |
+| 工具 | 用途 | 安装 |
 | ----------------------- | ----------------------------- | --------------------------------- |
-| **ndb**                 | Google 开发的增强版调试器     | `npm install -g ndb`              |
-| **node-inspector**      | 旧版 Node.js 调试器（已废弃） | -                                 |
-| **nodemon**             | 自动重启 + 调试               | `npm install -g nodemon`          |
-| **debug**               | 条件日志输出                  | `npm install debug`               |
-| **why-is-node-running** | 查找阻止退出的资源            | `npm install why-is-node-running` |
+| **ndb** | Google 开发的增强版调试器 | `npm install -g ndb` |
+| **node-inspector** | 旧版 Node.js 调试器（已废弃） | - |
+| **nodemon** | 自动重启 + 调试 | `npm install -g nodemon` |
+| **debug** | 条件日志输出 | `npm install debug` |
+| **why-is-node-running** | 查找阻止退出的资源 | `npm install why-is-node-running` |
 
 **ndb 使用**:
 
@@ -851,7 +853,7 @@ nodemon --inspect-brk script.js
 const why = require("why-is-node-running");
 
 setTimeout(() => {
-  why(); // 打印所有未关闭的资源
+why(); // 打印所有未关闭的资源
 }, 5000);
 ```
 

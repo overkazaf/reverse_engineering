@@ -136,7 +136,7 @@ sudo ufw allow 8080
 # Windows: 双击 .cer 文件 → 安装到"受信任的根证书颁发机构"
 # Mac: 双击 → 添加到钥匙串 → 设置为"始终信任"
 # Linux: sudo cp cacert.der /usr/local/share/ca-certificates/burp.crt
-#        sudo update-ca-certificates
+# sudo update-ca-certificates
 ```
 
 #### 2. Firefox 特殊配置
@@ -191,7 +191,7 @@ And URL matches: ^https://target\.com/.*
 
 ```bash
 # 1. 检查系统代理
-netsh winhttp show proxy  # Windows
+netsh winhttp show proxy # Windows
 
 # 2. 重置系统代理
 netsh winhttp reset proxy
@@ -226,8 +226,8 @@ python3 -m pip install xxx
 
 # 5. 使用虚拟环境
 python -m venv venv
-source venv/bin/activate  # Linux/Mac
-venv\Scripts\activate     # Windows
+source venv/bin/activate # Linux/Mac
+venv\Scripts\activate # Windows
 pip install -r requirements.txt
 ```
 
@@ -263,11 +263,11 @@ os.environ['REQUESTS_CA_BUNDLE'] = '/path/to/ca-bundle.crt'
 ```python
 # 读取文件时指定编码
 with open('file.txt', 'r', encoding='utf-8') as f:
-    content = f.read()
+content = f.read()
 
 # 写入文件时指定编码
 with open('file.txt', 'w', encoding='utf-8') as f:
-    f.write(content)
+f.write(content)
 
 # 处理网络响应
 response.encoding = 'utf-8'
@@ -353,11 +353,11 @@ pm.environment.set("token", jsonData.token);
 
 // 发送请求
 pm.sendRequest("https://api.example.com/data", (err, res) => {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log(res.json());
-  }
+if (err) {
+console.log(err);
+} else {
+console.log(res.json());
+}
 });
 
 // 使用 CryptoJS
@@ -396,9 +396,9 @@ console.log("Response:", pm.response);
 ```json
 // settings.json
 {
-  "python.defaultInterpreterPath": "/path/to/python",
-  "python.analysis.typeCheckingMode": "basic",
-  "python.analysis.autoImportCompletions": true
+"python.defaultInterpreterPath": "/path/to/python",
+"python.analysis.typeCheckingMode": "basic",
+"python.analysis.autoImportCompletions": true
 }
 ```
 
@@ -408,26 +408,26 @@ console.log("Response:", pm.response);
 
 ```json
 {
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "name": "Python: Current File",
-      "type": "python",
-      "request": "launch",
-      "program": "${file}",
-      "console": "integratedTerminal",
-      "env": {
-        "PYTHONPATH": "${workspaceFolder}"
-      }
-    },
-    {
-      "name": "Node: Current File",
-      "type": "node",
-      "request": "launch",
-      "program": "${file}",
-      "skipFiles": ["<node_internals>/**"]
-    }
-  ]
+"version": "0.2.0",
+"configurations": [
+{
+"name": "Python: Current File",
+"type": "python",
+"request": "launch",
+"program": "${file}",
+"console": "integratedTerminal",
+"env": {
+"PYTHONPATH": "${workspaceFolder}"
+}
+},
+{
+"name": "Node: Current File",
+"type": "node",
+"request": "launch",
+"program": "${file}",
+"skipFiles": ["<node_internals>/**"]
+}
+]
 }
 ```
 
@@ -490,8 +490,8 @@ echo "data/" >> .gitignore
 # 1. 配置 SSL/TLS 密钥日志文件
 
 # 设置环境变量 (Chrome/Firefox)
-export SSLKEYLOGFILE=~/sslkeys.log  # Linux/Mac
-set SSLKEYLOGFILE=C:\sslkeys.log    # Windows
+export SSLKEYLOGFILE=~/sslkeys.log # Linux/Mac
+set SSLKEYLOGFILE=C:\sslkeys.log # Windows
 
 # 2. 在 Wireshark 中配置
 # Edit → Preferences → Protocols → TLS
@@ -566,7 +566,7 @@ echo 'export https_proxy="http://127.0.0.1:8080"' >> ~/.bashrc
 
 ---
 
-## 📚 相关章节
+## 相关章节
 
 - [Burp Suite 指南](../02-Tooling/burp_suite_guide.md)
 - [Chrome DevTools](../02-Tooling/browser_devtools.md)

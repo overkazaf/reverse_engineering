@@ -26,8 +26,8 @@ JavaScript 逆向和调试中的常见问题及解决方案。
 ```javascript
 // 在代码中直接插入
 function suspiciousFunction(data) {
-  debugger; // 强制暂停
-  // ... 后续代码
+debugger; // 强制暂停
+// ... 后续代码
 }
 ```
 
@@ -37,8 +37,8 @@ function suspiciousFunction(data) {
 // 在控制台执行
 const original = window.someFunction;
 window.someFunction = function (...args) {
-  debugger; // 在调用前暂停
-  return original.apply(this, args);
+debugger; // 在调用前暂停
+return original.apply(this, args);
 };
 ```
 
@@ -130,10 +130,10 @@ console.log(Object.getOwnPropertyNames(obj));
 
 // 在代码中添加日志
 function encrypt(data) {
-  console.log("encrypt input:", data); // 添加这行
-  const result = doEncrypt(data);
-  console.log("encrypt output:", result); // 添加这行
-  return result;
+console.log("encrypt input:", data); // 添加这行
+const result = doEncrypt(data);
+console.log("encrypt output:", result); // 添加这行
+return result;
 }
 ```
 
@@ -201,11 +201,11 @@ const ast = parser.parse(code);
 
 // 还原变量名
 traverse(ast, {
-  Identifier(path) {
-    if (path.node.name.startsWith("_0x")) {
-      path.node.name = "var_" + Math.random().toString(36).substr(2, 9);
-    }
-  },
+Identifier(path) {
+if (path.node.name.startsWith("_0x")) {
+path.node.name = "var_" + Math.random().toString(36).substr(2, 9);
+}
+},
 });
 
 const output = generate(ast, {}, code);
@@ -223,10 +223,10 @@ console.log(output.code);
 // Hook 所有函数调用
 const originalFunction = window._0x1a2b;
 window._0x1a2b = function (...args) {
-  console.log("Called with:", args);
-  const result = originalFunction.apply(this, args);
-  console.log("Returned:", result);
-  return result;
+console.log("Called with:", args);
+const result = originalFunction.apply(this, args);
+console.log("Returned:", result);
+return result;
 };
 ```
 
@@ -236,21 +236,21 @@ window._0x1a2b = function (...args) {
 // Tampermonkey 脚本
 // 在页面加载前注入
 (function () {
-  "use strict";
+"use strict";
 
-  // Hook eval
-  const originalEval = window.eval;
-  window.eval = function (code) {
-    console.log("eval code:", code);
-    return originalEval.call(this, code);
-  };
+// Hook eval
+const originalEval = window.eval;
+window.eval = function (code) {
+console.log("eval code:", code);
+return originalEval.call(this, code);
+};
 
-  // Hook Function 构造器
-  const OriginalFunction = window.Function;
-  window.Function = function (...args) {
-    console.log("Function args:", args);
-    return OriginalFunction.apply(this, args);
-  };
+// Hook Function 构造器
+const OriginalFunction = window.Function;
+window.Function = function (...args) {
+console.log("Function args:", args);
+return OriginalFunction.apply(this, args);
+};
 })();
 ```
 
@@ -274,9 +274,9 @@ window._0x1a2b = function (...args) {
 
 // 现在可以看到完整的异步调用栈
 async function fetchData() {
-  debugger; // 可以看到异步调用链
-  const data = await fetch("/api/data");
-  return data.json();
+debugger; // 可以看到异步调用链
+const data = await fetch("/api/data");
+return data.json();
 }
 ```
 
@@ -284,13 +284,13 @@ async function fetchData() {
 
 ```javascript
 async function complexAsync() {
-  console.trace("Start"); // 显示调用栈
+console.trace("Start"); // 显示调用栈
 
-  await step1();
-  console.trace("After step1");
+await step1();
+console.trace("After step1");
 
-  await step2();
-  console.trace("After step2");
+await step2();
+console.trace("After step2");
 }
 ```
 
@@ -300,15 +300,15 @@ async function complexAsync() {
 // 包装 fetch
 const originalFetch = window.fetch;
 window.fetch = async function (...args) {
-  console.log("Fetch started:", args[0]);
-  try {
-    const response = await originalFetch.apply(this, args);
-    console.log("Fetch completed:", response.status);
-    return response;
-  } catch (error) {
-    console.error("Fetch failed:", error);
-    throw error;
-  }
+console.log("Fetch started:", args[0]);
+try {
+const response = await originalFetch.apply(this, args);
+console.log("Fetch completed:", response.status);
+return response;
+} catch (error) {
+console.error("Fetch failed:", error);
+throw error;
+}
 };
 ```
 
@@ -335,32 +335,32 @@ window.fetch = async function (...args) {
 
 ```javascript
 (function () {
-  const XHR = XMLHttpRequest.prototype;
-  const open = XHR.open;
-  const send = XHR.send;
+const XHR = XMLHttpRequest.prototype;
+const open = XHR.open;
+const send = XHR.send;
 
-  XHR.open = function (method, url) {
-    this._method = method;
-    this._url = url;
-    return open.apply(this, arguments);
-  };
+XHR.open = function (method, url) {
+this._method = method;
+this._url = url;
+return open.apply(this, arguments);
+};
 
-  XHR.send = function (data) {
-    console.log("XHR Request:", {
-      method: this._method,
-      url: this._url,
-      data: data,
-    });
+XHR.send = function (data) {
+console.log("XHR Request:", {
+method: this._method,
+url: this._url,
+data: data,
+});
 
-    this.addEventListener("load", function () {
-      console.log("XHR Response:", {
-        status: this.status,
-        response: this.responseText,
-      });
-    });
+this.addEventListener("load", function () {
+console.log("XHR Response:", {
+status: this.status,
+response: this.responseText,
+});
+});
 
-    return send.apply(this, arguments);
-  };
+return send.apply(this, arguments);
+};
 })();
 ```
 
@@ -368,24 +368,24 @@ window.fetch = async function (...args) {
 
 ```javascript
 (function () {
-  const originalFetch = window.fetch;
+const originalFetch = window.fetch;
 
-  window.fetch = async function (...args) {
-    console.log("Fetch Request:", args);
+window.fetch = async function (...args) {
+console.log("Fetch Request:", args);
 
-    const response = await originalFetch.apply(this, args);
+const response = await originalFetch.apply(this, args);
 
-    // Clone 响应以避免消费
-    const clonedResponse = response.clone();
-    const text = await clonedResponse.text();
+// Clone 响应以避免消费
+const clonedResponse = response.clone();
+const text = await clonedResponse.text();
 
-    console.log("Fetch Response:", {
-      status: response.status,
-      body: text,
-    });
+console.log("Fetch Response:", {
+status: response.status,
+body: text,
+});
 
-    return response;
-  };
+return response;
+};
 })();
 ```
 
@@ -409,7 +409,7 @@ window.fetch = async function (...args) {
 
 // 查看 WASM 模块
 WebAssembly.instantiate(bytes, imports).then((result) => {
-  console.log(result.instance.exports);
+console.log(result.instance.exports);
 });
 ```
 
@@ -432,10 +432,10 @@ const instance = wasmInstance;
 // Hook 导出函数
 const originalFunc = instance.exports.encrypt;
 instance.exports.encrypt = function (...args) {
-  console.log("WASM encrypt called:", args);
-  const result = originalFunc.apply(this, args);
-  console.log("WASM encrypt result:", result);
-  return result;
+console.log("WASM encrypt called:", args);
+const result = originalFunc.apply(this, args);
+console.log("WASM encrypt result:", result);
+return result;
 };
 ```
 
@@ -459,13 +459,13 @@ const fixedTime = new Date("2024-01-01 00:00:00").getTime();
 
 const OriginalDate = Date;
 window.Date = function (...args) {
-  if (args.length === 0) {
-    return new OriginalDate(fixedTime);
-  }
-  return new OriginalDate(...args);
+if (args.length === 0) {
+return new OriginalDate(fixedTime);
+}
+return new OriginalDate(...args);
 };
 Date.now = function () {
-  return fixedTime;
+return fixedTime;
 };
 Date.prototype = OriginalDate.prototype;
 ```
@@ -475,8 +475,8 @@ Date.prototype = OriginalDate.prototype;
 ```javascript
 const originalSetTimeout = window.setTimeout;
 window.setTimeout = function (callback, delay, ...args) {
-  console.log(`setTimeout called: ${delay}ms`);
-  return originalSetTimeout(callback, delay, ...args);
+console.log(`setTimeout called: ${delay}ms`);
+return originalSetTimeout(callback, delay, ...args);
 };
 ```
 
@@ -489,7 +489,7 @@ window.setTimeout = function (callback, delay, ...args) {
 ```javascript
 // 反调试代码
 setInterval(function () {
-  debugger;
+debugger;
 }, 100);
 ```
 
@@ -520,10 +520,10 @@ false; // 永远不暂停
 // 或 Hook Function
 const _constructor = Function.prototype.constructor;
 Function.prototype.constructor = function (...args) {
-  if (args.length > 0 && /debugger/.test(args[args.length - 1])) {
-    return function () {};
-  }
-  return _constructor.apply(this, args);
+if (args.length > 0 && /debugger/.test(args[args.length - 1])) {
+return function () {};
+}
+return _constructor.apply(this, args);
 };
 ```
 
@@ -533,15 +533,15 @@ Function.prototype.constructor = function (...args) {
 
 ### 1. 快捷键
 
-| 操作          | Windows/Linux    | Mac           |
+| 操作 | Windows/Linux | Mac |
 | ------------- | ---------------- | ------------- |
-| 打开 DevTools | F12              | Cmd + Opt + I |
-| 打开控制台    | Ctrl + Shift + J | Cmd + Opt + J |
-| 下一步        | F10              | F10           |
-| 进入函数      | F11              | F11           |
-| 跳出函数      | Shift + F11      | Shift + F11   |
-| 继续执行      | F8               | F8            |
-| 禁用断点      | Ctrl + F8        | Cmd + F8      |
+| 打开 DevTools | F12 | Cmd + Opt + I |
+| 打开控制台 | Ctrl + Shift + J | Cmd + Opt + J |
+| 下一步 | F10 | F10 |
+| 进入函数 | F11 | F11 |
+| 跳出函数 | Shift + F11 | Shift + F11 |
+| 继续执行 | F8 | F8 |
+| 禁用断点 | Ctrl + F8 | Cmd + F8 |
 
 ### 2. Console API
 
@@ -554,8 +554,8 @@ console.groupEnd();
 
 // 表格显示
 console.table([
-  { name: "a", value: 1 },
-  { name: "b", value: 2 },
+{ name: "a", value: 1 },
+{ name: "b", value: 2 },
 ]);
 
 // 计时
@@ -585,7 +585,7 @@ console.log(performance.getEntriesByType("measure"));
 
 ---
 
-## 📚 相关章节
+## 相关章节
 
 - [调试技巧](../03-Basic-Recipes/debugging_techniques.md)
 - [Hook 技巧](../03-Basic-Recipes/hooking_techniques.md)

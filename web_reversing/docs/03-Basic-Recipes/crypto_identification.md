@@ -6,6 +6,20 @@ Web 应用中常用各种加密算法来保护数据传输和存储。识别使�
 
 ---
 
+## 📚 前置知识
+
+在开始本配方之前，建议先掌握以下内容：
+
+| 知识领域 | 重要程度 | 参考资料 |
+|----------|---------|---------|
+| JavaScript 基础 | 必需 | [JavaScript 基础](../01-Foundations/javascript_basics.md) |
+| Chrome DevTools | 必需 | [浏览器开发者工具](../02-Tooling/browser_devtools.md) |
+| HTTP 协议基础 | 推荐 | [HTTP/HTTPS 协议](../01-Foundations/http_https_protocol.md) |
+
+> 💡 **提示**: 加密算法识别是逆向分析的**第一步**。掌握各种算法的输出特征后，可以快速判断目标使用的加密方式，选择合适的对抗策略。
+
+---
+
 ## 哈希算法 (Hash Functions)
 
 ### MD5
@@ -37,11 +51,11 @@ hashlib.md5(b"hello").hexdigest()
 
 ### SHA 家族
 
-| 算法    | 输出长度 | 十六进制长度 | 示例                                                               |
+| 算法 | 输出长度 | 十六进制长度 | 示例 |
 | ------- | -------- | ------------ | ------------------------------------------------------------------ |
-| SHA-1   | 160 bit  | 40 字符      | `aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d`                         |
-| SHA-256 | 256 bit  | 64 字符      | `2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824` |
-| SHA-512 | 512 bit  | 128 字符     | (太长省略)                                                         |
+| SHA-1 | 160 bit | 40 字符 | `aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d` |
+| SHA-256 | 256 bit | 64 字符 | `2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824` |
+| SHA-512 | 512 bit | 128 字符 | (太长省略) |
 
 **识别方法**:
 
@@ -83,12 +97,12 @@ crypto.subtle.encrypt({ name: "AES-CBC", iv: iv }, key, data);
 
 **常见模式对比**:
 
-| 模式 | IV 需求 | 并行加密 | 安全性 | 备注                         |
+| 模式 | IV 需求 | 并行加密 | 安全性 | 备注 |
 | ---- | ------- | -------- | ------ | ---------------------------- |
-| ECB  | 否      | 是       | 低     | 不安全，相同明文产生相同密文 |
-| CBC  | 是      | 否       | 中     | 最常用                       |
-| CTR  | 是      | 是       | 高     | 流式加密                     |
-| GCM  | 是      | 是       | 高     | 带认证                       |
+| ECB | 否 | 是 | 低 | 不安全，相同明文产生相同密文 |
+| CBC | 是 | 否 | 中 | 最常用 |
+| CTR | 是 | 是 | 高 | 流式加密 |
+| GCM | 是 | 是 | 高 | 带认证 |
 
 **Python 实现 (AES-CBC)**:
 
@@ -97,7 +111,7 @@ from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 import base64
 
-key = b'1234567890123456'  # 16 bytes for AES-128
+key = b'1234567890123456' # 16 bytes for AES-128
 iv = b'abcdefghijklmnop'
 
 # 加密
@@ -201,8 +215,8 @@ atob("aGVsbG8="); // "hello"
 
 ```python
 import base64
-base64.b64encode(b'hello').decode()  # 'aGVsbG8='
-base64.b64decode('aGVsbG8=').decode()  # 'hello'
+base64.b64encode(b'hello').decode() # 'aGVsbG8='
+base64.b64decode('aGVsbG8=').decode() # 'hello'
 ```
 
 ### Hex (十六进制编码)
@@ -221,8 +235,8 @@ base64.b64decode('aGVsbG8=').decode()  # 'hello'
 **Python**:
 
 ```python
-'Hello'.encode().hex()  # '48656c6c6f'
-bytes.fromhex('48656c6c6f').decode()  # 'Hello'
+'Hello'.encode().hex() # '48656c6c6f'
+bytes.fromhex('48656c6c6f').decode() # 'Hello'
 ```
 
 ---
@@ -233,13 +247,13 @@ bytes.fromhex('48656c6c6f').decode()  # 'Hello'
 
 1. **长度固定**: 可能是哈希
 
-   - 32 字符 -> MD5
-   - 40 字符 -> SHA-1
-   - 64 字符 -> SHA-256
+- 32 字符 -> MD5
+- 40 字符 -> SHA-1
+- 64 字符 -> SHA-256
 
 2. **长度可变**: 可能是加密或编码
-   - 结尾有 `=` -> Base64
-   - 全是 `0-9a-f` -> Hex
+- 结尾有 `=` -> Base64
+- 全是 `0-9a-f` -> Hex
 
 ### 步骤二：搜索关键词
 
@@ -254,14 +268,14 @@ bytes.fromhex('48656c6c6f').decode()  # 'Hello'
 ```javascript
 // Hook CryptoJS
 if (window.CryptoJS) {
-  const originalAES = CryptoJS.AES.encrypt;
-  CryptoJS.AES.encrypt = function (message, key, cfg) {
-    console.log("[AES Encrypt]");
-    console.log("Message:", message.toString());
-    console.log("Key:", key.toString());
-    debugger;
-    return originalAES.apply(this, arguments);
-  };
+const originalAES = CryptoJS.AES.encrypt;
+CryptoJS.AES.encrypt = function (message, key, cfg) {
+console.log("[AES Encrypt]");
+console.log("Message:", message.toString());
+console.log("Key:", key.toString());
+debugger;
+return originalAES.apply(this, arguments);
+};
 }
 ```
 
@@ -271,21 +285,21 @@ if (window.CryptoJS) {
 
 ### JavaScript 加密库
 
-| 库名               | 特点                 | 检测方法               |
+| 库名 | 特点 | 检测方法 |
 | ------------------ | -------------------- | ---------------------- |
-| **CryptoJS**       | 最流行的纯 JS 加密库 | `window.CryptoJS`      |
-| **Forge**          | 全功能加密库         | `window.forge`         |
-| **JSEncrypt**      | RSA 专用             | `window.JSEncrypt`     |
-| **crypto-js**      | CryptoJS 的 npm 包   | `require('crypto-js')` |
-| **Web Crypto API** | 浏览器原生           | `window.crypto.subtle` |
+| **CryptoJS** | 最流行的纯 JS 加密库 | `window.CryptoJS` |
+| **Forge** | 全功能加密库 | `window.forge` |
+| **JSEncrypt** | RSA 专用 | `window.JSEncrypt` |
+| **crypto-js** | CryptoJS 的 npm 包 | `require('crypto-js')` |
+| **Web Crypto API** | 浏览器原生 | `window.crypto.subtle` |
 
 ### Python 加密库
 
-| 库名             | 安装                       | 用途          |
+| 库名 | 安装 | 用途 |
 | ---------------- | -------------------------- | ------------- |
-| **hashlib**      | 内置                       | MD5, SHA      |
+| **hashlib** | 内置 | MD5, SHA |
 | **pycryptodome** | `pip install pycryptodome` | AES, RSA, DES |
-| **cryptography** | `pip install cryptography` | 现代加密库    |
+| **cryptography** | `pip install cryptography` | 现代加密库 |
 
 ---
 

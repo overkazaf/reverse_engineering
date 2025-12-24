@@ -16,51 +16,51 @@
 
 ```mermaid
 graph TB
-    subgraph Chrome["Chrome 浏览器"]
-        Browser[Browser Process<br/>主进程<br/>━━━━━━━━<br/>• UI 管理<br/>• 网络请求<br/>• 进程协调<br/>• 权限管理]
+subgraph Chrome["Chrome 浏览器"]
+Browser[Browser Process<br/>主进程<br/>━━━━━━━━<br/>• UI 管理<br/>• 网络请求<br/>• 进程协调<br/>• 权限管理]
 
-        subgraph Renderers["Renderer Processes (渲染进程)"]
-            R1[Tab 1<br/>━━━━━━━<br/>• Blink 引擎<br/>• V8 引擎<br/>• DOM/CSSOM<br/>• JavaScript]
-            R2[Tab 2<br/>━━━━━━━<br/>• Blink 引擎<br/>• V8 引擎<br/>• DOM/CSSOM<br/>• JavaScript]
-            R3[Tab 3<br/>━━━━━━━<br/>• Blink 引擎<br/>• V8 引擎<br/>• DOM/CSSOM<br/>• JavaScript]
-        end
+subgraph Renderers["Renderer Processes (渲染进程)"]
+R1[Tab 1<br/>━━━━━━━<br/>• Blink 引擎<br/>• V8 引擎<br/>• DOM/CSSOM<br/>• JavaScript]
+R2[Tab 2<br/>━━━━━━━<br/>• Blink 引擎<br/>• V8 引擎<br/>• DOM/CSSOM<br/>• JavaScript]
+R3[Tab 3<br/>━━━━━━━<br/>• Blink 引擎<br/>• V8 引擎<br/>• DOM/CSSOM<br/>• JavaScript]
+end
 
-        GPU[GPU Process<br/>GPU 进程<br/>━━━━━━━━<br/>• Canvas 渲染<br/>• WebGL<br/>• CSS 3D 变换<br/>• 视频解码]
+GPU[GPU Process<br/>GPU 进程<br/>━━━━━━━━<br/>• Canvas 渲染<br/>• WebGL<br/>• CSS 3D 变换<br/>• 视频解码]
 
-        Plugin[Plugin Process<br/>插件进程<br/>━━━━━━━━<br/>• Flash (已弃用)<br/>• PDF 阅读器<br/>• 其他插件]
+Plugin[Plugin Process<br/>插件进程<br/>━━━━━━━━<br/>• Flash (已弃用)<br/>• PDF 阅读器<br/>• 其他插件]
 
-        Network[Network Service<br/>网络服务<br/>━━━━━━━━<br/>• HTTP/HTTPS<br/>• WebSocket<br/>• DNS 解析]
-    end
+Network[Network Service<br/>网络服务<br/>━━━━━━━━<br/>• HTTP/HTTPS<br/>• WebSocket<br/>• DNS 解析]
+end
 
-    Browser --> R1
-    Browser --> R2
-    Browser --> R3
-    Browser --> GPU
-    Browser --> Plugin
-    Browser --> Network
+Browser --> R1
+Browser --> R2
+Browser --> R3
+Browser --> GPU
+Browser --> Plugin
+Browser --> Network
 
-    R1 --> GPU
-    R2 --> GPU
-    R3 --> GPU
+R1 --> GPU
+R2 --> GPU
+R3 --> GPU
 
-    style Browser fill:#4a90e2
-    style R1 fill:#7ed321
-    style R2 fill:#7ed321
-    style R3 fill:#7ed321
-    style GPU fill:#f5a623
-    style Plugin fill:#bd10e0
-    style Network fill:#50e3c2
+style Browser fill:#4a90e2
+style R1 fill:#7ed321
+style R2 fill:#7ed321
+style R3 fill:#7ed321
+style GPU fill:#f5a623
+style Plugin fill:#bd10e0
+style Network fill:#50e3c2
 ```
 
 **各进程职责**:
 
-1.  **Browser Process (主进程)**: 负责地址栏、书签、前进/后退、协调其他进程。
-2.  **Renderer Process (渲染进程)**: **核心关注点**。负责将 HTML/CSS/JS 转换为网页。
-    - 通常每个 Tab 是一个独立的进程（Site Isolation）。
-    - JS 也是运行在这里（V8 引擎）。
-3.  **GPU Process**: 处理 GPU 任务（CSS 3D 变换、Canvas 绘图）。
-4.  **Plugin Process**: 运行 Flash 等插件。
-5.  **Network Service**: 处理所有网络请求。
+1. **Browser Process (主进程)**: 负责地址栏、书签、前进/后退、协调其他进程。
+2. **Renderer Process (渲染进程)**: **核心关注点**。负责将 HTML/CSS/JS 转换为网页。
+- 通常每个 Tab 是一个独立的进程（Site Isolation）。
+- JS 也是运行在这里（V8 引擎）。
+3. **GPU Process**: 处理 GPU 任务（CSS 3D 变换、Canvas 绘图）。
+4. **Plugin Process**: 运行 Flash 等插件。
+5. **Network Service**: 处理所有网络请求。
 
 ### 逆向启示
 
@@ -97,56 +97,56 @@ graph TB
 
 ```mermaid
 flowchart TB
-    subgraph Input["输入阶段"]
-        HTML[HTML 文档]
-        CSS[CSS 样式表]
-        JS[JavaScript]
-    end
+subgraph Input["输入阶段"]
+HTML[HTML 文档]
+CSS[CSS 样式表]
+JS[JavaScript]
+end
 
-    subgraph Parse["解析阶段"]
-        HTMLParse[HTML 解析器]
-        CSSParse[CSS 解析器]
-        DOM[DOM Tree]
-        CSSOM[CSSOM Tree]
-    end
+subgraph Parse["解析阶段"]
+HTMLParse[HTML 解析器]
+CSSParse[CSS 解析器]
+DOM[DOM Tree]
+CSSOM[CSSOM Tree]
+end
 
-    subgraph Render["渲染树构建"]
-        RenderTree[Render Tree<br/>合并 DOM + CSSOM]
-    end
+subgraph Render["渲染树构建"]
+RenderTree[Render Tree<br/>合并 DOM + CSSOM]
+end
 
-    subgraph Layout["布局计算"]
-        LayoutCalc[计算几何位置<br/>Layout/Reflow]
-    end
+subgraph Layout["布局计算"]
+LayoutCalc[计算几何位置<br/>Layout/Reflow]
+end
 
-    subgraph Paint["绘制"]
-        PaintOps[生成绘制指令<br/>Painting/Repaint]
-        Layers[分层 Layering]
-    end
+subgraph Paint["绘制"]
+PaintOps[生成绘制指令<br/>Painting/Repaint]
+Layers[分层 Layering]
+end
 
-    subgraph Composite["合成"]
-        Raster[栅格化 Rasterize]
-        GPUComp[GPU 合成]
-        Display[显示到屏幕]
-    end
+subgraph Composite["合成"]
+Raster[栅格化 Rasterize]
+GPUComp[GPU 合成]
+Display[显示到屏幕]
+end
 
-    HTML --> HTMLParse --> DOM
-    CSS --> CSSParse --> CSSOM
-    DOM --> RenderTree
-    CSSOM --> RenderTree
-    RenderTree --> LayoutCalc
-    LayoutCalc --> PaintOps
-    PaintOps --> Layers
-    Layers --> Raster
-    Raster --> GPUComp
-    GPUComp --> Display
+HTML --> HTMLParse --> DOM
+CSS --> CSSParse --> CSSOM
+DOM --> RenderTree
+CSSOM --> RenderTree
+RenderTree --> LayoutCalc
+LayoutCalc --> PaintOps
+PaintOps --> Layers
+Layers --> Raster
+Raster --> GPUComp
+GPUComp --> Display
 
-    JS -.->|修改 DOM| DOM
-    JS -.->|修改样式| CSSOM
-    JS -.->|触发 Reflow| LayoutCalc
-    JS -.->|触发 Repaint| PaintOps
+JS -.->|修改 DOM| DOM
+JS -.->|修改样式| CSSOM
+JS -.->|触发 Reflow| LayoutCalc
+JS -.->|触发 Repaint| PaintOps
 
-    style Display fill:#51cf66
-    style JS fill:#fff9e1
+style Display fill:#51cf66
+style JS fill:#fff9e1
 ```
 
 ### [Reverse Engineering Context] 阻塞与检测
@@ -160,8 +160,8 @@ flowchart TB
 
 V8 是 Chrome 的 JS 引擎，也是 Node.js 的核心。
 
-1.  **JIT (Just-In-Time) 编译**: V8 不只是解释执行，还会将热点代码编译成机器码。
-2.  **垃圾回收 (GC)**: 自动管理内存。
+1. **JIT (Just-In-Time) 编译**: V8 不只是解释执行，还会将热点代码编译成机器码。
+2. **垃圾回收 (GC)**: 自动管理内存。
 
 ---
 

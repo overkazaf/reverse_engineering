@@ -4,18 +4,34 @@
 
 ---
 
-## 📊 配方信息
+## 配方信息
 
-| 项目         | 说明                                          |
+| 项目 | 说明 |
 | ------------ | --------------------------------------------- |
-| **难度**     | ⭐⭐⭐⭐ (高级)                               |
-| **预计时间** | 2-8 小时 (根据混淆复杂度)                     |
+| **难度** | ⭐⭐⭐⭐ (高级) |
+| **预计时间** | 2-8 小时 (根据混淆复杂度) |
 | **所需工具** | Chrome DevTools, Babel, AST Explorer, Node.js |
-| **适用场景** | 混淆代码分析、加密算法提取、恶意代码分析      |
+| **适用场景** | 混淆代码分析、加密算法提取、恶意代码分析 |
 
 ---
 
-## 🎯 学习目标
+## 📚 前置知识
+
+在开始本配方之前，建议先掌握以下内容：
+
+| 知识领域 | 重要程度 | 参考资料 |
+|----------|---------|---------|
+| JavaScript 基础 | 必需 | [JavaScript 基础](../01-Foundations/javascript_basics.md) |
+| JavaScript 执行机制 | 必需 | [JavaScript 执行机制](../01-Foundations/javascript_execution_mechanism.md) |
+| AST 工具使用 | 必需 | [AST 工具](../02-Tooling/ast_tools.md) |
+| Chrome DevTools | 必需 | [浏览器开发者工具](../02-Tooling/browser_devtools.md) |
+| Node.js 调试 | 推荐 | [Node.js 调试](../02-Tooling/nodejs_debugging.md) |
+
+> 💡 **提示**: JavaScript 反混淆是高级逆向的**核心技能**。建议深入理解 AST（抽象语法树）原理，这是自动化反混淆的基础。如果完全没有 AST 基础，建议先阅读 AST 工具指南。
+
+---
+
+## 学习目标
 
 完成本配方后，你将能够：
 
@@ -27,7 +43,7 @@
 
 ---
 
-## 💡 核心概念
+## 核心概念
 
 混淆 (Obfuscation) 是 Web 逆向最大的拦路虎。代码混淆技术通过变换代码结构和语义，在不改变程序功能的前提下大幅增加逆向分析的难度。常见的混淆手段包括变量名压缩、字符串数组加密、大整数运算、控制流平坦化、死代码注入等。
 
@@ -57,12 +73,12 @@
 ```javascript
 // 原始代码
 function calculatePrice(basePrice, discount) {
-  return basePrice * (1 - discount);
+return basePrice * (1 - discount);
 }
 
 // 混淆后
 function a(b, c) {
-  return b * (1 - c);
+return b * (1 - c);
 }
 ```
 
@@ -88,26 +104,26 @@ function a(b, c) {
 // 混淆后的代码
 var _0xabcd = ["aGVsbG8=", "d29ybGQ=", "Y29uc29sZQ==", "bG9n"];
 (function (_0x4a5b3e, _0x2f8c1d) {
-  var _0x3e7a90 = function (_0x1c9f47) {
-    while (--_0x1c9f47) {
-      _0x4a5b3e["push"](_0x4a5b3e["shift"]());
-    }
-  };
-  _0x3e7a90(++_0x2f8c1d);
+var _0x3e7a90 = function (_0x1c9f47) {
+while (--_0x1c9f47) {
+_0x4a5b3e["push"](_0x4a5b3e["shift"]());
+}
+};
+_0x3e7a90(++_0x2f8c1d);
 })(_0xabcd, 0x123);
 
 var _0x5678 = function (_0x4a5b3e, _0x2f8c1d) {
-  _0x4a5b3e = _0x4a5b3e - 0x0;
-  var _0x3e7a90 = _0xabcd[_0x4a5b3e];
-  if (_0x5678["initialized"] === undefined) {
-    // Base64 解码逻辑
-    _0x5678["decoder"] = function (_0x1c9f47) {
-      // ...解码代码
-    };
-    _0x5678["initialized"] = ![];
-  }
-  var _0x1c9f47 = _0x5678["decoder"](_0x3e7a90);
-  return _0x1c9f47;
+_0x4a5b3e = _0x4a5b3e - 0x0;
+var _0x3e7a90 = _0xabcd[_0x4a5b3e];
+if (_0x5678["initialized"] === undefined) {
+// Base64 解码逻辑
+_0x5678["decoder"] = function (_0x1c9f47) {
+// ...解码代码
+};
+_0x5678["initialized"] = ![];
+}
+var _0x1c9f47 = _0x5678["decoder"](_0x3e7a90);
+return _0x1c9f47;
 };
 
 console[_0x5678("0x0")](_0x5678("0x1")); // 实际是 console.log('hello')
@@ -135,34 +151,34 @@ console[_0x5678("0x0")](_0x5678("0x1")); // 实际是 console.log('hello')
 ```javascript
 // 原始代码
 function add(a, b) {
-  var result = a + b;
-  console.log(result);
-  return result;
+var result = a + b;
+console.log(result);
+return result;
 }
 
 // 平坦化后
 function add(a, b) {
-  var _0x1 = "3|1|0|4|2".split("|"),
-    _0x2 = 0;
-  while (!![]) {
-    switch (_0x1[_0x2++]) {
-      case "0":
-        console.log(result);
-        continue;
-      case "1":
-        result = a + b;
-        continue;
-      case "2":
-        return result;
-      case "3":
-        var result;
-        continue;
-      case "4":
-        // 可能插入的垃圾代码
-        continue;
-    }
-    break;
-  }
+var _0x1 = "3|1|0|4|2".split("|"),
+_0x2 = 0;
+while (!![]) {
+switch (_0x1[_0x2++]) {
+case "0":
+console.log(result);
+continue;
+case "1":
+result = a + b;
+continue;
+case "2":
+return result;
+case "3":
+var result;
+continue;
+case "4":
+// 可能插入的垃圾代码
+continue;
+}
+break;
+}
 }
 ```
 
@@ -185,16 +201,16 @@ function add(a, b) {
 
 ```javascript
 function encrypt(data) {
-  if (Math.random() < 0) {
-    // 这段代码永远不会执行
-    return decrypt(data);
-  }
-  var result = md5(data);
-  if (!![] && ![]) {
-    // 又是死代码
-    result = sha256(data);
-  }
-  return result;
+if (Math.random() < 0) {
+// 这段代码永远不会执行
+return decrypt(data);
+}
+var result = md5(data);
+if (!![] && ![]) {
+// 又是死代码
+result = sha256(data);
+}
+return result;
 }
 ```
 
@@ -296,10 +312,10 @@ var msg = "\u0048\u0065\u006c\u006c\u006f"; // Unicode
 **对抗工具**:
 
 - **webcrack**: https://github.com/j4k0xb/webcrack
-  ```bash
-  npm install -g webcrack
-  webcrack bundle.js -o output/
-  ```
+```bash
+npm install -g webcrack
+webcrack bundle.js -o output/
+```
 - **webpack-bundle-analyzer**: 分析打包结构
 
 ---
@@ -327,13 +343,13 @@ var msg = "\u0048\u0065\u006c\u006c\u006f"; // Unicode
 
 ### 3.1 在线工具对比
 
-| 工具               | 链接                                | 支持混淆类型               | 优点                   | 缺点             |
+| 工具 | 链接 | 支持混淆类型 | 优点 | 缺点 |
 | ------------------ | ----------------------------------- | -------------------------- | ---------------------- | ---------------- |
-| **deobfuscate.io** | https://deobfuscate.io/             | obfuscator.io              | 专门针对 obfuscator.io | 仅支持特定混淆器 |
-| **JSNice**         | http://jsnice.org/                  | 变量名恢复                 | AI 推测变量名          | 不处理字符串数组 |
-| **Prettier**       | https://prettier.io/playground/     | 代码格式化                 | 美化代码结构           | 不解密字符串     |
-| **de4js**          | https://lelinhtinh.github.io/de4js/ | JJEncode, AAEncode, JSFuck | 支持特殊编码           | 不支持通用混淆   |
-| **Synchrony**      | https://deobfuscate.relative.im/    | 通用混淆                   | 自动识别混淆类型       | 准确率一般       |
+| **deobfuscate.io** | https://deobfuscate.io/ | obfuscator.io | 专门针对 obfuscator.io | 仅支持特定混淆器 |
+| **JSNice** | http://jsnice.org/ | 变量名恢复 | AI 推测变量名 | 不处理字符串数组 |
+| **Prettier** | https://prettier.io/playground/ | 代码格式化 | 美化代码结构 | 不解密字符串 |
+| **de4js** | https://lelinhtinh.github.io/de4js/ | JJEncode, AAEncode, JSFuck | 支持特殊编码 | 不支持通用混淆 |
+| **Synchrony** | https://deobfuscate.relative.im/ | 通用混淆 | 自动识别混淆类型 | 准确率一般 |
 
 ---
 
@@ -362,12 +378,12 @@ const ast = parser.parse(code);
 
 // 1. 常量折叠
 traverse(ast, {
-  BinaryExpression(path) {
-    const result = path.evaluate();
-    if (result.confident) {
-      path.replaceWith(t.valueToNode(result.value));
-    }
-  },
+BinaryExpression(path) {
+const result = path.evaluate();
+if (result.confident) {
+path.replaceWith(t.valueToNode(result.value));
+}
+},
 });
 
 // 2. 字符串数组还原（需要先执行数组初始化代码）
@@ -375,18 +391,18 @@ traverse(ast, {
 
 // 3. 删除死代码
 traverse(ast, {
-  IfStatement(path) {
-    const test = path.get("test").evaluate();
-    if (test.confident) {
-      if (test.value) {
-        path.replaceWithMultiple(path.node.consequent.body);
-      } else if (path.node.alternate) {
-        path.replaceWith(path.node.alternate);
-      } else {
-        path.remove();
-      }
-    }
-  },
+IfStatement(path) {
+const test = path.get("test").evaluate();
+if (test.confident) {
+if (test.value) {
+path.replaceWithMultiple(path.node.consequent.body);
+} else if (path.node.alternate) {
+path.replaceWith(path.node.alternate);
+} else {
+path.remove();
+}
+}
+},
 });
 
 // 输出结果
@@ -462,7 +478,7 @@ var a = 790;
 ```javascript
 // 混淆代码中有巨大的数组
 var _0xabcd = [
-  /* 几千个元素 */
+/* 几千个元素 */
 ];
 
 // Console 中
@@ -474,7 +490,7 @@ copy(_0xabcd); // 自动复制到剪贴板
 ```javascript
 // 混淆代码中的解密函数
 var _0x5678 = function (index) {
-  return _0xabcd[index];
+return _0xabcd[index];
 };
 
 // 在 Console 中挂载为全局函数
@@ -482,7 +498,7 @@ window.decrypt = _0x5678;
 
 // 然后可以批量解密
 for (let i = 0; i < 10; i++) {
-  console.log(i, decrypt(i));
+console.log(i, decrypt(i));
 }
 ```
 
@@ -499,13 +515,13 @@ var result = a ? b : c ? d : e ? f : g;
 // 改写为 if-else
 var result;
 if (a) {
-  result = b;
+result = b;
 } else if (c) {
-  result = d;
+result = d;
 } else if (e) {
-  result = f;
+result = f;
 } else {
-  result = g;
+result = g;
 }
 ```
 
@@ -533,15 +549,15 @@ var a = d * 2;
 ```javascript
 var _0x4a5b = ["aGVsbG8=", "d29ybGQ="];
 (function (_0x3e7a90, _0x1c9f47) {
-  var _0x5d8c12 = function (_0x2f8c1d) {
-    while (--_0x2f8c1d) {
-      _0x3e7a90["push"](_0x3e7a90["shift"]());
-    }
-  };
-  _0x5d8c12(++_0x1c9f47);
+var _0x5d8c12 = function (_0x2f8c1d) {
+while (--_0x2f8c1d) {
+_0x3e7a90["push"](_0x3e7a90["shift"]());
+}
+};
+_0x5d8c12(++_0x1c9f47);
 })(_0x4a5b, 0x123);
 var _0x5678 = function (_0x3e7a90, _0x1c9f47) {
-  // ...解密逻辑
+// ...解密逻辑
 };
 
 console[_0x5678("0x0")](_0x5678("0x1"));
@@ -551,32 +567,32 @@ console[_0x5678("0x0")](_0x5678("0x1"));
 
 1. **执行初始化代码**（在 Console）:
 
-   ```javascript
-   var _0x4a5b = ["aGVsbG8=", "d29ybGQ="];
-   (function (_0x3e7a90, _0x1c9f47) {
-     var _0x5d8c12 = function (_0x2f8c1d) {
-       while (--_0x2f8c1d) {
-         _0x3e7a90["push"](_0x3e7a90["shift"]());
-       }
-     };
-     _0x5d8c12(++_0x1c9f47);
-   })(_0x4a5b, 0x123);
-   ```
+```javascript
+var _0x4a5b = ["aGVsbG8=", "d29ybGQ="];
+(function (_0x3e7a90, _0x1c9f47) {
+var _0x5d8c12 = function (_0x2f8c1d) {
+while (--_0x2f8c1d) {
+_0x3e7a90["push"](_0x3e7a90["shift"]());
+}
+};
+_0x5d8c12(++_0x1c9f47);
+})(_0x4a5b, 0x123);
+```
 
 2. **执行解密函数**:
 
-   ```javascript
-   var _0x5678 = function (_0x3e7a90, _0x1c9f47) {
-     // 复制完整的解密函数代码
-   };
+```javascript
+var _0x5678 = function (_0x3e7a90, _0x1c9f47) {
+// 复制完整的解密函数代码
+};
 
-   // 测试
-   _0x5678("0x0"); // 输出: "log"
-   _0x5678("0x1"); // 输出: "hello"
-   ```
+// 测试
+_0x5678("0x0"); // 输出: "log"
+_0x5678("0x1"); // 输出: "hello"
+```
 
 3. **批量替换**:
-   使用正则表达式或 AST 工具将所有 `_0x5678('0x...')` 替换为解密后的字符串
+使用正则表达式或 AST 工具将所有 `_0x5678('0x...')` 替换为解密后的字符串
 
 ---
 
@@ -586,27 +602,27 @@ console[_0x5678("0x0")](_0x5678("0x1"));
 
 ```javascript
 function checkPassword(pwd) {
-  var _0x1 = "2|0|3|1|4".split("|"),
-    _0x2 = 0;
-  while (true) {
-    switch (_0x1[_0x2++]) {
-      case "0":
-        if (pwd.length < 8) return false;
-        continue;
-      case "1":
-        if (!/[A-Z]/.test(pwd)) return false;
-        continue;
-      case "2":
-        var result = true;
-        continue;
-      case "3":
-        if (!/[0-9]/.test(pwd)) return false;
-        continue;
-      case "4":
-        return result;
-    }
-    break;
-  }
+var _0x1 = "2|0|3|1|4".split("|"),
+_0x2 = 0;
+while (true) {
+switch (_0x1[_0x2++]) {
+case "0":
+if (pwd.length < 8) return false;
+continue;
+case "1":
+if (!/[A-Z]/.test(pwd)) return false;
+continue;
+case "2":
+var result = true;
+continue;
+case "3":
+if (!/[0-9]/.test(pwd)) return false;
+continue;
+case "4":
+return result;
+}
+break;
+}
 }
 ```
 
@@ -614,15 +630,16 @@ function checkPassword(pwd) {
 
 1. **识别状态序列**: `'2|0|3|1|4'`
 2. **按顺序重组代码**:
-   ```javascript
-   function checkPassword(pwd) {
-     var result = true; // case '2'
-     if (pwd.length < 8) return false; // case '0'
-     if (!/[0-9]/.test(pwd)) return false; // case '3'
-     if (!/[A-Z]/.test(pwd)) return false; // case '1'
-     return result; // case '4'
-   }
-   ```
+
+```javascript
+function checkPassword(pwd) {
+    var result = true; // case '2'
+    if (pwd.length < 8) return false; // case '0'
+    if (!/[0-9]/.test(pwd)) return false; // case '3'
+    if (!/[A-Z]/.test(pwd)) return false; // case '1'
+    return result; // case '4'
+}
+```
 
 ---
 
@@ -644,12 +661,12 @@ function checkPassword(pwd) {
 每一步都保存文件：
 
 ```
-obfuscated.js           // 原始
-01_formatted.js         // 格式化
-02_strings_restored.js  // 字符串还原
-03_constants_folded.js  // 常量折叠
+obfuscated.js // 原始
+01_formatted.js // 格式化
+02_strings_restored.js // 字符串还原
+03_constants_folded.js // 常量折叠
 04_dead_code_removed.js // 死代码删除
-05_final.js            // 最终版本
+05_final.js // 最终版本
 ```
 
 ### 6.3 验证正确性
@@ -683,7 +700,7 @@ eval(还原代码).someFunction(testInput);
 
 ```javascript
 if (path.node && t.isIdentifier(path.node)) {
-  // 安全操作
+// 安全操作
 }
 ```
 
@@ -727,12 +744,12 @@ if (path.node && t.isIdentifier(path.node)) {
 
 ### 推荐工具
 
-| 工具             | 用途            | 链接                               |
+| 工具 | 用途 | 链接 |
 | ---------------- | --------------- | ---------------------------------- |
-| **AST Explorer** | 可视化 AST 结构 | https://astexplorer.net/           |
-| **Babel REPL**   | 测试 Babel 转换 | https://babeljs.io/repl            |
-| **webcrack**     | Webpack 反混淆  | https://github.com/j4k0xb/webcrack |
-| **synchrony**    | 自动反混淆      | https://deobfuscate.relative.im/   |
+| **AST Explorer** | 可视化 AST 结构 | https://astexplorer.net/ |
+| **Babel REPL** | 测试 Babel 转换 | https://babeljs.io/repl |
+| **webcrack** | Webpack 反混淆 | https://github.com/j4k0xb/webcrack |
+| **synchrony** | 自动反混淆 | https://deobfuscate.relative.im/ |
 
 ### 学习资源
 

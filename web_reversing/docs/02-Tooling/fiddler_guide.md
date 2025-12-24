@@ -31,8 +31,8 @@ Fiddler (Classic) 是一款历史悠久、功能强大的抓包工具。虽然�
 
 - **功能**: 自动匹配规则并返回预设内容。
 - **用途**: 替换线上文件（类似 Charles Map Local）。
-  - Rule: `REGEX:(?insx).*\/script\.js`
-  - Action: `C:\Users\Admin\Desktop\hook.js`
+- Rule: `REGEX:(?insx).*\/script\.js`
+- Action: `C:\Users\Admin\Desktop\hook.js`
 
 ---
 
@@ -46,16 +46,16 @@ Fiddler (Classic) 是一款历史悠久、功能强大的抓包工具。虽然�
 
 ```csharp
 static function OnBeforeRequest(oSession: Session) {
-    // 拦截特定 URL
-    if (oSession.uriContains("/api/v1/sign")) {
-        // 修改请求体
-        var sBody = oSession.GetRequestBodyAsString();
-        sBody = sBody.Replace("vip=false", "vip=true");
-        oSession.utilSetRequestBody(sBody);
+// 拦截特定 URL
+if (oSession.uriContains("/api/v1/sign")) {
+// 修改请求体
+var sBody = oSession.GetRequestBodyAsString();
+sBody = sBody.Replace("vip=false", "vip=true");
+oSession.utilSetRequestBody(sBody);
 
-        // 打印 Log 到 Fiddler Log 面板
-        FiddlerObject.log("Tampered body: " + sBody);
-    }
+// 打印 Log 到 Fiddler Log 面板
+FiddlerObject.log("Tampered body: " + sBody);
+}
 }
 ```
 
@@ -63,17 +63,17 @@ static function OnBeforeRequest(oSession: Session) {
 
 ```csharp
 static function OnBeforeResponse(oSession: Session) {
-    if (oSession.HostnameIs("api.target.com")) {
-        oSession.utilDecodeResponse(); // 解码 gzip
-        var sBody = oSession.GetResponseBodyAsString();
+if (oSession.HostnameIs("api.target.com")) {
+oSession.utilDecodeResponse(); // 解码 gzip
+var sBody = oSession.GetResponseBodyAsString();
 
-        // 替换 JSON 内容
-        if (sBody.Contains("\"is_admin\":false")) {
-            sBody = sBody.Replace("\"is_admin\":false", "\"is_admin\":true");
-            oSession.utilSetResponseBody(sBody);
-            oSession.oResponse.headers.Remove("Content-Security-Policy"); // 移除 CSP
-        }
-    }
+// 替换 JSON 内容
+if (sBody.Contains("\"is_admin\":false")) {
+sBody = sBody.Replace("\"is_admin\":false", "\"is_admin\":true");
+oSession.utilSetResponseBody(sBody);
+oSession.oResponse.headers.Remove("Content-Security-Policy"); // 移除 CSP
+}
+}
 }
 ```
 
@@ -86,10 +86,10 @@ static function OnBeforeResponse(oSession: Session) {
 
 ## 4. 移动端抓包
 
-1.  **PC 配置**: 开启 "Allow remote computers to connect"，重启 Fiddler。
-2.  **手机配置**: 设置代理为 PC IP + 8888。
-3.  **安装证书**: 手机浏览器访问 `http://ipv4:8888`，点击链接下载证书。
-4.  **注意**: 即使在 PC 端，也可以用 "FiddlerScript" 控制手机的流量。
+1. **PC 配置**: 开启 "Allow remote computers to connect"，重启 Fiddler。
+2. **手机配置**: 设置代理为 PC IP + 8888。
+3. **安装证书**: 手机浏览器访问 `http://ipv4:8888`，点击链接下载证书。
+4. **注意**: 即使在 PC 端，也可以用 "FiddlerScript" 控制手机的流量。
 
 ---
 

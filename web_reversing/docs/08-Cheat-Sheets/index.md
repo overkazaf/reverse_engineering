@@ -4,16 +4,16 @@
 
 ---
 
-## 📚 可用速查表
+## 可用速查表
 
-### 🖥️ [常用命令](./common_commands.md)
+### [常用命令](./common_commands.md)
 
 - Chrome DevTools 命令
 - Python 常用库用法
 - cURL 命令示例
 - Git 常用操作
 
-### 🔐 [加密算法特征](./crypto_signatures.md)
+### [加密算法特征](./crypto_signatures.md)
 
 - MD5/SHA/AES 识别特征
 - 常见加密库特征码
@@ -27,14 +27,14 @@
 - Burp Suite 快捷键
 - 常用工具快捷操作
 
-### 🔍 [正则表达式](./regex_patterns.md)
+### [正则表达式](./regex_patterns.md)
 
 - URL 匹配模式
 - 常见加密特征正则
 - 数据提取正则
 - 验证规则正则
 
-### 🌐 [HTTP 头速查](./http_headers.md)
+### [HTTP 头速查](./http_headers.md)
 
 - 常见请求头
 - 常见响应头
@@ -43,7 +43,7 @@
 
 ---
 
-## 💡 如何使用
+## 如何使用
 
 每个速查表都采用表格或列表格式，方便快速查找：
 
@@ -53,7 +53,7 @@
 
 ---
 
-## 🔖 推荐收藏
+## 推荐收藏
 
 将这个页面添加为浏览器书签，方便随时查阅：
 
@@ -64,7 +64,7 @@ Cmd+D (macOS)
 
 ---
 
-## 📥 离线使用
+## 离线使用
 
 你可以将整个文档导出为 PDF：
 
@@ -86,4 +86,4 @@ mkdocs build
 
 ---
 
-Happy Referencing! 📖
+Happy Referencing! 

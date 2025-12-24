@@ -1,18 +1,33 @@
 # 配方：绕过简单验证码
 
-## 📊 配方信息
+## 配方信息
 
-| 项目         | 说明                       |
+| 项目 | 说明 |
 | ------------ | -------------------------- |
-| **难度**     | ⭐⭐ (初级)                |
-| **预计时间** | 30-45 分钟                 |
+| **难度** | ⭐⭐ (初级) |
+| **预计时间** | 30-45 分钟 |
 | **所需工具** | Python 3.7+, Tesseract OCR |
-| **适用场景** | 识别简单的图形验证码       |
+| **适用场景** | 识别简单的图形验证码 |
 | **前置知识** | Python 基础, PIL/Pillow 库 |
 
 ---
 
-## 🎯 你将学到
+## 📚 前置知识
+
+在开始本配方之前，建议先掌握以下内容：
+
+| 知识领域 | 重要程度 | 参考资料 |
+|----------|---------|---------|
+| Python 基础语法 | 必需 | 了解函数、循环、条件语句等基本概念 |
+| HTTP 请求基础 | 必需 | [HTTP/HTTPS 协议](../01-Foundations/http_https_protocol.md) |
+| PIL/Pillow 图像处理 | 推荐 | Python 图像处理库，用于验证码预处理 |
+| Chrome DevTools | 推荐 | [浏览器开发者工具](../02-Tooling/browser_devtools.md) |
+
+> 💡 **新手提示**: 本配方侧重于**简单验证码**的识别。对于复杂验证码（滑块、点选等），请参考进阶配方 [验证码绕过](../04-Advanced-Recipes/captcha_bypass.md)。
+
+---
+
+## 你将学到
 
 完成这个配方后，你将能够：
 
@@ -25,7 +40,7 @@
 
 ---
 
-## 📝 准备工作
+## 准备工作
 
 ### 安装依赖
 
@@ -76,7 +91,7 @@ tesseract --version
 
 ---
 
-## 🚀 步骤详解
+## 步骤详解
 
 ### Step 1: 分析验证码流程
 
@@ -87,41 +102,41 @@ tesseract --version
 ```html
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>验证码登录</title>
-  </head>
-  <body>
-    <h2>登录</h2>
-    <input id="username" placeholder="用户名" />
-    <input id="password" type="password" placeholder="密码" />
-    <br /><br />
-    <img
-      id="captcha"
-      src="/captcha"
-      onclick="this.src='/captcha?'+Date.now()"
-    />
-    <br />
-    <input id="captcha_code" placeholder="验证码" />
-    <button onclick="login()">登录</button>
+<head>
+<title>验证码登录</title>
+</head>
+<body>
+<h2>登录</h2>
+<input id="username" placeholder="用户名" />
+<input id="password" type="password" placeholder="密码" />
+<br /><br />
+<img
+id="captcha"
+src="/captcha"
+onclick="this.src='/captcha?'+Date.now()"
+/>
+<br />
+<input id="captcha_code" placeholder="验证码" />
+<button onclick="login()">登录</button>
 
-    <script>
-      function login() {
-        const data = {
-          username: document.getElementById("username").value,
-          password: document.getElementById("password").value,
-          captcha: document.getElementById("captcha_code").value,
-        };
+<script>
+function login() {
+const data = {
+username: document.getElementById("username").value,
+password: document.getElementById("password").value,
+captcha: document.getElementById("captcha_code").value,
+};
 
-        fetch("/api/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        })
-          .then((r) => r.json())
-          .then((result) => alert(result.message));
-      }
-    </script>
-  </body>
+fetch("/api/login", {
+method: "POST",
+headers: { "Content-Type": "application/json" },
+body: JSON.stringify(data),
+})
+.then((r) => r.json())
+.then((result) => alert(result.message));
+}
+</script>
+</body>
 </html>
 ```
 
@@ -155,27 +170,27 @@ from io import BytesIO
 session = requests.Session()
 
 def download_captcha(url, save_path='captcha.png'):
-    """下载验证码图片"""
-    response = session.get(url)
+"""下载验证码图片"""
+response = session.get(url)
 
-    if response.status_code == 200:
-        # 保存图片
-        with open(save_path, 'wb') as f:
-            f.write(response.content)
+if response.status_code == 200:
+# 保存图片
+with open(save_path, 'wb') as f:
+f.write(response.content)
 
-        # 显示图片
-        img = Image.open(BytesIO(response.content))
-        img.show()
+# 显示图片
+img = Image.open(BytesIO(response.content))
+img.show()
 
-        print(f"✅ 验证码已保存到: {save_path}")
-        return True
-    else:
-        print(f"❌ 下载失败: {response.status_code}")
-        return False
+print(f"✅ 验证码已保存到: {save_path}")
+return True
+else:
+print(f"❌ 下载失败: {response.status_code}")
+return False
 
 if __name__ == '__main__':
-    url = 'https://example.com/captcha'
-    download_captcha(url)
+url = 'https://example.com/captcha'
+download_captcha(url)
 ```
 
 #### 2.2 运行测试
@@ -199,22 +214,22 @@ import pytesseract
 from PIL import Image
 
 def recognize_captcha(image_path):
-    """识别验证码"""
-    # 加载图片
-    img = Image.open(image_path)
+"""识别验证码"""
+# 加载图片
+img = Image.open(image_path)
 
-    # OCR 识别
-    text = pytesseract.image_to_string(img, config='--psm 7 digits')
+# OCR 识别
+text = pytesseract.image_to_string(img, config='--psm 7 digits')
 
-    # 清理结果（去除空格和换行）
-    result = text.strip().replace(' ', '').replace('\n', '')
+# 清理结果（去除空格和换行）
+result = text.strip().replace(' ', '').replace('\n', '')
 
-    print(f"识别结果: {result}")
-    return result
+print(f"识别结果: {result}")
+return result
 
 if __name__ == '__main__':
-    result = recognize_captcha('captcha.png')
-    print(f"✅ 验证码是: {result}")
+result = recognize_captcha('captcha.png')
+print(f"✅ 验证码是: {result}")
 ```
 
 **参数说明**:
@@ -247,43 +262,43 @@ from PIL import Image
 import pytesseract
 
 def preprocess_image(image_path):
-    """预处理验证码图片"""
-    # 读取图片
-    img = cv2.imread(image_path)
+"""预处理验证码图片"""
+# 读取图片
+img = cv2.imread(image_path)
 
-    # 1. 转灰度
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+# 1. 转灰度
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    # 2. 二值化（去除噪点）
-    _, binary = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+# 2. 二值化（去除噪点）
+_, binary = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
 
-    # 3. 去噪（形态学操作）
-    kernel = np.ones((2, 2), np.uint8)
-    opening = cv2.morphologyEx(binary, cv2.MORPH_OPEN, kernel, iterations=1)
+# 3. 去噪（形态学操作）
+kernel = np.ones((2, 2), np.uint8)
+opening = cv2.morphologyEx(binary, cv2.MORPH_OPEN, kernel, iterations=1)
 
-    # 4. 保存处理后的图片
-    processed_path = 'captcha_processed.png'
-    cv2.imwrite(processed_path, opening)
+# 4. 保存处理后的图片
+processed_path = 'captcha_processed.png'
+cv2.imwrite(processed_path, opening)
 
-    print(f"✅ 预处理完成: {processed_path}")
-    return processed_path
+print(f"✅ 预处理完成: {processed_path}")
+return processed_path
 
 def recognize_with_preprocess(image_path):
-    """预处理后识别"""
-    # 预处理
-    processed_path = preprocess_image(image_path)
+"""预处理后识别"""
+# 预处理
+processed_path = preprocess_image(image_path)
 
-    # OCR 识别
-    img = Image.open(processed_path)
-    text = pytesseract.image_to_string(img, config='--psm 7 digits')
-    result = text.strip().replace(' ', '').replace('\n', '')
+# OCR 识别
+img = Image.open(processed_path)
+text = pytesseract.image_to_string(img, config='--psm 7 digits')
+result = text.strip().replace(' ', '').replace('\n', '')
 
-    print(f"识别结果: {result}")
-    return result
+print(f"识别结果: {result}")
+return result
 
 if __name__ == '__main__':
-    result = recognize_with_preprocess('captcha.png')
-    print(f"✅ 验证码是: {result}")
+result = recognize_with_preprocess('captcha.png')
+print(f"✅ 验证码是: {result}")
 ```
 
 #### 4.2 对比效果
@@ -315,84 +330,84 @@ import cv2
 import numpy as np
 
 class CaptchaBypass:
-    def __init__(self, base_url):
-        self.base_url = base_url
-        self.session = requests.Session()
+def __init__(self, base_url):
+self.base_url = base_url
+self.session = requests.Session()
 
-    def download_captcha(self):
-        """下载验证码"""
-        url = f"{self.base_url}/captcha"
-        response = self.session.get(url)
+def download_captcha(self):
+"""下载验证码"""
+url = f"{self.base_url}/captcha"
+response = self.session.get(url)
 
-        if response.status_code == 200:
-            return response.content
-        return None
+if response.status_code == 200:
+return response.content
+return None
 
-    def preprocess_image(self, image_bytes):
-        """预处理图片"""
-        # 字节 → numpy array
-        nparr = np.frombuffer(image_bytes, np.uint8)
-        img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+def preprocess_image(self, image_bytes):
+"""预处理图片"""
+# 字节 → numpy array
+nparr = np.frombuffer(image_bytes, np.uint8)
+img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
-        # 灰度化
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+# 灰度化
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-        # 二值化
-        _, binary = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+# 二值化
+_, binary = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
 
-        # 去噪
-        kernel = np.ones((2, 2), np.uint8)
-        opening = cv2.morphologyEx(binary, cv2.MORPH_OPEN, kernel, iterations=1)
+# 去噪
+kernel = np.ones((2, 2), np.uint8)
+opening = cv2.morphologyEx(binary, cv2.MORPH_OPEN, kernel, iterations=1)
 
-        # numpy array → PIL Image
-        img_pil = Image.fromarray(opening)
-        return img_pil
+# numpy array → PIL Image
+img_pil = Image.fromarray(opening)
+return img_pil
 
-    def recognize_captcha(self, img):
-        """OCR 识别"""
-        text = pytesseract.image_to_string(img, config='--psm 7 digits')
-        result = text.strip().replace(' ', '').replace('\n', '')
-        return result
+def recognize_captcha(self, img):
+"""OCR 识别"""
+text = pytesseract.image_to_string(img, config='--psm 7 digits')
+result = text.strip().replace(' ', '').replace('\n', '')
+return result
 
-    def login(self, username, password):
-        """自动登录"""
-        # 1. 下载验证码
-        print("📥 下载验证码...")
-        captcha_bytes = self.download_captcha()
+def login(self, username, password):
+"""自动登录"""
+# 1. 下载验证码
+print(" 下载验证码...")
+captcha_bytes = self.download_captcha()
 
-        # 2. 预处理
-        print("🔧 预处理图片...")
-        processed_img = self.preprocess_image(captcha_bytes)
+# 2. 预处理
+print(" 预处理图片...")
+processed_img = self.preprocess_image(captcha_bytes)
 
-        # 3. 识别
-        print("🔍 识别验证码...")
-        captcha_code = self.recognize_captcha(processed_img)
-        print(f"✅ 识别结果: {captcha_code}")
+# 3. 识别
+print(" 识别验证码...")
+captcha_code = self.recognize_captcha(processed_img)
+print(f"✅ 识别结果: {captcha_code}")
 
-        # 4. 登录
-        print("🚀 发送登录请求...")
-        response = self.session.post(
-            f"{self.base_url}/api/login",
-            json={
-                'username': username,
-                'password': password,
-                'captcha': captcha_code
-            }
-        )
+# 4. 登录
+print(" 发送登录请求...")
+response = self.session.post(
+f"{self.base_url}/api/login",
+json={
+'username': username,
+'password': password,
+'captcha': captcha_code
+}
+)
 
-        result = response.json()
-        print(f"📥 响应: {result}")
+result = response.json()
+print(f" 响应: {result}")
 
-        return result
+return result
 
 if __name__ == '__main__':
-    bypass = CaptchaBypass('https://example.com')
-    result = bypass.login('admin', '123456')
+bypass = CaptchaBypass('https://example.com')
+result = bypass.login('admin', '123456')
 
-    if result['code'] == 0:
-        print("🎉 登录成功！")
-    else:
-        print(f"❌ 登录失败: {result['message']}")
+if result['code'] == 0:
+print(" 登录成功！")
+else:
+print(f"❌ 登录失败: {result['message']}")
 ```
 
 #### 5.2 运行测试
@@ -404,13 +419,13 @@ python auto_login.py
 **预期输出**:
 
 ```
-📥 下载验证码...
-🔧 预处理图片...
-🔍 识别验证码...
+下载验证码...
+预处理图片...
+识别验证码...
 ✅ 识别结果: 1234
-🚀 发送登录请求...
-📥 响应: {'code': 0, 'message': '登录成功', 'token': '...'}
-🎉 登录成功！
+发送登录请求...
+响应: {'code': 0, 'message': '登录成功', 'token': '...'}
+登录成功！
 ```
 
 ---
@@ -427,7 +442,7 @@ python auto_login.py
 
 ---
 
-## 🎓 进阶练习
+## 进阶练习
 
 ### 练习 1: 提高识别率
 
@@ -476,7 +491,7 @@ result = model.predict(img)
 
 ---
 
-## ❗ 常见问题
+## 常见问题
 
 ### Q1: OCR 完全识别不出来怎么办？
 
@@ -484,19 +499,19 @@ result = model.predict(img)
 
 1. **干扰太强**:
 
-   - 尝试更激进的预处理
-   - 使用机器学习模型
-   - 考虑使用打码平台
+- 尝试更激进的预处理
+- 使用机器学习模型
+- 考虑使用打码平台
 
 2. **字体特殊**:
 
-   - 训练 Tesseract 自定义字体
-   - 使用深度学习模型
+- 训练 Tesseract 自定义字体
+- 使用深度学习模型
 
 3. **验证码类型不适合 OCR**:
-   - 滑块验证码 → 使用轨迹模拟
-   - 点选验证码 → 使用图像识别
-   - 行为验证码 → 分析行为模式
+    - 滑块验证码 → 使用轨迹模拟
+    - 点选验证码 → 使用图像识别
+    - 行为验证码 → 分析行为模式
 
 ### Q2: 识别率只有 30%，如何提高？
 
@@ -513,8 +528,8 @@ result = model.predict(img)
 # 多次识别
 results = []
 for i in range(5):
-    result = recognize_captcha(img)
-    results.append(result)
+result = recognize_captcha(img)
+results.append(result)
 
 # 取出现最多的结果
 from collections import Counter
@@ -543,27 +558,28 @@ most_common = Counter(results).most_common(1)[0][0]
 
 1. **模拟滑动轨迹**:
 
-   ```python
-   # 生成模拟人类的轨迹
-   def generate_track(distance):
-       track = []
-       current = 0
-       while current < distance:
-           v = random.randint(1, 5)
-           track.append(v)
-           current += v
-       return track
-   ```
+```python
+# 生成模拟人类的轨迹
+def generate_track(distance):
+track = []
+current = 0
+while current < distance:
+v = random.randint(1, 5)
+track.append(v)
+current += v
+return track
+```
 
 2. **分析缺口位置**:
-   - 使用图像识别找到缺口
-   - 计算需要移动的距离
+
+- 使用图像识别找到缺口
+- 计算需要移动的距离
 
 参考: [验证码绕过](../../04-Advanced-Recipes/captcha_bypass.md)
 
 ---
 
-## 🔍 原理解析
+## 原理解析
 
 ### OCR 工作原理
 
@@ -596,7 +612,7 @@ most_common = Counter(results).most_common(1)[0][0]
 
 ---
 
-## 📚 相关配方
+## 相关配方
 
 ### 基础配方
 
@@ -613,7 +629,7 @@ most_common = Counter(results).most_common(1)[0][0]
 
 ---
 
-## 🎉 恭喜！
+## 恭喜！
 
 你已经掌握了：
 
@@ -635,4 +651,4 @@ most_common = Counter(results).most_common(1)[0][0]
 - 遵守网站的服务条款和请求频率限制
 - 合法合规使用这些技术
 
-Happy Bypassing! 🤖
+Happy Bypassing! 

@@ -6,6 +6,22 @@
 
 ---
 
+## 📚 前置知识
+
+在开始本配方之前，建议先掌握以下内容：
+
+| 知识领域 | 重要程度 | 参考资料 |
+|----------|---------|---------|
+| 浏览器指纹识别 | 必需 | [浏览器指纹识别](./browser_fingerprinting.md) |
+| HTTP/HTTPS 协议 | 必需 | [HTTP/HTTPS 协议](../01-Foundations/http_https_protocol.md) |
+| Hook 技术 | 必需 | [Hook 技术](../03-Basic-Recipes/hooking_techniques.md) |
+| TLS 指纹 | 推荐 | [TLS 指纹识别](./tls_fingerprinting.md) |
+| 浏览器自动化 | 推荐 | [Puppeteer/Playwright](../02-Tooling/puppeteer_playwright.md) |
+
+> 💡 **提示**: 反爬虫对抗是一场**持续的攻防战**。本配方整合了指纹、行为、协议等多维度的检测与绕过技术，是逆向工程的综合应用。
+
+---
+
 ## 反爬虫技术分类
 
 ### 1. 基于行为的检测
@@ -21,19 +37,19 @@
 ```python
 # 服务端检测逻辑示例
 def is_bot_behavior(request_log):
-    # 1. 检查请求频率
-    if request_log.count_in_last_minute() > 100:
-        return True
+# 1. 检查请求频率
+if request_log.count_in_last_minute() > 100:
+return True
 
-    # 2. 检查 User-Agent
-    if not request_log.has_valid_user_agent():
-        return True
+# 2. 检查 User-Agent
+if not request_log.has_valid_user_agent():
+return True
 
-    # 3. 检查 Referer 链
-    if not request_log.has_valid_referer_chain():
-        return True
+# 3. 检查 Referer 链
+if not request_log.has_valid_referer_chain():
+return True
 
-    return False
+return False
 ```
 
 **对抗策略**:
@@ -52,17 +68,17 @@ def is_bot_behavior(request_log):
 
 ```javascript
 if (navigator.webdriver) {
-  console.log("Bot detected!");
+console.log("Bot detected!");
 }
 
 // 检测 Selenium 特征
 if (window.document.documentElement.getAttribute("webdriver")) {
-  console.log("Selenium detected!");
+console.log("Selenium detected!");
 }
 
 // 检测 PhantomJS
 if (window.callPhantom || window._phantom) {
-  console.log("PhantomJS detected!");
+console.log("PhantomJS detected!");
 }
 ```
 
@@ -71,21 +87,21 @@ if (window.callPhantom || window._phantom) {
 ```javascript
 // Puppeteer
 await page.evaluateOnNewDocument(() => {
-    Object.defineProperty(navigator, 'webdriver', {
-        get: () => undefined
-    });
+Object.defineProperty(navigator, 'webdriver', {
+get: () => undefined
+});
 
-    delete navigator.__proto__.webdriver;
+delete navigator.__proto__.webdriver;
 });
 
 // Selenium
 options.add_argument('--disable-blink-features=AutomationControlled')
 driver.execute_cdp_cmd('Page.addScriptToEvaluateOnNewDocument', {
-    'source': '''
-        Object.defineProperty(navigator, 'webdriver', {
-            get: () => undefined
-        })
-    '''
+'source': '''
+Object.defineProperty(navigator, 'webdriver', {
+get: () => undefined
+})
+'''
 })
 ```
 
@@ -96,17 +112,17 @@ driver.execute_cdp_cmd('Page.addScriptToEvaluateOnNewDocument', {
 ```javascript
 // 检测 User-Agent
 if (/HeadlessChrome/.test(navigator.userAgent)) {
-  console.log("Headless detected!");
+console.log("Headless detected!");
 }
 
 // 检测插件数量
 if (navigator.plugins.length === 0) {
-  console.log("Headless detected!");
+console.log("Headless detected!");
 }
 
 // 检测 Chrome 对象
 if (!window.chrome || !window.chrome.runtime) {
-  console.log("Not real Chrome!");
+console.log("Not real Chrome!");
 }
 ```
 
@@ -118,16 +134,16 @@ await page.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) ...");
 
 // 伪造 Chrome 对象
 await page.evaluateOnNewDocument(() => {
-  window.chrome = {
-    runtime: {},
-  };
+window.chrome = {
+runtime: {},
+};
 });
 
 // 伪造插件
 await page.evaluateOnNewDocument(() => {
-  Object.defineProperty(navigator, "plugins", {
-    get: () => [1, 2, 3, 4, 5],
-  });
+Object.defineProperty(navigator, "plugins", {
+get: () => [1, 2, 3, 4, 5],
+});
 });
 ```
 
@@ -143,14 +159,14 @@ await page.evaluateOnNewDocument(() => {
 from scapy.all import *
 
 def extract_ja3(packet):
-    # 提取 TLS Client Hello
-    # 生成 JA3 指纹
-    ja3 = f"{version},{ciphers},{extensions},{curves},{formats}"
-    ja3_hash = hashlib.md5(ja3.encode()).hexdigest()
+# 提取 TLS Client Hello
+# 生成 JA3 指纹
+ja3 = f"{version},{ciphers},{extensions},{curves},{formats}"
+ja3_hash = hashlib.md5(ja3.encode()).hexdigest()
 
-    # 检查是否在黑名单中
-    if ja3_hash in BLACKLIST_JA3:
-        return "Bot detected"
+# 检查是否在黑名单中
+if ja3_hash in BLACKLIST_JA3:
+return "Bot detected"
 ```
 
 **对抗策略**:
@@ -167,12 +183,12 @@ def extract_ja3(packet):
 
 ```javascript
 function getCanvasFingerprint() {
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
-  ctx.textBaseline = "top";
-  ctx.font = "14px Arial";
-  ctx.fillText("fingerprint", 2, 2);
-  return canvas.toDataURL();
+const canvas = document.createElement("canvas");
+const ctx = canvas.getContext("2d");
+ctx.textBaseline = "top";
+ctx.font = "14px Arial";
+ctx.fillText("fingerprint", 2, 2);
+return canvas.toDataURL();
 }
 
 const fingerprint = getCanvasFingerprint();
@@ -195,10 +211,10 @@ const fingerprint = getCanvasFingerprint();
 
 <!-- CSS 隐藏 -->
 <style>
-  .trap {
-    position: absolute;
-    left: -9999px;
-  }
+.trap {
+position: absolute;
+left: -9999px;
+}
 </style>
 <a href="/trap" class="trap">Trap</a>
 ```
@@ -208,9 +224,9 @@ const fingerprint = getCanvasFingerprint();
 ```python
 @app.route('/trap')
 def honeypot():
-    # 记录访问者 IP，标记为爬虫
-    blacklist.add(request.remote_addr)
-    return "Gotcha!"
+# 记录访问者 IP，标记为爬虫
+blacklist.add(request.remote_addr)
+return "Gotcha!"
 ```
 
 **对抗策略**:
@@ -220,11 +236,11 @@ def honeypot():
 
 ```javascript
 function isVisible(element) {
-  return (
-    element.offsetWidth > 0 &&
-    element.offsetHeight > 0 &&
-    getComputedStyle(element).visibility !== "hidden"
-  );
+return (
+element.offsetWidth > 0 &&
+element.offsetHeight > 0 &&
+getComputedStyle(element).visibility !== "hidden"
+);
 }
 ```
 
@@ -240,21 +256,21 @@ function isVisible(element) {
 
 ```html
 <style>
-  .price {
-    position: relative;
-  }
-  .price .real {
-    position: absolute;
-    left: -9999px;
-  }
-  .price .fake {
-    position: relative;
-  }
+.price {
+position: relative;
+}
+.price .real {
+position: absolute;
+left: -9999px;
+}
+.price .fake {
+position: relative;
+}
 </style>
 
 <div class="price">
-  <span class="real">¥199</span>
-  <span class="fake">¥9999</span>
+<span class="real">¥199</span>
+<span class="fake">¥9999</span>
 </div>
 ```
 
@@ -284,10 +300,10 @@ script = """
 var element = arguments[0];
 var style = window.getComputedStyle(element);
 if (style.display !== 'none' &&
-    style.visibility !== 'hidden' &&
-    style.opacity !== '0' &&
-    parseInt(style.left) > -1000) {
-    return element.innerText;
+style.visibility !== 'hidden' &&
+style.opacity !== '0' &&
+parseInt(style.left) > -1000) {
+return element.innerText;
 }
 return null;
 ```
@@ -306,13 +322,13 @@ return null;
 
 <!-- CSS 引入自定义字体 -->
 <style>
-  @font-face {
-    font-family: "CustomFont";
-    src: url("/fonts/custom_12345.woff") format("woff");
-  }
-  .rating {
-    font-family: "CustomFont";
-  }
+@font-face {
+font-family: "CustomFont";
+src: url("/fonts/custom_12345.woff") format("woff");
+}
+.rating {
+font-family: "CustomFont";
+}
 </style>
 ```
 
@@ -321,13 +337,13 @@ return null;
 ```
 WOFF 字体文件
 ├── cmap 表 (字符映射表)
-│   ├── &#xe601; → "8"
-│   ├── &#xe602; → "."
-│   └── &#xe603; → "5"
+│ ├── &#xe601; → "8"
+│ ├── &#xe602; → "."
+│ └── &#xe603; → "5"
 ├── glyf 表 (字形轮廓)
-│   ├── glyph_001 (数字 8 的轮廓)
-│   ├── glyph_002 (点号的轮廓)
-│   └── glyph_003 (数字 5 的轮廓)
+│ ├── glyph_001 (数字 8 的轮廓)
+│ ├── glyph_002 (点号的轮廓)
+│ └── glyph_003 (数字 5 的轮廓)
 ```
 
 **破解方法**:
@@ -341,57 +357,57 @@ import re
 
 # 1. 从页面提取字体文件 URL
 def extract_font_url(html):
-    pattern = r'url\(["\']?(/fonts/[^"\']+\.woff[^"\']*)["\']?\)'
-    match = re.search(pattern, html)
-    return match.group(1) if match else None
+pattern = r'url\(["\']?(/fonts/[^"\']+\.woff[^"\']*)["\']?\)'
+match = re.search(pattern, html)
+return match.group(1) if match else None
 
 # 2. 下载字体文件
 font_url = 'https://example.com/fonts/custom.woff'
 response = requests.get(font_url)
 with open('custom.woff', 'wb') as f:
-    f.write(response.content)
+f.write(response.content)
 
 # 3. 解析字体文件
 font = TTFont('custom.woff')
 
 # 4. 提取字符映射
-cmap = font.getBestCmap()  # 获取最佳字符映射表
+cmap = font.getBestCmap() # 获取最佳字符映射表
 
 # 5. 提取字形坐标
 def get_glyph_outline(font, glyph_name):
-    """获取字形轮廓坐标"""
-    glyf_table = font['glyf']
-    glyph = glyf_table[glyph_name]
-    if glyph.isComposite():
-        return None  # 跳过复合字形
-    coordinates = []
-    if hasattr(glyph, 'coordinates'):
-        for x, y in glyph.coordinates:
-            coordinates.append((x, y))
-    return coordinates
+"""获取字形轮廓坐标"""
+glyf_table = font['glyf']
+glyph = glyf_table[glyph_name]
+if glyph.isComposite():
+return None # 跳过复合字形
+coordinates = []
+if hasattr(glyph, 'coordinates'):
+for x, y in glyph.coordinates:
+coordinates.append((x, y))
+return coordinates
 
 # 6. 建立字形与真实字符的映射
 font_map = {}
 for unicode_val, glyph_name in cmap.items():
-    outline = get_glyph_outline(font, glyph_name)
-    # 通过比对坐标识别真实字符
-    # 这里需要预先建立标准字形库
-    real_char = recognize_char_by_outline(outline)
-    font_map[chr(unicode_val)] = real_char
+outline = get_glyph_outline(font, glyph_name)
+# 通过比对坐标识别真实字符
+# 这里需要预先建立标准字形库
+real_char = recognize_char_by_outline(outline)
+font_map[chr(unicode_val)] = real_char
 
 print(font_map)
 # {'\ue601': '8', '\ue602': '.', '\ue603': '5'}
 
 # 7. 解密文本
 def decrypt_text(encrypted_text, font_map):
-    decrypted = ''
-    for char in encrypted_text:
-        decrypted += font_map.get(char, char)
-    return decrypted
+decrypted = ''
+for char in encrypted_text:
+decrypted += font_map.get(char, char)
+return decrypted
 
-encrypted = '&#xe601;&#xe602;&#xe603;'  # HTML 实体
+encrypted = '&#xe601;&#xe602;&#xe603;' # HTML 实体
 decrypted = decrypt_text(encrypted, font_map)
-print(decrypted)  # "8.5"
+print(decrypted) # "8.5"
 ```
 
 **方法 2: OCR 识别（针对动态字体）**
@@ -403,22 +419,22 @@ import pytesseract
 from io import BytesIO
 
 def ocr_screenshot(url, selector):
-    """截图并 OCR 识别"""
-    driver = webdriver.Chrome()
-    driver.get(url)
+"""截图并 OCR 识别"""
+driver = webdriver.Chrome()
+driver.get(url)
 
-    # 定位元素
-    element = driver.find_element(By.CSS_SELECTOR, selector)
+# 定位元素
+element = driver.find_element(By.CSS_SELECTOR, selector)
 
-    # 截取元素截图
-    screenshot = element.screenshot_as_png
-    image = Image.open(BytesIO(screenshot))
+# 截取元素截图
+screenshot = element.screenshot_as_png
+image = Image.open(BytesIO(screenshot))
 
-    # OCR 识别
-    text = pytesseract.image_to_string(image, lang='chi_sim+eng')
+# OCR 识别
+text = pytesseract.image_to_string(image, lang='chi_sim+eng')
 
-    driver.quit()
-    return text.strip()
+driver.quit()
+return text.strip()
 ```
 
 **方法 3: 字形相似度匹配**
@@ -428,38 +444,38 @@ import numpy as np
 from fontTools.pens.recordingPen import RecordingPen
 
 def calculate_similarity(outline1, outline2):
-    """计算两个字形轮廓的相似度"""
-    # 将坐标序列转换为向量
-    vec1 = np.array(outline1).flatten()
-    vec2 = np.array(outline2).flatten()
+"""计算两个字形轮廓的相似度"""
+# 将坐标序列转换为向量
+vec1 = np.array(outline1).flatten()
+vec2 = np.array(outline2).flatten()
 
-    # 归一化
-    vec1 = vec1 / np.linalg.norm(vec1)
-    vec2 = vec2 / np.linalg.norm(vec2)
+# 归一化
+vec1 = vec1 / np.linalg.norm(vec1)
+vec2 = vec2 / np.linalg.norm(vec2)
 
-    # 计算余弦相似度
-    similarity = np.dot(vec1, vec2)
-    return similarity
+# 计算余弦相似度
+similarity = np.dot(vec1, vec2)
+return similarity
 
 # 建立标准字形库（需提前准备）
 standard_glyphs = {
-    '0': [(10, 20), (30, 20), ...],
-    '1': [(15, 5), (15, 35), ...],
-    # ... 其他字符
+'0': [(10, 20), (30, 20), ...],
+'1': [(15, 5), (15, 35), ...],
+# ... 其他字符
 }
 
 def recognize_char_by_outline(outline):
-    """通过轮廓识别字符"""
-    max_similarity = 0
-    recognized_char = ''
+"""通过轮廓识别字符"""
+max_similarity = 0
+recognized_char = ''
 
-    for char, std_outline in standard_glyphs.items():
-        similarity = calculate_similarity(outline, std_outline)
-        if similarity > max_similarity:
-            max_similarity = similarity
-            recognized_char = char
+for char, std_outline in standard_glyphs.items():
+similarity = calculate_similarity(outline, std_outline)
+if similarity > max_similarity:
+max_similarity = similarity
+recognized_char = char
 
-    return recognized_char if max_similarity > 0.8 else '?'
+return recognized_char if max_similarity > 0.8 else '?'
 ```
 
 **进阶对抗: 动态字体反爬**
@@ -468,7 +484,7 @@ def recognize_char_by_outline(outline):
 
 ```python
 # 访问 1：&#xe601; → "8"
-# 访问 2：&#xe601; → "3"  （映射关系改变）
+# 访问 2：&#xe601; → "3" （映射关系改变）
 ```
 
 **破解方法**:
@@ -485,73 +501,73 @@ from fontTools.ttLib import TTFont
 import re
 
 class DianpingFontCracker:
-    def __init__(self):
-        self.base_font = None  # 基准字体（固定映射）
-        self.current_font = None  # 当前页面字体
+def __init__(self):
+self.base_font = None # 基准字体（固定映射）
+self.current_font = None # 当前页面字体
 
-    def download_font(self, url):
-        """下载字体文件"""
-        response = requests.get(url)
-        with open('temp.woff', 'wb') as f:
-            f.write(response.content)
-        return TTFont('temp.woff')
+def download_font(self, url):
+"""下载字体文件"""
+response = requests.get(url)
+with open('temp.woff', 'wb') as f:
+f.write(response.content)
+return TTFont('temp.woff')
 
-    def extract_font_url(self, html):
-        """从 HTML 中提取字体 URL"""
-        pattern = r'url\("(.*?\.woff)"\)'
-        match = re.search(pattern, html)
-        return match.group(1) if match else None
+def extract_font_url(self, html):
+"""从 HTML 中提取字体 URL"""
+pattern = r'url\("(.*?\.woff)"\)'
+match = re.search(pattern, html)
+return match.group(1) if match else None
 
-    def build_mapping(self, font, base_font):
-        """通过对比基准字体建立映射"""
-        mapping = {}
+def build_mapping(self, font, base_font):
+"""通过对比基准字体建立映射"""
+mapping = {}
 
-        for code in font.getBestCmap():
-            glyph_name = font.getBestCmap()[code]
-            outline = self.get_outline(font, glyph_name)
+for code in font.getBestCmap():
+glyph_name = font.getBestCmap()[code]
+outline = self.get_outline(font, glyph_name)
 
-            # 与基准字体对比
-            for base_code, base_glyph in base_font.getBestCmap().items():
-                base_outline = self.get_outline(base_font, base_glyph)
+# 与基准字体对比
+for base_code, base_glyph in base_font.getBestCmap().items():
+base_outline = self.get_outline(base_font, base_glyph)
 
-                if self.is_similar(outline, base_outline):
-                    # 基准字体的字符是已知的
-                    real_char = chr(base_code)
-                    mapping[chr(code)] = real_char
-                    break
+if self.is_similar(outline, base_outline):
+# 基准字体的字符是已知的
+real_char = chr(base_code)
+mapping[chr(code)] = real_char
+break
 
-        return mapping
+return mapping
 
-    def get_outline(self, font, glyph_name):
-        """获取字形轮廓"""
-        glyf = font['glyf'][glyph_name]
-        if hasattr(glyf, 'coordinates'):
-            return list(glyf.coordinates)
-        return []
+def get_outline(self, font, glyph_name):
+"""获取字形轮廓"""
+glyf = font['glyf'][glyph_name]
+if hasattr(glyf, 'coordinates'):
+return list(glyf.coordinates)
+return []
 
-    def is_similar(self, outline1, outline2, threshold=0.9):
-        """判断两个轮廓是否相似"""
-        if len(outline1) != len(outline2):
-            return False
-        return calculate_similarity(outline1, outline2) > threshold
+def is_similar(self, outline1, outline2, threshold=0.9):
+"""判断两个轮廓是否相似"""
+if len(outline1) != len(outline2):
+return False
+return calculate_similarity(outline1, outline2) > threshold
 
-    def decrypt(self, html_content):
-        """解密页面内容"""
-        # 1. 提取字体 URL
-        font_url = self.extract_font_url(html_content)
+def decrypt(self, html_content):
+"""解密页面内容"""
+# 1. 提取字体 URL
+font_url = self.extract_font_url(html_content)
 
-        # 2. 下载字体
-        current_font = self.download_font(font_url)
+# 2. 下载字体
+current_font = self.download_font(font_url)
 
-        # 3. 建立映射
-        mapping = self.build_mapping(current_font, self.base_font)
+# 3. 建立映射
+mapping = self.build_mapping(current_font, self.base_font)
 
-        # 4. 替换加密文本
-        decrypted_html = html_content
-        for enc_char, real_char in mapping.items():
-            decrypted_html = decrypted_html.replace(enc_char, real_char)
+# 4. 替换加密文本
+decrypted_html = html_content
+for enc_char, real_char in mapping.items():
+decrypted_html = decrypted_html.replace(enc_char, real_char)
 
-        return decrypted_html
+return decrypted_html
 ```
 
 **资源**:
@@ -574,7 +590,7 @@ class DianpingFontCracker:
 
 ```javascript
 setInterval(function () {
-  debugger;
+debugger;
 }, 100);
 ```
 
@@ -582,11 +598,11 @@ setInterval(function () {
 
 ```javascript
 (function () {
-  function detect() {
-    debugger;
-    detect();
-  }
-  detect();
+function detect() {
+debugger;
+detect();
+}
+detect();
 })();
 ```
 
@@ -594,16 +610,16 @@ setInterval(function () {
 
 ```javascript
 setInterval(function () {
-  (function () {
-    return false;
-  })
-    ["constructor"]("debugger")
-    ["call"]();
+(function () {
+return false;
+})
+["constructor"]("debugger")
+["call"]();
 }, 50);
 
 // 或使用 eval
 setInterval(function () {
-  eval("debugger");
+eval("debugger");
 }, 50);
 ```
 
@@ -611,17 +627,17 @@ setInterval(function () {
 
 ```javascript
 setInterval(function () {
-  var start = new Date();
-  debugger;
-  var end = new Date();
+var start = new Date();
+debugger;
+var end = new Date();
 
-  // 检测时间差，判断是否在调试
-  if (end - start > 100) {
-    console.log("Developer tools detected!");
-    // 清空页面或重定向
-    document.body.innerHTML = "";
-    window.location.href = "about:blank";
-  }
+// 检测时间差，判断是否在调试
+if (end - start > 100) {
+console.log("Developer tools detected!");
+// 清空页面或重定向
+document.body.innerHTML = "";
+window.location.href = "about:blank";
+}
 }, 1000);
 ```
 
@@ -656,29 +672,29 @@ Chrome DevTools 操作:
 ```javascript
 // 在页面加载前注入（通过浏览器扩展或 Fiddler）
 (function () {
-  var originalFunction = window.Function;
-  window.Function = function () {
-    var args = Array.prototype.slice.call(arguments);
-    var code = args[args.length - 1];
+var originalFunction = window.Function;
+window.Function = function () {
+var args = Array.prototype.slice.call(arguments);
+var code = args[args.length - 1];
 
-    // 检测并移除 debugger
-    if (code && typeof code === "string" && code.includes("debugger")) {
-      console.log("Blocked debugger:", code);
-      args[args.length - 1] = code.replace(/debugger/g, "");
-    }
+// 检测并移除 debugger
+if (code && typeof code === "string" && code.includes("debugger")) {
+console.log("Blocked debugger:", code);
+args[args.length - 1] = code.replace(/debugger/g, "");
+}
 
-    return originalFunction.apply(this, args);
-  };
+return originalFunction.apply(this, args);
+};
 
-  // 处理 eval
-  var originalEval = window.eval;
-  window.eval = function (code) {
-    if (typeof code === "string" && code.includes("debugger")) {
-      console.log("Blocked eval debugger:", code);
-      code = code.replace(/debugger/g, "");
-    }
-    return originalEval.call(this, code);
-  };
+// 处理 eval
+var originalEval = window.eval;
+window.eval = function (code) {
+if (typeof code === "string" && code.includes("debugger")) {
+console.log("Blocked eval debugger:", code);
+code = code.replace(/debugger/g, "");
+}
+return originalEval.call(this, code);
+};
 })();
 ```
 
@@ -722,18 +738,18 @@ driver.get('https://example.com')
 ```javascript
 // 使用 Proxy 拦截 debugger
 (function () {
-  var handler = {
-    construct: function (target, args) {
-      var code = args[args.length - 1];
-      if (typeof code === "string") {
-        code = code.replace(/debugger/g, "");
-        args[args.length - 1] = code;
-      }
-      return new target(...args);
-    },
-  };
+var handler = {
+construct: function (target, args) {
+var code = args[args.length - 1];
+if (typeof code === "string") {
+code = code.replace(/debugger/g, "");
+args[args.length - 1] = code;
+}
+return new target(...args);
+},
+};
 
-  window.Function = new Proxy(Function, handler);
+window.Function = new Proxy(Function, handler);
 })();
 ```
 
@@ -750,14 +766,14 @@ driver.get('https://example.com')
 
 ```javascript
 function detectDevTools() {
-  var widthThreshold = window.outerWidth - window.innerWidth > 160;
-  var heightThreshold = window.outerHeight - window.innerHeight > 160;
+var widthThreshold = window.outerWidth - window.innerWidth > 160;
+var heightThreshold = window.outerHeight - window.innerHeight > 160;
 
-  if (widthThreshold || heightThreshold) {
-    console.log("DevTools detected!");
-    return true;
-  }
-  return false;
+if (widthThreshold || heightThreshold) {
+console.log("DevTools detected!");
+return true;
+}
+return false;
 }
 
 setInterval(detectDevTools, 1000);
@@ -769,25 +785,25 @@ setInterval(detectDevTools, 1000);
 var devtools = { open: false };
 
 var checkStatus = function () {
-  var element = new Image();
-  Object.defineProperty(element, "id", {
-    get: function () {
-      devtools.open = true;
-    },
-  });
+var element = new Image();
+Object.defineProperty(element, "id", {
+get: function () {
+devtools.open = true;
+},
+});
 
-  console.log("%c", element);
-  console.clear();
+console.log("%c", element);
+console.clear();
 };
 
 setInterval(function () {
-  devtools.open = false;
-  checkStatus();
+devtools.open = false;
+checkStatus();
 
-  if (devtools.open) {
-    console.log("DevTools detected!");
-    // 执行反制措施
-  }
+if (devtools.open) {
+console.log("DevTools detected!");
+// 执行反制措施
+}
 }, 1000);
 ```
 
@@ -816,14 +832,14 @@ console.error = function () {};
 
 #### 8.2 主流验证码服务商
 
-| 服务商                  | 类型             | 特点                     | 破解难度 |
+| 服务商 | 类型 | 特点 | 破解难度 |
 | ----------------------- | ---------------- | ------------------------ | -------- |
-| **极验 (GeeTest)**      | 滑块、点选、智能 | 行为轨迹分析、多维度风控 | ★★★★★    |
-| **网易易盾**            | 滑块、点选、智能 | 图像乱序、背景融合       | ★★★★★    |
-| **阿里云盾**            | 滑块、智能       | 风控引擎、设备指纹       | ★★★★★    |
-| **腾讯天御**            | 滑块、点选、智能 | 交互动态加载             | ★★★★★    |
-| **点触验证码**          | 滑块、点选       | 多种验证方式             | ★★★★☆    |
-| **Google reCAPTCHA v3** | 智能             | 无感验证、风险评分       | ★★★★☆    |
+| **极验 (GeeTest)** | 滑块、点选、智能 | 行为轨迹分析、多维度风控 | ★★★★★ |
+| **网易易盾** | 滑块、点选、智能 | 图像乱序、背景融合 | ★★★★★ |
+| **阿里云盾** | 滑块、智能 | 风控引擎、设备指纹 | ★★★★★ |
+| **腾讯天御** | 滑块、点选、智能 | 交互动态加载 | ★★★★★ |
+| **点触验证码** | 滑块、点选 | 多种验证方式 | ★★★★☆ |
+| **Google reCAPTCHA v3** | 智能 | 无感验证、风险评分 | ★★★★☆ |
 
 #### 8.3 滑块验证码原理与破解
 
@@ -835,15 +851,15 @@ console.error = function () {};
 3. 显示缺口图片和滑块
 4. 用户拖动滑块
 5. 记录轨迹数据：
-   - 鼠标移动轨迹
-   - 速度变化
-   - 加速度
-   - 时间戳
+    - 鼠标移动轨迹
+    - 速度变化
+    - 加速度
+    - 时间戳
 6. 提交轨迹到服务器验证
 7. 服务器分析行为特征：
-   - 轨迹是否平滑
-   - 速度是否自然
-   - 是否符合人类行为
+    - 轨迹是否平滑
+    - 速度是否自然
+    - 是否符合人类行为
 8. 返回验证结果
 ```
 
@@ -862,91 +878,91 @@ import time
 import random
 
 class SliderCracker:
-    def __init__(self, driver):
-        self.driver = driver
+def __init__(self, driver):
+self.driver = driver
 
-    def get_gap_distance(self, bg_img, slide_img):
-        """计算缺口距离"""
-        # 1. 转换为灰度图
-        bg_gray = cv2.cvtColor(np.array(bg_img), cv2.COLOR_RGB2GRAY)
-        slide_gray = cv2.cvtColor(np.array(slide_img), cv2.COLOR_RGB2GRAY)
+def get_gap_distance(self, bg_img, slide_img):
+"""计算缺口距离"""
+# 1. 转换为灰度图
+bg_gray = cv2.cvtColor(np.array(bg_img), cv2.COLOR_RGB2GRAY)
+slide_gray = cv2.cvtColor(np.array(slide_img), cv2.COLOR_RGB2GRAY)
 
-        # 2. 边缘检测
-        bg_edges = cv2.Canny(bg_gray, 100, 200)
+# 2. 边缘检测
+bg_edges = cv2.Canny(bg_gray, 100, 200)
 
-        # 3. 模板匹配
-        result = cv2.matchTemplate(bg_edges, slide_gray, cv2.TM_CCOEFF_NORMED)
-        min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
+# 3. 模板匹配
+result = cv2.matchTemplate(bg_edges, slide_gray, cv2.TM_CCOEFF_NORMED)
+min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
 
-        # 4. 返回匹配位置（缺口距离）
-        return max_loc[0]
+# 4. 返回匹配位置（缺口距离）
+return max_loc[0]
 
-    def get_track(self, distance):
-        """生成拖动轨迹（模拟人类行为）"""
-        track = []
-        current = 0
-        mid = distance * 4 / 5  # 减速点
-        t = 0.2  # 时间间隔
-        v = 0  # 初速度
+def get_track(self, distance):
+"""生成拖动轨迹（模拟人类行为）"""
+track = []
+current = 0
+mid = distance * 4 / 5 # 减速点
+t = 0.2 # 时间间隔
+v = 0 # 初速度
 
-        while current < distance:
-            if current < mid:
-                a = 2  # 加速度
-            else:
-                a = -3  # 减速
+while current < distance:
+if current < mid:
+a = 2 # 加速度
+else:
+a = -3 # 减速
 
-            v0 = v
-            v = v0 + a * t
-            move = v0 * t + 1/2 * a * t * t
-            current += move
+v0 = v
+v = v0 + a * t
+move = v0 * t + 1/2 * a * t * t
+current += move
 
-            track.append(round(move))
+track.append(round(move))
 
-        return track
+return track
 
-    def move_slider(self, slider, track):
-        """移动滑块"""
-        ActionChains(self.driver).click_and_hold(slider).perform()
+def move_slider(self, slider, track):
+"""移动滑块"""
+ActionChains(self.driver).click_and_hold(slider).perform()
 
-        for x in track:
-            ActionChains(self.driver).move_by_offset(xoffset=x, yoffset=0).perform()
-            time.sleep(random.uniform(0.001, 0.002))
+for x in track:
+ActionChains(self.driver).move_by_offset(xoffset=x, yoffset=0).perform()
+time.sleep(random.uniform(0.001, 0.002))
 
-        # 随机抖动（模拟人类修正）
-        for _ in range(3):
-            ActionChains(self.driver).move_by_offset(
-                xoffset=random.uniform(-2, 2),
-                yoffset=random.uniform(-2, 2)
-            ).perform()
-            time.sleep(random.uniform(0.01, 0.02))
+# 随机抖动（模拟人类修正）
+for _ in range(3):
+ActionChains(self.driver).move_by_offset(
+xoffset=random.uniform(-2, 2),
+yoffset=random.uniform(-2, 2)
+).perform()
+time.sleep(random.uniform(0.01, 0.02))
 
-        ActionChains(self.driver).release().perform()
+ActionChains(self.driver).release().perform()
 
-    def crack(self):
-        """破解滑块验证码"""
-        # 1. 等待验证码加载
-        time.sleep(2)
+def crack(self):
+"""破解滑块验证码"""
+# 1. 等待验证码加载
+time.sleep(2)
 
-        # 2. 获取背景图和滑块图
-        bg_element = self.driver.find_element(By.CLASS_NAME, 'geetest_canvas_bg')
-        slide_element = self.driver.find_element(By.CLASS_NAME, 'geetest_canvas_slice')
+# 2. 获取背景图和滑块图
+bg_element = self.driver.find_element(By.CLASS_NAME, 'geetest_canvas_bg')
+slide_element = self.driver.find_element(By.CLASS_NAME, 'geetest_canvas_slice')
 
-        # 3. 截图
-        bg_img = Image.open(BytesIO(bg_element.screenshot_as_png))
-        slide_img = Image.open(BytesIO(slide_element.screenshot_as_png))
+# 3. 截图
+bg_img = Image.open(BytesIO(bg_element.screenshot_as_png))
+slide_img = Image.open(BytesIO(slide_element.screenshot_as_png))
 
-        # 4. 计算缺口距离
-        distance = self.get_gap_distance(bg_img, slide_img)
+# 4. 计算缺口距离
+distance = self.get_gap_distance(bg_img, slide_img)
 
-        # 5. 生成轨迹
-        track = self.get_track(distance - 7)  # 减去滑块宽度
+# 5. 生成轨迹
+track = self.get_track(distance - 7) # 减去滑块宽度
 
-        # 6. 拖动滑块
-        slider = self.driver.find_element(By.CLASS_NAME, 'geetest_slider_button')
-        self.move_slider(slider, track)
+# 6. 拖动滑块
+slider = self.driver.find_element(By.CLASS_NAME, 'geetest_slider_button')
+self.move_slider(slider, track)
 
-        # 7. 等待验证结果
-        time.sleep(2)
+# 7. 等待验证结果
+time.sleep(2)
 ```
 
 **方法 2: 深度学习识别**
@@ -956,42 +972,42 @@ import tensorflow as tf
 from tensorflow.keras import layers, models
 
 class CaptchaCNN:
-    def __init__(self):
-        self.model = self.build_model()
+def __init__(self):
+self.model = self.build_model()
 
-    def build_model(self):
-        """构建 CNN 模型"""
-        model = models.Sequential([
-            layers.Conv2D(32, (3, 3), activation='relu', input_shape=(60, 260, 3)),
-            layers.MaxPooling2D((2, 2)),
-            layers.Conv2D(64, (3, 3), activation='relu'),
-            layers.MaxPooling2D((2, 2)),
-            layers.Conv2D(64, (3, 3), activation='relu'),
-            layers.Flatten(),
-            layers.Dense(64, activation='relu'),
-            layers.Dense(1, activation='linear')  # 输出缺口位置
-        ])
+def build_model(self):
+"""构建 CNN 模型"""
+model = models.Sequential([
+layers.Conv2D(32, (3, 3), activation='relu', input_shape=(60, 260, 3)),
+layers.MaxPooling2D((2, 2)),
+layers.Conv2D(64, (3, 3), activation='relu'),
+layers.MaxPooling2D((2, 2)),
+layers.Conv2D(64, (3, 3), activation='relu'),
+layers.Flatten(),
+layers.Dense(64, activation='relu'),
+layers.Dense(1, activation='linear') # 输出缺口位置
+])
 
-        model.compile(
-            optimizer='adam',
-            loss='mse',
-            metrics=['mae']
-        )
+model.compile(
+optimizer='adam',
+loss='mse',
+metrics=['mae']
+)
 
-        return model
+return model
 
-    def train(self, X_train, y_train, epochs=50):
-        """训练模型"""
-        self.model.fit(
-            X_train, y_train,
-            epochs=epochs,
-            validation_split=0.2
-        )
+def train(self, X_train, y_train, epochs=50):
+"""训练模型"""
+self.model.fit(
+X_train, y_train,
+epochs=epochs,
+validation_split=0.2
+)
 
-    def predict_gap(self, image):
-        """预测缺口位置"""
-        image = np.expand_dims(image, axis=0)
-        return self.model.predict(image)[0][0]
+def predict_gap(self, image):
+"""预测缺口位置"""
+image = np.expand_dims(image, axis=0)
+return self.model.predict(image)[0][0]
 ```
 
 **方法 3: 打码平台**
@@ -1000,29 +1016,29 @@ class CaptchaCNN:
 import requests
 
 class OCRService:
-    def __init__(self, api_key):
-        self.api_key = api_key
-        self.api_url = 'http://api.ttshitu.com/predict'
+def __init__(self, api_key):
+self.api_key = api_key
+self.api_url = 'http://api.ttshitu.com/predict'
 
-    def recognize_slider(self, bg_img_path, slide_img_path):
-        """使用打码平台识别滑块验证码"""
-        with open(bg_img_path, 'rb') as f:
-            bg_img = f.read()
-        with open(slide_img_path, 'rb') as f:
-            slide_img = f.read()
+def recognize_slider(self, bg_img_path, slide_img_path):
+"""使用打码平台识别滑块验证码"""
+with open(bg_img_path, 'rb') as f:
+bg_img = f.read()
+with open(slide_img_path, 'rb') as f:
+slide_img = f.read()
 
-        data = {
-            'username': 'your_username',
-            'password': 'your_password',
-            'typeid': '33',  # 滑块验证码类型
-            'image': base64.b64encode(bg_img).decode(),
-            'slide': base64.b64encode(slide_img).decode()
-        }
+data = {
+'username': 'your_username',
+'password': 'your_password',
+'typeid': '33', # 滑块验证码类型
+'image': base64.b64encode(bg_img).decode(),
+'slide': base64.b64encode(slide_img).decode()
+}
 
-        response = requests.post(self.api_url, json=data)
-        result = response.json()
+response = requests.post(self.api_url, json=data)
+result = response.json()
 
-        return result['data']['result']  # 返回缺口距离
+return result['data']['result'] # 返回缺口距离
 ```
 
 #### 8.4 点选验证码
@@ -1035,47 +1051,47 @@ class OCRService:
 from paddleocr import PaddleOCR
 
 class ClickCaptchaCracker:
-    def __init__(self):
-        self.ocr = PaddleOCR(use_angle_cls=True, lang='ch')
+def __init__(self):
+self.ocr = PaddleOCR(use_angle_cls=True, lang='ch')
 
-    def recognize_text(self, image_path):
-        """识别图片中的文字位置"""
-        result = self.ocr.ocr(image_path, cls=True)
+def recognize_text(self, image_path):
+"""识别图片中的文字位置"""
+result = self.ocr.ocr(image_path, cls=True)
 
-        text_positions = []
-        for line in result:
-            for word_info in line:
-                box = word_info[0]  # 坐标
-                text = word_info[1][0]  # 文字
-                confidence = word_info[1][1]  # 置信度
+text_positions = []
+for line in result:
+for word_info in line:
+box = word_info[0] # 坐标
+text = word_info[1][0] # 文字
+confidence = word_info[1][1] # 置信度
 
-                # 计算中心点
-                center_x = (box[0][0] + box[2][0]) / 2
-                center_y = (box[0][1] + box[2][1]) / 2
+# 计算中心点
+center_x = (box[0][0] + box[2][0]) / 2
+center_y = (box[0][1] + box[2][1]) / 2
 
-                text_positions.append({
-                    'text': text,
-                    'x': center_x,
-                    'y': center_y,
-                    'confidence': confidence
-                })
+text_positions.append({
+'text': text,
+'x': center_x,
+'y': center_y,
+'confidence': confidence
+})
 
-        return text_positions
+return text_positions
 
-    def click_sequence(self, driver, target_texts, positions):
-        """按顺序点击指定文字"""
-        for target_text in target_texts:
-            for pos in positions:
-                if pos['text'] == target_text:
-                    # 点击该位置
-                    element = driver.find_element(By.CLASS_NAME, 'captcha-image')
-                    ActionChains(driver).move_to_element_with_offset(
-                        element,
-                        pos['x'],
-                        pos['y']
-                    ).click().perform()
-                    time.sleep(0.5)
-                    break
+def click_sequence(self, driver, target_texts, positions):
+"""按顺序点击指定文字"""
+for target_text in target_texts:
+for pos in positions:
+if pos['text'] == target_text:
+# 点击该位置
+element = driver.find_element(By.CLASS_NAME, 'captcha-image')
+ActionChains(driver).move_to_element_with_offset(
+element,
+pos['x'],
+pos['y']
+).click().perform()
+time.sleep(0.5)
+break
 ```
 
 #### 8.5 行为验证码
@@ -1096,75 +1112,75 @@ import numpy as np
 import random
 
 class HumanBehaviorSimulator:
-    @staticmethod
-    def bezier_curve(start, end, control_points, steps=100):
-        """生成贝塞尔曲线轨迹"""
-        points = [start] + control_points + [end]
-        n = len(points) - 1
-        curve = []
+@staticmethod
+def bezier_curve(start, end, control_points, steps=100):
+"""生成贝塞尔曲线轨迹"""
+points = [start] + control_points + [end]
+n = len(points) - 1
+curve = []
 
-        for t in np.linspace(0, 1, steps):
-            point = [0, 0]
-            for i, p in enumerate(points):
-                binomial = np.math.comb(n, i) * (1 - t)**(n - i) * t**i
-                point[0] += binomial * p[0]
-                point[1] += binomial * p[1]
-            curve.append(point)
+for t in np.linspace(0, 1, steps):
+point = [0, 0]
+for i, p in enumerate(points):
+binomial = np.math.comb(n, i) * (1 - t)**(n - i) * t**i
+point[0] += binomial * p[0]
+point[1] += binomial * p[1]
+curve.append(point)
 
-        return curve
+return curve
 
-    @staticmethod
-    def add_random_jitter(track, max_jitter=2):
-        """添加随机抖动"""
-        jittered_track = []
-        for point in track:
-            jittered_track.append([
-                point[0] + random.uniform(-max_jitter, max_jitter),
-                point[1] + random.uniform(-max_jitter, max_jitter)
-            ])
-        return jittered_track
+@staticmethod
+def add_random_jitter(track, max_jitter=2):
+"""添加随机抖动"""
+jittered_track = []
+for point in track:
+jittered_track.append([
+point[0] + random.uniform(-max_jitter, max_jitter),
+point[1] + random.uniform(-max_jitter, max_jitter)
+])
+return jittered_track
 
-    @staticmethod
-    def simulate_drag(driver, element, distance):
-        """模拟人类拖动行为"""
-        # 1. 生成控制点
-        control_points = [
-            [random.uniform(distance * 0.3, distance * 0.4), random.uniform(-5, 5)],
-            [random.uniform(distance * 0.6, distance * 0.7), random.uniform(-5, 5)]
-        ]
+@staticmethod
+def simulate_drag(driver, element, distance):
+"""模拟人类拖动行为"""
+# 1. 生成控制点
+control_points = [
+[random.uniform(distance * 0.3, distance * 0.4), random.uniform(-5, 5)],
+[random.uniform(distance * 0.6, distance * 0.7), random.uniform(-5, 5)]
+]
 
-        # 2. 生成曲线
-        curve = HumanBehaviorSimulator.bezier_curve(
-            [0, 0], [distance, 0], control_points
-        )
+# 2. 生成曲线
+curve = HumanBehaviorSimulator.bezier_curve(
+[0, 0], [distance, 0], control_points
+)
 
-        # 3. 添加抖动
-        curve = HumanBehaviorSimulator.add_random_jitter(curve)
+# 3. 添加抖动
+curve = HumanBehaviorSimulator.add_random_jitter(curve)
 
-        # 4. 执行拖动
-        ActionChains(driver).click_and_hold(element).perform()
+# 4. 执行拖动
+ActionChains(driver).click_and_hold(element).perform()
 
-        for point in curve:
-            ActionChains(driver).move_by_offset(
-                point[0] - last_x,
-                point[1] - last_y
-            ).perform()
-            time.sleep(random.uniform(0.001, 0.003))
-            last_x, last_y = point
+for point in curve:
+ActionChains(driver).move_by_offset(
+point[0] - last_x,
+point[1] - last_y
+).perform()
+time.sleep(random.uniform(0.001, 0.003))
+last_x, last_y = point
 
-        # 5. 释放前的停顿
-        time.sleep(random.uniform(0.1, 0.3))
-        ActionChains(driver).release().perform()
+# 5. 释放前的停顿
+time.sleep(random.uniform(0.1, 0.3))
+ActionChains(driver).release().perform()
 ```
 
 #### 8.6 成本分析
 
-| 验证码类型           | 破解成本（2025） | 成功率 | 说明                 |
+| 验证码类型 | 破解成本（2025） | 成功率 | 说明 |
 | -------------------- | ---------------- | ------ | -------------------- |
-| 普通图形验证码       | ¥0.001-0.005/次  | 95%+   | OCR 识别             |
-| 滑块验证码（无风控） | ¥0.01-0.05/次    | 80-90% | 图像识别 + 轨迹模拟  |
-| 极验/易盾（带风控）  | ¥1-5/次          | 60-80% | 深度学习 + 行为模拟  |
-| 智能验证码           | ¥5-20/次         | 40-60% | 需要大量设备指纹伪造 |
+| 普通图形验证码 | ¥0.001-0.005/次 | 95%+ | OCR 识别 |
+| 滑块验证码（无风控） | ¥0.01-0.05/次 | 80-90% | 图像识别 + 轨迹模拟 |
+| 极验/易盾（带风控） | ¥1-5/次 | 60-80% | 深度学习 + 行为模拟 |
+| 智能验证码 | ¥5-20/次 | 40-60% | 需要大量设备指纹伪造 |
 
 **对比**: 智能带风控的验证码破解成本是普通验证码的 **100-1000 倍**。
 

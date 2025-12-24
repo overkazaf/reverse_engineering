@@ -9,7 +9,7 @@
 
 Unity 是目前最流行的移动游戏引擎之一。现代 Unity 游戏通常使用 Il2Cpp 脚本后端，将 C# 代码转换为 C++ 代码并编译为 Native 库 (`libil2cpp.so`)。这使得传统的 Java/Smali 逆向方法失效，需要全新的工具和思路。
 
-## 核心 architecture 与文件结构
+## 核心架构与文件结构
 
 一个典型的 Unity Il2Cpp 游戏包含以下关键文件：
 

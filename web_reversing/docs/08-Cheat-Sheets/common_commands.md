@@ -4,27 +4,27 @@
 
 ### 选择元素
 
-| 命令   | 说明                                 | 示例                              |
+| 命令 | 说明 | 示例 |
 | ------ | ------------------------------------ | --------------------------------- |
-| `$()`  | 等同于 `document.querySelector()`    | `$('#username')`                  |
-| `$$()` | 等同于 `document.querySelectorAll()` | `$$('.item')`                     |
-| `$x()` | XPath 选择器                         | `$x('//div[@class="container"]')` |
-| `$0`   | 当前选中的元素                       | `$0.innerHTML`                    |
-| `$1`   | 上一个选中的元素                     | `$1.classList`                    |
+| `$()` | 等同于 `document.querySelector()` | `$('#username')` |
+| `$$()` | 等同于 `document.querySelectorAll()` | `$$('.item')` |
+| `$x()` | XPath 选择器 | `$x('//div[@class="container"]')` |
+| `$0` | 当前选中的元素 | `$0.innerHTML` |
+| `$1` | 上一个选中的元素 | `$1.classList` |
 
 ### 实用函数
 
-| 命令          | 说明               | 示例                         |
+| 命令 | 说明 | 示例 |
 | ------------- | ------------------ | ---------------------------- |
-| `copy()`      | 复制到剪贴板       | `copy($0)`                   |
-| `clear()`     | 清空 Console       | `clear()`                    |
-| `keys()`      | 获取对象所有键     | `keys(window)`               |
-| `values()`    | 获取对象所有值     | `values(localStorage)`       |
-| `monitor()`   | 监控函数调用       | `monitor(fetch)`             |
-| `unmonitor()` | 取消监控           | `unmonitor(fetch)`           |
-| `table()`     | 表格显示数据       | `table([{name:'a',age:20}])` |
-| `debug()`     | 在函数第一行设断点 | `debug(myFunction)`          |
-| `undebug()`   | 移除断点           | `undebug(myFunction)`        |
+| `copy()` | 复制到剪贴板 | `copy($0)` |
+| `clear()` | 清空 Console | `clear()` |
+| `keys()` | 获取对象所有键 | `keys(window)` |
+| `values()` | 获取对象所有值 | `values(localStorage)` |
+| `monitor()` | 监控函数调用 | `monitor(fetch)` |
+| `unmonitor()` | 取消监控 | `unmonitor(fetch)` |
+| `table()` | 表格显示数据 | `table([{name:'a',age:20}])` |
+| `debug()` | 在函数第一行设断点 | `debug(myFunction)` |
+| `undebug()` | 移除断点 | `undebug(myFunction)` |
 
 ### 网络相关
 
@@ -34,9 +34,9 @@ document.cookie;
 
 // 清空所有 Cookie
 document.cookie.split(";").forEach((c) => {
-  document.cookie = c
-    .replace(/^ +/, "")
-    .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+document.cookie = c
+.replace(/^ +/, "")
+.replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
 });
 
 // 查看 LocalStorage
@@ -47,17 +47,17 @@ localStorage.clear();
 
 // 发送 GET 请求
 fetch("https://api.example.com/data")
-  .then((r) => r.json())
-  .then(console.log);
+.then((r) => r.json())
+.then(console.log);
 
 // 发送 POST 请求
 fetch("https://api.example.com/login", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ username: "admin", password: "123456" }),
+method: "POST",
+headers: { "Content-Type": "application/json" },
+body: JSON.stringify({ username: "admin", password: "123456" }),
 })
-  .then((r) => r.json())
-  .then(console.log);
+.then((r) => r.json())
+.then(console.log);
 ```
 
 ---
@@ -75,22 +75,22 @@ print(response.text)
 
 # POST 请求
 response = requests.post('https://example.com/api', json={
-    'username': 'admin',
-    'password': '123456'
+'username': 'admin',
+'password': '123456'
 })
 print(response.json())
 
 # 设置 Headers
 headers = {
-    'User-Agent': 'Mozilla/5.0 ...',
-    'Authorization': 'Bearer token123'
+'User-Agent': 'Mozilla/5.0 ...',
+'Authorization': 'Bearer token123'
 }
 response = requests.get('https://example.com', headers=headers)
 
 # 使用代理
 proxies = {
-    'http': 'http://127.0.0.1:8080',
-    'https': 'http://127.0.0.1:8080'
+'http': 'http://127.0.0.1:8080',
+'https': 'http://127.0.0.1:8080'
 }
 response = requests.get('https://example.com', proxies=proxies)
 
@@ -109,15 +109,15 @@ from bs4 import BeautifulSoup
 soup = BeautifulSoup(html, 'html.parser')
 
 # 查找元素
-soup.find('div', class_='content')          # 查找第一个
-soup.find_all('a')                          # 查找所有
-soup.select('.class #id tag')               # CSS 选择器
+soup.find('div', class_='content') # 查找第一个
+soup.find_all('a') # 查找所有
+soup.select('.class #id tag') # CSS 选择器
 
 # 获取属性
 element = soup.find('a')
-element.get('href')                         # 获取 href
-element.text                                # 获取文本
-element.get_text(strip=True)                # 获取文本（去空格）
+element.get('href') # 获取 href
+element.text # 获取文本
+element.get_text(strip=True) # 获取文本（去空格）
 ```
 
 ### Regex (re)
@@ -149,8 +149,8 @@ curl https://example.com
 
 # POST 请求
 curl -X POST https://example.com/api \
-  -H "Content-Type: application/json" \
-  -d '{"username":"admin","password":"123456"}'
+-H "Content-Type: application/json" \
+-d '{"username":"admin","password":"123456"}'
 
 # 设置 User-Agent
 curl -A "Mozilla/5.0 ..." https://example.com
@@ -190,14 +190,14 @@ curl -v https://example.com
 curl -w "@curl-format.txt" -o /dev/null -s https://example.com
 
 # curl-format.txt 内容:
-#     time_namelookup:  %{time_namelookup}\n
-#        time_connect:  %{time_connect}\n
-#     time_appconnect:  %{time_appconnect}\n
-#       time_redirect:  %{time_redirect}\n
-#    time_pretransfer:  %{time_pretransfer}\n
-#  time_starttransfer:  %{time_starttransfer}\n
-#                     ----------\n
-#          time_total:  %{time_total}\n
+# time_namelookup: %{time_namelookup}\n
+# time_connect: %{time_connect}\n
+# time_appconnect: %{time_appconnect}\n
+# time_redirect: %{time_redirect}\n
+# time_pretransfer: %{time_pretransfer}\n
+# time_starttransfer: %{time_starttransfer}\n
+# ----------\n
+# time_total: %{time_total}\n
 ```
 
 ---
@@ -228,8 +228,8 @@ git log
 git log --oneline --graph
 
 # 回退
-git reset --hard HEAD^       # 回退一个版本
-git reset --hard commit_id   # 回退到指定版本
+git reset --hard HEAD^ # 回退一个版本
+git reset --hard commit_id # 回退到指定版本
 ```
 
 ### 分支操作
@@ -273,8 +273,8 @@ git diff commit1 commit2
 ```bash
 # 安装包
 npm install package-name
-npm install -g package-name     # 全局安装
-npm install --save-dev package  # 开发依赖
+npm install -g package-name # 全局安装
+npm install --save-dev package # 开发依赖
 
 # 卸载包
 npm uninstall package-name
@@ -332,25 +332,25 @@ grep -E "regex pattern" file.txt
 
 ```bash
 # 替换文本
-sed 's/old/new/' file.txt           # 替换每行第一个
-sed 's/old/new/g' file.txt          # 替换所有
-sed -i 's/old/new/g' file.txt       # 直接修改文件
+sed 's/old/new/' file.txt # 替换每行第一个
+sed 's/old/new/g' file.txt # 替换所有
+sed -i 's/old/new/g' file.txt # 直接修改文件
 
 # 删除行
-sed '/pattern/d' file.txt           # 删除匹配的行
-sed '1d' file.txt                   # 删除第一行
-sed '1,10d' file.txt                # 删除1-10行
+sed '/pattern/d' file.txt # 删除匹配的行
+sed '1d' file.txt # 删除第一行
+sed '1,10d' file.txt # 删除1-10行
 ```
 
 ### awk
 
 ```bash
 # 打印列
-awk '{print $1}' file.txt           # 打印第一列
-awk '{print $1,$3}' file.txt        # 打印第1和第3列
+awk '{print $1}' file.txt # 打印第一列
+awk '{print $1,$3}' file.txt # 打印第1和第3列
 
 # 条件过滤
-awk '$3 > 100' file.txt             # 第3列大于100的行
+awk '$3 > 100' file.txt # 第3列大于100的行
 
 # 求和
 awk '{sum+=$1} END {print sum}' file.txt
@@ -381,11 +381,11 @@ docker build -t image-name .
 ```bash
 # 运行容器
 docker run -d --name container-name image-name
-docker run -it image-name /bin/bash      # 交互式
+docker run -it image-name /bin/bash # 交互式
 
 # 查看容器
-docker ps           # 运行中的
-docker ps -a        # 所有的
+docker ps # 运行中的
+docker ps -a # 所有的
 
 # 停止容器
 docker stop container-name
@@ -459,7 +459,7 @@ console.log(date.toLocaleString());
 
 ---
 
-## 📚 相关章节
+## 相关章节
 
 - [加密算法特征](./crypto_signatures.md) - 加密算法识别
 - [正则表达式](./regex_patterns.md) - 常用正则模式

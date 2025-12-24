@@ -4,34 +4,34 @@ Web 逆向分析的标准项目模板，帮助你系统化地进行网站分析�
 
 ---
 
-## 📁 项目结构
+## 项目结构
 
 ```
 reverse_project/
 ├── docs/
-│   ├── analysis.md           # 分析文档
-│   ├── api_reference.md      # API 接口文档
-│   ├── crypto_analysis.md    # 加密分析
-│   └── findings.md           # 发现和总结
+│ ├── analysis.md # 分析文档
+│ ├── api_reference.md # API 接口文档
+│ ├── crypto_analysis.md # 加密分析
+│ └── findings.md # 发现和总结
 ├── scripts/
-│   ├── __init__.py
-│   ├── decrypt.py            # 解密脚本
-│   ├── sign.py               # 签名生成
-│   └── reproduce.py          # 完整复现
+│ ├── __init__.py
+│ ├── decrypt.py # 解密脚本
+│ ├── sign.py # 签名生成
+│ └── reproduce.py # 完整复现
 ├── hooks/
-│   ├── network_monitor.js    # 网络监控
-│   ├── crypto_hook.js        # 加密函数Hook
-│   └── debugger_bypass.js    # 反调试绕过
+│ ├── network_monitor.js # 网络监控
+│ ├── crypto_hook.js # 加密函数Hook
+│ └── debugger_bypass.js # 反调试绕过
 ├── test_cases/
-│   ├── test_decrypt.py       # 解密测试
-│   ├── test_sign.py          # 签名测试
-│   └── test_api.py           # API 测试
+│ ├── test_decrypt.py # 解密测试
+│ ├── test_sign.py # 签名测试
+│ └── test_api.py # API 测试
 ├── data/
-│   ├── samples/              # 样本数据
-│   └── results/              # 分析结果
+│ ├── samples/ # 样本数据
+│ └── results/ # 分析结果
 ├── assets/
-│   ├── screenshots/          # 截图
-│   └── diagrams/             # 流程图
+│ ├── screenshots/ # 截图
+│ └── diagrams/ # 流程图
 ├── requirements.txt
 ├── README.md
 └── .env.example
@@ -39,7 +39,7 @@ reverse_project/
 
 ---
 
-## 📄 文件模板
+## 文件模板
 
 ### 1. docs/analysis.md
 
@@ -48,11 +48,11 @@ reverse_project/
 
 ## 基本信息
 
-| 项目         | 说明                                |
+| 项目 | 说明 |
 | ------------ | ----------------------------------- |
-| **目标网站** | https://example.com                 |
-| **分析日期** | 2024-01-15                          |
-| **难度等级** | ⭐⭐⭐                              |
+| **目标网站** | https://example.com |
+| **分析日期** | 2024-01-15 |
+| **难度等级** | ⭐⭐⭐ |
 | **主要技术** | JavaScript 混淆、AES 加密、签名验证 |
 
 ---
@@ -106,12 +106,12 @@ reverse_project/
 ```javascript
 // 位置: app.js:1234
 function encryptPassword(password) {
-  // AES 加密实现
+// AES 加密实现
 }
 
 // 位置: app.js:5678
 function generateSign(params) {
-  // 签名生成逻辑
+// 签名生成逻辑
 }
 ```
 ````
@@ -128,12 +128,12 @@ function generateSign(params) {
 
 ## 时间线
 
-| 日期       | 进展                       |
+| 日期 | 进展 |
 | ---------- | -------------------------- |
-| 2024-01-15 | 完成初步侦察               |
+| 2024-01-15 | 完成初步侦察 |
 | 2024-01-16 | 识别加密算法为 AES-128-CBC |
-| 2024-01-17 | 破解签名算法               |
-| 2024-01-18 | Python 复现成功            |
+| 2024-01-17 | 破解签名算法 |
+| 2024-01-18 | Python 复现成功 |
 
 ---
 
@@ -164,16 +164,16 @@ function generateSign(params) {
 ```javascript
 // 原始代码 (app.js:1234)
 function encryptPassword(password) {
-    const key = CryptoJS.enc.Utf8.parse('secretkey1234567');
-    const iv = CryptoJS.enc.Utf8.parse('1234567890abcdef');
+const key = CryptoJS.enc.Utf8.parse('secretkey1234567');
+const iv = CryptoJS.enc.Utf8.parse('1234567890abcdef');
 
-    const encrypted = CryptoJS.AES.encrypt(password, key, {
-        iv: iv,
-        mode: CryptoJS.mode.CBC,
-        padding: CryptoJS.pad.Pkcs7
-    });
+const encrypted = CryptoJS.AES.encrypt(password, key, {
+iv: iv,
+mode: CryptoJS.mode.CBC,
+padding: CryptoJS.pad.Pkcs7
+});
 
-    return encrypted.toString();
+return encrypted.toString();
 }
 ````
 
@@ -185,13 +185,13 @@ from Crypto.Util.Padding import pad
 import base64
 
 def encrypt_password(password):
-    key = b'secretkey1234567'
-    iv = b'1234567890abcdef'
+key = b'secretkey1234567'
+iv = b'1234567890abcdef'
 
-    cipher = AES.new(key, AES.MODE_CBC, iv)
-    encrypted = cipher.encrypt(pad(password.encode(), 16))
+cipher = AES.new(key, AES.MODE_CBC, iv)
+encrypted = cipher.encrypt(pad(password.encode(), 16))
 
-    return base64.b64encode(encrypted).decode()
+return base64.b64encode(encrypted).decode()
 
 # 测试
 print(encrypt_password('mypassword'))
@@ -225,25 +225,25 @@ import hashlib
 import time
 
 def generate_sign(params):
-    # 添加时间戳
-    params['timestamp'] = int(time.time() * 1000)
+# 添加时间戳
+params['timestamp'] = int(time.time() * 1000)
 
-    # 按字典序排序
-    sorted_params = sorted(params.items())
+# 按字典序排序
+sorted_params = sorted(params.items())
 
-    # 拼接字符串
-    sign_str = ''.join([f'{k}{v}' for k, v in sorted_params])
+# 拼接字符串
+sign_str = ''.join([f'{k}{v}' for k, v in sorted_params])
 
-    # 添加密钥
-    sign_str += 'secret_key_here'
+# 添加密钥
+sign_str += 'secret_key_here'
 
-    # MD5 哈希
-    return hashlib.md5(sign_str.encode()).hexdigest()
+# MD5 哈希
+return hashlib.md5(sign_str.encode()).hexdigest()
 
 # 测试
 params = {
-    'username': 'admin',
-    'password': 'encrypted_password_here'
+'username': 'admin',
+'password': 'encrypted_password_here'
 }
 print(generate_sign(params))
 ```
@@ -312,181 +312,181 @@ import json
 
 
 class TargetAPI:
-    """目标网站 API 封装"""
+"""目标网站 API 封装"""
 
-    def __init__(self):
-        self.base_url = "https://example.com"
-        self.session = requests.Session()
-        self.token = None
+def __init__(self):
+self.base_url = "https://example.com"
+self.session = requests.Session()
+self.token = None
 
-        # 设置请求头
-        self.session.headers.update({
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        })
+# 设置请求头
+self.session.headers.update({
+'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+'Content-Type': 'application/json',
+'Accept': 'application/json',
+})
 
-    def encrypt_password(self, password: str) -> str:
-        """
-        AES 加密密码
+def encrypt_password(self, password: str) -> str:
+"""
+AES 加密密码
 
-        Args:
-            password: 明文密码
+Args:
+password: 明文密码
 
-        Returns:
-            加密后的 Base64 字符串
-        """
-        key = b'secretkey1234567'
-        iv = b'1234567890abcdef'
+Returns:
+加密后的 Base64 字符串
+"""
+key = b'secretkey1234567'
+iv = b'1234567890abcdef'
 
-        cipher = AES.new(key, AES.MODE_CBC, iv)
-        encrypted = cipher.encrypt(pad(password.encode(), 16))
+cipher = AES.new(key, AES.MODE_CBC, iv)
+encrypted = cipher.encrypt(pad(password.encode(), 16))
 
-        return base64.b64encode(encrypted).decode()
+return base64.b64encode(encrypted).decode()
 
-    def generate_sign(self, params: dict) -> dict:
-        """
-        生成签名
+def generate_sign(self, params: dict) -> dict:
+"""
+生成签名
 
-        Args:
-            params: 请求参数
+Args:
+params: 请求参数
 
-        Returns:
-            添加了 timestamp 和 sign 的参数字典
-        """
-        # 添加时间戳
-        params['timestamp'] = int(time.time() * 1000)
+Returns:
+添加了 timestamp 和 sign 的参数字典
+"""
+# 添加时间戳
+params['timestamp'] = int(time.time() * 1000)
 
-        # 按字典序排序
-        sorted_params = sorted(params.items())
+# 按字典序排序
+sorted_params = sorted(params.items())
 
-        # 拼接字符串
-        sign_str = ''.join([f'{k}{v}' for k, v in sorted_params])
+# 拼接字符串
+sign_str = ''.join([f'{k}{v}' for k, v in sorted_params])
 
-        # 添加密钥
-        sign_str += 'secret_key_here'
+# 添加密钥
+sign_str += 'secret_key_here'
 
-        # MD5 哈希
-        params['sign'] = hashlib.md5(sign_str.encode()).hexdigest()
+# MD5 哈希
+params['sign'] = hashlib.md5(sign_str.encode()).hexdigest()
 
-        return params
+return params
 
-    def login(self, username: str, password: str) -> bool:
-        """
-        登录
+def login(self, username: str, password: str) -> bool:
+"""
+登录
 
-        Args:
-            username: 用户名
-            password: 密码
+Args:
+username: 用户名
+password: 密码
 
-        Returns:
-            是否登录成功
-        """
-        # 加密密码
-        encrypted_password = self.encrypt_password(password)
+Returns:
+是否登录成功
+"""
+# 加密密码
+encrypted_password = self.encrypt_password(password)
 
-        # 准备参数
-        params = {
-            'username': username,
-            'password': encrypted_password
-        }
+# 准备参数
+params = {
+'username': username,
+'password': encrypted_password
+}
 
-        # 生成签名
-        params = self.generate_sign(params)
+# 生成签名
+params = self.generate_sign(params)
 
-        # 发送请求
-        url = f"{self.base_url}/api/auth/login"
-        response = self.session.post(url, json=params)
+# 发送请求
+url = f"{self.base_url}/api/auth/login"
+response = self.session.post(url, json=params)
 
-        if response.status_code == 200:
-            data = response.json()
-            if data.get('code') == 0:
-                self.token = data['data']['token']
-                self.session.headers['Authorization'] = f'Bearer {self.token}'
-                print(f"✅ 登录成功! Token: {self.token[:20]}...")
-                return True
+if response.status_code == 200:
+data = response.json()
+if data.get('code') == 0:
+self.token = data['data']['token']
+self.session.headers['Authorization'] = f'Bearer {self.token}'
+print(f"✅ 登录成功! Token: {self.token[:20]}...")
+return True
 
-        print(f"❌ 登录失败: {response.text}")
-        return False
+print(f"❌ 登录失败: {response.text}")
+return False
 
-    def get_user_info(self) -> dict:
-        """
-        获取用户信息
+def get_user_info(self) -> dict:
+"""
+获取用户信息
 
-        Returns:
-            用户信息字典
-        """
-        if not self.token:
-            raise Exception("未登录，请先调用 login()")
+Returns:
+用户信息字典
+"""
+if not self.token:
+raise Exception("未登录，请先调用 login()")
 
-        url = f"{self.base_url}/api/user/info"
-        response = self.session.get(url)
+url = f"{self.base_url}/api/user/info"
+response = self.session.get(url)
 
-        if response.status_code == 200:
-            return response.json()
+if response.status_code == 200:
+return response.json()
 
-        return None
+return None
 
-    def get_data(self, page: int = 1, size: int = 20) -> list:
-        """
-        获取数据列表
+def get_data(self, page: int = 1, size: int = 20) -> list:
+"""
+获取数据列表
 
-        Args:
-            page: 页码
-            size: 每页数量
+Args:
+page: 页码
+size: 每页数量
 
-        Returns:
-            数据列表
-        """
-        if not self.token:
-            raise Exception("未登录，请先调用 login()")
+Returns:
+数据列表
+"""
+if not self.token:
+raise Exception("未登录，请先调用 login()")
 
-        params = {
-            'page': page,
-            'size': size
-        }
+params = {
+'page': page,
+'size': size
+}
 
-        # 生成签名
-        params = self.generate_sign(params)
+# 生成签名
+params = self.generate_sign(params)
 
-        url = f"{self.base_url}/api/data/list"
-        response = self.session.get(url, params=params)
+url = f"{self.base_url}/api/data/list"
+response = self.session.get(url, params=params)
 
-        if response.status_code == 200:
-            data = response.json()
-            return data.get('data', {}).get('items', [])
+if response.status_code == 200:
+data = response.json()
+return data.get('data', {}).get('items', [])
 
-        return []
+return []
 
 
 def main():
-    """主函数"""
-    print("=" * 50)
-    print("目标网站 API 复现测试")
-    print("=" * 50)
+"""主函数"""
+print("=" * 50)
+print("目标网站 API 复现测试")
+print("=" * 50)
 
-    # 创建 API 实例
-    api = TargetAPI()
+# 创建 API 实例
+api = TargetAPI()
 
-    # 登录
-    if api.login('your_username', 'your_password'):
-        # 获取用户信息
-        user_info = api.get_user_info()
-        print(f"\n用户信息: {json.dumps(user_info, indent=2, ensure_ascii=False)}")
+# 登录
+if api.login('your_username', 'your_password'):
+# 获取用户信息
+user_info = api.get_user_info()
+print(f"\n用户信息: {json.dumps(user_info, indent=2, ensure_ascii=False)}")
 
-        # 获取数据
-        data = api.get_data(page=1, size=10)
-        print(f"\n获取到 {len(data)} 条数据")
+# 获取数据
+data = api.get_data(page=1, size=10)
+print(f"\n获取到 {len(data)} 条数据")
 
-        # 保存数据
-        with open('data/results/output.json', 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
+# 保存数据
+with open('data/results/output.json', 'w', encoding='utf-8') as f:
+json.dump(data, f, ensure_ascii=False, indent=2)
 
-        print("\n✅ 数据已保存到 data/results/output.json")
+print("\n✅ 数据已保存到 data/results/output.json")
 
 
 if __name__ == '__main__':
-    main()
+main()
 ````
 
 ### 4. test_cases/test_decrypt.py
@@ -500,71 +500,71 @@ from scripts.reproduce import TargetAPI
 
 
 class TestDecrypt(unittest.TestCase):
-    """解密测试用例"""
+"""解密测试用例"""
 
-    def setUp(self):
-        """初始化"""
-        self.api = TargetAPI()
+def setUp(self):
+"""初始化"""
+self.api = TargetAPI()
 
-    def test_encrypt_password(self):
-        """测试密码加密"""
-        password = "test123"
-        encrypted = self.api.encrypt_password(password)
+def test_encrypt_password(self):
+"""测试密码加密"""
+password = "test123"
+encrypted = self.api.encrypt_password(password)
 
-        # 验证输出格式
-        self.assertIsInstance(encrypted, str)
-        self.assertGreater(len(encrypted), 0)
+# 验证输出格式
+self.assertIsInstance(encrypted, str)
+self.assertGreater(len(encrypted), 0)
 
-        # 验证 Base64 格式
-        import base64
-        try:
-            base64.b64decode(encrypted)
-            is_base64 = True
-        except:
-            is_base64 = False
+# 验证 Base64 格式
+import base64
+try:
+base64.b64decode(encrypted)
+is_base64 = True
+except:
+is_base64 = False
 
-        self.assertTrue(is_base64)
+self.assertTrue(is_base64)
 
-        print(f"✅ 加密测试通过: {password} -> {encrypted}")
+print(f"✅ 加密测试通过: {password} -> {encrypted}")
 
-    def test_sign_generation(self):
-        """测试签名生成"""
-        params = {
-            'username': 'test',
-            'password': 'encrypted_pass'
-        }
+def test_sign_generation(self):
+"""测试签名生成"""
+params = {
+'username': 'test',
+'password': 'encrypted_pass'
+}
 
-        signed_params = self.api.generate_sign(params.copy())
+signed_params = self.api.generate_sign(params.copy())
 
-        # 验证签名字段存在
-        self.assertIn('sign', signed_params)
-        self.assertIn('timestamp', signed_params)
+# 验证签名字段存在
+self.assertIn('sign', signed_params)
+self.assertIn('timestamp', signed_params)
 
-        # 验证签名格式 (32位 MD5)
-        self.assertEqual(len(signed_params['sign']), 32)
-        self.assertTrue(signed_params['sign'].isalnum())
+# 验证签名格式 (32位 MD5)
+self.assertEqual(len(signed_params['sign']), 32)
+self.assertTrue(signed_params['sign'].isalnum())
 
-        print(f"✅ 签名测试通过: {signed_params['sign']}")
+print(f"✅ 签名测试通过: {signed_params['sign']}")
 
-    def test_sign_consistency(self):
-        """测试签名一致性"""
-        params = {
-            'username': 'test',
-            'password': 'encrypted_pass',
-            'timestamp': 1234567890000
-        }
+def test_sign_consistency(self):
+"""测试签名一致性"""
+params = {
+'username': 'test',
+'password': 'encrypted_pass',
+'timestamp': 1234567890000
+}
 
-        # 同样的参数应该生成同样的签名
-        sign1 = self.api.generate_sign(params.copy())['sign']
-        sign2 = self.api.generate_sign(params.copy())['sign']
+# 同样的参数应该生成同样的签名
+sign1 = self.api.generate_sign(params.copy())['sign']
+sign2 = self.api.generate_sign(params.copy())['sign']
 
-        self.assertEqual(sign1, sign2)
+self.assertEqual(sign1, sign2)
 
-        print(f"✅ 签名一致性测试通过")
+print(f"✅ 签名一致性测试通过")
 
 
 if __name__ == '__main__':
-    unittest.main()
+unittest.main()
 ```
 
 ### 5. README.md
@@ -617,12 +617,12 @@ python scripts/reproduce.py
 
 ```
 .
-├── docs/              # 分析文档
-├── scripts/           # 复现脚本
-├── hooks/             # Hook 脚本
-├── test_cases/        # 测试用例
-├── data/              # 数据目录
-└── assets/            # 资源文件
+├── docs/ # 分析文档
+├── scripts/ # 复现脚本
+├── hooks/ # Hook 脚本
+├── test_cases/ # 测试用例
+├── data/ # 数据目录
+└── assets/ # 资源文件
 ```
 
 ---
@@ -717,7 +717,7 @@ PROXY_URL=http://127.0.0.1:7890
 
 ---
 
-## 🚀 使用此模板
+## 使用此模板
 
 ```bash
 # 1. 复制模板
@@ -725,7 +725,7 @@ cp -r templates/reverse_project my_analysis
 cd my_analysis
 
 # 2. 初始化文档
-vim docs/analysis.md  # 开始记录分析过程
+vim docs/analysis.md # 开始记录分析过程
 
 # 3. 编写复现脚本
 vim scripts/reproduce.py
@@ -736,38 +736,38 @@ python -m pytest test_cases/
 
 ---
 
-## 💡 最佳实践
+## 最佳实践
 
 ### 分析流程建议
 
 1. **初步侦察** (1-2 小时)
 
-   - 使用 DevTools 观察网络请求
-   - 识别关键 API 接口
-   - 记录请求参数格式
+- 使用 DevTools 观察网络请求
+- 识别关键 API 接口
+- 记录请求参数格式
 
 2. **JavaScript 分析** (2-4 小时)
 
-   - 定位加密相关代码
-   - 使用断点调试
-   - 记录关键函数位置
+- 定位加密相关代码
+- 使用断点调试
+- 记录关键函数位置
 
 3. **算法识别** (1-2 小时)
 
-   - 根据特征识别加密算法
-   - 测试验证猜测
-   - 提取密钥和参数
+- 根据特征识别加密算法
+- 测试验证猜测
+- 提取密钥和参数
 
 4. **Python 复现** (2-3 小时)
 
-   - 实现加密函数
-   - 实现签名函数
-   - 封装完整 API
+- 实现加密函数
+- 实现签名函数
+- 封装完整 API
 
 5. **测试验证** (1 小时)
-   - 编写单元测试
-   - 对比输出结果
-   - 修复问题
+- 编写单元测试
+- 对比输出结果
+- 修复问题
 
 ### 文档撰写建议
 
@@ -778,7 +778,7 @@ python -m pytest test_cases/
 
 ---
 
-## 📚 相关资源
+## 相关资源
 
 - [基础爬虫项目](./basic_scraper.md)
 - [JavaScript 反混淆](../04-Advanced-Recipes/javascript_deobfuscation.md)

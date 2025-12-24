@@ -33,14 +33,14 @@ const originalFunction = window.targetFunction;
 
 // 替换为自定义函数
 window.targetFunction = function (...args) {
-  console.log("[Hook] targetFunction called");
-  console.log("[Hook] Arguments:", args);
+console.log("[Hook] targetFunction called");
+console.log("[Hook] Arguments:", args);
 
-  // 调用原始函数
-  const result = originalFunction.apply(this, args);
+// 调用原始函数
+const result = originalFunction.apply(this, args);
 
-  console.log("[Hook] Return value:", result);
-  return result;
+console.log("[Hook] Return value:", result);
+return result;
 };
 ```
 
@@ -52,30 +52,30 @@ window.targetFunction = function (...args) {
 
 ```javascript
 (function () {
-  const originalOpen = XMLHttpRequest.prototype.open;
-  const originalSend = XMLHttpRequest.prototype.send;
+const originalOpen = XMLHttpRequest.prototype.open;
+const originalSend = XMLHttpRequest.prototype.send;
 
-  // Hook open
-  XMLHttpRequest.prototype.open = function (method, url) {
-    this._method = method;
-    this._url = url;
-    console.log(`[XHR] ${method} ${url}`);
-    return originalOpen.apply(this, arguments);
-  };
+// Hook open
+XMLHttpRequest.prototype.open = function (method, url) {
+this._method = method;
+this._url = url;
+console.log(`[XHR] ${method} ${url}`);
+return originalOpen.apply(this, arguments);
+};
 
-  // Hook send
-  XMLHttpRequest.prototype.send = function (body) {
-    console.log(`[XHR] Request body:`, body);
+// Hook send
+XMLHttpRequest.prototype.send = function (body) {
+console.log(`[XHR] Request body:`, body);
 
-    // Hook 响应
-    this.addEventListener("readystatechange", function () {
-      if (this.readyState === 4) {
-        console.log(`[XHR] Response:`, this.responseText);
-      }
-    });
+// Hook 响应
+this.addEventListener("readystatechange", function () {
+if (this.readyState === 4) {
+console.log(`[XHR] Response:`, this.responseText);
+}
+});
 
-    return originalSend.apply(this, arguments);
-  };
+return originalSend.apply(this, arguments);
+};
 })();
 ```
 
@@ -83,24 +83,24 @@ window.targetFunction = function (...args) {
 
 ```javascript
 (function () {
-  const originalFetch = window.fetch;
+const originalFetch = window.fetch;
 
-  window.fetch = function (...args) {
-    console.log("[Fetch] Request:", args);
+window.fetch = function (...args) {
+console.log("[Fetch] Request:", args);
 
-    return originalFetch.apply(this, args).then((response) => {
-      console.log("[Fetch] Response:", response);
+return originalFetch.apply(this, args).then((response) => {
+console.log("[Fetch] Response:", response);
 
-      // Clone response to avoid consuming it
-      return response
-        .clone()
-        .text()
-        .then((body) => {
-          console.log("[Fetch] Response body:", body);
-          return response;
-        });
-    });
-  };
+// Clone response to avoid consuming it
+return response
+.clone()
+.text()
+.then((body) => {
+console.log("[Fetch] Response body:", body);
+return response;
+});
+});
+};
 })();
 ```
 
@@ -108,54 +108,54 @@ window.targetFunction = function (...args) {
 
 ```javascript
 (function () {
-  // Hook XHR
-  const XHR_open = XMLHttpRequest.prototype.open;
-  const XHR_send = XMLHttpRequest.prototype.send;
+// Hook XHR
+const XHR_open = XMLHttpRequest.prototype.open;
+const XHR_send = XMLHttpRequest.prototype.send;
 
-  XMLHttpRequest.prototype.open = function (method, url) {
-    this._requestInfo = { method, url, time: Date.now() };
-    console.log(`🌐 [XHR] ${method} ${url}`);
-    return XHR_open.apply(this, arguments);
-  };
+XMLHttpRequest.prototype.open = function (method, url) {
+this._requestInfo = { method, url, time: Date.now() };
+console.log(` [XHR] ${method} ${url}`);
+return XHR_open.apply(this, arguments);
+};
 
-  XMLHttpRequest.prototype.send = function (body) {
-    if (body) {
-      console.log(`📤 [XHR] Body:`, body);
-    }
+XMLHttpRequest.prototype.send = function (body) {
+if (body) {
+console.log(` [XHR] Body:`, body);
+}
 
-    this.addEventListener("load", function () {
-      const duration = Date.now() - this._requestInfo.time;
-      console.log(
-        `📥 [XHR] ${this.status} ${this._requestInfo.url} (${duration}ms)`
-      );
-      console.log(`📥 [XHR] Response:`, this.responseText.substring(0, 200));
-    });
+this.addEventListener("load", function () {
+const duration = Date.now() - this._requestInfo.time;
+console.log(
+` [XHR] ${this.status} ${this._requestInfo.url} (${duration}ms)`
+);
+console.log(` [XHR] Response:`, this.responseText.substring(0, 200));
+});
 
-    return XHR_send.apply(this, arguments);
-  };
+return XHR_send.apply(this, arguments);
+};
 
-  // Hook Fetch
-  const originalFetch = window.fetch;
-  window.fetch = async function (...args) {
-    const startTime = Date.now();
-    console.log(`🌐 [Fetch]`, args[0]);
+// Hook Fetch
+const originalFetch = window.fetch;
+window.fetch = async function (...args) {
+const startTime = Date.now();
+console.log(` [Fetch]`, args[0]);
 
-    if (args[1]?.body) {
-      console.log(`📤 [Fetch] Body:`, args[1].body);
-    }
+if (args[1]?.body) {
+console.log(` [Fetch] Body:`, args[1].body);
+}
 
-    const response = await originalFetch.apply(this, args);
-    const duration = Date.now() - startTime;
+const response = await originalFetch.apply(this, args);
+const duration = Date.now() - startTime;
 
-    console.log(`📥 [Fetch] ${response.status} (${duration}ms)`);
+console.log(` [Fetch] ${response.status} (${duration}ms)`);
 
-    // Clone to avoid consuming
-    const clonedResponse = response.clone();
-    const text = await clonedResponse.text();
-    console.log(`📥 [Fetch] Response:`, text.substring(0, 200));
+// Clone to avoid consuming
+const clonedResponse = response.clone();
+const text = await clonedResponse.text();
+console.log(` [Fetch] Response:`, text.substring(0, 200));
 
-    return response;
-  };
+return response;
+};
 })();
 ```
 
@@ -167,35 +167,35 @@ window.targetFunction = function (...args) {
 
 ```javascript
 (function () {
-  let cookieCache = document.cookie;
+let cookieCache = document.cookie;
 
-  Object.defineProperty(document, "cookie", {
-    get: function () {
-      console.log("🍪 [Cookie] Read:", cookieCache);
-      console.trace();
-      return cookieCache;
-    },
-    set: function (value) {
-      console.log("🍪 [Cookie] Write:", value);
-      console.trace();
+Object.defineProperty(document, "cookie", {
+get: function () {
+console.log(" [Cookie] Read:", cookieCache);
+console.trace();
+return cookieCache;
+},
+set: function (value) {
+console.log(" [Cookie] Write:", value);
+console.trace();
 
-      // 实际写入 Cookie
-      const cookieParts = value.split(";")[0];
-      const [key, val] = cookieParts.split("=");
+// 实际写入 Cookie
+const cookieParts = value.split(";")[0];
+const [key, val] = cookieParts.split("=");
 
-      // 更新缓存
-      const cookies = cookieCache.split("; ");
-      const index = cookies.findIndex((c) => c.startsWith(key + "="));
-      if (index !== -1) {
-        cookies[index] = cookieParts;
-      } else {
-        cookies.push(cookieParts);
-      }
-      cookieCache = cookies.join("; ");
+// 更新缓存
+const cookies = cookieCache.split("; ");
+const index = cookies.findIndex((c) => c.startsWith(key + "="));
+if (index !== -1) {
+cookies[index] = cookieParts;
+} else {
+cookies.push(cookieParts);
+}
+cookieCache = cookies.join("; ");
 
-      return value;
-    },
-  });
+return value;
+},
+});
 })();
 ```
 
@@ -207,26 +207,26 @@ window.targetFunction = function (...args) {
 
 ```javascript
 (function () {
-  const originalSetItem = localStorage.setItem;
-  const originalGetItem = localStorage.getItem;
-  const originalRemoveItem = localStorage.removeItem;
+const originalSetItem = localStorage.setItem;
+const originalGetItem = localStorage.getItem;
+const originalRemoveItem = localStorage.removeItem;
 
-  localStorage.setItem = function (key, value) {
-    console.log(`💾 [LocalStorage] Set: ${key} = ${value}`);
-    console.trace();
-    return originalSetItem.apply(this, arguments);
-  };
+localStorage.setItem = function (key, value) {
+console.log(` [LocalStorage] Set: ${key} = ${value}`);
+console.trace();
+return originalSetItem.apply(this, arguments);
+};
 
-  localStorage.getItem = function (key) {
-    const value = originalGetItem.apply(this, arguments);
-    console.log(`💾 [LocalStorage] Get: ${key} = ${value}`);
-    return value;
-  };
+localStorage.getItem = function (key) {
+const value = originalGetItem.apply(this, arguments);
+console.log(` [LocalStorage] Get: ${key} = ${value}`);
+return value;
+};
 
-  localStorage.removeItem = function (key) {
-    console.log(`💾 [LocalStorage] Remove: ${key}`);
-    return originalRemoveItem.apply(this, arguments);
-  };
+localStorage.removeItem = function (key) {
+console.log(` [LocalStorage] Remove: ${key}`);
+return originalRemoveItem.apply(this, arguments);
+};
 })();
 ```
 
@@ -235,19 +235,19 @@ window.targetFunction = function (...args) {
 ```javascript
 // 同 LocalStorage，将 localStorage 替换为 sessionStorage
 (function () {
-  const originalSetItem = sessionStorage.setItem;
-  const originalGetItem = sessionStorage.getItem;
+const originalSetItem = sessionStorage.setItem;
+const originalGetItem = sessionStorage.getItem;
 
-  sessionStorage.setItem = function (key, value) {
-    console.log(`📦 [SessionStorage] Set: ${key} = ${value}`);
-    return originalSetItem.apply(this, arguments);
-  };
+sessionStorage.setItem = function (key, value) {
+console.log(` [SessionStorage] Set: ${key} = ${value}`);
+return originalSetItem.apply(this, arguments);
+};
 
-  sessionStorage.getItem = function (key) {
-    const value = originalGetItem.apply(this, arguments);
-    console.log(`📦 [SessionStorage] Get: ${key} = ${value}`);
-    return value;
-  };
+sessionStorage.getItem = function (key) {
+const value = originalGetItem.apply(this, arguments);
+console.log(` [SessionStorage] Get: ${key} = ${value}`);
+return value;
+};
 })();
 ```
 
@@ -259,42 +259,42 @@ window.targetFunction = function (...args) {
 
 ```javascript
 (function () {
-  if (window.CryptoJS) {
-    // Hook MD5
-    const originalMD5 = CryptoJS.MD5;
-    CryptoJS.MD5 = function (...args) {
-      console.log("🔐 [CryptoJS.MD5] Input:", args[0].toString());
-      const result = originalMD5.apply(this, args);
-      console.log("🔐 [CryptoJS.MD5] Output:", result.toString());
-      debugger; // 自动断点
-      return result;
-    };
+if (window.CryptoJS) {
+// Hook MD5
+const originalMD5 = CryptoJS.MD5;
+CryptoJS.MD5 = function (...args) {
+console.log(" [CryptoJS.MD5] Input:", args[0].toString());
+const result = originalMD5.apply(this, args);
+console.log(" [CryptoJS.MD5] Output:", result.toString());
+debugger; // 自动断点
+return result;
+};
 
-    // Hook AES.encrypt
-    const originalAESEncrypt = CryptoJS.AES.encrypt;
-    CryptoJS.AES.encrypt = function (message, key, cfg) {
-      console.log("🔐 [CryptoJS.AES.encrypt]");
-      console.log("  Message:", message.toString());
-      console.log("  Key:", key.toString());
-      console.log("  Config:", cfg);
-      const result = originalAESEncrypt.apply(this, arguments);
-      console.log("  Result:", result.toString());
-      debugger;
-      return result;
-    };
+// Hook AES.encrypt
+const originalAESEncrypt = CryptoJS.AES.encrypt;
+CryptoJS.AES.encrypt = function (message, key, cfg) {
+console.log(" [CryptoJS.AES.encrypt]");
+console.log(" Message:", message.toString());
+console.log(" Key:", key.toString());
+console.log(" Config:", cfg);
+const result = originalAESEncrypt.apply(this, arguments);
+console.log(" Result:", result.toString());
+debugger;
+return result;
+};
 
-    // Hook AES.decrypt
-    const originalAESDecrypt = CryptoJS.AES.decrypt;
-    CryptoJS.AES.decrypt = function (ciphertext, key, cfg) {
-      console.log("🔓 [CryptoJS.AES.decrypt]");
-      console.log("  Ciphertext:", ciphertext.toString());
-      console.log("  Key:", key.toString());
-      const result = originalAESDecrypt.apply(this, arguments);
-      console.log("  Decrypted:", result.toString(CryptoJS.enc.Utf8));
-      debugger;
-      return result;
-    };
-  }
+// Hook AES.decrypt
+const originalAESDecrypt = CryptoJS.AES.decrypt;
+CryptoJS.AES.decrypt = function (ciphertext, key, cfg) {
+console.log(" [CryptoJS.AES.decrypt]");
+console.log(" Ciphertext:", ciphertext.toString());
+console.log(" Key:", key.toString());
+const result = originalAESDecrypt.apply(this, arguments);
+console.log(" Decrypted:", result.toString(CryptoJS.enc.Utf8));
+debugger;
+return result;
+};
+}
 })();
 ```
 
@@ -302,23 +302,23 @@ window.targetFunction = function (...args) {
 
 ```javascript
 (function () {
-  const originalSubtle = window.crypto.subtle;
+const originalSubtle = window.crypto.subtle;
 
-  const hookCryptoMethod = (methodName) => {
-    const original = originalSubtle[methodName];
-    originalSubtle[methodName] = async function (...args) {
-      console.log(`🔐 [crypto.subtle.${methodName}]`, args);
-      const result = await original.apply(this, args);
-      console.log(`🔐 [crypto.subtle.${methodName}] Result:`, result);
-      return result;
-    };
-  };
+const hookCryptoMethod = (methodName) => {
+const original = originalSubtle[methodName];
+originalSubtle[methodName] = async function (...args) {
+console.log(` [crypto.subtle.${methodName}]`, args);
+const result = await original.apply(this, args);
+console.log(` [crypto.subtle.${methodName}] Result:`, result);
+return result;
+};
+};
 
-  hookCryptoMethod("encrypt");
-  hookCryptoMethod("decrypt");
-  hookCryptoMethod("sign");
-  hookCryptoMethod("verify");
-  hookCryptoMethod("digest");
+hookCryptoMethod("encrypt");
+hookCryptoMethod("decrypt");
+hookCryptoMethod("sign");
+hookCryptoMethod("verify");
+hookCryptoMethod("digest");
 })();
 ```
 
@@ -330,17 +330,17 @@ window.targetFunction = function (...args) {
 
 ```javascript
 (function () {
-  const originalStringify = JSON.stringify;
+const originalStringify = JSON.stringify;
 
-  JSON.stringify = function (obj, replacer, space) {
-    console.log("📝 [JSON.stringify] Input:", obj);
-    console.trace();
+JSON.stringify = function (obj, replacer, space) {
+console.log(" [JSON.stringify] Input:", obj);
+console.trace();
 
-    const result = originalStringify.apply(this, arguments);
-    console.log("📝 [JSON.stringify] Output:", result);
+const result = originalStringify.apply(this, arguments);
+console.log(" [JSON.stringify] Output:", result);
 
-    return result;
-  };
+return result;
+};
 })();
 ```
 
@@ -348,16 +348,16 @@ window.targetFunction = function (...args) {
 
 ```javascript
 (function () {
-  const originalParse = JSON.parse;
+const originalParse = JSON.parse;
 
-  JSON.parse = function (text, reviver) {
-    console.log("📖 [JSON.parse] Input:", text);
+JSON.parse = function (text, reviver) {
+console.log(" [JSON.parse] Input:", text);
 
-    const result = originalParse.apply(this, arguments);
-    console.log("📖 [JSON.parse] Output:", result);
+const result = originalParse.apply(this, arguments);
+console.log(" [JSON.parse] Output:", result);
 
-    return result;
-  };
+return result;
+};
 })();
 ```
 
@@ -369,18 +369,18 @@ window.targetFunction = function (...args) {
 
 ```javascript
 (function () {
-  const originalSetTimeout = window.setTimeout;
+const originalSetTimeout = window.setTimeout;
 
-  window.setTimeout = function (callback, delay, ...args) {
-    console.log(`⏰ [setTimeout] Delay: ${delay}ms`);
-    console.log(
-      `⏰ [setTimeout] Callback:`,
-      callback.toString().substring(0, 100)
-    );
-    console.trace();
+window.setTimeout = function (callback, delay, ...args) {
+console.log(`⏰ [setTimeout] Delay: ${delay}ms`);
+console.log(
+`⏰ [setTimeout] Callback:`,
+callback.toString().substring(0, 100)
+);
+console.trace();
 
-    return originalSetTimeout.apply(this, arguments);
-  };
+return originalSetTimeout.apply(this, arguments);
+};
 })();
 ```
 
@@ -388,17 +388,17 @@ window.targetFunction = function (...args) {
 
 ```javascript
 (function () {
-  const originalSetInterval = window.setInterval;
+const originalSetInterval = window.setInterval;
 
-  window.setInterval = function (callback, delay, ...args) {
-    console.log(`⏰ [setInterval] Interval: ${delay}ms`);
-    console.log(
-      `⏰ [setInterval] Callback:`,
-      callback.toString().substring(0, 100)
-    );
+window.setInterval = function (callback, delay, ...args) {
+console.log(`⏰ [setInterval] Interval: ${delay}ms`);
+console.log(
+`⏰ [setInterval] Callback:`,
+callback.toString().substring(0, 100)
+);
 
-    return originalSetInterval.apply(this, arguments);
-  };
+return originalSetInterval.apply(this, arguments);
+};
 })();
 ```
 
@@ -408,42 +408,42 @@ window.targetFunction = function (...args) {
 
 ```javascript
 (function () {
-  const originalWebSocket = window.WebSocket;
+const originalWebSocket = window.WebSocket;
 
-  window.WebSocket = function (url, protocols) {
-    console.log(`🔌 [WebSocket] Connecting to: ${url}`);
+window.WebSocket = function (url, protocols) {
+console.log(` [WebSocket] Connecting to: ${url}`);
 
-    const ws = new originalWebSocket(url, protocols);
+const ws = new originalWebSocket(url, protocols);
 
-    // Hook send
-    const originalSend = ws.send;
-    ws.send = function (data) {
-      console.log("📤 [WebSocket] Send:", data);
-      return originalSend.apply(this, arguments);
-    };
+// Hook send
+const originalSend = ws.send;
+ws.send = function (data) {
+console.log(" [WebSocket] Send:", data);
+return originalSend.apply(this, arguments);
+};
 
-    // Hook onmessage
-    ws.addEventListener("message", function (event) {
-      console.log("📥 [WebSocket] Message:", event.data);
-    });
+// Hook onmessage
+ws.addEventListener("message", function (event) {
+console.log(" [WebSocket] Message:", event.data);
+});
 
-    // Hook onopen
-    ws.addEventListener("open", function () {
-      console.log("✅ [WebSocket] Connected");
-    });
+// Hook onopen
+ws.addEventListener("open", function () {
+console.log("✅ [WebSocket] Connected");
+});
 
-    // Hook onerror
-    ws.addEventListener("error", function (error) {
-      console.log("❌ [WebSocket] Error:", error);
-    });
+// Hook onerror
+ws.addEventListener("error", function (error) {
+console.log("❌ [WebSocket] Error:", error);
+});
 
-    // Hook onclose
-    ws.addEventListener("close", function () {
-      console.log("🔴 [WebSocket] Closed");
-    });
+// Hook onclose
+ws.addEventListener("close", function () {
+console.log(" [WebSocket] Closed");
+});
 
-    return ws;
-  };
+return ws;
+};
 })();
 ```
 
@@ -456,19 +456,19 @@ window.targetFunction = function (...args) {
 ```javascript
 // 方法一：重写 Function.prototype.constructor
 (function () {
-  const originalConstructor = Function.prototype.constructor;
+const originalConstructor = Function.prototype.constructor;
 
-  Function.prototype.constructor = function (...args) {
-    // 检查是否包含 'debugger'
-    const code = args[args.length - 1];
-    if (typeof code === "string" && code.includes("debugger")) {
-      console.log("🚫 [Anti-Debug] Blocked debugger");
-      // 返回空函数
-      return function () {};
-    }
+Function.prototype.constructor = function (...args) {
+// 检查是否包含 'debugger'
+const code = args[args.length - 1];
+if (typeof code === "string" && code.includes("debugger")) {
+console.log(" [Anti-Debug] Blocked debugger");
+// 返回空函数
+return function () {};
+}
 
-    return originalConstructor.apply(this, args);
-  };
+return originalConstructor.apply(this, args);
+};
 })();
 
 // 方法二：使用 Chrome DevTools
@@ -479,23 +479,23 @@ window.targetFunction = function (...args) {
 
 ```javascript
 (function () {
-  // 某些网站通过检测 console 被打开来反调试
-  // 重写 console 方法返回固定值
+// 某些网站通过检测 console 被打开来反调试
+// 重写 console 方法返回固定值
 
-  const noop = function () {};
-  const originalConsole = { ...console };
+const noop = function () {};
+const originalConsole = { ...console };
 
-  window.console = {
-    log: noop,
-    debug: noop,
-    info: noop,
-    warn: noop,
-    error: noop,
-    // 保留原始 console 供我们使用
-    _original: originalConsole,
-  };
+window.console = {
+log: noop,
+debug: noop,
+info: noop,
+warn: noop,
+error: noop,
+// 保留原始 console 供我们使用
+_original: originalConsole,
+};
 
-  // 使用：window.console._original.log('message');
+// 使用：window.console._original.log('message');
 })();
 ```
 
@@ -507,51 +507,51 @@ window.targetFunction = function (...args) {
 
 ```javascript
 (function () {
-  console.log("🎣 Universal Hook Script Loaded");
+console.log(" Universal Hook Script Loaded");
 
-  // 1. Network
-  const originalFetch = window.fetch;
-  window.fetch = async function (...args) {
-    console.log(`🌐 [Fetch]`, args);
-    const response = await originalFetch.apply(this, args);
-    const clone = response.clone();
-    const text = await clone.text();
-    console.log(`📥 [Fetch] Response:`, text.substring(0, 200));
-    return response;
-  };
+// 1. Network
+const originalFetch = window.fetch;
+window.fetch = async function (...args) {
+console.log(` [Fetch]`, args);
+const response = await originalFetch.apply(this, args);
+const clone = response.clone();
+const text = await clone.text();
+console.log(` [Fetch] Response:`, text.substring(0, 200));
+return response;
+};
 
-  // 2. Cookie
-  let cookieCache = document.cookie;
-  Object.defineProperty(document, "cookie", {
-    get: () => (console.log("🍪 [Cookie] Read"), cookieCache),
-    set: (v) => (console.log("🍪 [Cookie] Write:", v), (cookieCache = v), v),
-  });
+// 2. Cookie
+let cookieCache = document.cookie;
+Object.defineProperty(document, "cookie", {
+get: () => (console.log(" [Cookie] Read"), cookieCache),
+set: (v) => (console.log(" [Cookie] Write:", v), (cookieCache = v), v),
+});
 
-  // 3. LocalStorage
-  const originalSetItem = localStorage.setItem;
-  localStorage.setItem = function (k, v) {
-    console.log(`💾 [LocalStorage] ${k} = ${v}`);
-    return originalSetItem.apply(this, arguments);
-  };
+// 3. LocalStorage
+const originalSetItem = localStorage.setItem;
+localStorage.setItem = function (k, v) {
+console.log(` [LocalStorage] ${k} = ${v}`);
+return originalSetItem.apply(this, arguments);
+};
 
-  // 4. JSON
-  const originalStringify = JSON.stringify;
-  JSON.stringify = function (obj) {
-    console.log("📝 [JSON.stringify]", obj);
-    return originalStringify.apply(this, arguments);
-  };
+// 4. JSON
+const originalStringify = JSON.stringify;
+JSON.stringify = function (obj) {
+console.log(" [JSON.stringify]", obj);
+return originalStringify.apply(this, arguments);
+};
 
-  // 5. CryptoJS (如果存在)
-  if (window.CryptoJS) {
-    const originalMD5 = CryptoJS.MD5;
-    CryptoJS.MD5 = function (...args) {
-      const result = originalMD5.apply(this, args);
-      console.log(`🔐 [MD5] ${args[0]} => ${result}`);
-      return result;
-    };
-  }
+// 5. CryptoJS (如果存在)
+if (window.CryptoJS) {
+const originalMD5 = CryptoJS.MD5;
+CryptoJS.MD5 = function (...args) {
+const result = originalMD5.apply(this, args);
+console.log(` [MD5] ${args[0]} => ${result}`);
+return result;
+};
+}
 
-  console.log("✅ All hooks installed!");
+console.log("✅ All hooks installed!");
 })();
 ```
 
@@ -589,33 +589,33 @@ ES6 Proxy 提供了更强大的拦截能力，可以拦截对象的所有操作�
 ```javascript
 // Hook 整个对象的所有方法
 function deepHookObject(obj, name = "Object") {
-  return new Proxy(obj, {
-    get(target, prop, receiver) {
-      const value = Reflect.get(target, prop, receiver);
+return new Proxy(obj, {
+get(target, prop, receiver) {
+const value = Reflect.get(target, prop, receiver);
 
-      // 如果是函数，则包装它
-      if (typeof value === "function") {
-        return new Proxy(value, {
-          apply(fn, thisArg, args) {
-            console.log(`🔍 [${name}.${String(prop)}] 调用`);
-            console.log("   参数:", args);
+// 如果是函数，则包装它
+if (typeof value === "function") {
+return new Proxy(value, {
+apply(fn, thisArg, args) {
+console.log(` [${name}.${String(prop)}] 调用`);
+console.log(" 参数:", args);
 
-            const result = Reflect.apply(fn, thisArg, args);
+const result = Reflect.apply(fn, thisArg, args);
 
-            console.log("   返回:", result);
-            return result;
-          },
-        });
-      }
+console.log(" 返回:", result);
+return result;
+},
+});
+}
 
-      return value;
-    },
+return value;
+},
 
-    set(target, prop, value, receiver) {
-      console.log(`📝 [${name}.${String(prop)}] 设置为:`, value);
-      return Reflect.set(target, prop, value, receiver);
-    },
-  });
+set(target, prop, value, receiver) {
+console.log(` [${name}.${String(prop)}] 设置为:`, value);
+return Reflect.set(target, prop, value, receiver);
+},
+});
 }
 
 // 使用示例：Hook 整个 localStorage
@@ -629,27 +629,27 @@ window.localStorage = deepHookObject(window.localStorage, "localStorage");
 ```javascript
 // 条件 Hook - 只记录特定条件
 (function () {
-  const originalFetch = window.fetch;
-  const INTERESTING_URLS = ["/api/user", "/api/login", "/api/data"];
+const originalFetch = window.fetch;
+const INTERESTING_URLS = ["/api/user", "/api/login", "/api/data"];
 
-  window.fetch = async function (...args) {
-    const url = args[0];
-    const shouldLog = INTERESTING_URLS.some((pattern) => url.includes(pattern));
+window.fetch = async function (...args) {
+const url = args[0];
+const shouldLog = INTERESTING_URLS.some((pattern) => url.includes(pattern));
 
-    if (shouldLog) {
-      console.log("🌐 [Fetch]", url);
-    }
+if (shouldLog) {
+console.log(" [Fetch]", url);
+}
 
-    const response = await originalFetch.apply(this, args);
+const response = await originalFetch.apply(this, args);
 
-    if (shouldLog) {
-      const clone = response.clone();
-      const text = await clone.text();
-      console.log("📥 [Response]", text.substring(0, 200));
-    }
+if (shouldLog) {
+const clone = response.clone();
+const text = await clone.text();
+console.log(" [Response]", text.substring(0, 200));
+}
 
-    return response;
-  };
+return response;
+};
 })();
 ```
 
@@ -659,29 +659,29 @@ window.localStorage = deepHookObject(window.localStorage, "localStorage");
 
 ```javascript
 function hookWithStackTrace(obj, methodName) {
-  const original = obj[methodName];
+const original = obj[methodName];
 
-  obj[methodName] = function (...args) {
-    console.log(`🎯 [${methodName}] 被调用`);
-    console.log("参数:", args);
+obj[methodName] = function (...args) {
+console.log(` [${methodName}] 被调用`);
+console.log("参数:", args);
 
-    // 获取调用栈
-    const stack = new Error().stack;
-    const callerLine = stack.split("\n")[2]; // 第三行是调用者
-    console.log("调用位置:", callerLine.trim());
+// 获取调用栈
+const stack = new Error().stack;
+const callerLine = stack.split("\n")[2]; // 第三行是调用者
+console.log("调用位置:", callerLine.trim());
 
-    // 只在特定位置触发断点
-    if (callerLine.includes("encrypt")) {
-      debugger; // 条件断点
-    }
+// 只在特定位置触发断点
+if (callerLine.includes("encrypt")) {
+debugger; // 条件断点
+}
 
-    return original.apply(this, args);
-  };
+return original.apply(this, args);
+};
 }
 
 // 示例：追踪 MD5 调用来源
 if (window.CryptoJS) {
-  hookWithStackTrace(CryptoJS, "MD5");
+hookWithStackTrace(CryptoJS, "MD5");
 }
 ```
 
@@ -689,49 +689,49 @@ if (window.CryptoJS) {
 
 ```javascript
 class FunctionProfiler {
-  constructor() {
-    this.stats = new Map();
-  }
+constructor() {
+this.stats = new Map();
+}
 
-  hook(obj, methodName, displayName) {
-    const original = obj[methodName];
-    const stats = {
-      callCount: 0,
-      totalTime: 0,
-      minTime: Infinity,
-      maxTime: 0,
-    };
+hook(obj, methodName, displayName) {
+const original = obj[methodName];
+const stats = {
+callCount: 0,
+totalTime: 0,
+minTime: Infinity,
+maxTime: 0,
+};
 
-    this.stats.set(displayName, stats);
+this.stats.set(displayName, stats);
 
-    obj[methodName] = function (...args) {
-      stats.callCount++;
-      const startTime = performance.now();
+obj[methodName] = function (...args) {
+stats.callCount++;
+const startTime = performance.now();
 
-      const result = original.apply(this, args);
+const result = original.apply(this, args);
 
-      const duration = performance.now() - startTime;
-      stats.totalTime += duration;
-      stats.minTime = Math.min(stats.minTime, duration);
-      stats.maxTime = Math.max(stats.maxTime, duration);
+const duration = performance.now() - startTime;
+stats.totalTime += duration;
+stats.minTime = Math.min(stats.minTime, duration);
+stats.maxTime = Math.max(stats.maxTime, duration);
 
-      return result;
-    };
-  }
+return result;
+};
+}
 
-  report() {
-    console.log("\n=== 函数性能报告 ===");
-    for (const [name, stats] of this.stats.entries()) {
-      console.log(`\n${name}:`);
-      console.log(`  调用次数: ${stats.callCount}`);
-      console.log(`  总耗时: ${stats.totalTime.toFixed(2)}ms`);
-      console.log(
-        `  平均耗时: ${(stats.totalTime / stats.callCount).toFixed(2)}ms`
-      );
-      console.log(`  最小耗时: ${stats.minTime.toFixed(2)}ms`);
-      console.log(`  最大耗时: ${stats.maxTime.toFixed(2)}ms`);
-    }
-  }
+report() {
+console.log("\n=== 函数性能报告 ===");
+for (const [name, stats] of this.stats.entries()) {
+console.log(`\n${name}:`);
+console.log(` 调用次数: ${stats.callCount}`);
+console.log(` 总耗时: ${stats.totalTime.toFixed(2)}ms`);
+console.log(
+` 平均耗时: ${(stats.totalTime / stats.callCount).toFixed(2)}ms`
+);
+console.log(` 最小耗时: ${stats.minTime.toFixed(2)}ms`);
+console.log(` 最大耗时: ${stats.maxTime.toFixed(2)}ms`);
+}
+}
 }
 
 // 使用示例
@@ -750,47 +750,47 @@ setTimeout(() => profiler.report(), 10000);
 ```javascript
 // 方法1: 使用 Proxy 保持函数特性
 function stealthHook(obj, prop, handler) {
-  const original = obj[prop];
+const original = obj[prop];
 
-  // 创建 Proxy，保留原函数的所有属性
-  const proxy = new Proxy(original, {
-    apply(target, thisArg, args) {
-      handler.before && handler.before(args);
-      const result = Reflect.apply(target, thisArg, args);
-      handler.after && handler.after(result);
-      return result;
-    },
-  });
+// 创建 Proxy，保留原函数的所有属性
+const proxy = new Proxy(original, {
+apply(target, thisArg, args) {
+handler.before && handler.before(args);
+const result = Reflect.apply(target, thisArg, args);
+handler.after && handler.after(result);
+return result;
+},
+});
 
-  // 复制原函数的属性
-  Object.setPrototypeOf(proxy, Object.getPrototypeOf(original));
-  Object.defineProperty(obj, prop, {
-    value: proxy,
-    writable: true,
-    enumerable: false,
-    configurable: true,
-  });
+// 复制原函数的属性
+Object.setPrototypeOf(proxy, Object.getPrototypeOf(original));
+Object.defineProperty(obj, prop, {
+value: proxy,
+writable: true,
+enumerable: false,
+configurable: true,
+});
 }
 
 // 方法2: 保持 toString() 一致
 function invisibleHook(obj, methodName, callback) {
-  const original = obj[methodName];
-  const originalToString = original.toString();
+const original = obj[methodName];
+const originalToString = original.toString();
 
-  obj[methodName] = function (...args) {
-    callback(args);
-    return original.apply(this, args);
-  };
+obj[methodName] = function (...args) {
+callback(args);
+return original.apply(this, args);
+};
 
-  // 伪造 toString
-  obj[methodName].toString = function () {
-    return originalToString;
-  };
+// 伪造 toString
+obj[methodName].toString = function () {
+return originalToString;
+};
 
-  // 隐藏 Proxy 特征
-  Object.defineProperty(obj[methodName], "name", {
-    value: original.name,
-  });
+// 隐藏 Proxy 特征
+Object.defineProperty(obj[methodName], "name", {
+value: original.name,
+});
 }
 ```
 
@@ -799,38 +799,38 @@ function invisibleHook(obj, methodName, callback) {
 ```javascript
 // 自动 Hook 所有被调用的加密方法
 (function () {
-  if (!window.CryptoJS) return;
+if (!window.CryptoJS) return;
 
-  const hookedMethods = new Set();
+const hookedMethods = new Set();
 
-  function autoHook(obj, prefix = "CryptoJS") {
-    return new Proxy(obj, {
-      get(target, prop) {
-        const value = target[prop];
-        const fullName = `${prefix}.${String(prop)}`;
+function autoHook(obj, prefix = "CryptoJS") {
+return new Proxy(obj, {
+get(target, prop) {
+const value = target[prop];
+const fullName = `${prefix}.${String(prop)}`;
 
-        if (typeof value === "function" && !hookedMethods.has(fullName)) {
-          hookedMethods.add(fullName);
-          console.log(`🎣 自动 Hook: ${fullName}`);
+if (typeof value === "function" && !hookedMethods.has(fullName)) {
+hookedMethods.add(fullName);
+console.log(` 自动 Hook: ${fullName}`);
 
-          return new Proxy(value, {
-            apply(fn, thisArg, args) {
-              console.log(`🔐 [${fullName}]`, args);
-              return Reflect.apply(fn, thisArg, args);
-            },
-          });
-        }
+return new Proxy(value, {
+apply(fn, thisArg, args) {
+console.log(` [${fullName}]`, args);
+return Reflect.apply(fn, thisArg, args);
+},
+});
+}
 
-        if (typeof value === "object" && value !== null) {
-          return autoHook(value, fullName);
-        }
+if (typeof value === "object" && value !== null) {
+return autoHook(value, fullName);
+}
 
-        return value;
-      },
-    });
-  }
+return value;
+},
+});
+}
 
-  window.CryptoJS = autoHook(window.CryptoJS);
+window.CryptoJS = autoHook(window.CryptoJS);
 })();
 ```
 
@@ -842,79 +842,79 @@ function invisibleHook(obj, methodName, callback) {
 
 ```javascript
 class HookManager {
-  constructor() {
-    this.hooks = [];
-    this.enabled = true;
-  }
+constructor() {
+this.hooks = [];
+this.enabled = true;
+}
 
-  // 注册 Hook
-  register(config) {
-    const { target, method, before, after, condition } = config;
-    const original = target[method];
+// 注册 Hook
+register(config) {
+const { target, method, before, after, condition } = config;
+const original = target[method];
 
-    if (!original) {
-      console.warn(`⚠️  方法 ${method} 不存在`);
-      return;
-    }
+if (!original) {
+console.warn(`⚠️ 方法 ${method} 不存在`);
+return;
+}
 
-    const hookId = this.hooks.length;
+const hookId = this.hooks.length;
 
-    target[method] = (...args) => {
-      if (!this.enabled) {
-        return original.apply(target, args);
-      }
+target[method] = (...args) => {
+if (!this.enabled) {
+return original.apply(target, args);
+}
 
-      // 条件检查
-      if (condition && !condition(args)) {
-        return original.apply(target, args);
-      }
+// 条件检查
+if (condition && !condition(args)) {
+return original.apply(target, args);
+}
 
-      // 前置处理
-      if (before) {
-        const modifiedArgs = before(args);
-        if (modifiedArgs !== undefined) {
-          args = modifiedArgs;
-        }
-      }
+// 前置处理
+if (before) {
+const modifiedArgs = before(args);
+if (modifiedArgs !== undefined) {
+args = modifiedArgs;
+}
+}
 
-      // 调用原函数
-      const result = original.apply(target, args);
+// 调用原函数
+const result = original.apply(target, args);
 
-      // 后置处理
-      if (after) {
-        const modifiedResult = after(result, args);
-        if (modifiedResult !== undefined) {
-          return modifiedResult;
-        }
-      }
+// 后置处理
+if (after) {
+const modifiedResult = after(result, args);
+if (modifiedResult !== undefined) {
+return modifiedResult;
+}
+}
 
-      return result;
-    };
+return result;
+};
 
-    this.hooks.push({
-      id: hookId,
-      target,
-      method,
-      original,
-    });
+this.hooks.push({
+id: hookId,
+target,
+method,
+original,
+});
 
-    return hookId;
-  }
+return hookId;
+}
 
-  // 移除 Hook
-  remove(hookId) {
-    const hook = this.hooks[hookId];
-    if (hook) {
-      hook.target[hook.method] = hook.original;
-      console.log(`✅ Hook ${hookId} 已移除`);
-    }
-  }
+// 移除 Hook
+remove(hookId) {
+const hook = this.hooks[hookId];
+if (hook) {
+hook.target[hook.method] = hook.original;
+console.log(`✅ Hook ${hookId} 已移除`);
+}
+}
 
-  // 全局启用/禁用
-  toggle(enabled) {
-    this.enabled = enabled;
-    console.log(`🔄 Hook ${enabled ? "启用" : "禁用"}`);
-  }
+// 全局启用/禁用
+toggle(enabled) {
+this.enabled = enabled;
+console.log(` Hook ${enabled ? "启用" : "禁用"}`);
+}
 }
 
 // 使用示例
@@ -922,20 +922,20 @@ const hookManager = new HookManager();
 
 // Hook Fetch 请求
 hookManager.register({
-  target: window,
-  method: "fetch",
-  before: (args) => {
-    console.log("🌐 Fetch:", args[0]);
-  },
-  after: async (response) => {
-    const clone = response.clone();
-    const text = await clone.text();
-    console.log("📥 Response:", text.substring(0, 100));
-  },
-  condition: (args) => {
-    // 只 Hook API 请求
-    return args[0].includes("/api/");
-  },
+target: window,
+method: "fetch",
+before: (args) => {
+console.log(" Fetch:", args[0]);
+},
+after: async (response) => {
+const clone = response.clone();
+const text = await clone.text();
+console.log(" Response:", text.substring(0, 100));
+},
+condition: (args) => {
+// 只 Hook API 请求
+return args[0].includes("/api/");
+},
 });
 
 // 临时禁用所有 Hook
@@ -953,54 +953,54 @@ hookManager.toggle(false);
 ```javascript
 // Step 1: Hook 所有可能的密钥来源
 const keyTracker = {
-  sources: [],
+sources: [],
 
-  trackRandom() {
-    const originalRandom = Math.random;
-    Math.random = function () {
-      const value = originalRandom();
-      keyTracker.sources.push({ type: "Math.random", value });
-      return value;
-    };
-  },
+trackRandom() {
+const originalRandom = Math.random;
+Math.random = function () {
+const value = originalRandom();
+keyTracker.sources.push({ type: "Math.random", value });
+return value;
+};
+},
 
-  trackTimestamp() {
-    const originalNow = Date.now;
-    Date.now = function () {
-      const value = originalNow();
-      keyTracker.sources.push({ type: "Date.now", value });
-      return value;
-    };
-  },
+trackTimestamp() {
+const originalNow = Date.now;
+Date.now = function () {
+const value = originalNow();
+keyTracker.sources.push({ type: "Date.now", value });
+return value;
+};
+},
 
-  trackCrypto() {
-    if (window.crypto && window.crypto.getRandomValues) {
-      const original = window.crypto.getRandomValues.bind(window.crypto);
-      window.crypto.getRandomValues = function (array) {
-        const result = original(array);
-        keyTracker.sources.push({
-          type: "crypto.getRandomValues",
-          value: Array.from(array),
-        });
-        return result;
-      };
-    }
-  },
+trackCrypto() {
+if (window.crypto && window.crypto.getRandomValues) {
+const original = window.crypto.getRandomValues.bind(window.crypto);
+window.crypto.getRandomValues = function (array) {
+const result = original(array);
+keyTracker.sources.push({
+type: "crypto.getRandomValues",
+value: Array.from(array),
+});
+return result;
+};
+}
+},
 
-  init() {
-    this.trackRandom();
-    this.trackTimestamp();
-    this.trackCrypto();
-    console.log("🔍 密钥追踪器已启动");
-  },
+init() {
+this.trackRandom();
+this.trackTimestamp();
+this.trackCrypto();
+console.log(" 密钥追踪器已启动");
+},
 
-  analyze() {
-    console.log("=== 密钥来源分析 ===");
-    console.log(`总计 ${this.sources.length} 个随机源`);
-    this.sources.forEach((source, i) => {
-      console.log(`${i + 1}. ${source.type}:`, source.value);
-    });
-  },
+analyze() {
+console.log("=== 密钥来源分析 ===");
+console.log(`总计 ${this.sources.length} 个随机源`);
+this.sources.forEach((source, i) => {
+console.log(`${i + 1}. ${source.type}:`, source.value);
+});
+},
 };
 
 keyTracker.init();
@@ -1016,36 +1016,36 @@ setTimeout(() => keyTracker.analyze(), 5000);
 ```javascript
 // 检测并 Hook VM 环境
 (function () {
-  // 常见的 VM 特征
-  const vmPatterns = [
-    "eval",
-    "Function",
-    "with",
-    "Proxy",
-    "_0x", // 混淆特征
-    "constructor",
-  ];
+// 常见的 VM 特征
+const vmPatterns = [
+"eval",
+"Function",
+"with",
+"Proxy",
+"_0x", // 混淆特征
+"constructor",
+];
 
-  // Hook Function 构造函数
-  const OriginalFunction = Function;
-  window.Function = new Proxy(OriginalFunction, {
-    construct(target, args) {
-      const code = args[args.length - 1];
+// Hook Function 构造函数
+const OriginalFunction = Function;
+window.Function = new Proxy(OriginalFunction, {
+construct(target, args) {
+const code = args[args.length - 1];
 
-      // 检查是否是 VM 代码
-      const isVM = vmPatterns.some((pattern) => code.includes(pattern));
+// 检查是否是 VM 代码
+const isVM = vmPatterns.some((pattern) => code.includes(pattern));
 
-      if (isVM) {
-        console.log("🚨 检测到 VM 代码执行");
-        console.log("代码片段:", code.substring(0, 200));
-        debugger; // 断点
-      }
+if (isVM) {
+console.log(" 检测到 VM 代码执行");
+console.log("代码片段:", code.substring(0, 200));
+debugger; // 断点
+}
 
-      return Reflect.construct(target, args);
-    },
-  });
+return Reflect.construct(target, args);
+},
+});
 
-  console.log("✅ VM 检测 Hook 已安装");
+console.log("✅ VM 检测 Hook 已安装");
 })();
 ```
 
@@ -1055,75 +1055,75 @@ setTimeout(() => keyTracker.analyze(), 5000);
 
 ```javascript
 class ParameterAnalyzer {
-  constructor(targetFunction, referenceOutput) {
-    this.targetFunction = targetFunction;
-    this.referenceOutput = referenceOutput;
-    this.results = [];
-  }
+constructor(targetFunction, referenceOutput) {
+this.targetFunction = targetFunction;
+this.referenceOutput = referenceOutput;
+this.results = [];
+}
 
-  // 测试单个参数的影响
-  testParameter(baseParams, paramIndex, testValue) {
-    const testParams = [...baseParams];
-    testParams[paramIndex] = testValue;
+// 测试单个参数的影响
+testParameter(baseParams, paramIndex, testValue) {
+const testParams = [...baseParams];
+testParams[paramIndex] = testValue;
 
-    const output = this.targetFunction(...testParams);
-    const changed = output !== this.referenceOutput;
+const output = this.targetFunction(...testParams);
+const changed = output !== this.referenceOutput;
 
-    this.results.push({
-      paramIndex,
-      testValue,
-      output,
-      changed,
-    });
+this.results.push({
+paramIndex,
+testValue,
+output,
+changed,
+});
 
-    return changed;
-  }
+return changed;
+}
 
-  // 自动化测试
-  analyze(baseParams) {
-    console.log("🔬 开始参数分析");
+// 自动化测试
+analyze(baseParams) {
+console.log(" 开始参数分析");
 
-    baseParams.forEach((param, index) => {
-      console.log(`\n测试参数 ${index}:`);
+baseParams.forEach((param, index) => {
+console.log(`\n测试参数 ${index}:`);
 
-      // 测试不同的值
-      const testValues = [
-        null,
-        undefined,
-        "",
-        0,
-        param + "_modified",
-        param.toUpperCase?.(),
-      ].filter((v) => v !== undefined);
+// 测试不同的值
+const testValues = [
+null,
+undefined,
+"",
+0,
+param + "_modified",
+param.toUpperCase?.(),
+].filter((v) => v !== undefined);
 
-      testValues.forEach((testValue) => {
-        const changed = this.testParameter(baseParams, index, testValue);
-        console.log(
-          `  ${JSON.stringify(testValue)} => ${
-            changed ? "✅ 影响输出" : "❌ 无影响"
-          }`
-        );
-      });
-    });
+testValues.forEach((testValue) => {
+const changed = this.testParameter(baseParams, index, testValue);
+console.log(
+` ${JSON.stringify(testValue)} => ${
+changed ? "✅ 影响输出" : "❌ 无影响"
+}`
+);
+});
+});
 
-    this.report();
-  }
+this.report();
+}
 
-  report() {
-    console.log("\n=== 分析报告 ===");
-    const criticalParams = this.results
-      .filter((r) => r.changed)
-      .map((r) => r.paramIndex);
+report() {
+console.log("\n=== 分析报告 ===");
+const criticalParams = this.results
+.filter((r) => r.changed)
+.map((r) => r.paramIndex);
 
-    console.log("关键参数索引:", [...new Set(criticalParams)]);
-  }
+console.log("关键参数索引:", [...new Set(criticalParams)]);
+}
 }
 
 // 使用示例
 // 假设发现了加密函数 encryptData(timestamp, userId, data)
 const analyzer = new ParameterAnalyzer(
-  window.encryptData,
-  window.encryptData(1638360000, "123", "test")
+window.encryptData,
+window.encryptData(1638360000, "123", "test")
 );
 
 analyzer.analyze([1638360000, "123", "test"]);
@@ -1139,29 +1139,29 @@ analyzer.analyze([1638360000, "123", "test"]);
 
 ```javascript
 class ConditionalLogger {
-  constructor(condition) {
-    this.condition = condition;
-    this.buffer = [];
-  }
+constructor(condition) {
+this.condition = condition;
+this.buffer = [];
+}
 
-  log(...args) {
-    if (this.condition()) {
-      console.log(...args);
-    } else {
-      this.buffer.push(args);
-    }
-  }
+log(...args) {
+if (this.condition()) {
+console.log(...args);
+} else {
+this.buffer.push(args);
+}
+}
 
-  flush() {
-    console.log("=== 缓冲日志 ===");
-    this.buffer.forEach((args) => console.log(...args));
-    this.buffer = [];
-  }
+flush() {
+console.log("=== 缓冲日志 ===");
+this.buffer.forEach((args) => console.log(...args));
+this.buffer = [];
+}
 }
 
 // 只在特定URL时记录
 const logger = new ConditionalLogger(() => {
-  return window.location.href.includes("/login");
+return window.location.href.includes("/login");
 });
 
 logger.log("这条日志只在 /login 页面显示");
@@ -1172,23 +1172,23 @@ logger.log("这条日志只在 /login 页面显示");
 ```javascript
 // 在加密函数的关键参数处自动断点
 function autoBreakpoint(obj, method, paramChecker) {
-  const original = obj[method];
+const original = obj[method];
 
-  obj[method] = function (...args) {
-    if (paramChecker(args)) {
-      console.log("🎯 触发自动断点");
-      console.log("参数:", args);
-      debugger; // 自动断点
-    }
+obj[method] = function (...args) {
+if (paramChecker(args)) {
+console.log(" 触发自动断点");
+console.log("参数:", args);
+debugger; // 自动断点
+}
 
-    return original.apply(this, args);
-  };
+return original.apply(this, args);
+};
 }
 
 // 示例：当密钥包含特定字符串时断点
 autoBreakpoint(CryptoJS.AES, "encrypt", (args) => {
-  const key = args[1]?.toString();
-  return key && key.includes("secret");
+const key = args[1]?.toString();
+return key && key.includes("secret");
 });
 ```
 
@@ -1204,11 +1204,11 @@ autoBreakpoint(CryptoJS.AES, "encrypt", (args) => {
 ```javascript
 // 监听动态加载的 CryptoJS
 const observer = new MutationObserver(() => {
-  if (window.CryptoJS && !window._cryptoHooked) {
-    window._cryptoHooked = true;
-    // 安装 Hook
-    console.log("✅ CryptoJS 已加载，安装 Hook");
-  }
+if (window.CryptoJS && !window._cryptoHooked) {
+window._cryptoHooked = true;
+// 安装 Hook
+console.log("✅ CryptoJS 已加载，安装 Hook");
+}
 });
 
 observer.observe(document, { childList: true, subtree: true });
@@ -1224,18 +1224,18 @@ observer.observe(document, { childList: true, subtree: true });
 
 ```javascript
 function safeHook(obj, method, callback) {
-  const original = obj[method];
+const original = obj[method];
 
-  obj[method] = function (...args) {
-    try {
-      callback(args);
-    } catch (error) {
-      console.error("Hook 错误:", error);
-      // 继续执行原函数
-    }
+obj[method] = function (...args) {
+try {
+callback(args);
+} catch (error) {
+console.error("Hook 错误:", error);
+// 继续执行原函数
+}
 
-    return original.apply(this, args);
-  };
+return original.apply(this, args);
+};
 }
 ```
 
@@ -1247,17 +1247,17 @@ function safeHook(obj, method, callback) {
 window._originalFunctions = window._originalFunctions || {};
 
 function installHook(obj, method, hook) {
-  const key = `${obj.constructor.name}.${method}`;
-  window._originalFunctions[key] = obj[method];
-  obj[method] = hook(obj[method]);
+const key = `${obj.constructor.name}.${method}`;
+window._originalFunctions[key] = obj[method];
+obj[method] = hook(obj[method]);
 }
 
 function uninstallAllHooks() {
-  for (const [key, original] of Object.entries(window._originalFunctions)) {
-    const [objName, method] = key.split(".");
-    window[objName][method] = original;
-  }
-  console.log("✅ 所有 Hook 已移除");
+for (const [key, original] of Object.entries(window._originalFunctions)) {
+const [objName, method] = key.split(".");
+window[objName][method] = original;
+}
+console.log("✅ 所有 Hook 已移除");
 }
 ```
 
@@ -1265,12 +1265,12 @@ function uninstallAllHooks() {
 
 ## 工具推荐
 
-| 工具                   | 用途                          | 链接                                       |
+| 工具 | 用途 | 链接 |
 | ---------------------- | ----------------------------- | ------------------------------------------ |
-| **Tampermonkey**       | 用户脚本管理，自动注入 Hook   | https://www.tampermonkey.net/              |
+| **Tampermonkey** | 用户脚本管理，自动注入 Hook | https://www.tampermonkey.net/ |
 | **Proxy SwitchyOmega** | 代理切换，配合 mitmproxy 注入 | https://github.com/FelisCatus/SwitchyOmega |
-| **Chrome DevTools**    | 原生断点和监控                | 内置                                       |
-| **Frida**              | 动态插桩框架（适用于 App）    | https://frida.re/                          |
+| **Chrome DevTools** | 原生断点和监控 | 内置 |
+| **Frida** | 动态插桩框架（适用于 App） | https://frida.re/ |
 
 ---
 
@@ -1443,11 +1443,11 @@ function uninstallAllHooks() {
 import { datadogRum } from "@datadog/browser-rum";
 
 datadogRum.init({
-  applicationId: "<YOUR_APP_ID>",
-  clientToken: "<YOUR_CLIENT_TOKEN>",
-  // 自动Hook XHR/Fetch
-  trackInteractions: true,
-  trackFrustrations: true,
+applicationId: "<YOUR_APP_ID>",
+clientToken: "<YOUR_CLIENT_TOKEN>",
+// 自动Hook XHR/Fetch
+trackInteractions: true,
+trackFrustrations: true,
 });
 ```
 
@@ -1589,14 +1589,14 @@ datadogRum.init({
 
 ### 7. 开源 vs 商业决策矩阵
 
-| 因素         | 推荐开源           | 推荐商业              |
+| 因素 | 推荐开源 | 推荐商业 |
 | ------------ | ------------------ | --------------------- |
-| **预算**     | < $1,000/年        | > $5,000/年           |
-| **团队规模** | < 3 人             | > 5 人                |
-| **项目类型** | 一次性逆向         | 持续安全测试          |
+| **预算** | < $1,000/年 | > $5,000/年 |
+| **团队规模** | < 3 人 | > 5 人 |
+| **项目类型** | 一次性逆向 | 持续安全测试 |
 | **技术能力** | 高（能自己写脚本） | 中低（需要 GUI 工具） |
-| **合规要求** | 无                 | 需要审计报告          |
-| **支持需求** | 社区就够           | 需要商业支持          |
+| **合规要求** | 无 | 需要审计报告 |
+| **支持需求** | 社区就够 | 需要商业支持 |
 
 ---
 
@@ -1614,21 +1614,21 @@ datadogRum.init({
 
 ```javascript
 const response = await fetch("https://chrome.browserless.io/function", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    code: `
-            // Hook代码
-            const original = XMLHttpRequest.prototype.send;
-            XMLHttpRequest.prototype.send = function(...args) {
-                console.log('Hooked:', args);
-                return original.apply(this, args);
-            };
-        `,
-    context: {
-      url: "https://example.com",
-    },
-  }),
+method: "POST",
+headers: { "Content-Type": "application/json" },
+body: JSON.stringify({
+code: `
+// Hook代码
+const original = XMLHttpRequest.prototype.send;
+XMLHttpRequest.prototype.send = function(...args) {
+console.log('Hooked:', args);
+return original.apply(this, args);
+};
+`,
+context: {
+url: "https://example.com",
+},
+}),
 });
 ```
 

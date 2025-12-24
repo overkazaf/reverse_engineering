@@ -44,8 +44,18 @@ env/
 .Spotlight-V100
 .Trashes
 
-# MkDocs
-site/
+# MkDocs build output (not Hugo site directory)
+# Note: Hugo site is in /site/ directory and should be tracked
+android_reversing/site/
+web_reversing/site/
+
+# Hugo build output
+site/public/
+site/resources/
+site/.hugo_build.lock
+
+# Temporary research files
+*.xml
 
 # PDF output
 # Uncomment the following line to exclude generated PDFs from git
