@@ -97,7 +97,7 @@ title: "逆向工程 Cookbook"
 
 - **Author**: +5
 - **Email**: overkazaf@gmail.com
-- **WeChat**: _0xAF_
+- **WeChat**: `_0xAF_`
 - **GitHub**: [overkazaf/reverse_engineering](https://github.com/overkazaf/reverse_engineering)
 
 ---
