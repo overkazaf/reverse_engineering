@@ -174,9 +174,9 @@ enableEmoji = true
     [params.page.comment.giscus]
       enable = true
       repo = "overkazaf/reverse_engineering"
-      repoId = ""  # 需要在 giscus.app 获取
+      repoId = "R_kgDOQuY7-A"
       category = "Announcements"
-      categoryId = ""  # 需要在 giscus.app 获取
+      categoryId = "DIC_kwDOQuY7-M4C0NXP"
       mapping = "pathname"
       strict = "0"
       reactionsEnabled = "1"
