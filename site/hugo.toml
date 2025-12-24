@@ -87,11 +87,11 @@ enableEmoji = true
       name = "逆向工程 Cookbook"
       pre = ""
       post = ""
-      typeit = false
+      typeit = true
     # 页面头部副标题配置
     [params.header.subtitle]
       name = "Android & Web RE 实战手册"
-      typeit = false
+      typeit = true
 
   # 页面底部配置
   [params.footer]
@@ -180,9 +180,27 @@ enableEmoji = true
     # 设置为 true: 有标题的图片显示画廊 ![alt](src "title")
     # 设置为 "force": 所有图片都显示画廊
     lightgallery = "force"
+    # 自动书签 (记住阅读位置)
+    autoBookmark = true
+    # 相关文章推荐
+    [params.page.related]
+      enable = true
+      count = 5
+    # 赞赏/打赏配置
+    [params.page.reward]
+      enable = true
+      animation = true
+      position = "after"
+      comment = "如果这篇文章对你有帮助，请我喝杯咖啡吧~"
     # 分享配置
     [params.page.share]
-      enable = false
+      enable = true
+      Twitter = true
+      Facebook = true
+      Linkedin = true
+      Whatsapp = true
+      Weibo = true
+      Reddit = true
     # 评论配置
     [params.page.comment]
       enable = true
@@ -236,6 +254,18 @@ enableEmoji = true
   [params.social]
     GitHub = "overkazaf"
     Email = "overkazaf@gmail.com"
+
+  # 水印配置
+  [params.watermark]
+    enable = true
+    content = "逆向工程 Cookbook"
+    opacity = 0.05
+    width = 180
+    height = 20
+    rowSpacing = 80
+    colSpacing = 50
+    rotate = -15
+    fontSize = 0.85
 
   # 阅读进度条
   [params.readingProgress]
