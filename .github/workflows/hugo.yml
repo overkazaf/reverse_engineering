@@ -51,6 +51,8 @@ jobs:
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - name: Install Node.js dependencies
         run: "[[ -f site/package-lock.json || -f site/npm-shrinkwrap.json ]] && npm ci --prefix site || true"
