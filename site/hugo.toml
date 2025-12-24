@@ -156,7 +156,10 @@ enableEmoji = true
       sort = true
     # KaTeX 数学公式
     [params.page.math]
-      enable = false
+      enable = true
+      type = "katex"
+    [params.page.math.katex]
+      copyTex = true
     # Mermaid 图表
     [params.page.mermaid]
       enable = true
@@ -165,7 +168,24 @@ enableEmoji = true
       enable = false
     # 评论配置
     [params.page.comment]
-      enable = false
+      enable = true
+    # Giscus 评论 (基于 GitHub Discussions)
+    # 配置步骤: 访问 https://giscus.app 获取配置参数
+    [params.page.comment.giscus]
+      enable = true
+      repo = "overkazaf/reverse_engineering"
+      repoId = ""  # 需要在 giscus.app 获取
+      category = "Announcements"
+      categoryId = ""  # 需要在 giscus.app 获取
+      mapping = "pathname"
+      strict = "0"
+      reactionsEnabled = "1"
+      emitMetadata = "0"
+      inputPosition = "top"
+      lang = "zh-CN"
+      lightTheme = "light"
+      darkTheme = "dark_dimmed"
+      lazyLoad = true
 
   # 搜索配置
   [params.search]
@@ -199,6 +219,29 @@ enableEmoji = true
   [params.social]
     GitHub = "overkazaf"
     Email = "overkazaf@gmail.com"
+
+  # 阅读进度条
+  [params.readingProgress]
+    enable = true
+    start = "left"
+    position = "top"
+    reversed = false
+    light = "#007bff"
+    dark = "#00bfff"
+    height = "3px"
+
+  # 返回顶部按钮
+  [params.backToTop]
+    enable = true
+    scrollpercent = true
+
+  # Google Analytics 统计
+  # 需要填入你的 GA4 Measurement ID (格式: G-XXXXXXXXXX)
+  [params.analytics]
+    enable = true
+  [params.analytics.google]
+    id = ""  # 填入你的 GA4 ID，如 "G-XXXXXXXXXX"
+    anonymizeIP = true
 
 # 主菜单
 [menu]
