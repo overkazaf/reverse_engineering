@@ -102,7 +102,7 @@ id="toc-android-reverse-engineering-cookbook">Android Reverse
 Engineering Cookbook</a></li>
 <li><a href="#android-逆向工程-cookbook"
 id="toc-android-逆向工程-cookbook">android 逆向工程 Cookbook</a></li>
-<li><a href="#快速入门指南" id="toc-快速入门指南">快速入门指南</a>
+<li><a href="#快速入门" id="toc-快速入门">快速入门</a>
 <ul>
 <li><a href="#你将学到什么" id="toc-你将学到什么">你将学到什么</a></li>
 <li><a href="#前置条件" id="toc-前置条件">前置条件</a></li>
@@ -1061,15 +1061,15 @@ id="toc-unidbg-模拟执行框架指南">Unidbg 模拟执行框架指南</a>
 <ul>
 <li><a href="#环境搭建" id="toc-环境搭建"># 环境搭建</a></li>
 </ul></li>
-<li><a href="#ghidra-入门指南" id="toc-ghidra-入门指南">Ghidra
-入门指南</a>
+<li><a href="#ghidra-入门" id="toc-ghidra-入门">Ghidra
+入门</a>
 <ul>
 <li><a href="#安装与配置" id="toc-安装与配置"># 安装与配置</a></li>
 </ul></li>
-<li><a href="#ida-pro-入门指南" id="toc-ida-pro-入门指南">IDA Pro
-入门指南</a></li>
-<li><a href="#radare2-入门指南" id="toc-radare2-入门指南">Radare2
-入门指南</a></li>
+<li><a href="#ida-pro-入门" id="toc-ida-pro-入门">IDA Pro
+入门</a></li>
+<li><a href="#radare2-入门" id="toc-radare2-入门">Radare2
+入门</a></li>
 <li><a href="#案例研究反分析技术"
 id="toc-案例研究反分析技术">案例研究：反分析技术</a>
 <ul>
@@ -1429,8 +1429,8 @@ id="toc-android-运行时-art-深度解析">android 运行时 (ART)
 深度解析</a></li>
 <li><a href="#dex-文件权威指南" id="toc-dex-文件权威指南">DEX
 文件权威指南</a></li>
-<li><a href="#smali-语法入门指南" id="toc-smali-语法入门指南">Smali
-语法入门指南</a></li>
+<li><a href="#smali-语法入门" id="toc-smali-语法入门">Smali
+语法入门</a></li>
 <li><a href="#format-.field-static-final"
 id="toc-format-.field-static-final">Format: .field <access_modifier>
 [static] [final] <field_name>:<field_type></a></li>
@@ -1818,7 +1818,7 @@ Studies</a> ___ ## 📝 贡献</li>
 <p>本 Cookbook 持续更新中。如有建议或发现错误，欢迎反馈！ ___
 <strong>Happy Hacking! 🚀</strong></p>
 <!-- 00-Quick-Start/index.md -->
-<h1 id="快速入门指南">快速入门指南</h1>
+<h1 id="快速入门">快速入门</h1>
 <p>欢迎！这个指南将帮助你在 <strong>10 分钟内</strong>完成第一次 Android
 逆向分析。</p>
 <hr />
@@ -2988,7 +2988,7 @@ exec: false // Don&#39;t record every instruction
 <pre><code>
 ## 延伸阅读
 
-## # 相关 Recipes
+## # 相关配方
 
 - **[静态分析深入](./static_analysis_deep_dive.md)** - 先静态找到目标
 - **[Frida 常用脚本](../Scripts/frida_common_scripts.md)** - Hook 脚本模板
@@ -3719,7 +3719,7 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb73-1"><a href=
 
 ## # 步骤 2：识别代码模式
 
-### # ✅ 正常代码
+### ✅ 正常代码
 
 ```java
 // 可读的类名和方法名
@@ -3744,7 +3744,7 @@ return ApiClient.post(API_URL, username, encryptedPassword);
 
 如果应用包含 `.so` 文件，核心算法通常在这里实现。
 
-### # 方法 A：使用 IDA Pro 分析
+### 方法 A：使用 IDA Pro 分析
 
 ```bash
 # 1. 打开 SO 文件
@@ -3800,7 +3800,7 @@ class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb77-1">
 <span id="cb77-22"><a href="#cb77-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>网络请求可能有 SSL pinning</span>
 <span id="cb77-23"><a href="#cb77-23" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
 <span id="cb77-24"><a href="#cb77-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb77-25"><a href="#cb77-25" aria-hidden="true" tabindex="-1"></a><span class="in">### # 阶段二产出</span></span>
+<span id="cb77-25"><a href="#cb77-25" aria-hidden="true" tabindex="-1"></a><span class="in">### 阶段二产出</span></span>
 <span id="cb77-26"><a href="#cb77-26" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb77-27"><a href="#cb77-27" aria-hidden="true" tabindex="-1"></a><span class="in">- ✅ 理解应用的核心功能和业务逻辑</span></span>
 <span id="cb77-28"><a href="#cb77-28" aria-hidden="true" tabindex="-1"></a><span class="in">- ✅ 定位关键类、方法和 native 函数</span></span>
@@ -7599,7 +7599,7 @@ ReadoriginalBytecode（从磁盘上 libc.so） var libcPath =
 “/system/lib64/libc.so”; var libcFile = new File(libcPath, “rb”); // …
 ComplexRestoreLogic … }</p>
 <pre><code>
-### # 5.1 修改源码
+### 5.1 修改源码
 
 * *克隆 Frida**：
 
@@ -7730,7 +7730,7 @@ docker run --rm -v $(pwd):/work frida/ci
 <li><p>不要全局替换，容易破坏代码</p></li>
 <li><p>只修改：端口号、模块名、线程名 ___ ## 延伸阅读</p></li>
 </ul>
-<h2 id="相关-recipes"># 相关 Recipes</h2>
+<h2 id="相关-recipes"># 相关配方</h2>
 <ul>
 <li><strong><a href="./device_fingerprinting_and_bypass.md">Root
 检测绕过</a></strong> - 通常与 Frida 检测一起出现</li>
@@ -10806,7 +10806,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb271-1"><a 
 <span id="cb271-18"><a href="#cb271-18" aria-hidden="true" tabindex="-1"></a>cipher <span class="op">=</span> AES.new(key, AES.MODE_CBC, iv)</span>
 <span id="cb271-19"><a href="#cb271-19" aria-hidden="true" tabindex="-1"></a>plaintext <span class="op">=</span> unpad(cipher.decrypt(ciphertext), AES.block_size)</span></code></pre></div>
 <h2 id="延伸阅读">延伸阅读</h2>
-<h2 id="相关-recipes-1"># 相关 Recipes</h2>
+<h2 id="相关-recipes-1"># 相关配方</h2>
 <ul>
 <li><strong><a href="./network_sniffing.md">网络抓包</a></strong> -
 获取加密后的数据样本</li>
@@ -11618,7 +11618,7 @@ HTTP/2 → 勾选”Enable HTTP/2”</p></li>
 </ol>
 <hr />
 <h2 id="延伸阅读-1">延伸阅读</h2>
-<h2 id="相关-recipes-2"># 相关 Recipes</h2>
+<h2 id="相关-recipes-2"># 相关配方</h2>
 <ul>
 <li><em><a href="./crypto_analysis.md">密码学分析</a></em> - 分析 API
 签名和加密算法</li>
@@ -11850,7 +11850,7 @@ Extension: supported_groups (len=10)
 
 * *目标**：获取真实浏览器或官方 App 的 JA3 指纹用于伪装
 
-### # 3.1 浏览器指纹
+### 3.1 浏览器指纹
 
 * *方法 1：直接查询**
 
@@ -11864,7 +11864,7 @@ Chrome 浏览器访问 https://ja3er.com/json
 
 搜索 &quot;Chrome&quot;、&quot;Safari&quot;、&quot;Firefox&quot; 找到对应版本的 JA3。
 
-### # 3.2 android App 指纹
+### 3.2 android App 指纹
 
 * *使用 Wireshark 抓取真实 App 的流量**：
 
@@ -11890,7 +11890,7 @@ EOF
 
 ## # 第 4 步：伪造 TLS 指纹（15 分钟）
 
-### # 4.1 使用 curl-impersonate（推荐）
+### 4.1 使用 curl-impersonate（推荐）
 
 * *curl-impersonate** 是一个修改版的 curl，能完美模拟浏览器的 TLS 指纹。
 
@@ -11909,7 +11909,7 @@ brew install curl-impersonate
 <h1 id="伪装成-safari-17">伪装成 Safari 17</h1>
 <p>curl_safari17 https://ja3er.com/json</p>
 <pre><code>
-### # 4.2 使用 Python tls-client 库
+### 4.2 使用 Python tls-client 库
 
 * *安装**：
 
@@ -12090,7 +12090,7 @@ class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb30
 <span id="cb307-16"><a href="#cb307-16" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
 <span id="cb307-17"><a href="#cb307-17" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div>
 <h2 id="延伸阅读-2">延伸阅读</h2>
-<h2 id="相关-recipes-3"># 相关 Recipes</h2>
+<h2 id="相关-recipes-3"># 相关配方</h2>
 <ul>
 <li><strong><a href="./network_sniffing.md">网络抓包</a></strong> - 抓取
 TLS 握手包</li>
@@ -15294,7 +15294,7 @@ console.log(“内存扫描完成。”); } });</li>
 
 不同代际的加固技术需要不同的脱壳策略，先识别目标应用使用了什么加固技术。
 
-### # 方法 A: 使用工具快速识别
+### 方法 A: 使用工具快速识别
 
 ```bash
 # 使用 PKid (ApkTool-Plus) 检测
@@ -15337,22 +15337,22 @@ DEX</h1>
 
 根据识别出的加固类型，选择合适的脱壳方法：
 
-### # 第一代壳 (整体加密)
+### 第一代壳 (整体加密)
 * *策略**: Hook ClassLoader，在 DEX 加载时 dump
 * *推荐工具**: 手写 Frida 脚本或 frida-dexdump
 * *成功率**: 95%+
 
-### # 第二代壳 (方法抽取)
+### 第二代壳 (方法抽取)
 * *策略**: Hook ArtMethod 的 invoke，在方法首次调用时 dump CodeItem
 * *推荐工具**: FART 技术 (Frida ART Hook) + frida-dexdump
 * *成功率**: 80%+ (取决于代码覆盖率)
 
-### # 第三代壳 (虚拟化)
+### 第三代壳 (虚拟化)
 * *策略**: Hook 虚拟机引擎，获取指令流 + 映射表逆向
 * *推荐工具**: IDA Pro + 自定义脚本
 * *成功率**: 50% (需要深入分析虚拟机实现)
 
-### # 第四代壳 (云端)
+### 第四代壳 (云端)
 * *策略**: 网络抓包 + 内存扫描 + 多层 dump
 * *推荐工具**: mitmproxy + frida-dexdump + 自定义脚本
 * *成功率**: 30% (部分逻辑可能无法获取)
@@ -15363,7 +15363,7 @@ DEX</h1>
 
 以下提供针对不同代际的脱壳脚本。
 
-### # 方法 A: 使用 frida-dexdump (通用，推荐首选)
+### 方法 A: 使用 frida-dexdump (通用，推荐首选)
 
 ```bash
 # 1. 启动 Frida Server
@@ -15665,7 +15665,7 @@ user 1.8M dumped_0987654321.dex</h1>
 <h1
 id="如果能正常反编译表示脱壳成功">如果能正常反编译，表示脱壳成功</h1>
 <pre><code>
-### # 常见需要修复的情况:
+### 常见需要修复的情况:
 
 1. **方法体被 NOP 填充**:
 - 症状: Jadx 反编译后看到大量空方法或只有 `return` 的方法
@@ -15680,7 +15680,7 @@ id="如果能正常反编译表示脱壳成功">如果能正常反编译，表�
 - 症状: 方法调用关系不正确
 - 解决: 使用 `smali/baksmali` 重新组装
 
-### # 自动化修复工具
+### 自动化修复工具
 
 ```bash
 # 使用 dex-repair (开源工具)
@@ -16128,7 +16128,7 @@ Frida 有两种主要的方式来 hook 应用：
 
 这是 Frida 脚本的核心。所有逻辑都在 JavaScript 脚本中实现。
 
-### # Java (android)
+### Java (android)
 
 这些 API 用于与 Android 的 Java 运行时进行交互。所有 Java 相关代码都必须包裹在 `Java.perform(function() { ... });` 中。
 
@@ -16146,7 +16146,7 @@ Frida 有两种主要的方式来 hook 应用：
 | `send(data)` | 从脚本向 Python/Node.js 工具发送消息 |
 | `recv(callback)` | 从 Python/Node.js 工具接收消息 |
 
-### # Objective-C (iOS)
+### Objective-C (iOS)
 
 这些 API 用于与 iOS 的 Objective-C 运行时进行交互。
 
@@ -16157,7 +16157,7 @@ Frida 有两种主要的方式来 hook 应用：
 | `ObjC.choose(ObjC.classes.MyClass, { ... })` | 查找特定类的所有活动实例 |
 | `ObjC.available` | 检查 Objective-C 运行时是否可用 |
 
-### # 通用/原生 (Native)
+### 通用/原生 (Native)
 
 这些 API 用于与原生代码（C/C++）进行交互，跨平台通用。
 
@@ -16172,7 +16172,7 @@ Frida 有两种主要的方式来 hook 应用：
 | `ptr(&quot;0x...&quot;)` | 创建一个原生指针 |
 | `Thread.backtrace(this.context, Backtracer.ACCURATE)` | 获取当前线程的原生调用堆栈 |
 
-### # JNI (Java Native Interface)
+### JNI (Java Native Interface)
 
 JNI 是 Android 逆向中的重要组成部分，Frida 提供了强大的 JNI Hook 能力。
 
@@ -16865,12 +16865,12 @@ ___
 
 &lt;!-- 02-Tools/Dynamic/xposed_guide.md --&gt;
 
-# Xposed 框架入门指南
+# Xposed 框架入门
 
 Xposed 是一个在 Android 平台上广受欢迎的动态代码 Hook 框架。与 Frida 主要用于实时、临时的分析不同，Xposed 旨在对系统和应用进行**永久性**的修改。它通过替换一个核心系统进程 (`app_process`)，在应用启动时加载自定义模块，从而实现对任意方法的高效 Hook。
 ___
 ## 目录
-- [Xposed 框架入门指南](#xposed-框架入门指南)
+- [Xposed 框架入门](#xposed-框架入门)
 - [目录](#目录)
 - [核心原理](#核心原理)
 
@@ -17396,7 +17396,7 @@ native，重定向入口点</li>
 <p>理解 Xposed
 的内部原理不仅有助于开发更好的模块，也为逆向工程、安全研究和应用保护提供了重要的技术洞察。</p>
 <!-- 02-Tools/Static/ghidra_guide.md -->
-<h1 id="ghidra-入门指南">Ghidra 入门指南</h1>
+<h1 id="ghidra-入门">Ghidra 入门</h1>
 <p>Ghidra 是由美国国家安全局 (NSA) 开发并开源的一款软件逆向工程 (SRE)
 套件。它以功能全面、免费开源、跨平台等特性，迅速成为 IDA Pro
 之外逆向工程师们的另一个重要选择，尤其在学术界和独立研究者中广受欢迎。
@@ -17633,7 +17633,7 @@ func.getEntryPoint()))</p>
 <pre><code>
 ## # 优缺点分析
 
-### # 优点
+### 优点
 
 * **免费与开源**: 无任何费用，社区可以审查和贡献代码。
 
@@ -17647,7 +17647,7 @@ func.getEntryPoint()))</p>
 * **优秀的协作功能**: Ghidra Server 的存在使得团队协作变得非常容易。
 
 
-### # 缺点
+### 缺点
 
 * **性能**: 基于 Java Swing 的 UI 在处理超大型二进制文件时，可能会感到卡顿，性能不如 IDA Pro。
 
@@ -17657,11 +17657,11 @@ func.getEntryPoint()))</p>
 
 * **原生调试器**: Ghidra 的调试器功能相对较弱，不如 IDA Pro 和 x64dbg 等专用调试器成熟。 </code></pre>
 <!-- 02-Tools/Static/ida_pro_guide.md -->
-<h1 id="ida-pro-入门指南">IDA Pro 入门指南</h1>
+<h1 id="ida-pro-入门">IDA Pro 入门</h1>
 <p>IDA Pro (Interactive Disassembler Professional) 是由 Hex-Rays
 公司开发的一款业界闻名的交互式反汇编器。在逆向工程领域，IDA Pro
 被广泛认为是<strong>黄金标准</strong>，以其最强大的反汇编引擎、无与伦比的处理器支持和极其成熟的生态系统，成为专业人士进行软件分析、漏洞挖掘和恶意软件研究的首选工具。
-___ ## 目录 - <a href="#ida-pro-入门指南">IDA Pro 入门指南</a> - <a
+___ ## 目录 - <a href="#ida-pro-入门">IDA Pro 入门</a> - <a
 href="#目录">目录</a> - <a href="#核心特性">核心特性</a></p>
 <ul>
 <li><p><a href="#ida-pro-vs-ghidra-vs-radare2">IDA Pro vs. Ghidra
@@ -17858,12 +17858,12 @@ IDAPython 强大，但对于一些简单的任务仍然有用。</p></li>
 原生不支持多人协作，需要依赖第三方插件。</p></li>
 </ul>
 <!-- 02-Tools/Static/radare2_guide.md -->
-<h1 id="radare2-入门指南">Radare2 入门指南</h1>
+<h1 id="radare2-入门">Radare2 入门</h1>
 <p>Radare2 (通常简称为 r2)
 是一款开源、免费、命令行驱动的逆向工程框架。它不仅仅是一个反汇编器，更像是一个功能极其丰富的”瑞士军刀”，集成了十六进制编辑、反汇编、调试、代码分析、漏洞利用、数据可视化等多种功能。Radare2
 以其高度的可脚本化和可扩展性而闻名，深受寻求自动化和深度定制的黑客、CTF
 选手和安全研究员的喜爱。 ___ ## 目录 - <a
-href="#radare2-入门指南">Radare2 入门指南</a> - <a href="#目录">目录</a>
+href="#radare2-入门">Radare2 入门</a> - <a href="#目录">目录</a>
 - <a href="#核心理念与特性">核心理念与特性</a></p>
 <ul>
 <li><p><a href="#radare2-vs-ida-pro-vs-ghidra">Radare2 vs. IDA Pro
@@ -20183,7 +20183,7 @@ PRODUCT_BRAND := Google PRODUCT_NAME := my_custom_device PRODUCT_DEVICE
 </ul>
 <pre><code>
 
-### # 硬件参数 (IMEI, MAC, android ID)
+### 硬件参数 (IMEI, MAC, android ID)
 这些是更敏感、更核心的设备标识符。修改它们需要深入到 Framework 层的 Java 代码和 JNI。
 
 * **IMEI (Telephony)**:
@@ -20213,7 +20213,7 @@ PRODUCT_BRAND := Google PRODUCT_NAME := my_custom_device PRODUCT_DEVICE
 * **修改思路**: 找到生成和存储 Android ID 的逻辑，将其替换为返回一个固定的或每次启动都随机生成的值。
 
 
-### # 系统属性 (System Properties)
+### 系统属性 (System Properties)
 App 通过 `android.os.SystemProperties.get()` 获取各种系统属性。
 
 * **定位**: `frameworks/base/core/java/android/os/SystemProperties.java` 及其对应的 JNI 实现 `frameworks/base/core/jni/android_os_SystemProperties.cpp`。
@@ -20222,7 +20222,7 @@ App 通过 `android.os.SystemProperties.get()` 获取各种系统属性。
 * **修改思路**: 直接在 `SystemProperties.cpp` 的 `native_get` 方法中进行拦截。判断传入的属性名，如果是目标属性（如 `ro.serialno`），则返回一个伪造的值，否则执行原始逻辑。
 
 
-### # 内核参数 (Serial Number)
+### 内核参数 (Serial Number)
 一些底层信息（如 CPU 序列号）直接由 Linux 内核通过 `/proc` 文件系统暴露。
 
 * **定位**: 内核源码中的 `arch/&lt;arch&gt;/kernel/setup.c` 或相关驱动文件。
@@ -20256,7 +20256,7 @@ ___
 ___
 ## # 优势与挑战
 
-### # 优势
+### 优势
 * **彻底性**: 从系统根源上改变设备指纹，几乎无法被应用层技术检测。
 
 
@@ -20266,7 +20266,7 @@ ___
 * **性能好**: 没有额外的 Hook 开销，所有修改都是原生代码。
 
 
-### # 挑战
+### 挑战
 * **技术门槛极高**: 需要深入理解 AOSP 源码结构、编译系统和 Linux 内核。
 
 
@@ -22032,13 +22032,13 @@ Functions、多ACL用户、Cluster分片</td>
 <h3 id="单机模式-single-instance"># 1. 单机模式 (Single Instance)</h3>
 <pre><code>
 
-### # 2. 主从复制 (Master-Slave)
+### 2. 主从复制 (Master-Slave)
 </code></pre>
 <h3 id="sentinel-高可用-redis-sentinel"># 3. Sentinel 高可用 (Redis
 Sentinel)</h3>
 <pre><code>
 
-### # 脑裂问题 (Split-Brain)
+### 脑裂问题 (Split-Brain)
 
 * *定义**: 脑裂是指在分布式系统中，由于网络分区或节点故障，导致系统中出现多个&quot;大脑&quot;（多个节点都认为自己是主节点）的情况。
 
@@ -22068,14 +22068,14 @@ master = sentinel.master_for(&#39;mymaster&#39;, socket_timeout=0.1)
 
 ## # Sentinel 模式
 
-### # 核心功能
+### 核心功能
 1. **监控 (Monitoring)**: 监控master和slave健康状态
 2. **通知 (Notification)**: 故障时通知管理员
 3. **自动故障转移 (Automatic Failover)**: 自动选举新master
 4. **配置提供 (Configuration Provider)**: 为客户端提供当前master地址
 
 
-### # 工作原理
+### 工作原理
 
 ```bash
 # SentinelConfigFile
@@ -22120,7 +22120,7 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb465-1"><a href
 <p>redis-cli –cluster add-node 127.0.0.1:7006 127.0.0.1:7000</p>
 <pre><code>布隆过滤器是一种概率性数据结构，用于高效判断一个元素是否在集合中。
 
-### # 核心特性
+### 核心特性
 - **误报率**: 可能误判存在，但不会误判不存在
 
 
@@ -22130,7 +22130,7 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb465-1"><a href
 - **时间复杂度**: O(k) 查询时间，k为哈希函数数量
 
 
-### # 实现原理
+### 实现原理
 
 ```python
 # 基本流程
@@ -22164,7 +22164,7 @@ ___
 
 Stream是Redis 5.0引入的新数据结构，主要用于消息队列和事件流处理。
 
-### # 核心特性
+### 核心特性
 - **持久化消息队列**: 消息持久化存储
 
 
@@ -22177,7 +22177,7 @@ Stream是Redis 5.0引入的新数据结构，主要用于消息队列和事件�
 - **历史消息**: 可以查询历史消息
 
 
-### # 消息ID结构
+### 消息ID结构
 </code></pre>
 <h1 id="添加消息">添加消息</h1>
 <p>XADD mystream * field1 value1 field2 value2 XADD mystream
@@ -22216,7 +22216,7 @@ ___
 
 ## # 持久化机制
 
-### # RDB (Redis Database)
+### RDB (Redis Database)
 
 ```bash
 # ConfigFileSet
@@ -22297,7 +22297,7 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb474-1"><a href
 
 - 大数据量使用hashtable编码（提高性能）
 
-### # 2. 批量操作
+### 2. 批量操作
 
 ```bash
 # 使用 pipeline 减少网络往返
@@ -22318,7 +22318,7 @@ list-max-ziplist-size -2 set-max-intset-entries 512</p>
 
 ## # 关系型数据库 (RDBMS)
 
-### # MySQL
+### MySQL
 * *特点**: 开源、成熟、社区活跃
 
 | 方面 | 描述 |
@@ -22980,7 +22980,7 @@ ___
 5. [**时间与窗口**](#时间与窗口)
 6. [**容错机制**](#容错机制)
 7. [**性能调优**](#性能调优)
-8. [**面试要点**](#面试要点)
+8. [**知识要点**](#知识要点)
 ___
 ## Flink 架构
 
@@ -23350,7 +23350,7 @@ class="sourceCode java"><code class="sourceCode java"><span id="cb518-1"><a href
 <span id="cb518-31"><a href="#cb518-31" aria-hidden="true" tabindex="-1"></a><span class="fl">4.</span> <span class="op">[**</span>Java API<span class="op">**](</span>#java<span class="op">-</span>api<span class="op">)</span></span>
 <span id="cb518-32"><a href="#cb518-32" aria-hidden="true" tabindex="-1"></a><span class="fl">5.</span> <span class="op">[**</span>性能优化<span class="op">**](</span>#性能优化<span class="op">)</span></span>
 <span id="cb518-33"><a href="#cb518-33" aria-hidden="true" tabindex="-1"></a><span class="fl">6.</span> <span class="op">[**</span>集群管理<span class="op">**](</span>#集群管理<span class="op">)</span></span>
-<span id="cb518-34"><a href="#cb518-34" aria-hidden="true" tabindex="-1"></a><span class="fl">7.</span> <span class="op">[**</span>面试要点<span class="op">**](</span>#面试要点<span class="op">)</span></span>
+<span id="cb518-34"><a href="#cb518-34" aria-hidden="true" tabindex="-1"></a><span class="fl">7.</span> <span class="op">[**</span>知识要点<span class="op">**](</span>#知识要点<span class="op">)</span></span>
 <span id="cb518-35"><a href="#cb518-35" aria-hidden="true" tabindex="-1"></a>___</span>
 <span id="cb518-36"><a href="#cb518-36" aria-hidden="true" tabindex="-1"></a>## HBase 架构</span>
 <span id="cb518-37"><a href="#cb518-37" aria-hidden="true" tabindex="-1"></a></span>
@@ -23369,7 +23369,7 @@ Region5,6 ↓ ↓ ↓ HDFS DataNode HDFS DataNode HDFS DataNode</p>
 5. **Compaction**: 定期合并HFile
 
 
-### # 读取流程
+### 读取流程
 1. **Client** → **RegionServer**: 读请求
 2. **MemStore**: 先查内存中的数据
 3. **BlockCache**: 查询缓存的HFile块
@@ -23649,7 +23649,7 @@ href="#dml-操作"><strong>DML 操作</strong></a> 5. <a
 href="#分区与分桶"><strong>分区与分桶</strong></a> 6. <a
 href="#函数与udf"><strong>函数与UDF</strong></a> 7. <a
 href="#性能优化"><strong>性能优化</strong></a> 8. <a
-href="#面试要点"><strong>面试要点</strong></a> </em></strong> ## Hive
+href="#知识要点"><strong>知识要点</strong></a> </em></strong> ## Hive
 架构</p>
 <h2 id="核心组件"># 核心组件</h2>
 <pre><code>Metastore (Metadata storage)
@@ -23996,7 +23996,7 @@ Dataset</strong></a> 4. <a href="#spark-sql"><strong>Spark
 SQL</strong></a> 5. <a href="#spark-streaming"><strong>Spark
 Streaming</strong></a> 6. <a
 href="#性能优化"><strong>性能优化</strong></a> 7. <a
-href="#面试要点"><strong>面试要点</strong></a> </em></strong> ## Spark
+href="#知识要点"><strong>知识要点</strong></a> </em></strong> ## Spark
 架构</p>
 <h2 id="集群架构"># 集群架构</h2>
 <pre><code>Cluster Manager (YARN/Mesos/Standalone)
@@ -24258,7 +24258,7 @@ override def value: Vector = _sum
 
 ## # 2. Spark内存管理
 
-### # 内存分配
+### 内存分配
 </code></pre>
 <p>│ └── 执行内存 (Execution) × 0.5 └── 用户内存 (剩余部分)</p>
 <pre><code>- -executor-memory 4g
@@ -25619,13 +25619,13 @@ JIT。</p></li>
 </tbody>
 </table>
 <!-- 04-Reference/Foundations/smali_syntax.md -->
-<h1 id="smali-语法入门指南">Smali 语法入门指南</h1>
+<h1 id="smali-语法入门">Smali 语法入门</h1>
 <p>Smali/Baksmali 是 Dalvik 虚拟机字节码的汇编器/反汇编器。Smali 是对
 DEX 格式的一种人类可读的表示，允许我们精确地查看和修改应用的行为。理解
 Smali 是进行 Android 应用静态 patching（修改后重打包）的关键。 ___ ##
 目录</p>
 <ul>
-<li><p><a href="#smali-语法入门指南">Smali 语法入门指南</a></p></li>
+<li><p><a href="#smali-语法入门">Smali 语法入门</a></p></li>
 <li><p><a href="#目录">目录</a></p></li>
 <li><p><a href="#基本概念">基本概念</a></p></li>
 <li><p><a href="#数据类型与表示">数据类型与表示</a></p></li>
@@ -27455,7 +27455,7 @@ href="https://github.com/attify/firmware-analysis-toolkit">attify/firmware-analy
 <td><a
 href="https://github.com/scriptingx/IoTSecurity101">scriptingx/IoTSecurity101</a></td>
 <td>500+</td>
-<td>物联网安全入门指南。</td>
+<td>物联网安全入门。</td>
 </tr>
 </tbody>
 </table>

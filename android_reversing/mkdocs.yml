@@ -30,114 +30,114 @@ extra_javascript:
 nav:
 - 首页: index.md
 - 快速入门:
-  - 关于本书: 00-Quick-Start/intro.md
-  - 快速入门指南: 00-Quick-Start/index.md
-  - 环境配置: 00-Quick-Start/setup.md
+  - "Q01: 关于本书": 00-Quick-Start/intro.md
+  - "Q02: 快速入门": 00-Quick-Start/index.md
+  - "Q03: 环境配置": 00-Quick-Start/setup.md
 - 实战配方:
-  # ===== 入门基础 (R01-R04) =====
+  # ===== 入门基础 (R01-R03) =====
   - "R01: 逆向工程完整工作流程": 01-Recipes/Analysis/re_workflow.md
   - "R02: 网络抓包分析": 01-Recipes/Network/network_sniffing.md
-  - "R03: Frida 脚本入门": 01-Recipes/Scripts/frida_script_examples.md
-  - "R04: Objection 快速分析": 01-Recipes/Scripts/objection_snippets.md
-  # ===== 核心分析 (R05-R09) =====
-  - "R05: 静态分析深入": 01-Recipes/Analysis/static_analysis_deep_dive.md
-  - "R06: 动态分析深入": 01-Recipes/Analysis/dynamic_analysis_deep_dive.md
-  - "R07: Frida 常用脚本": 01-Recipes/Scripts/frida_common_scripts.md
-  - "R08: JNI 开发原理": 01-Recipes/Native/jni_development.md
-  - "R09: SO 编译与加载": 01-Recipes/Native/so_compilation.md
-  # ===== 脱壳与解密 (R10-R14) =====
-  - "R10: 脱壳技术概述": 01-Recipes/Unpacking/un-packing.md
-  - "R11: Frida 脱壳实战": 01-Recipes/Unpacking/frida_unpacking_and_so_fixing.md
-  - "R12: 加密算法分析": 01-Recipes/Network/crypto_analysis.md
-  - "R13: SO 字符串解密": 01-Recipes/Unpacking/so_string_deobfuscation.md
-  - "R14: Native 字符串混淆": 01-Recipes/Analysis/native_string_obfuscation.md
-  # ===== 反检测对抗 (R15-R19) =====
-  - "R15: 应用加固识别": 01-Recipes/Anti-Detection/app_hardening_identification.md
-  - "R16: Frida 反调试绕过": 01-Recipes/Anti-Detection/frida_anti_debugging.md
-  - "R17: Xposed 反调试绕过": 01-Recipes/Anti-Detection/xposed_anti_debugging.md
-  - "R18: 设备指纹与绕过": 01-Recipes/Anti-Detection/device_fingerprinting_and_bypass.md
-  - "R19: Native Hook 技术": 01-Recipes/Scripts/native_hooking.md
-  # ===== 高级反混淆 (R20-R25) =====
-  - "R20: SO 混淆与反混淆": 01-Recipes/Unpacking/so_obfuscation_deobfuscation.md
-  - "R21: OLLVM 反混淆": 01-Recipes/Analysis/ollvm_deobfuscation.md
-  - "R22: VMP 虚拟机分析": 01-Recipes/Analysis/vmp_analysis.md
-  - "R23: JS 混淆器分析": 01-Recipes/Analysis/js_obfuscator.md
-  - "R24: JS 虚拟机保护": 01-Recipes/Analysis/js_vmp.md
-  - "R25: C 语言仿真脚本": 01-Recipes/Scripts/c_for_emulation.md
-  # ===== 网络与协议 (R26-R30) =====
-  - "R26: TLS 指纹识别": 01-Recipes/Network/tls_fingerprinting_guide.md
-  - "R27: JA3 指纹技术": 01-Recipes/Network/ja3_fingerprinting.md
-  - "R28: JA4 指纹技术": 01-Recipes/Network/ja4_fingerprinting.md
-  - "R29: 验证码绕过技术": 01-Recipes/Anti-Detection/captcha_bypassing_techniques.md
-  - "R30: 移动安全与反爬": 01-Recipes/Anti-Detection/mobile_app_sec_and_anti_bot.md
-  # ===== 自动化工程 (R31-R39) =====
-  - "R31: 自动化脚本": 01-Recipes/Scripts/automation_scripts.md
-  - "R32: Scrapy 爬虫框架": 01-Recipes/Automation/scrapy.md
-  - "R33: Scrapy-Redis 分布式": 01-Recipes/Automation/scrapy_redis_distributed.md
-  - "R34: 代理池设计": 01-Recipes/Automation/proxy_pool_design.md
-  - "R35: 拨号代理池": 01-Recipes/Automation/dial_up_proxy_pools.md
-  - "R36: Docker 部署": 01-Recipes/Automation/docker_deployment.md
-  - "R37: 虚拟化与容器": 01-Recipes/Automation/virtualization_and_containers.md
-  - "R38: 自动化设备农场": 01-Recipes/Automation/automation_and_device_farming.md
-  - "R39: Web 反爬技术": 01-Recipes/Automation/web_anti_scraping.md
+  - "R03: Objection 快速分析": 01-Recipes/Scripts/objection_snippets.md
+  # ===== 核心分析 (R04-R08) =====
+  - "R04: 静态分析深入": 01-Recipes/Analysis/static_analysis_deep_dive.md
+  - "R05: 动态分析深入": 01-Recipes/Analysis/dynamic_analysis_deep_dive.md
+  - "R06: Frida 常用脚本": 01-Recipes/Scripts/frida_common_scripts.md
+  - "R07: JNI 开发原理": 01-Recipes/Native/jni_development.md
+  - "R08: SO 编译与加载": 01-Recipes/Native/so_compilation.md
+  # ===== 脱壳与解密 (R09-R13) =====
+  - "R09: 脱壳技术概述": 01-Recipes/Unpacking/un-packing.md
+  - "R10: Frida 脱壳实战": 01-Recipes/Unpacking/frida_unpacking_and_so_fixing.md
+  - "R11: 加密算法分析": 01-Recipes/Network/crypto_analysis.md
+  - "R12: SO 字符串解密": 01-Recipes/Unpacking/so_string_deobfuscation.md
+  - "R13: Native 字符串混淆": 01-Recipes/Analysis/native_string_obfuscation.md
+  # ===== 反检测对抗 (R14-R18) =====
+  - "R14: 应用加固识别": 01-Recipes/Anti-Detection/app_hardening_identification.md
+  - "R15: Frida 反调试绕过": 01-Recipes/Anti-Detection/frida_anti_debugging.md
+  - "R16: Xposed 反调试绕过": 01-Recipes/Anti-Detection/xposed_anti_debugging.md
+  - "R17: 设备指纹与绕过": 01-Recipes/Anti-Detection/device_fingerprinting_and_bypass.md
+  - "R18: Native Hook 技术": 01-Recipes/Scripts/native_hooking.md
+  # ===== 高级反混淆 (R19-R22) =====
+  - "R19: SO 混淆与反混淆": 01-Recipes/Unpacking/so_obfuscation_deobfuscation.md
+  - "R20: OLLVM 反混淆": 01-Recipes/Analysis/ollvm_deobfuscation.md
+  - "R21: VMP 虚拟机分析": 01-Recipes/Analysis/vmp_analysis.md
+  - "R22: C 语言仿真脚本": 01-Recipes/Scripts/c_for_emulation.md
+  # ===== 网络与协议 (R23-R27) =====
+  - "R23: TLS 指纹识别": 01-Recipes/Network/tls_fingerprinting_guide.md
+  - "R24: JA3 指纹技术": 01-Recipes/Network/ja3_fingerprinting.md
+  - "R25: JA4 指纹技术": 01-Recipes/Network/ja4_fingerprinting.md
+  - "R26: 验证码绕过技术": 01-Recipes/Anti-Detection/captcha_bypassing_techniques.md
+  - "R27: 移动安全与反爬": 01-Recipes/Anti-Detection/mobile_app_sec_and_anti_bot.md
+  # ===== 自动化工程 (R28-R35) =====
+  - "R28: 自动化脚本": 01-Recipes/Scripts/automation_scripts.md
+  - "R29: Scrapy 爬虫框架": 01-Recipes/Automation/scrapy.md
+  - "R30: Scrapy-Redis 分布式": 01-Recipes/Automation/scrapy_redis_distributed.md
+  - "R31: 代理池设计": 01-Recipes/Automation/proxy_pool_design.md
+  - "R32: 拨号代理池": 01-Recipes/Automation/dial_up_proxy_pools.md
+  - "R33: Docker 部署": 01-Recipes/Automation/docker_deployment.md
+  - "R34: 虚拟化与容器": 01-Recipes/Automation/virtualization_and_containers.md
+  - "R35: 自动化设备农场": 01-Recipes/Automation/automation_and_device_farming.md
 - 工具指南:
   - 动态分析工具:
-    - Frida 使用指南: 02-Tools/Dynamic/frida_guide.md
-    - Frida 内部原理: 02-Tools/Dynamic/frida_internals.md
-    - Xposed 使用指南: 02-Tools/Dynamic/xposed_guide.md
-    - Xposed 内部原理: 02-Tools/Dynamic/xposed_internals.md
-    - Unidbg 使用指南: 02-Tools/Dynamic/unidbg_guide.md
-    - Unidbg 内部原理: 02-Tools/Dynamic/unidbg_internals.md
+    - "T01: Frida 使用指南": 02-Tools/Dynamic/frida_guide.md
+    - "T02: Frida 内部原理": 02-Tools/Dynamic/frida_internals.md
+    - "T03: Xposed 使用指南": 02-Tools/Dynamic/xposed_guide.md
+    - "T04: Xposed 内部原理": 02-Tools/Dynamic/xposed_internals.md
+    - "T05: Unidbg 使用指南": 02-Tools/Dynamic/unidbg_guide.md
+    - "T06: Unidbg 内部原理": 02-Tools/Dynamic/unidbg_internals.md
   - 静态分析工具:
-    - Ghidra 入门指南: 02-Tools/Static/ghidra_guide.md
-    - IDA Pro 入门指南: 02-Tools/Static/ida_pro_guide.md
-    - Radare2 入门指南: 02-Tools/Static/radare2_guide.md
+    - "T07: Ghidra 入门": 02-Tools/Static/ghidra_guide.md
+    - "T08: IDA Pro 入门": 02-Tools/Static/ida_pro_guide.md
+    - "T09: Radare2 入门": 02-Tools/Static/radare2_guide.md
   - 速查手册:
-    - ADB 命令速查: 02-Tools/Cheatsheets/adb_cheatsheet.md
+    - "T10: ADB 命令速查": 02-Tools/Cheatsheets/adb_cheatsheet.md
 - 案例研究:
-  - 反分析技术案例: 03-Case-Studies/case_anti_analysis_techniques.md
-  - 音乐 App 案例: 03-Case-Studies/case_music_apps.md
-  - 社交媒体与风控案例: 03-Case-Studies/case_social_media_and_anti_bot.md
-  - App 加密签名案例: 03-Case-Studies/case_study_app_encryption.md
-  - 视频 App 与 DRM 案例: 03-Case-Studies/case_video_apps_and_drm.md
-  - Unity 游戏 (Il2Cpp) 案例: 03-Case-Studies/case_unity_games.md
-  - Flutter 应用案例: 03-Case-Studies/case_flutter_apps.md
-  - 恶意软件分析案例: 03-Case-Studies/case_malware_analysis.md
+  - "C01: 反分析技术案例": 03-Case-Studies/case_anti_analysis_techniques.md
+  - "C02: 音乐 App 案例": 03-Case-Studies/case_music_apps.md
+  - "C03: 社交媒体与风控案例": 03-Case-Studies/case_social_media_and_anti_bot.md
+  - "C04: App 加密签名案例": 03-Case-Studies/case_study_app_encryption.md
+  - "C05: 视频 App 与 DRM 案例": 03-Case-Studies/case_video_apps_and_drm.md
+  - "C06: Unity 游戏 (Il2Cpp) 案例": 03-Case-Studies/case_unity_games.md
+  - "C07: Flutter 应用案例": 03-Case-Studies/case_flutter_apps.md
+  - "C08: 恶意软件分析案例": 03-Case-Studies/case_malware_analysis.md
 - 参考资料:
   - 基础知识:
-    - APK 文件结构: 04-Reference/Foundations/apk_structure.md
-    - Android 四大组件: 04-Reference/Foundations/android_components.md
-    - AndroidManifest 解析: 04-Reference/Foundations/android_manifest.md
-    - Android Studio 调试工具: 04-Reference/Foundations/android_studio_debug_tools.md
-    - DEX 文件格式: 04-Reference/Foundations/dex_format.md
-    - Smali 语法入门: 04-Reference/Foundations/smali_syntax.md
-    - SO/ELF 文件格式: 04-Reference/Foundations/so_elf_format.md
-    - ART 运行时: 04-Reference/Foundations/art_runtime.md
-    - ARM 汇编入门: 04-Reference/Foundations/arm_assembly.md
-    - x86 与 ARM 汇编基础: 04-Reference/Foundations/x86_and_arm_assembly_basics.md
-    - TOTP 时间动态密码: 04-Reference/Foundations/totp.md
+    - "F01: APK 文件结构": 04-Reference/Foundations/apk_structure.md
+    - "F02: Android 四大组件": 04-Reference/Foundations/android_components.md
+    - "F03: AndroidManifest 解析": 04-Reference/Foundations/android_manifest.md
+    - "F04: Android Studio 调试工具": 04-Reference/Foundations/android_studio_debug_tools.md
+    - "F05: DEX 文件格式": 04-Reference/Foundations/dex_format.md
+    - "F06: Smali 语法入门": 04-Reference/Foundations/smali_syntax.md
+    - "F07: SO/ELF 文件格式": 04-Reference/Foundations/so_elf_format.md
+    - "F08: ART 运行时": 04-Reference/Foundations/art_runtime.md
+    - "F09: ARM 汇编入门": 04-Reference/Foundations/arm_assembly.md
+    - "F10: x86 与 ARM 汇编基础": 04-Reference/Foundations/x86_and_arm_assembly_basics.md
+    - "F11: TOTP 时间动态密码": 04-Reference/Foundations/totp.md
+    - "F12: SELinux 安全机制": 04-Reference/Foundations/selinux.md
+    - "F13: 二进制分析工具链": 04-Reference/Foundations/binary_analysis_toolkit.md
+    - "F14: Binder IPC 机制": 04-Reference/Foundations/binder_ipc.md
   - 进阶主题:
-    - Android 沙箱实现: 04-Reference/Advanced/android_sandbox_implementation.md
-    - AOSP 与系统定制: 04-Reference/Advanced/aosp_and_system_customization.md
-    - AOSP 深度改机: 04-Reference/Advanced/aosp_device_modification.md
-    - 最小化 Android RootFS: 04-Reference/Advanced/minimal_android_rootfs.md
-    - SO 反调试与混淆: 04-Reference/Advanced/so_anti_debugging_and_obfuscation.md
-    - SO 运行时仿真: 04-Reference/Advanced/so_runtime_emulation.md
+    - "A01: Android 沙箱实现": 04-Reference/Advanced/android_sandbox_implementation.md
+    - "A02: AOSP 与系统定制": 04-Reference/Advanced/aosp_and_system_customization.md
+    - "A03: AOSP 深度改机": 04-Reference/Advanced/aosp_device_modification.md
+    - "A04: 最小化 Android RootFS": 04-Reference/Advanced/minimal_android_rootfs.md
+    - "A05: SO 反调试与混淆": 04-Reference/Advanced/so_anti_debugging_and_obfuscation.md
+    - "A06: SO 运行时仿真": 04-Reference/Advanced/so_runtime_emulation.md
+    - "A07: Magisk 与 LSPosed 原理": 04-Reference/Advanced/magisk_lsposed_internals.md
   - 工程实践:
-    - 框架与中间件: 04-Reference/Engineering/frameworks_and_middleware.md
-    - 消息队列: 04-Reference/Engineering/message_queues.md
-    - Redis 常用命令: 04-Reference/Engineering/redis.md
-    - 风控 SDK 编译指南: 04-Reference/Engineering/risk_control_sdk_build_guide.md
+    - "E01: 框架与中间件": 04-Reference/Engineering/frameworks_and_middleware.md
+    - "E02: 消息队列": 04-Reference/Engineering/message_queues.md
+    - "E03: Redis 常用命令": 04-Reference/Engineering/redis.md
+    - "E04: 风控 SDK 编译指南": 04-Reference/Engineering/risk_control_sdk_build_guide.md
     - 数据分析:
-      - 数据仓库与处理: 04-Reference/Engineering/Data-Analysis/data_warehousing_and_processing.md
-      - Apache Flink: 04-Reference/Engineering/Data-Analysis/flink.md
-      - HBase 数据库: 04-Reference/Engineering/Data-Analysis/hbase.md
-      - Apache Hive: 04-Reference/Engineering/Data-Analysis/hive.md
-      - Apache Spark: 04-Reference/Engineering/Data-Analysis/spark.md
-    - 群控与 API 逆向对比: 04-Reference/Engineering/automation_vs_api_reverse.md
+      - "E05: 数据仓库与处理": 04-Reference/Engineering/Data-Analysis/data_warehousing_and_processing.md
+      - "E06: Apache Flink": 04-Reference/Engineering/Data-Analysis/flink.md
+      - "E07: HBase 数据库": 04-Reference/Engineering/Data-Analysis/hbase.md
+      - "E08: Apache Hive": 04-Reference/Engineering/Data-Analysis/hive.md
+      - "E09: Apache Spark": 04-Reference/Engineering/Data-Analysis/spark.md
+    - "E10: 群控与 API 逆向对比": 04-Reference/Engineering/automation_vs_api_reverse.md
 - 附录:
-  - GitHub 开源项目: 05-Appendix/github_projects.md
-  - 学习资源: 05-Appendix/learning_resources.md
-  - CTF 练习平台: 05-Appendix/ctf_platforms.md
-  - 术语表: 05-Appendix/glossary.md
-  - 配方编号系统: 05-Appendix/numbering.md
+  - "X01: GitHub 开源项目": 05-Appendix/github_projects.md
+  - "X02: 学习资源": 05-Appendix/learning_resources.md
+  - "X03: CTF 练习平台": 05-Appendix/ctf_platforms.md
+  - "X04: 术语表": 05-Appendix/glossary.md
+  - "X05: 配方编号系统": 05-Appendix/numbering.md

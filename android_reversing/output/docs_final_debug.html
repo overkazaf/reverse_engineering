@@ -114,7 +114,7 @@
                     
                                             <div class="section" id="section-1">
                                                 <h2>1. 10分钟入门</h2>
-                                                <h1>快速入门指南</h1>
+                                                <h1>快速入门</h1>
 <p>欢迎！这个指南将帮助你在 <strong>10 分钟内</strong>完成第一次 Android 逆向分析。</p>
 <hr />
 <h2>你将学到什么</h2>
@@ -1160,7 +1160,7 @@ frida -U -p PID1 -p PID2 -l script.js
 </ol>
 <hr />
 <h1># 延伸阅读</h1>
-<h2># 相关 Recipes</h2>
+<h2># 相关配方</h2>
 <ul>
 <li><em><a href="#section-4">密码学分析</a></em> - 分析 API 签名和加密算法</li>
 <li><em><a href="#section-8">Frida 反调试绕过</a></em> - 如果 App 检测到 Frida</li>
@@ -1850,7 +1850,7 @@ plaintext = unpad(cipher.decrypt(ciphertext), AES.block_size)
 </code></pre>
 <hr />
 <h2>延伸阅读</h2>
-<h3>相关 Recipes</h3>
+<h3>相关配方</h3>
 <ul>
 <li><strong><a href="#section-3">网络抓包</a></strong> - 获取加密后的数据样本</li>
 <li><strong><a href="#section-8">Frida 反调试</a></strong> - 如果 App 检测到 Hook</li>
@@ -2435,7 +2435,7 @@ print(tls_client.settings.ClientIdentifiers)
 });
 </code></pre>
 <h2>延伸阅读</h2>
-<h3>相关 Recipes</h3>
+<h3>相关配方</h3>
 <ul>
 <li><strong><a href="#section-3">网络抓包</a></strong> - 抓取 TLS 握手包</li>
 <li><strong><a href="#section-4">密码学分析</a></strong> - 分析加密实现</li>
@@ -3341,7 +3341,7 @@ apktool b app -o app_patched.apk
 </code></pre>
 <hr />
 <h2>延伸阅读</h2>
-<h3>相关 Recipes</h3>
+<h3>相关配方</h3>
 <ul>
 <li><strong><a href="#section-12">Root 检测绕过</a></strong> - 通常与 Frida 检测一起出现</li>
 <li><strong><a href="#section-3-%E7%AC%AC-5-%E6%AD%A5%E7%BB%95%E8%BF%87-ssl-pinning%E5%A6%82%E9%81%87%E5%88%B0">SSL Pinning 绕过</a></strong> - 可能也有反 Frida</li>
@@ -4337,7 +4337,7 @@ adb reboot
 </code></pre>
 <hr />
 <h2>延伸阅读</h2>
-<h3>相关 Recipes</h3>
+<h3>相关配方</h3>
 <ul>
 <li><a href="#section-18">逆向工程工作流</a> - 完整的逆向分析流程</li>
 </ul>
@@ -7586,22 +7586,22 @@ java -jar ApkToolPlus.jar -pkid target.apk
 
 根据识别出的加固类型，选择合适的脱壳方法：
 
-### # 第一代壳 (整体加密)
+### 第一代壳 (整体加密)
 * *策略**: Hook ClassLoader，在 DEX 加载时 dump
 * *推荐工具**: 手写 Frida 脚本或 frida-dexdump
 * *成功率**: 95%+
 
-### # 第二代壳 (方法抽取)
+### 第二代壳 (方法抽取)
 * *策略**: Hook ArtMethod 的 invoke，在方法首次调用时 dump CodeItem
 * *推荐工具**: FART 技术 (Frida ART Hook) + frida-dexdump
 * *成功率**: 80%+ (取决于代码覆盖率)
 
-### # 第三代壳 (虚拟化)
+### 第三代壳 (虚拟化)
 * *策略**: Hook 虚拟机引擎，获取指令流 + 映射表逆向
 * *推荐工具**: IDA Pro + 自定义脚本
 * *成功率**: 50% (需要深入分析虚拟机实现)
 
-### # 第四代壳 (云端)
+### 第四代壳 (云端)
 * *策略**: 网络抓包 + 内存扫描 + 多层 dump
 * *推荐工具**: mitmproxy + frida-dexdump + 自定义脚本
 * *成功率**: 30% (部分逻辑可能无法获取)
@@ -7612,7 +7612,7 @@ java -jar ApkToolPlus.jar -pkid target.apk
 
 以下提供针对不同代际的脱壳脚本。
 
-### # 方法 A: 使用 frida-dexdump (通用，推荐首选)
+### 方法 A: 使用 frida-dexdump (通用，推荐首选)
 
 ```bash
 # 1. 启动 Frida Server
@@ -7908,7 +7908,7 @@ console.log(&quot;[+] 内存扫描已启动&quot;);
 <p>jadx ./dumped_files/dumped_1234567890.dex</p>
 <h1>如果能正常反编译，表示脱壳成功</h1>
 <pre><code>
-### # 常见需要修复的情况:
+### 常见需要修复的情况:
 
 1. **方法体被 NOP 填充**:
 - 症状: Jadx 反编译后看到大量空方法或只有 `return` 的方法
@@ -7923,7 +7923,7 @@ console.log(&quot;[+] 内存扫描已启动&quot;);
 - 症状: 方法调用关系不正确
 - 解决: 使用 `smali/baksmali` 重新组装
 
-### # 自动化修复工具
+### 自动化修复工具
 
 ```bash
 # 使用 dex-repair (开源工具)
@@ -10029,7 +10029,7 @@ smali a smali_test -o test.dex
 </code></pre>
 <hr />
 <h2>相关资源</h2>
-<h3>相关 Recipe</h3>
+<h3>相关配方</h3>
 <table>
 <thead>
 <tr>
@@ -11414,7 +11414,7 @@ exec: false // Don't record every instruction
 <pre><code>
 ## 延伸阅读
 
-## # 相关 Recipes
+## # 相关配方
 
 - **[静态分析深入](#section-19)** - 先静态找到目标
 - **[Frida 常用脚本](#section-35)** - Hook 脚本模板
@@ -16243,11 +16243,11 @@ c. 执行这份被插桩后的代码副本。</li>
                                             
                                             <div class="section" id="section-42">
                                                 <h2>42. Xposed Guide</h2>
-                                                <h1>Xposed 框架入门指南</h1>
+                                                <h1>Xposed 框架入门</h1>
 <h2>Xposed 是一个在 Android 平台上广受欢迎的动态代码 Hook 框架。与 Frida 主要用于实时、临时的分析不同，Xposed 旨在对系统和应用进行<strong>永久性</strong>的修改。它通过替换一个核心系统进程 (<code>app_process</code>)，在应用启动时加载自定义模块，从而实现对任意方法的高效 Hook。</h2>
 <h2>目录</h2>
 <ul>
-<li><a href="#xposed-%E6%A1%86%E6%9E%B6%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97">Xposed 框架入门指南</a><ul>
+<li><a href="#xposed-%E6%A1%86%E6%9E%B6%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97">Xposed 框架入门</a><ul>
 <li><a href="#xposed-%E6%98%AF%E4%B8%80%E4%B8%AA%E5%9C%A8-android-%E5%B9%B3%E5%8F%B0%E4%B8%8A%E5%B9%BF%E5%8F%97%E6%AC%A2%E8%BF%8E%E7%9A%84%E5%8A%A8%E6%80%81%E4%BB%A3%E7%A0%81-hook-%E6%A1%86%E6%9E%B6%E4%B8%8E-frida-%E4%B8%BB%E8%A6%81%E7%94%A8%E4%BA%8E%E5%AE%9E%E6%97%B6%E4%B8%B4%E6%97%B6%E7%9A%84%E5%88%86%E6%9E%90%E4%B8%8D%E5%90%8Cxposed-%E6%97%A8%E5%9C%A8%E5%AF%B9%E7%B3%BB%E7%BB%9F%E5%92%8C%E5%BA%94%E7%94%A8%E8%BF%9B%E8%A1%8C%E6%B0%B8%E4%B9%85%E6%80%A7%E7%9A%84%E4%BF%AE%E6%94%B9%E5%AE%83%E9%80%9A%E8%BF%87%E6%9B%BF%E6%8D%A2%E4%B8%80%E4%B8%AA%E6%A0%B8%E5%BF%83%E7%B3%BB%E7%BB%9F%E8%BF%9B%E7%A8%8B-app_process%E5%9C%A8%E5%BA%94%E7%94%A8%E5%90%AF%E5%8A%A8%E6%97%B6%E5%8A%A0%E8%BD%BD%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9D%97%E4%BB%8E%E8%80%8C%E5%AE%9E%E7%8E%B0%E5%AF%B9%E4%BB%BB%E6%84%8F%E6%96%B9%E6%B3%95%E7%9A%84%E9%AB%98%E6%95%88-hook">Xposed 是一个在 Android 平台上广受欢迎的动态代码 Hook 框架。与 Frida 主要用于实时、临时的分析不同，Xposed 旨在对系统和应用进行<strong>永久性</strong>的修改。它通过替换一个核心系统进程 (<code>app_process</code>)，在应用启动时加载自定义模块，从而实现对任意方法的高效 Hook。</a></li>
 <li><a href="#%E7%9B%AE%E5%BD%95">目录</a><ul>
 <li><a href="#%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86">核心原理</a></li>
@@ -17214,7 +17214,7 @@ c. 启动 Unicorn 引擎，从目标函数地址开始执行 ARM 汇编指令。
                                             
                                             <div class="section" id="section-46">
                                                 <h2>46. Ghidra Guide</h2>
-                                                <h1>Ghidra 入门指南</h1>
+                                                <h1>Ghidra 入门</h1>
 <h2>Ghidra 是由美国国家安全局 (NSA) 开发并开源的一款软件逆向工程 (SRE) 套件。它以功能全面、免费开源、跨平台等特性，迅速成为 IDA Pro 之外逆向工程师们的另一个重要选择，尤其在学术界和独立研究者中广受欢迎。</h2>
 <h2>目录</h2>
 <ol>
@@ -17462,7 +17462,7 @@ print(&quot;{} at {}&quot;.format(func.getName(), func.getEntryPoint()))</p>
 <pre><code>
 ## # 优缺点分析
 
-### # 优点
+### 优点
 
 * **免费与开源**: 无任何费用，社区可以审查和贡献代码。
 
@@ -17476,7 +17476,7 @@ print(&quot;{} at {}&quot;.format(func.getName(), func.getEntryPoint()))</p>
 * **优秀的协作功能**: Ghidra Server 的存在使得团队协作变得非常容易。
 
 
-### # 缺点
+### 缺点
 
 * **性能**: 基于 Java Swing 的 UI 在处理超大型二进制文件时，可能会感到卡顿，性能不如 IDA Pro。
 
@@ -17491,11 +17491,11 @@ print(&quot;{} at {}&quot;.format(func.getName(), func.getEntryPoint()))</p>
                                             
                                             <div class="section" id="section-47">
                                                 <h2>47. IDA Pro Guide</h2>
-                                                <h1>IDA Pro 入门指南</h1>
+                                                <h1>IDA Pro 入门</h1>
 <h2>IDA Pro (Interactive Disassembler Professional) 是由 Hex-Rays 公司开发的一款业界闻名的交互式反汇编器。在逆向工程领域，IDA Pro 被广泛认为是<strong>黄金标准</strong>，以其最强大的反汇编引擎、无与伦比的处理器支持和极其成熟的生态系统，成为专业人士进行软件分析、漏洞挖掘和恶意软件研究的首选工具。</h2>
 <h2>目录</h2>
 <ul>
-<li><a href="#ida-pro-%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97">IDA Pro 入门指南</a><ul>
+<li><a href="#ida-pro-%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97">IDA Pro 入门</a><ul>
 <li><a href="#ida-pro-interactive-disassembler-professional-%E6%98%AF%E7%94%B1-hex-rays-%E5%85%AC%E5%8F%B8%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%80%E6%AC%BE%E4%B8%9A%E7%95%8C%E9%97%BB%E5%90%8D%E7%9A%84%E4%BA%A4%E4%BA%92%E5%BC%8F%E5%8F%8D%E6%B1%87%E7%BC%96%E5%99%A8%E5%9C%A8%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E9%A2%86%E5%9F%9Fida-pro-%E8%A2%AB%E5%B9%BF%E6%B3%9B%E8%AE%A4%E4%B8%BA%E6%98%AF%E9%BB%84%E9%87%91%E6%A0%87%E5%87%86%E4%BB%A5%E5%85%B6%E6%9C%80%E5%BC%BA%E5%A4%A7%E7%9A%84%E5%8F%8D%E6%B1%87%E7%BC%96%E5%BC%95%E6%93%8E%E6%97%A0%E4%B8%8E%E4%BC%A6%E6%AF%94%E7%9A%84%E5%A4%84%E7%90%86%E5%99%A8%E6%94%AF%E6%8C%81%E5%92%8C%E6%9E%81%E5%85%B6%E6%88%90%E7%86%9F%E7%9A%84%E7%94%9F%E6%80%81%E7%B3%BB%E7%BB%9F%E6%88%90%E4%B8%BA%E4%B8%93%E4%B8%9A%E4%BA%BA%E5%A3%AB%E8%BF%9B%E8%A1%8C%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E5%92%8C%E6%81%B6%E6%84%8F%E8%BD%AF%E4%BB%B6%E7%A0%94%E7%A9%B6%E7%9A%84%E9%A6%96%E9%80%89%E5%B7%A5%E5%85%B7">IDA Pro (Interactive Disassembler Professional) 是由 Hex-Rays 公司开发的一款业界闻名的交互式反汇编器。在逆向工程领域，IDA Pro 被广泛认为是<strong>黄金标准</strong>，以其最强大的反汇编引擎、无与伦比的处理器支持和极其成熟的生态系统，成为专业人士进行软件分析、漏洞挖掘和恶意软件研究的首选工具。</a></li>
 <li><a href="#%E7%9B%AE%E5%BD%95">目录</a><ul>
 <li><a href="#%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7">核心特性</a></li>
@@ -17700,11 +17700,11 @@ print(&quot;{} at {}&quot;.format(func.getName(), func.getEntryPoint()))</p>
                                             
                                             <div class="section" id="section-48">
                                                 <h2>48. Radare2 Guide</h2>
-                                                <h1>Radare2 入门指南</h1>
+                                                <h1>Radare2 入门</h1>
 <h2>Radare2 (通常简称为 r2) 是一款开源、免费、命令行驱动的逆向工程框架。它不仅仅是一个反汇编器，更像是一个功能极其丰富的&quot;瑞士军刀&quot;，集成了十六进制编辑、反汇编、调试、代码分析、漏洞利用、数据可视化等多种功能。Radare2 以其高度的可脚本化和可扩展性而闻名，深受寻求自动化和深度定制的黑客、CTF 选手和安全研究员的喜爱。</h2>
 <h2>目录</h2>
 <ul>
-<li><a href="#radare2-%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97">Radare2 入门指南</a><ul>
+<li><a href="#radare2-%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97">Radare2 入门</a><ul>
 <li><a href="#radare2-%E9%80%9A%E5%B8%B8%E7%AE%80%E7%A7%B0%E4%B8%BA-r2-%E6%98%AF%E4%B8%80%E6%AC%BE%E5%BC%80%E6%BA%90%E5%85%8D%E8%B4%B9%E5%91%BD%E4%BB%A4%E8%A1%8C%E9%A9%B1%E5%8A%A8%E7%9A%84%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A1%86%E6%9E%B6%E5%AE%83%E4%B8%8D%E4%BB%85%E4%BB%85%E6%98%AF%E4%B8%80%E4%B8%AA%E5%8F%8D%E6%B1%87%E7%BC%96%E5%99%A8%E6%9B%B4%E5%83%8F%E6%98%AF%E4%B8%80%E4%B8%AA%E5%8A%9F%E8%83%BD%E6%9E%81%E5%85%B6%E4%B8%B0%E5%AF%8C%E7%9A%84%E7%91%9E%E5%A3%AB%E5%86%9B%E5%88%80%E9%9B%86%E6%88%90%E4%BA%86%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%BC%96%E8%BE%91%E5%8F%8D%E6%B1%87%E7%BC%96%E8%B0%83%E8%AF%95%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E7%AD%89%E5%A4%9A%E7%A7%8D%E5%8A%9F%E8%83%BDradare2-%E4%BB%A5%E5%85%B6%E9%AB%98%E5%BA%A6%E7%9A%84%E5%8F%AF%E8%84%9A%E6%9C%AC%E5%8C%96%E5%92%8C%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7%E8%80%8C%E9%97%BB%E5%90%8D%E6%B7%B1%E5%8F%97%E5%AF%BB%E6%B1%82%E8%87%AA%E5%8A%A8%E5%8C%96%E5%92%8C%E6%B7%B1%E5%BA%A6%E5%AE%9A%E5%88%B6%E7%9A%84%E9%BB%91%E5%AE%A2ctf-%E9%80%89%E6%89%8B%E5%92%8C%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6%E5%91%98%E7%9A%84%E5%96%9C%E7%88%B1">Radare2 (通常简称为 r2) 是一款开源、免费、命令行驱动的逆向工程框架。它不仅仅是一个反汇编器，更像是一个功能极其丰富的&quot;瑞士军刀&quot;，集成了十六进制编辑、反汇编、调试、代码分析、漏洞利用、数据可视化等多种功能。Radare2 以其高度的可脚本化和可扩展性而闻名，深受寻求自动化和深度定制的黑客、CTF 选手和安全研究员的喜爱。</a></li>
 <li><a href="#%E7%9B%AE%E5%BD%95">目录</a><ul>
 <li><a href="#%E6%A0%B8%E5%BF%83%E7%90%86%E5%BF%B5%E4%B8%8E%E7%89%B9%E6%80%A7">核心理念与特性</a></li>
@@ -19156,7 +19156,7 @@ function bytesToHex(arr) {
                                                 <h2>55. Case: Unity Games (Il2Cpp)</h2>
                                                 <h1>案例研究：Unity 游戏逆向 (Il2Cpp)</h1>
 <h2>Unity 是目前最流行的移动游戏引擎之一。现代 Unity 游戏通常使用 Il2Cpp 脚本后端，将 C# 代码转换为 C++ 代码并编译为 Native 库 (<code>libil2cpp.so</code>)。这使得传统的 Java/Smali 逆向方法失效，需要全新的工具和思路。</h2>
-<h2>核心 architecture 与文件结构</h2>
+<h2>核心架构与文件结构</h2>
 <p>一个典型的 Unity Il2Cpp 游戏包含以下关键文件：</p>
 <ol>
 <li><strong><code>lib/armeabi-v7a/libil2cpp.so</code></strong>: 这是游戏的核心逻辑库。所有的 C# 脚本（玩家控制、游戏逻辑、网络通信）都被编译到了这里。</li>
@@ -20161,11 +20161,11 @@ package=&quot;com.example.myapp&quot;&gt;
                                             
                                             <div class="section" id="section-63">
                                                 <h2>63. Smali Syntax</h2>
-                                                <h1>Smali 语法入门指南</h1>
+                                                <h1>Smali 语法入门</h1>
 <h2>Smali/Baksmali 是 Dalvik 虚拟机字节码的汇编器/反汇编器。Smali 是对 DEX 格式的一种人类可读的表示，允许我们精确地查看和修改应用的行为。理解 Smali 是进行 Android 应用静态 patching（修改后重打包）的关键。</h2>
 <h2>目录</h2>
 <ul>
-<li><a href="#smali-%E8%AF%AD%E6%B3%95%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97">Smali 语法入门指南</a><ul>
+<li><a href="#smali-%E8%AF%AD%E6%B3%95%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97">Smali 语法入门</a><ul>
 <li><a href="#smalibaksmali-%E6%98%AF-dalvik-%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AD%97%E8%8A%82%E7%A0%81%E7%9A%84%E6%B1%87%E7%BC%96%E5%99%A8%E5%8F%8D%E6%B1%87%E7%BC%96%E5%99%A8smali-%E6%98%AF%E5%AF%B9-dex-%E6%A0%BC%E5%BC%8F%E7%9A%84%E4%B8%80%E7%A7%8D%E4%BA%BA%E7%B1%BB%E5%8F%AF%E8%AF%BB%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%85%81%E8%AE%B8%E6%88%91%E4%BB%AC%E7%B2%BE%E7%A1%AE%E5%9C%B0%E6%9F%A5%E7%9C%8B%E5%92%8C%E4%BF%AE%E6%94%B9%E5%BA%94%E7%94%A8%E7%9A%84%E8%A1%8C%E4%B8%BA%E7%90%86%E8%A7%A3-smali-%E6%98%AF%E8%BF%9B%E8%A1%8C-android-%E5%BA%94%E7%94%A8%E9%9D%99%E6%80%81-patching%E4%BF%AE%E6%94%B9%E5%90%8E%E9%87%8D%E6%89%93%E5%8C%85%E7%9A%84%E5%85%B3%E9%94%AE">Smali/Baksmali 是 Dalvik 虚拟机字节码的汇编器/反汇编器。Smali 是对 DEX 格式的一种人类可读的表示，允许我们精确地查看和修改应用的行为。理解 Smali 是进行 Android 应用静态 patching（修改后重打包）的关键。</a></li>
 <li><a href="#%E7%9B%AE%E5%BD%95">目录</a><ul>
 <li><a href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5">基本概念</a></li>
@@ -22480,7 +22480,7 @@ PRODUCT_MANUFACTURER := MyCompany
 </ul>
 <pre><code>
 
-### # 硬件参数 (IMEI, MAC, android ID)
+### 硬件参数 (IMEI, MAC, android ID)
 这些是更敏感、更核心的设备标识符。修改它们需要深入到 Framework 层的 Java 代码和 JNI。
 
 * **IMEI (Telephony)**:
@@ -22510,7 +22510,7 @@ PRODUCT_MANUFACTURER := MyCompany
 * **修改思路**: 找到生成和存储 Android ID 的逻辑，将其替换为返回一个固定的或每次启动都随机生成的值。
 
 
-### # 系统属性 (System Properties)
+### 系统属性 (System Properties)
 App 通过 `android.os.SystemProperties.get()` 获取各种系统属性。
 
 * **定位**: `frameworks/base/core/java/android/os/SystemProperties.java` 及其对应的 JNI 实现 `frameworks/base/core/jni/android_os_SystemProperties.cpp`。
@@ -22519,7 +22519,7 @@ App 通过 `android.os.SystemProperties.get()` 获取各种系统属性。
 * **修改思路**: 直接在 `SystemProperties.cpp` 的 `native_get` 方法中进行拦截。判断传入的属性名，如果是目标属性（如 `ro.serialno`），则返回一个伪造的值，否则执行原始逻辑。
 
 
-### # 内核参数 (Serial Number)
+### 内核参数 (Serial Number)
 一些底层信息（如 CPU 序列号）直接由 Linux 内核通过 `/proc` 文件系统暴露。
 
 * **定位**: 内核源码中的 `arch/&lt;arch&gt;/kernel/setup.c` 或相关驱动文件。
@@ -22553,7 +22553,7 @@ App 通过 `android.os.SystemProperties.get()` 获取各种系统属性。
 ---
 ## # 优势与挑战
 
-### # 优势
+### 优势
 * **彻底性**: 从系统根源上改变设备指纹，几乎无法被应用层技术检测。
 
 
@@ -22563,7 +22563,7 @@ App 通过 `android.os.SystemProperties.get()` 获取各种系统属性。
 * **性能好**: 没有额外的 Hook 开销，所有修改都是原生代码。
 
 
-### # 挑战
+### 挑战
 * **技术门槛极高**: 需要深入理解 AOSP 源码结构、编译系统和 Linux 内核。
 
 
@@ -24448,13 +24448,13 @@ SO 运行时仿真是一项高级但回报巨大的技术。它将逆向分析�
 <h3># 1. 单机模式 (Single Instance)</h3>
 <pre><code>
 
-### # 2. 主从复制 (Master-Slave)
+### 2. 主从复制 (Master-Slave)
 
 </code></pre>
 <h3># 3. Sentinel 高可用 (Redis Sentinel)</h3>
 <pre><code>
 
-### # 脑裂问题 (Split-Brain)
+### 脑裂问题 (Split-Brain)
 
 * *定义**: 脑裂是指在分布式系统中，由于网络分区或节点故障，导致系统中出现多个&quot;大脑&quot;（多个节点都认为自己是主节点）的情况。
 
@@ -24487,14 +24487,14 @@ master = sentinel.master_for('mymaster', socket_timeout=0.1)
 
 ## # Sentinel 模式
 
-### # 核心功能
+### 核心功能
 1. **监控 (Monitoring)**: 监控master和slave健康状态
 2. **通知 (Notification)**: 故障时通知管理员
 3. **自动故障转移 (Automatic Failover)**: 自动选举新master
 4. **配置提供 (Configuration Provider)**: 为客户端提供当前master地址
 
 
-### # 工作原理
+### 工作原理
 
 ```bash
 # SentinelConfigFile
@@ -24545,7 +24545,7 @@ CLUSTER NODES</p>
 <p>redis-cli --cluster add-node 127.0.0.1:7006 127.0.0.1:7000</p>
 <pre><code>布隆过滤器是一种概率性数据结构，用于高效判断一个元素是否在集合中。
 
-### # 核心特性
+### 核心特性
 - **误报率**: 可能误判存在，但不会误判不存在
 
 
@@ -24555,7 +24555,7 @@ CLUSTER NODES</p>
 - **时间复杂度**: O(k) 查询时间，k为哈希函数数量
 
 
-### # 实现原理
+### 实现原理
 
 ```python
 # 基本流程
@@ -24591,7 +24591,7 @@ BF.MEXISTS myfilter &quot;user1&quot; &quot;user2&quot;</p>
 
 Stream是Redis 5.0引入的新数据结构，主要用于消息队列和事件流处理。
 
-### # 核心特性
+### 核心特性
 - **持久化消息队列**: 消息持久化存储
 
 
@@ -24604,7 +24604,7 @@ Stream是Redis 5.0引入的新数据结构，主要用于消息队列和事件�
 - **历史消息**: 可以查询历史消息
 
 
-### # 消息ID结构
+### 消息ID结构
 
 </code></pre>
 <h1>添加消息</h1>
@@ -24647,7 +24647,7 @@ XTRIM mystream MAXLEN ~ 1000 # 近似修剪，Performance 更好</p>
 
 ## # 持久化机制
 
-### # RDB (Redis Database)
+### RDB (Redis Database)
 
 ```bash
 # ConfigFileSet
@@ -24754,7 +24754,7 @@ end
 
 - 大数据量使用hashtable编码（提高性能）
 
-### # 2. 批量操作
+### 2. 批量操作
 
 ```bash
 # 使用 pipeline 减少网络往返
@@ -24778,7 +24778,7 @@ set-max-intset-entries 512</p>
 
 ## # 关系型数据库 (RDBMS)
 
-### # MySQL
+### MySQL
 * *特点**: 开源、成熟、社区活跃
 
 | 方面 | 描述 |
@@ -25596,7 +25596,7 @@ implementation files('libs/RiskControlSDK.jar')
 <li><a href="#%E6%97%B6%E9%97%B4%E4%B8%8E%E7%AA%97%E5%8F%A3"><strong>时间与窗口</strong></a></li>
 <li><a href="#%E5%AE%B9%E9%94%99%E6%9C%BA%E5%88%B6"><strong>容错机制</strong></a></li>
 <li><a href="#%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98"><strong>性能调优</strong></a></li>
-<li><a href="#%E9%9D%A2%E8%AF%95%E8%A6%81%E7%82%B9"><strong>面试要点</strong></a></li>
+<li><a href="#%E9%9D%A2%E8%AF%95%E8%A6%81%E7%82%B9"><strong>知识要点</strong></a></li>
 </ol>
 <hr />
 <h2>Flink 架构</h2>
@@ -26017,7 +26017,7 @@ descriptor.enableTimeToLive(ttlConfig);
 <li><a href="#java-api"><strong>Java API</strong></a></li>
 <li><a href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><strong>性能优化</strong></a></li>
 <li><a href="#%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86"><strong>集群管理</strong></a></li>
-<li><a href="#%E9%9D%A2%E8%AF%95%E8%A6%81%E7%82%B9"><strong>面试要点</strong></a></li>
+<li><a href="#%E9%9D%A2%E8%AF%95%E8%A6%81%E7%82%B9"><strong>知识要点</strong></a></li>
 </ol>
 <hr />
 <h2>HBase 架构</h2>
@@ -26348,7 +26348,7 @@ status 'detailed'
 <li><a href="#%E5%88%86%E5%8C%BA%E4%B8%8E%E5%88%86%E6%A1%B6"><strong>分区与分桶</strong></a></li>
 <li><a href="#%E5%87%BD%E6%95%B0%E4%B8%8Eudf"><strong>函数与 UDF</strong></a></li>
 <li><a href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><strong>性能优化</strong></a></li>
-<li><a href="#%E9%9D%A2%E8%AF%95%E8%A6%81%E7%82%B9"><strong>面试要点</strong></a></li>
+<li><a href="#%E9%9D%A2%E8%AF%95%E8%A6%81%E7%82%B9"><strong>知识要点</strong></a></li>
 </ol>
 <hr />
 <h2>Hive 架构</h2>
@@ -26765,7 +26765,7 @@ SELECT * FROM old_table;</li>
 <li><a href="#spark-sql"><strong>Spark SQL</strong></a></li>
 <li><a href="#spark-streaming"><strong>Spark Streaming</strong></a></li>
 <li><a href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><strong>性能优化</strong></a></li>
-<li><a href="#%E9%9D%A2%E8%AF%95%E8%A6%81%E7%82%B9"><strong>面试要点</strong></a></li>
+<li><a href="#%E9%9D%A2%E8%AF%95%E8%A6%81%E7%82%B9"><strong>知识要点</strong></a></li>
 </ol>
 <hr />
 <h2>Spark 架构</h2>
@@ -27084,7 +27084,7 @@ val optimizedDF = df.filter($&quot;age&quot; &gt; 18) // Filter 下推到数据�
 
 ## # 2. Spark内存管理
 
-### # 内存分配
+### 内存分配
 
 </code></pre>
 <p>│ └── 执行内存 (Execution) × 0.5
@@ -27731,7 +27731,7 @@ df.write
 <tr>
   <td><a href="https://github.com/scriptingx/IoTSecurity101">scriptingx/IoTSecurity101</a></td>
   <td>500+</td>
-  <td>物联网安全入门指南。</td>
+  <td>物联网安全入门。</td>
 </tr>
 </tbody>
 </table>

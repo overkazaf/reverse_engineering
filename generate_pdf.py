@@ -59,6 +59,7 @@ PROJECTS = {
         "theme_color": "#4a90e2",
         "icon": "",
         "subtitle": "从入门到精通的 Android 逆向与安全分析",
+        "created_date": "2025-08-01",
         "topics": [
             "基础知识、工具指南、实战技巧与进阶主题",
             "涵盖 Frida、Unidbg、Xposed、IDA Pro 等核心工具",
@@ -74,6 +75,7 @@ PROJECTS = {
         "theme_color": "#4CAF50",
         "icon": "",
         "subtitle": "从入门到精通的 Web 逆向与数据采集",
+        "created_date": "2025-10-13",
         "topics": [
             "基础知识、工具指南、实战技巧与进阶配方",
             "涵盖 DevTools、Burp Suite、Puppeteer 等核心工具",
@@ -93,52 +95,49 @@ ANDROID_RECIPE_NUMBERS = {
     "00-Quick-Start/index.md": "Q02",
     "00-Quick-Start/setup.md": "Q03",
 
-    # Recipes - Network (R01-R05)
-    "01-Recipes/Network/network_sniffing.md": "R01",
-    "01-Recipes/Network/crypto_analysis.md": "R02",
-    "01-Recipes/Network/tls_fingerprinting_guide.md": "R03",
-    "01-Recipes/Network/ja3_fingerprinting.md": "R04",
-    "01-Recipes/Network/ja4_fingerprinting.md": "R05",
-    # Recipes - Anti-Detection (R06-R11)
-    "01-Recipes/Anti-Detection/frida_anti_debugging.md": "R06",
-    "01-Recipes/Anti-Detection/xposed_anti_debugging.md": "R07",
-    "01-Recipes/Anti-Detection/captcha_bypassing_techniques.md": "R08",
-    "01-Recipes/Anti-Detection/app_hardening_identification.md": "R09",
-    "01-Recipes/Anti-Detection/device_fingerprinting_and_bypass.md": "R10",
-    "01-Recipes/Anti-Detection/mobile_app_sec_and_anti_bot.md": "R11",
-    # Recipes - Unpacking (R12-R15)
-    "01-Recipes/Unpacking/un-packing.md": "R12",
-    "01-Recipes/Unpacking/frida_unpacking_and_so_fixing.md": "R13",
-    "01-Recipes/Unpacking/so_obfuscation_deobfuscation.md": "R14",
-    "01-Recipes/Unpacking/so_string_deobfuscation.md": "R15",
-    # Recipes - Analysis (R16-R23)
-    "01-Recipes/Analysis/re_workflow.md": "R16",
-    "01-Recipes/Analysis/static_analysis_deep_dive.md": "R17",
-    "01-Recipes/Analysis/dynamic_analysis_deep_dive.md": "R18",
-    "01-Recipes/Analysis/ollvm_deobfuscation.md": "R19",
-    "01-Recipes/Analysis/vmp_analysis.md": "R20",
-    "01-Recipes/Analysis/js_obfuscator.md": "R21",
-    "01-Recipes/Analysis/js_vmp.md": "R22",
-    "01-Recipes/Analysis/native_string_obfuscation.md": "R23",
-    # Recipes - Automation (R24-R31)
-    "01-Recipes/Automation/automation_and_device_farming.md": "R24",
-    "01-Recipes/Automation/dial_up_proxy_pools.md": "R25",
-    "01-Recipes/Automation/proxy_pool_design.md": "R26",
-    "01-Recipes/Automation/scrapy.md": "R27",
-    "01-Recipes/Automation/scrapy_redis_distributed.md": "R28",
-    "01-Recipes/Automation/docker_deployment.md": "R29",
-    "01-Recipes/Automation/virtualization_and_containers.md": "R30",
-    "01-Recipes/Automation/web_anti_scraping.md": "R31",
-    # Recipes - Scripts (R32-R37)
-    "01-Recipes/Scripts/frida_script_examples.md": "R32",
-    "01-Recipes/Scripts/frida_common_scripts.md": "R33",
-    "01-Recipes/Scripts/automation_scripts.md": "R34",
-    "01-Recipes/Scripts/native_hooking.md": "R35",
-    "01-Recipes/Scripts/objection_snippets.md": "R36",
-    "01-Recipes/Scripts/c_for_emulation.md": "R37",
-    # Recipes - Native (R38-R39)
-    "01-Recipes/Native/jni_development.md": "R38",
-    "01-Recipes/Native/so_compilation.md": "R39",
+    # Recipes - 按 mkdocs.yml 中的实际顺序编号 (R01-R35)
+    # ===== 入门基础 (R01-R03) =====
+    "01-Recipes/Analysis/re_workflow.md": "R01",
+    "01-Recipes/Network/network_sniffing.md": "R02",
+    "01-Recipes/Scripts/objection_snippets.md": "R03",
+    # ===== 核心分析 (R04-R08) =====
+    "01-Recipes/Analysis/static_analysis_deep_dive.md": "R04",
+    "01-Recipes/Analysis/dynamic_analysis_deep_dive.md": "R05",
+    "01-Recipes/Scripts/frida_common_scripts.md": "R06",
+    "01-Recipes/Native/jni_development.md": "R07",
+    "01-Recipes/Native/so_compilation.md": "R08",
+    # ===== 脱壳与解密 (R09-R13) =====
+    "01-Recipes/Unpacking/un-packing.md": "R09",
+    "01-Recipes/Unpacking/frida_unpacking_and_so_fixing.md": "R10",
+    "01-Recipes/Network/crypto_analysis.md": "R11",
+    "01-Recipes/Unpacking/so_string_deobfuscation.md": "R12",
+    "01-Recipes/Analysis/native_string_obfuscation.md": "R13",
+    # ===== 反检测对抗 (R14-R18) =====
+    "01-Recipes/Anti-Detection/app_hardening_identification.md": "R14",
+    "01-Recipes/Anti-Detection/frida_anti_debugging.md": "R15",
+    "01-Recipes/Anti-Detection/xposed_anti_debugging.md": "R16",
+    "01-Recipes/Anti-Detection/device_fingerprinting_and_bypass.md": "R17",
+    "01-Recipes/Scripts/native_hooking.md": "R18",
+    # ===== 高级反混淆 (R19-R22) =====
+    "01-Recipes/Unpacking/so_obfuscation_deobfuscation.md": "R19",
+    "01-Recipes/Analysis/ollvm_deobfuscation.md": "R20",
+    "01-Recipes/Analysis/vmp_analysis.md": "R21",
+    "01-Recipes/Scripts/c_for_emulation.md": "R22",
+    # ===== 网络与协议 (R23-R27) =====
+    "01-Recipes/Network/tls_fingerprinting_guide.md": "R23",
+    "01-Recipes/Network/ja3_fingerprinting.md": "R24",
+    "01-Recipes/Network/ja4_fingerprinting.md": "R25",
+    "01-Recipes/Anti-Detection/captcha_bypassing_techniques.md": "R26",
+    "01-Recipes/Anti-Detection/mobile_app_sec_and_anti_bot.md": "R27",
+    # ===== 自动化工程 (R28-R35) =====
+    "01-Recipes/Scripts/automation_scripts.md": "R28",
+    "01-Recipes/Automation/scrapy.md": "R29",
+    "01-Recipes/Automation/scrapy_redis_distributed.md": "R30",
+    "01-Recipes/Automation/proxy_pool_design.md": "R31",
+    "01-Recipes/Automation/dial_up_proxy_pools.md": "R32",
+    "01-Recipes/Automation/docker_deployment.md": "R33",
+    "01-Recipes/Automation/virtualization_and_containers.md": "R34",
+    "01-Recipes/Automation/automation_and_device_farming.md": "R35",
 
     # Tools - Dynamic (T01-T06)
     "02-Tools/Dynamic/frida_guide.md": "T01",
@@ -176,14 +175,17 @@ ANDROID_RECIPE_NUMBERS = {
     "04-Reference/Foundations/arm_assembly.md": "F09",
     "04-Reference/Foundations/x86_and_arm_assembly_basics.md": "F10",
     "04-Reference/Foundations/totp.md": "F11",
+    "04-Reference/Foundations/selinux.md": "F12",
+    "04-Reference/Foundations/binary_analysis_toolkit.md": "F13",
 
-    # Reference - Advanced (A01-A06)
+    # Reference - Advanced (A01-A07)
     "04-Reference/Advanced/android_sandbox_implementation.md": "A01",
     "04-Reference/Advanced/aosp_and_system_customization.md": "A02",
     "04-Reference/Advanced/aosp_device_modification.md": "A03",
     "04-Reference/Advanced/minimal_android_rootfs.md": "A04",
     "04-Reference/Advanced/so_anti_debugging_and_obfuscation.md": "A05",
     "04-Reference/Advanced/so_runtime_emulation.md": "A06",
+    "04-Reference/Advanced/magisk_lsposed_internals.md": "A07",
 
     # Reference - Engineering (E01-E09)
     "04-Reference/Engineering/frameworks_and_middleware.md": "E01",
@@ -197,11 +199,12 @@ ANDROID_RECIPE_NUMBERS = {
     "04-Reference/Engineering/Data-Analysis/spark.md": "E09",
     "04-Reference/Engineering/automation_vs_api_reverse.md": "E10",
 
-    # Appendix (X01-X04)
+    # Appendix (X01-X05)
     "05-Appendix/github_projects.md": "X01",
     "05-Appendix/learning_resources.md": "X02",
     "05-Appendix/ctf_platforms.md": "X03",
     "05-Appendix/glossary.md": "X04",
+    "05-Appendix/numbering.md": "X05",
 }
 
 WEB_RECIPE_NUMBERS = {
@@ -315,28 +318,46 @@ RECIPE_NUMBERS = {**ANDROID_RECIPE_NUMBERS, **WEB_RECIPE_NUMBERS}
 
 
 def add_recipe_number_to_content(content: str, path: str) -> str:
-    """Add Recipe number prefix to the first heading in content (uses global RECIPE_NUMBERS)"""
+    """Add Recipe number prefix to the first heading in content (uses global RECIPE_NUMBERS)
+
+    Skip if the heading already contains a recipe number pattern (e.g., R01:, T05:, etc.)
+    """
     if path in RECIPE_NUMBERS:
         recipe_num = RECIPE_NUMBERS[path]
         # Match first level-1 heading (# xxx)
         pattern = r'^(#\s+)(.+)$'
-        def replace_title(match):
-            return f"{match.group(1)}{recipe_num}: {match.group(2)}"
-        # Only replace the first match
-        content = re.sub(pattern, replace_title, content, count=1, flags=re.MULTILINE)
+        match = re.search(pattern, content, flags=re.MULTILINE)
+        if match:
+            heading_text = match.group(2)
+            # Skip if heading already starts with a recipe number pattern (R01:, T05:, Q01:, etc.)
+            if re.match(r'^[RTCFAESHDPQX]\d+:', heading_text):
+                return content
+            # Add recipe number prefix
+            def replace_title(m):
+                return f"{m.group(1)}{recipe_num}: {m.group(2)}"
+            content = re.sub(pattern, replace_title, content, count=1, flags=re.MULTILINE)
     return content
 
 
 def add_recipe_number_to_content_with_dict(content: str, path: str, recipe_numbers: dict) -> str:
-    """Add Recipe number prefix to the first heading in content (uses provided recipe_numbers dict)"""
+    """Add Recipe number prefix to the first heading in content (uses provided recipe_numbers dict)
+
+    Skip if the heading already contains a recipe number pattern (e.g., R01:, T05:, etc.)
+    """
     if path in recipe_numbers:
         recipe_num = recipe_numbers[path]
         # Match first level-1 heading (# xxx)
         pattern = r'^(#\s+)(.+)$'
-        def replace_title(match):
-            return f"{match.group(1)}{recipe_num}: {match.group(2)}"
-        # Only replace the first match
-        content = re.sub(pattern, replace_title, content, count=1, flags=re.MULTILINE)
+        match = re.search(pattern, content, flags=re.MULTILINE)
+        if match:
+            heading_text = match.group(2)
+            # Skip if heading already starts with a recipe number pattern (R01:, T05:, Q01:, etc.)
+            if re.match(r'^[RTCFAESHDPQX]\d+:', heading_text):
+                return content
+            # Add recipe number prefix
+            def replace_title(m):
+                return f"{m.group(1)}{recipe_num}: {m.group(2)}"
+            content = re.sub(pattern, replace_title, content, count=1, flags=re.MULTILINE)
     return content
 
 
@@ -431,7 +452,7 @@ def process_single_markdown_file(args):
         with open(file_path, 'r', encoding='utf-8') as f:
             content = f.read()
 
-        # Add Recipe number to content (using project-specific recipe_numbers)
+        # Add Recipe number to content's first heading (e.g., "# 验证码绕过" -> "# R27: 验证码绕过")
         content = add_recipe_number_to_content_with_dict(content, path, recipe_numbers)
 
         # Convert internal links to PDF anchors
@@ -533,8 +554,8 @@ class UnifiedPDFConverter:
         # Author info
         self.author_email = "overkazaf@gmail.com"
         self.author_wechat = "_0xAF_"
-        self.created_date = "2025-08-01"
-        self.revision_date = "2025-12-20"
+        self.created_date = self.project.get("created_date", "2025-08-01")
+        self.revision_date = datetime.now().strftime("%Y-%m-%d")
 
         os.makedirs(self.output_dir, exist_ok=True)
         if use_cache:
@@ -720,13 +741,11 @@ class UnifiedPDFConverter:
                                         if counter in results:
                                             html_content, _ = results[counter]
                                             anchor_id = self.path_to_anchor[path]
-                                            # Get Recipe number (using project-specific recipe_numbers)
-                                            recipe_prefix = ""
-                                            if path in self.recipe_numbers:
-                                                recipe_prefix = f"[{self.recipe_numbers[path]}] "
+                                            # Title from mkdocs.yml already contains recipe number (e.g., "R27: 验证码绕过技术")
+                                            # So we don't need to add recipe_prefix here
                                             html_output.append(f"""
                                             <div class="section" id="{anchor_id}">
-                                                <h2>{recipe_prefix}{title}</h2>
+                                                <h2>{title}</h2>
                                                 {html_content}
                                             </div>
                                             """)
@@ -851,6 +870,24 @@ class UnifiedPDFConverter:
                 <p style="margin-top: 25pt;">📅 Created: {self.created_date}</p>
                 <p>🔄 Last Revised: {self.revision_date}</p>
                 <p>📌 Version: v2.0</p>
+            </div>
+            <div style="page-break-before: always;margin-top: 50pt; padding: 25pt 40pt; text-align: center;">
+                <p style="font-size: 12pt; font-style: italic; color: #555; line-height: 1.8; margin-bottom: 8pt;">
+                    "If the highest aim of a captain were to preserve his ship,<br/>
+                    he would keep it in port forever."
+                </p>
+                <p style="font-size: 10pt; color: #888; margin-bottom: 30pt;">
+                    — St. Thomas Aquinas, <em>Summa Theologica</em> (1265-1274)
+                </p>
+                <hr style="width: 50%; margin: 30pt auto; border: none; border-top: 1px solid #ddd;"/>
+            </div>
+            <div style="page-break-before: always; padding: 40pt 35pt; text-align: justify;">
+                <p style="font-size: 11pt; color: #333; line-height: 2.0; margin-bottom: 25pt;">
+                    The journey begins with the thrill of solving puzzles—that exhilarating rush when code finally yields its secrets. Yet seasoned reverse engineers walk a different path. They remain humble, ever-curious, and deeply reflective. In time, they all return to first principles: understanding how systems are <em>built</em> is the only true way to understand how they can be <em>unraveled</em>.
+                </p>
+                <p style="font-size: 11pt; color: #333; line-height: 2.0;">
+                    初涉此道，多为破解之时的快意。而行至深处者，早已超越这份欣喜。他们怀谦卑之心，持求知之念，善于思考，最终都会回归技术的本质——唯有洞悉系统<strong>构建</strong>之道，方能参透其<strong>拆解</strong>之法。知己知彼，百战不殆。
+                </p>
             </div>
             <div style="page-break-before: always;margin-top: 30pt; padding: 20pt 35pt; background-color: #fff8e1; border-radius: 8pt; border-left: 4px solid #ffa726; text-align: left;">
                 <p style="font-size: 13pt; color: #e65100; font-weight: 600; margin-bottom: 15pt; text-align: center;">
@@ -1050,11 +1087,14 @@ class UnifiedPDFConverter:
                     }
                     bg_color, text_color = badge_colors.get(prefix, ('#e8f5e9', '#2e7d32'))
                     recipe_badge = f'<span style="background: {bg_color}; color: {text_color}; padding: 1pt 5pt; border-radius: 3pt; font-size: 8pt; font-weight: 600; margin-right: 6pt;">{entry["recipe"]}</span>'
+                    # Strip recipe number prefix from title to avoid duplication (e.g., "R01: 标题" -> "标题")
+                    display_title = re.sub(r'^[QRTCFAESHDPX]\d+:\s*', '', translated_title)
                 else:
                     recipe_badge = ''
+                    display_title = translated_title
                 toc_html += f"""
                 <div class="toc-entry" style="margin-left: {indent}pt; margin-top: 3pt; padding: 3pt 0;">
-                    {recipe_badge}<span style="color: #555; font-size: 9.5pt;">{translated_title}</span>
+                    {recipe_badge}<span style="color: #555; font-size: 9.5pt;">{display_title}</span>
                 </div>
                 """
 

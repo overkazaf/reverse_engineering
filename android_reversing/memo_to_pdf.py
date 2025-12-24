@@ -389,7 +389,7 @@ class MemoToPDFConverter:
                 Android Reverse Engineering Quick Reference
             </h2>
             <div style="margin-top: 80pt; font-size: 14pt; color: #888;">
-                <p>涵盖基础知识、工具使用、实战技巧、面试要点</p>
+                <p>涵盖基础知识、工具使用、实战技巧、知识要点</p>
                 <p>支持 Frida、Unidbg、Scrapy、Redis、数据库、Spring Boot 等技术栈</p>
             </div>
             <div style="margin-top: 100pt; font-size: 12pt; color: #aaa;">

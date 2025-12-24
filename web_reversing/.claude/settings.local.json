@@ -24,7 +24,9 @@
       "Bash(source venv/bin/activate)",
       "Bash(deactivate)",
       "Bash(/Users/nongjiawu/.pyenv/versions/3.12.9/bin/pip install:*)",
-      "Bash(/Users/nongjiawu/.pyenv/versions/3.12.9/bin/python:*)"
+      "Bash(/Users/nongjiawu/.pyenv/versions/3.12.9/bin/python:*)",
+      "Bash(wc:*)",
+      "Bash(grep:*)"
     ]
   }
 }

@@ -248,7 +248,7 @@ Android 应用和系统的核心基础。
 
 <!-- 文件: 00-Quick-Start/index.md -->
 
-# 快速入门指南
+# 快速入门
 
 欢迎！这个指南将帮助你在 **10 分钟内**完成第一次 Android 逆向分析。
 
@@ -1623,7 +1623,7 @@ transform: function(iterator) {
 
 ## 延伸阅读
 
-## # 相关 Recipes
+## # 相关配方
 
 - **[静态分析深入](./static_analysis_deep_dive.md)** - 先静态找到目标
 - **[Frida 常用脚本](../Scripts/frida_common_scripts.md)** - Hook 脚本模板
@@ -2163,7 +2163,7 @@ OLLVM 的主要优势在于其三种核心混淆技术：
 
 ## # 步骤 1：获取 APK 文件
 
-### # 方法 A：从已安装应用提取
+### 方法 A：从已安装应用提取
 
 ```bash
 # 1. 列出所有包名
@@ -2231,7 +2231,7 @@ xmllint --format target_unpacked/AndroidManifest.xml
 | **ContentProvider** | `<provider>` | 数据库接口 |
 | **Service** | `<service>` | 后台服务 |
 
-### # 真实案例：分析腾讯乐固应用
+### 真实案例：分析腾讯乐固应用
 
 ```xml
 <application
@@ -2339,7 +2339,7 @@ jadx -d target_decompiled target.apk
 
 ## # 步骤 2：识别代码模式
 
-### # ✅ 正常代码
+### ✅ 正常代码
 
 ```java
 // 可读的类名和方法名
@@ -2373,7 +2373,7 @@ return c.a(a, str, b);
 
 如果应用包含 `.so` 文件，核心算法通常在这里实现。
 
-### # 方法 A：使用 IDA Pro 分析
+### 方法 A：使用 IDA Pro 分析
 
 ```bash
 # 1. 打开 SO 文件
@@ -2441,7 +2441,7 @@ strings libnative-lib.so | grep -i "key\|secret\|password"
 
   ```
 
-### # 阶段二产出
+### 阶段二产出
 
 - ✅ 理解应用的核心功能和业务逻辑
 - ✅ 定位关键类、方法和 native 函数
@@ -2475,7 +2475,7 @@ frida -U -f com.example.app --no-pause
 
 基于静态分析结果，编写 Frida 脚本。
 
-### # 示例 1：Hook 会员检查
+### 示例 1：Hook 会员检查
 
 ```javascript
 // hook_premium.js - 绕过 VIP 检查
@@ -2693,7 +2693,7 @@ return response;
 
 基于动态分析结果，在 Smali 层面进行修改。
 
-### # 示例 1：绕过会员检查
+### 示例 1：绕过会员检查
 
 - **原始 Java 代码\*\***（Jadx 反编译）：
 
@@ -2842,7 +2842,7 @@ adb logcat | grep "example.app"
 - ☐ 没有崩溃或异常行为
 - ☐ 网络功能正常（如果修改了签名相关代码）
 
-### # 常见问题排查
+### 常见问题排查
 
 ```bash
 # 查看崩溃日志
@@ -6622,7 +6622,7 @@ adb shell su
 
 ## # 第 1 步：识别检测类型（5 分钟）
 
-### # 1.1 触发检测
+### 1.1 触发检测
 
 **运行 Frida 并观察现象**：
 
@@ -6638,7 +6638,7 @@ frida -U -f com.example.app --no-pause
 | 特定功能被禁用 | Inline Hook 检测 | |
 | 随机崩溃/卡顿 | 多重检测组合 | |
 
-### # 1.2 静态分析检测代码（可选）
+### 1.2 静态分析检测代码（可选）
 
 **用 jadx 搜索关键词**：
 
@@ -6911,7 +6911,7 @@ var libcFile = new File(libcPath, "rb");
 
 ````
 
-### # 5.1 修改源码
+### 5.1 修改源码
 
 * *克隆 Frida**：
 
@@ -7092,7 +7092,7 @@ docker run --rm -v $(pwd):/work frida/ci
 
 ## 延伸阅读
 
-## # 相关 Recipes
+## # 相关配方
 
 - **[Root 检测绕过](./device_fingerprinting_and_bypass.md)** - 通常与 Frida 检测一起出现
 - **[SSL Pinning 绕过](../Network/network_sniffing.md#第-5-步绕过-ssl-pinning如遇到)** - 可能也有反 Frida
@@ -7273,7 +7273,7 @@ frida -U -f com.example.app -e 'Process.enumerateThreads()'
 
 首先需要确定 App 使用了哪种检测方法，这决定了后续的绕过策略。
 
-### # 方法 1：观察运行行为
+### 方法 1：观察运行行为
 
 运行目标 App，观察异常行为的时机和特征：
 
@@ -7284,7 +7284,7 @@ frida -U -f com.example.app -e 'Process.enumerateThreads()'
 | **延迟几秒后弹出警告**         | 定时器或异步线程中的检测              |
 | **随机触发**                   | 多点分散检测或混淆后的检测            |
 
-### # 方法 2：静态分析检测代码
+### 方法 2：静态分析检测代码
 
 使用 Jadx 反编译 APK，搜索 Xposed 检测的特征字符串：
 
@@ -10466,7 +10466,7 @@ plaintext = unpad(cipher.decrypt(ciphertext), AES.block_size)
 
 ## 延伸阅读
 
-## # 相关 Recipes
+## # 相关配方
 
 - **[网络抓包](./network_sniffing.md)** - 获取加密后的数据样本
 - **[Frida 反调试](../Anti-Detection/frida_anti_debugging.md)** - 如果 App 检测到 Hook
@@ -10860,7 +10860,7 @@ frida-ps -U
 <details>
 <summary><b>使用 Burp Suite（推荐）</b></summary>
 
-### # 1.1 启动 Burp Suite
+### 1.1 启动 Burp Suite
 
 ```bash
 # Download Burp Suite Community Edition (free)
@@ -10887,11 +10887,11 @@ java -jar burpsuite_community.jar
 <details>
 <summary><b>使用 Charles</b></summary>
 
-### # 1.1 启动 Charles
+### 1.1 启动 Charles
 
 下载：https://www.charlesproxy.com/download/
 
-### # 1.2 配置代理
+### 1.2 配置代理
 
 1. _Proxy_ → _Proxy Settings_
 2. 设置 Port 为 `8888`
@@ -10919,11 +10919,11 @@ mitmweb -p 8888 --listen-host 0.0.0.0
 
 ## # 第 2 步：配置手机代理（2 分钟）
 
-### # 2.1 连接到同一 Wi-Fi
+### 2.1 连接到同一 Wi-Fi
 
 确保手机和 PC 在*同一局域网*。
 
-### # 2.2 设置手动代理
+### 2.2 设置手动代理
 
 1. 打开手机 _设置_ → _Wi-Fi_
 2. *长按*当前连接的 Wi-Fi → _修改网络_
@@ -10935,7 +10935,7 @@ mitmweb -p 8888 --listen-host 0.0.0.0
 
 5. 保存
 
-### # 2.3 验证代理连接
+### 2.3 验证代理连接
 
 ```bash
 # 手机浏览器访问任意 HTTP 网站（如 http://example.com）
@@ -10950,12 +10950,12 @@ _为什么需要？_ HTTPS 流量经过加密，需要安装证书才能解密�
 <details>
 <summary><b>Burp Suite 证书安装</b></summary>
 
-### # 3.1 下载证书
+### 3.1 下载证书
 
 1. 手机浏览器访问 `http://burp`
 2. 点击 _CA Certificate_ 下载 `cacert.der`
 
-### # 3.2 安装证书
+### 3.2 安装证书
 
 - _Android 7.0+ （需要 Root）_：
 
@@ -11000,16 +11000,16 @@ adb reboot
 
 ## # 第 4 步：开始抓包（1 分钟）
 
-### # 4.1 清空旧记录
+### 4.1 清空旧记录
 
 - _Burp_: Proxy → HTTP history → 右键 → _Clear history_
 - _Charles_: Proxy → _Clear Session_
 
-### # 4.2 启动目标 App
+### 4.2 启动目标 App
 
 在手机上打开要分析的应用，正常使用。
 
-### # 4.3 查看流量
+### 4.3 查看流量
 
 在抓包工具中：
 
@@ -11036,7 +11036,7 @@ _症状_：
 
 * _原因_：App 启用了 SSL Pinning（证书锁定），拒绝信任系统证书。
 
-### # 方法 1: 使用 Frida 通用脚本（推荐）
+### 方法 1: 使用 Frida 通用脚本（推荐）
 
 _下载脚本_ `bypass_ssl_pinning.js`：
 
@@ -11112,7 +11112,7 @@ frida -U -f com.example.app -l bypass_ssl_pinning.js --no-pause
 
 ```
 
-### # 方法 2: 使用 Xposed 模块
+### 方法 2: 使用 Xposed 模块
 
 <details>
 <summary><b>JustTrustMe 安装步骤</b></summary>
@@ -11122,7 +11122,7 @@ frida -U -f com.example.app -l bypass_ssl_pinning.js --no-pause
 3. 在 Xposed Installer 中激活
 4. 重启设备
 
-### # 方法 3: 修改 APK（重打包）
+### 方法 3: 修改 APK（重打包）
 
 <details>
 <summary><b>APK 重打包步骤</b></summary>
@@ -11250,7 +11250,7 @@ _可能原因_：
 
 ## 延伸阅读
 
-## # 相关 Recipes
+## # 相关配方
 
 - _[密码学分析](./crypto_analysis.md)_ - 分析 API 签名和加密算法
 - _[Frida 反调试绕过](../Anti-Detection/frida_anti_debugging.md)_ - 如果 App 检测到 Frida
@@ -11390,7 +11390,7 @@ pip3 install requests pycurl tls-client
 
 ## # 第 1 步：理解 TLS 指纹识别原理（5 分钟）
 
-### # 1.1 什么是 JA3 指纹？
+### 1.1 什么是 JA3 指纹？
 
 _JA3_ 是一种通过分析 TLS `Client Hello` 包生成指纹的技术。
 
@@ -11433,7 +11433,7 @@ _问题_：如果你用 Python requests 访问服务器，即使设置了 User-A
 
 ## # 第 2 步：检测你的 TLS 指纹（10 分钟）
 
-### # 2.1 在线检测
+### 2.1 在线检测
 
 _方法 1：访问 JA3 检测网站_
 
@@ -11489,7 +11489,7 @@ Extension: supported_groups (len=10)
 
 * *目标**：获取真实浏览器或官方 App 的 JA3 指纹用于伪装
 
-### # 3.1 浏览器指纹
+### 3.1 浏览器指纹
 
 * *方法 1：直接查询**
 
@@ -11503,7 +11503,7 @@ Chrome 浏览器访问 https://ja3er.com/json
 
 搜索 "Chrome"、"Safari"、"Firefox" 找到对应版本的 JA3。
 
-### # 3.2 android App 指纹
+### 3.2 android App 指纹
 
 * *使用 Wireshark 抓取真实 App 的流量**：
 
@@ -11529,7 +11529,7 @@ EOF
 
 ## # 第 4 步：伪造 TLS 指纹（15 分钟）
 
-### # 4.1 使用 curl-impersonate（推荐）
+### 4.1 使用 curl-impersonate（推荐）
 
 * *curl-impersonate** 是一个修改版的 curl，能完美模拟浏览器的 TLS 指纹。
 
@@ -11556,7 +11556,7 @@ curl_safari17 https://ja3er.com/json
 
 ````
 
-### # 4.2 使用 Python tls-client 库
+### 4.2 使用 Python tls-client 库
 
 * *安装**：
 
@@ -11800,7 +11800,7 @@ Java.perform(function () {
 
 ## 延伸阅读
 
-## # 相关 Recipes
+## # 相关配方
 
 - **[网络抓包](./network_sniffing.md)** - 抓取 TLS 握手包
 - **[密码学分析](./crypto_analysis.md)** - 分析加密实现
@@ -15587,7 +15587,7 @@ console.log("解密后的字符串 -> " + decryptedString);
 
 不同代际的加固技术需要不同的脱壳策略，先识别目标应用使用了什么加固技术。
 
-### # 方法 A: 使用工具快速识别
+### 方法 A: 使用工具快速识别
 
 ```bash
 # 使用 PKid (ApkTool-Plus) 检测
@@ -15636,22 +15636,22 @@ unzip -l target.apk | grep "lib/.\*\*\.so" | grep -E "(exec|vmp|protect)"
 
 根据识别出的加固类型，选择合适的脱壳方法：
 
-### # 第一代壳 (整体加密)
+### 第一代壳 (整体加密)
 * *策略**: Hook ClassLoader，在 DEX 加载时 dump
 * *推荐工具**: 手写 Frida 脚本或 frida-dexdump
 * *成功率**: 95%+
 
-### # 第二代壳 (方法抽取)
+### 第二代壳 (方法抽取)
 * *策略**: Hook ArtMethod 的 invoke，在方法首次调用时 dump CodeItem
 * *推荐工具**: FART 技术 (Frida ART Hook) + frida-dexdump
 * *成功率**: 80%+ (取决于代码覆盖率)
 
-### # 第三代壳 (虚拟化)
+### 第三代壳 (虚拟化)
 * *策略**: Hook 虚拟机引擎，获取指令流 + 映射表逆向
 * *推荐工具**: IDA Pro + 自定义脚本
 * *成功率**: 50% (需要深入分析虚拟机实现)
 
-### # 第四代壳 (云端)
+### 第四代壳 (云端)
 * *策略**: 网络抓包 + 内存扫描 + 多层 dump
 * *推荐工具**: mitmproxy + frida-dexdump + 自定义脚本
 * *成功率**: 30% (部分逻辑可能无法获取)
@@ -15662,7 +15662,7 @@ unzip -l target.apk | grep "lib/.\*\*\.so" | grep -E "(exec|vmp|protect)"
 
 以下提供针对不同代际的脱壳脚本。
 
-### # 方法 A: 使用 frida-dexdump (通用，推荐首选)
+### 方法 A: 使用 frida-dexdump (通用，推荐首选)
 
 ```bash
 # 1. 启动 Frida Server
@@ -15691,7 +15691,7 @@ adb pull /data/data/com.target.app/files/*.dex ./dumped_dex/
 
 ---
 
-### # 方法 B: 手写 Hook 脚本 (第一代壳)
+### 方法 B: 手写 Hook 脚本 (第一代壳)
 
 适用于简单的整体加密壳。
 
@@ -15893,7 +15893,7 @@ console.log("[+] FART Hook 已激活，开始监控方法调用...");
 
 ---
 
-### # 方法 D: 内存扫描 (通用兜底方案)
+### 方法 D: 内存扫描 (通用兜底方案)
 
 当其他方法失效时，可以定期扫描内存中的 DEX magic number。
 
@@ -15984,7 +15984,7 @@ jadx ./dumped_files/dumped_1234567890.dex
 
 ````
 
-### # 常见需要修复的情况:
+### 常见需要修复的情况:
 
 1. **方法体被 NOP 填充**:
 - 症状: Jadx 反编译后看到大量空方法或只有 `return` 的方法
@@ -15999,7 +15999,7 @@ jadx ./dumped_files/dumped_1234567890.dex
 - 症状: 方法调用关系不正确
 - 解决: 使用 `smali/baksmali` 重新组装
 
-### # 自动化修复工具
+### 自动化修复工具
 
 ```bash
 # 使用 dex-repair (开源工具)
@@ -16495,7 +16495,7 @@ Frida 有两种主要的方式来 hook 应用：
 
 这是 Frida 脚本的核心。所有逻辑都在 JavaScript 脚本中实现。
 
-### # Java (android)
+### Java (android)
 
 这些 API 用于与 Android 的 Java 运行时进行交互。所有 Java 相关代码都必须包裹在 `Java.perform(function() { ... });` 中。
 
@@ -16513,7 +16513,7 @@ Frida 有两种主要的方式来 hook 应用：
 | `send(data)` | 从脚本向 Python/Node.js 工具发送消息 |
 | `recv(callback)` | 从 Python/Node.js 工具接收消息 |
 
-### # Objective-C (iOS)
+### Objective-C (iOS)
 
 这些 API 用于与 iOS 的 Objective-C 运行时进行交互。
 
@@ -16524,7 +16524,7 @@ Frida 有两种主要的方式来 hook 应用：
 | `ObjC.choose(ObjC.classes.MyClass, { ... })` | 查找特定类的所有活动实例 |
 | `ObjC.available` | 检查 Objective-C 运行时是否可用 |
 
-### # 通用/原生 (Native)
+### 通用/原生 (Native)
 
 这些 API 用于与原生代码（C/C++）进行交互，跨平台通用。
 
@@ -16539,7 +16539,7 @@ Frida 有两种主要的方式来 hook 应用：
 | `ptr("0x...")` | 创建一个原生指针 |
 | `Thread.backtrace(this.context, Backtracer.ACCURATE)` | 获取当前线程的原生调用堆栈 |
 
-### # JNI (Java Native Interface)
+### JNI (Java Native Interface)
 
 JNI 是 Android 逆向中的重要组成部分，Frida 提供了强大的 JNI Hook 能力。
 
@@ -17186,12 +17186,12 @@ ___
 
 <!-- 文件: 02-Tools/Dynamic/xposed_guide.md -->
 
-# Xposed 框架入门指南
+# Xposed 框架入门
 
 Xposed 是一个在 Android 平台上广受欢迎的动态代码 Hook 框架。与 Frida 主要用于实时、临时的分析不同，Xposed 旨在对系统和应用进行**永久性**的修改。它通过替换一个核心系统进程 (`app_process`)，在应用启动时加载自定义模块，从而实现对任意方法的高效 Hook。
 ___
 ## 目录
-- [Xposed 框架入门指南](#xposed-框架入门指南)
+- [Xposed 框架入门](#xposed-框架入门)
 - [目录](#目录)
 - [核心原理](#核心原理)
 
@@ -17807,7 +17807,7 @@ Xposed 通过以下核心技术实现了强大的运行时修改能力：
 
 <!-- 文件: 02-Tools/Static/ghidra_guide.md -->
 
-# Ghidra 入门指南
+# Ghidra 入门
 
 Ghidra 是由美国国家安全局 (NSA) 开发并开源的一款软件逆向工程 (SRE) 套件。它以功能全面、免费开源、跨平台等特性，迅速成为 IDA Pro 之外逆向工程师们的另一个重要选择，尤其在学术界和独立研究者中广受欢迎。
 
@@ -17941,7 +17941,7 @@ Ghidra 是由美国国家安全局 (NSA) 开发并开源的一款软件逆向工
 
 ## # 关键窗口与概念
 
-### # Code Browser (代码浏览器)
+### Code Browser (代码浏览器)
 
 这是 Ghidra 的主界面，通常包含以下几个核心子窗口：
 
@@ -17951,7 +17951,7 @@ Ghidra 是由美国国家安全局 (NSA) 开发并开源的一款软件逆向工
 
 - **Program Trees (程序树)**: 左上角，以树状结构展示程序的段 (sections)。
 
-### # Decompiler (反编译器)
+### Decompiler (反编译器)
 
 - 通常位于反汇编窗口的右侧。
 
@@ -17959,13 +17959,13 @@ Ghidra 是由美国国家安全局 (NSA) 开发并开源的一款软件逆向工
 
 - 这是 Ghidra 最有价值的窗口。你可以直接在伪代码中对变量、函数进行重命名、修改类型，这些改动会**双向同步**到反汇编窗口。
 
-### # Symbol Tree (符号树)
+### Symbol Tree (符号树)
 
 - 位于左侧，`Functions` 窗口旁边。
 
 - 它以树状结构列出了程序中所有的符号，包括函数、标签、导入/导出函数等。你可以通过过滤器快速查找特定函数。
 
-### # Data Type Manager (数据类型管理器)
+### Data Type Manager (数据类型管理器)
 
 - 左下角，`Functions` 窗口下方。
 
@@ -18003,7 +18003,7 @@ print("{} at {}".format(func.getName(), func.getEntryPoint()))
 
 ## # 优缺点分析
 
-### # 优点
+### 优点
 
 * **免费与开源**: 无任何费用，社区可以审查和贡献代码。
 
@@ -18017,7 +18017,7 @@ print("{} at {}".format(func.getName(), func.getEntryPoint()))
 * **优秀的协作功能**: Ghidra Server 的存在使得团队协作变得非常容易。
 
 
-### # 缺点
+### 缺点
 
 * **性能**: 基于 Java Swing 的 UI 在处理超大型二进制文件时，可能会感到卡顿，性能不如 IDA Pro。
 
@@ -18032,7 +18032,7 @@ print("{} at {}".format(func.getName(), func.getEntryPoint()))
 
 <!-- 文件: 02-Tools/Static/ida_pro_guide.md -->
 
-# IDA Pro 入门指南
+# IDA Pro 入门
 
 IDA Pro (Interactive Disassembler Professional) 是由 Hex-Rays 公司开发的一款业界闻名的交互式反汇编器。在逆向工程领域，IDA Pro 被广泛认为是**黄金标准**，以其最强大的反汇编引擎、无与伦比的处理器支持和极其成熟的生态系统，成为专业人士进行软件分析、漏洞挖掘和恶意软件研究的首选工具。
 
@@ -18040,7 +18040,7 @@ IDA Pro (Interactive Disassembler Professional) 是由 Hex-Rays 公司开发的�
 
 ## 目录
 
-- [IDA Pro 入门指南](#ida-pro-入门指南)
+- [IDA Pro 入门](#ida-pro-入门)
 - [目录](#目录)
 - [核心特性](#核心特性)
 
@@ -18203,7 +18203,7 @@ IDA 的强大能力有一半来自于其脚本和插件系统。
 
 <!-- 文件: 02-Tools/Static/radare2_guide.md -->
 
-# Radare2 入门指南
+# Radare2 入门
 
 Radare2 (通常简称为 r2) 是一款开源、免费、命令行驱动的逆向工程框架。它不仅仅是一个反汇编器，更像是一个功能极其丰富的"瑞士军刀"，集成了十六进制编辑、反汇编、调试、代码分析、漏洞利用、数据可视化等多种功能。Radare2 以其高度的可脚本化和可扩展性而闻名，深受寻求自动化和深度定制的黑客、CTF 选手和安全研究员的喜爱。
 
@@ -18211,7 +18211,7 @@ Radare2 (通常简称为 r2) 是一款开源、免费、命令行驱动的逆向
 
 ## 目录
 
-- [Radare2 入门指南](#radare2-入门指南)
+- [Radare2 入门](#radare2-入门)
 - [目录](#目录)
 - [核心理念与特性](#核心理念与特性)
 
@@ -19327,7 +19327,7 @@ ___
 
 ## # 实现黑盒 RPC 的核心步骤
 
-### # 第一步：定位目标函数地址 (Finding the Function Pointer)
+### 第一步：定位目标函数地址 (Finding the Function Pointer)
 
 这是最困难、最耗时的一步，需要深厚的动态调试功底。
 
@@ -19335,7 +19335,7 @@ ___
 2. **主动调用与插桩**: 使用 Frida 主动调用该 JNI 函数，并使用 `Stalker` 等指令级跟踪工具，记录下执行轨迹。
 3. **执行流分析**: 分析 Stalker 产生的巨大日志，或使用 `Unicorn Engine` 等模拟执行工具进行分析，理清复杂的跳转和计算逻辑，最终找到一个"干净"的函数入口——它接收相对原始的业务参数，返回最终的签名结果。这个函数的地址（通常是 SO 基址 + 偏移量）就是我们的目标。
 
-### # 第二步：分析函数原型 (Analyzing the Prototype)
+### 第二步：分析函数原型 (Analyzing the Prototype)
 
 确定目标函数的输入和输出。
 
@@ -19343,7 +19343,7 @@ ___
 
 - **返回值**: 在函数返回点下断点，观察 R0 寄存器的值，确定函数的返回值是什么（通常是一个指向结果字符串的指针或一个状态码）。
 
-### # 第三步：构建 RPC 服务端 (Frida Agent)
+### 第三步：构建 RPC 服务端 (Frida Agent)
 
 编写一个 Frida 脚本，将定位到的原生函数封装成一个可供远程调用的服务。
 
@@ -19438,7 +19438,7 @@ Unity 是目前最流行的移动游戏引擎之一。现代 Unity 游戏通常�
 
 ---
 
-## 核心 architecture 与文件结构
+## 核心架构与文件结构
 
 一个典型的 Unity Il2Cpp 游戏包含以下关键文件：
 
@@ -20452,7 +20452,7 @@ AntiDebugChecker::comprehensive_check();
 
 ## # 关键参数定位与修改
 
-### # Build Info (build.prop)
+### Build Info (build.prop)
 
 这些是描述设备型号、品牌、制造商等最基础的信息。
 
@@ -20473,7 +20473,7 @@ AntiDebugChecker::comprehensive_check();
 ```
 
 
-### # 硬件参数 (IMEI, MAC, android ID)
+### 硬件参数 (IMEI, MAC, android ID)
 这些是更敏感、更核心的设备标识符。修改它们需要深入到 Framework 层的 Java 代码和 JNI。
 
 * **IMEI (Telephony)**:
@@ -20503,7 +20503,7 @@ AntiDebugChecker::comprehensive_check();
 * **修改思路**: 找到生成和存储 Android ID 的逻辑，将其替换为返回一个固定的或每次启动都随机生成的值。
 
 
-### # 系统属性 (System Properties)
+### 系统属性 (System Properties)
 App 通过 `android.os.SystemProperties.get()` 获取各种系统属性。
 
 * **定位**: `frameworks/base/core/java/android/os/SystemProperties.java` 及其对应的 JNI 实现 `frameworks/base/core/jni/android_os_SystemProperties.cpp`。
@@ -20512,7 +20512,7 @@ App 通过 `android.os.SystemProperties.get()` 获取各种系统属性。
 * **修改思路**: 直接在 `SystemProperties.cpp` 的 `native_get` 方法中进行拦截。判断传入的属性名，如果是目标属性（如 `ro.serialno`），则返回一个伪造的值，否则执行原始逻辑。
 
 
-### # 内核参数 (Serial Number)
+### 内核参数 (Serial Number)
 一些底层信息（如 CPU 序列号）直接由 Linux 内核通过 `/proc` 文件系统暴露。
 
 * **定位**: 内核源码中的 `arch/<arch>/kernel/setup.c` 或相关驱动文件。
@@ -20546,7 +20546,7 @@ ___
 ___
 ## # 优势与挑战
 
-### # 优势
+### 优势
 * **彻底性**: 从系统根源上改变设备指纹，几乎无法被应用层技术检测。
 
 
@@ -20556,7 +20556,7 @@ ___
 * **性能好**: 没有额外的 Hook 开销，所有修改都是原生代码。
 
 
-### # 挑战
+### 挑战
 * **技术门槛极高**: 需要深入理解 AOSP 源码结构、编译系统和 Linux 内核。
 
 
@@ -20668,7 +20668,7 @@ ___
 
 ## # 构建步骤详解
 
-### # Step 1: 准备环境与工具链
+### Step 1: 准备环境与工具链
 
 你需要一个 Linux 环境（如 Ubuntu）和用于交叉编译的工具链。最简单的方法是从 AOSP 预编译库中获取。
 
@@ -21852,7 +21852,7 @@ emulator.close();
 
 ## # 2. 实现步骤
 
-### # a. 初始化 Unicorn 环境
+### a. 初始化 Unicorn 环境
 
 首先，我们需要初始化一个指定架构的模拟器，并分配内存用于加载 SO 和堆栈。
 
@@ -21953,7 +21953,7 @@ mu.hook_add(UC_HOOK_CODE, hook_code, begin=BASE_ADDRESS, end=BASE_ADDRESS + 0x10
 
 ## # 2. 实现步骤
 
-### # a. 准备 android Rootfs
+### a. 准备 android Rootfs
 
 在你的 Linux 主机上创建一个目录，例如 `~/android_rootfs/`，并仿照真实设备创建目录结构。然后从一个真实的 Android 设备（或 AOSP 编译产物）中 `adb pull` 出必要的系统文件：
 
@@ -22357,21 +22357,21 @@ Redis 是一个开源的、基于内存的、高性能的键值存储系统。�
 
 ## # architecture 演进路径
 
-### # 1. 单机模式 (Single Instance)
+### 1. 单机模式 (Single Instance)
 
 ```
 
 
-### # 2. 主从复制 (Master-Slave)
+### 2. 主从复制 (Master-Slave)
 
 ```
 
-### # 3. Sentinel 高可用 (Redis Sentinel)
+### 3. Sentinel 高可用 (Redis Sentinel)
 
 ```
 
 
-### # 脑裂问题 (Split-Brain)
+### 脑裂问题 (Split-Brain)
 
 * *定义**: 脑裂是指在分布式系统中，由于网络分区或节点故障，导致系统中出现多个"大脑"（多个节点都认为自己是主节点）的情况。
 
@@ -22406,7 +22406,7 @@ master = sentinel.master_for('mymaster', socket_timeout=0.1)
 
 ```
 
-### # 4. 集群模式 (Redis Cluster)
+### 4. 集群模式 (Redis Cluster)
 
 ````
 ___
@@ -22414,14 +22414,14 @@ ___
 
 ## # Sentinel 模式
 
-### # 核心功能
+### 核心功能
 1. **监控 (Monitoring)**: 监控master和slave健康状态
 2. **通知 (Notification)**: 故障时通知管理员
 3. **自动故障转移 (Automatic Failover)**: 自动选举新master
 4. **配置提供 (Configuration Provider)**: 为客户端提供当前master地址
 
 
-### # 工作原理
+### 工作原理
 
 ```bash
 # SentinelConfigFile
@@ -22437,7 +22437,7 @@ sentinel failover-timeout mymaster 180000
 
 ## # Cluster 集群模式
 
-### # 集群特性
+### 集群特性
 
 - **去中心化**: 无单点故障
 
@@ -22447,7 +22447,7 @@ sentinel failover-timeout mymaster 180000
 
 - **在线扩缩容**: 支持动态添加/删除节点
 
-### # 数据分片算法
+### 数据分片算法
 
 ```bash
 # CalculateKey哈希Slot
@@ -22480,7 +22480,7 @@ redis-cli --cluster add-node 127.0.0.1:7006 127.0.0.1:7000
 ````
 布隆过滤器是一种概率性数据结构，用于高效判断一个元素是否在集合中。
 
-### # 核心特性
+### 核心特性
 - **误报率**: 可能误判存在，但不会误判不存在
 
 
@@ -22490,7 +22490,7 @@ redis-cli --cluster add-node 127.0.0.1:7006 127.0.0.1:7000
 - **时间复杂度**: O(k) 查询时间，k为哈希函数数量
 
 
-### # 实现原理
+### 实现原理
 
 ```python
 # 基本流程
@@ -22541,7 +22541,7 @@ ___
 
 Stream是Redis 5.0引入的新数据结构，主要用于消息队列和事件流处理。
 
-### # 核心特性
+### 核心特性
 - **持久化消息队列**: 消息持久化存储
 
 
@@ -22554,7 +22554,7 @@ Stream是Redis 5.0引入的新数据结构，主要用于消息队列和事件�
 - **历史消息**: 可以查询历史消息
 
 
-### # 消息ID结构
+### 消息ID结构
 
 ```
 
@@ -22611,7 +22611,7 @@ ___
 
 ## # 持久化机制
 
-### # RDB (Redis Database)
+### RDB (Redis Database)
 
 ```bash
 # ConfigFileSet
@@ -22625,7 +22625,7 @@ BGSAVE # AsyncSave（After台）
 
 ````
 
-### # AOF (Append Only File)
+### AOF (Append Only File)
 
 ```bash
 # ConfigOption
@@ -22636,7 +22636,7 @@ appendfsync no # 由OS决定SynchronizationWhen机
 
 ```
 
-### # 混合持久化 (Redis 4.0+)
+### 混合持久化 (Redis 4.0+)
 
 ```bash
 aof-use-rdb-preamble yes
@@ -22660,7 +22660,7 @@ maxmemory-policy allkeys-lru
 
 ## # 缓存问题解决方案
 
-### # 1. 缓存穿透
+### 1. 缓存穿透
 
 - **问题\*\***: 查询不存在的数据，绕过缓存直接查数据库
 
@@ -22672,7 +22672,7 @@ maxmemory-policy allkeys-lru
 
 * 参数校验
 
-### # 2. 缓存雪崩
+### 2. 缓存雪崩
 
 - **问题\*\***: 大量缓存同时失效，数据库压力激增
 
@@ -22686,7 +22686,7 @@ maxmemory-policy allkeys-lru
 
 * 限流降级
 
-### # 3. 缓存击穿
+### 3. 缓存击穿
 
 - **问题\*\***: 热点数据过期，大量请求直达数据库
 
@@ -22700,7 +22700,7 @@ maxmemory-policy allkeys-lru
 
 ## # 分布式锁实现
 
-### # 基于 SETNX 的简单锁
+### 基于 SETNX 的简单锁
 
 ```bash
 # 加锁
@@ -22724,7 +22724,7 @@ end
 
 - 大数据量使用hashtable编码（提高性能）
 
-### # 2. 批量操作
+### 2. 批量操作
 
 ```bash
 # 使用 pipeline 减少网络往返
@@ -22752,7 +22752,7 @@ ___
 
 ## # 关系型数据库 (RDBMS)
 
-### # MySQL
+### MySQL
 * *特点**: 开源、成熟、社区活跃
 
 | 方面 | 描述 |
@@ -22866,7 +22866,7 @@ AND post_time >= '2023-01-01';
 
 ## # CAP 理论与选择
 
-### # CAP 理论
+### CAP 理论
 
 - **C (Consistency)**: 一致性
 
@@ -22874,7 +22874,7 @@ AND post_time >= '2023-01-01';
 
 - **P (Partition tolerance)**: 分区容错性
 
-### # 数据库在 CAP 中的定位
+### 数据库在 CAP 中的定位
 
 ```
 
@@ -22952,7 +22952,7 @@ return user_data
 
 - **Cassandra**: 50K+ (分布式)
 
-### # 写性能 (TPS)
+### 写性能 (TPS)
 
 - **Redis**: 80K+ (内存)
 
@@ -22964,7 +22964,7 @@ return user_data
 
 - **HBase**: 50K+ (WAL + MemStore)
 
-### # 存储成本
+### 存储成本
 
 - **内存数据库**: $100/GB/月 (Redis)
 
@@ -23635,7 +23635,7 @@ ___
 5. [**时间与窗口**](#时间与窗口)
 6. [**容错机制**](#容错机制)
 7. [**性能调优**](#性能调优)
-8. [**面试要点**](#面试要点)
+8. [**知识要点**](#知识要点)
 ___
 ## Flink 架构
 
@@ -24120,7 +24120,7 @@ ___
 4. [**Java API**](#java-api)
 5. [**性能优化**](#性能优化)
 6. [**集群管理**](#集群管理)
-7. [**面试要点**](#面试要点)
+7. [**知识要点**](#知识要点)
 ___
 ## HBase 架构
 
@@ -24153,7 +24153,7 @@ HDFS DataNode HDFS DataNode HDFS DataNode
 5. **Compaction**: 定期合并HFile
 
 
-### # 读取流程
+### 读取流程
 1. **Client** → **RegionServer**: 读请求
 2. **MemStore**: 先查内存中的数据
 3. **BlockCache**: 查询缓存的HFile块
@@ -24530,7 +24530,7 @@ Apache Hive 是基于 Hadoop 的数据仓库工具，可以将结构化的数据
 5. [**分区与分桶**](#分区与分桶)
 6. [**函数与 UDF**](#函数与udf)
 7. [**性能优化**](#性能优化)
-8. [**面试要点**](#面试要点)
+8. [**知识要点**](#知识要点)
 
 ---
 
@@ -24897,7 +24897,7 @@ Apache Spark 是一个统一的大数据处理引擎，支持批处理、流处�
 4. [**Spark SQL**](#spark-sql)
 5. [**Spark Streaming**](#spark-streaming)
 6. [**性能优化**](#性能优化)
-7. [**面试要点**](#面试要点)
+7. [**知识要点**](#知识要点)
 
 ---
 
@@ -24938,7 +24938,7 @@ Worker Node1 Worker Node2 Worker Node3
 
 - **RDD (Resilient Distributed Dataset)\*\***: 弹性分布式数据集
 
-### # 特性
+### 特性
 
 - **不可变性**: RDD 一旦创建不可修改
 
@@ -25282,7 +25282,7 @@ val optimizedDF = df.filter($"age" > 18) // Filter 下推到数据源
 
 ## # 2. Spark内存管理
 
-### # 内存分配
+### 内存分配
 
 ```
 
@@ -25301,7 +25301,7 @@ val optimizedDF = df.filter($"age" > 18) // Filter 下推到数据源
 
 ```
 
-### # Shuffle 优化
+### Shuffle 优化
 
 ```scala
 // 1. 预分区
@@ -25506,7 +25506,7 @@ Android 的应用框架核心由四个基本组件构成。每个组件都是一
 
 ## # 关键标签 (Tags) 详解
 
-### # `<manifest>`
+### `<manifest>`
 
 根元素。它必须包含 `package` 属性来定义应用的唯一包名。
 
@@ -25528,7 +25528,7 @@ package="com.example.myapp">
 
 - `android:networkSecurityConfig`: **（安全关键）** 指向网络安全配置文件，用于定义 SSL Pinning、自定义 CA 等高级网络策略。
 
-### # `<activity>`
+### `<activity>`
 
 声明一个 Activity (UI 界面)。
 
@@ -25536,7 +25536,7 @@ package="com.example.myapp">
 
 - `android:exported`: **（安全关键）** `true` 表示该 Activity 可以被其他应用启动。如果该 Activity 处理敏感数据且无需外部调用，应设为 `false`，否则可能导致组件劫持和数据泄露。对于包含 `LAUNCHER` intent-filter 的 Activity，`exported` 默认为 `true`。
 
-### # `<service>`
+### `<service>`
 
 声明一个 Service (后台服务)。
 
@@ -25544,7 +25544,7 @@ package="com.example.myapp">
 
 - `android:exported`: **（安全关键）** `true` 表示该 Service 可以被其他应用绑定或启动。规则同 Activity。
 
-### # `<receiver>`
+### `<receiver>`
 
 声明一个 BroadcastReceiver (广播接收器)。
 
@@ -25552,7 +25552,7 @@ package="com.example.myapp">
 
 - `android:exported`: **（安全关键）** `true` 表示它可以接收来自系统或其他应用的广播。
 
-### # `<provider>`
+### `<provider>`
 
 声明一个 ContentProvider (内容提供者)，用于跨应用共享数据。
 
@@ -25562,7 +25562,7 @@ package="com.example.myapp">
 
 - `android:exported`: **（安全关键）** `true` 表示其他应用可以访问其数据。如果 `minSdkVersion` 或 `targetSdkVersion` >= 17，默认值为 `false`。不正确的 `exported` 设置可能导致 SQL 注入或文件遍历漏洞。
 
-### # `<uses-permission>`
+### `<uses-permission>`
 
 请求应用运行所需的权限。这是分析应用行为的关键。
 
@@ -26384,7 +26384,7 @@ DEX 文件的执行由 Android 运行时 (ART) 负责，在 Android 5.0 之前�
 
 <!-- 文件: 04-Reference/Foundations/smali_syntax.md -->
 
-# Smali 语法入门指南
+# Smali 语法入门
 
 Smali/Baksmali 是 Dalvik 虚拟机字节码的汇编器/反汇编器。Smali 是对 DEX 格式的一种人类可读的表示，允许我们精确地查看和修改应用的行为。理解 Smali 是进行 Android 应用静态 patching（修改后重打包）的关键。
 
@@ -26392,7 +26392,7 @@ Smali/Baksmali 是 Dalvik 虚拟机字节码的汇编器/反汇编器。Smali �
 
 ## 目录
 
-- [Smali 语法入门指南](#smali-语法入门指南)
+- [Smali 语法入门](#smali-语法入门)
 
 - [目录](#目录)
 
@@ -27693,7 +27693,7 @@ ARM Procedure Call Standard。
 | [ReFirmLabs/binwalk](https://github.com/ReFirmLabs/binwalk)                             | 10.1k     | 用于分析、逆向和提取固件镜像的工具。 |
 | [craigz/firmwalker](https://github.com/craigz/firmwalker)                               | 1k        | 自动在固件中搜索敏感信息的脚本。     |
 | [attify/firmware-analysis-toolkit](https://github.com/attify/firmware-analysis-toolkit) | 1k        | 用于固件安全测试的工具包。           |
-| [scriptingx/IoTSecurity101](https://github.com/scriptingx/IoTSecurity101)               | 500+      | 物联网安全入门指南。                 |
+| [scriptingx/IoTSecurity101](https://github.com/scriptingx/IoTSecurity101)               | 500+      | 物联网安全入门。                     |
 
 ### 10. Apple 平台 (iOS/macOS)
 

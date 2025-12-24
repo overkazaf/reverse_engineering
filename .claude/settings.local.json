@@ -5,7 +5,22 @@
       "Bash(find:*)",
       "Bash(python generate_pdf.py:*)",
       "Bash(python3:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git submodule:*)",
+      "Bash(cat:*)",
+      "Bash(git rm:*)",
+      "Bash(ls:*)",
+      "Bash(grep:*)",
+      "Bash(hugo version:*)",
+      "Bash(hugo:*)",
+      "Bash(git push:*)",
+      "Bash(git remote add:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(gh run list:*)",
+      "Bash(gh run view:*)",
+      "Bash(gh api:*)",
+      "WebFetch(domain:overkazaf.github.io)"
     ]
   }
 }
