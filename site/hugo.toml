@@ -327,13 +327,6 @@ buildFuture = true
     [menu.main.params]
       icon = "fa-solid fa-globe"
   [[menu.main]]
-    identifier = "search"
-    name = "搜索"
-    url = "/search/"
-    weight = 4
-    [menu.main.params]
-      icon = "fa-solid fa-search"
-  [[menu.main]]
     identifier = "pdf"
     name = "PDF下载"
     weight = 5
