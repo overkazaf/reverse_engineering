@@ -1,5 +1,6 @@
 ---
 title: "项目模板 - Templates"
+date: 2025-12-25
 weight: 1
 ---
 

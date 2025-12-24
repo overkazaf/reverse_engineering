@@ -1,5 +1,6 @@
 ---
 title: "Objection 常用技巧 (Objection Snippets)"
+date: 2025-12-25
 weight: 10
 ---
 

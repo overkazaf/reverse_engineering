@@ -1,5 +1,6 @@
 ---
 title: "Frida 常用脚本速查手册"
+date: 2025-12-25
 weight: 10
 ---
 

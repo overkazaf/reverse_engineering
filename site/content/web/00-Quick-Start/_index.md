@@ -1,5 +1,6 @@
 ---
 title: "快速开始 - Quick Start"
+date: 2025-12-25
 weight: 1
 ---
 

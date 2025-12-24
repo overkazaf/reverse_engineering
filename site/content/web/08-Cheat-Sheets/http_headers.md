@@ -1,5 +1,6 @@
 ---
 title: "HTTP 头速查表"
+date: 2025-12-25
 weight: 10
 ---
 

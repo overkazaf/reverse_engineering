@@ -1,5 +1,6 @@
 ---
 title: "Android .so 文件详解 (ELF Format)"
+date: 2025-12-25
 weight: 10
 ---
 

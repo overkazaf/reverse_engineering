@@ -1,5 +1,6 @@
 ---
 title: "Smali 语法入门"
+date: 2025-12-25
 weight: 10
 ---
 

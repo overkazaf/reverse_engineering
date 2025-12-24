@@ -1,5 +1,6 @@
 ---
 title: "绕过 App 对 Frida 的检测"
+date: 2025-12-25
 weight: 10
 ---
 

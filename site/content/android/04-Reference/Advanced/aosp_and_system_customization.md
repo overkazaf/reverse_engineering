@@ -1,5 +1,6 @@
 ---
 title: "AOSP 与 Android 系统裁剪"
+date: 2025-12-25
 weight: 10
 ---
 

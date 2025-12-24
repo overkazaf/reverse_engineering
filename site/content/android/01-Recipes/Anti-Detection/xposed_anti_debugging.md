@@ -1,5 +1,6 @@
 ---
 title: "绕过应用的 Xposed 检测"
+date: 2025-12-25
 weight: 10
 ---
 

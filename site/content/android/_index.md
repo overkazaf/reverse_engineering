@@ -1,5 +1,6 @@
 ---
 title: "android 逆向工程 Cookbook"
+date: 2025-12-25
 weight: 1
 ---
 

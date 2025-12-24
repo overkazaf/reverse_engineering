@@ -1,5 +1,6 @@
 ---
 title: "Redis 常用命令备忘录"
+date: 2025-12-25
 weight: 10
 ---
 

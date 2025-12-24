@@ -1,5 +1,6 @@
 ---
 title: "Android 运行时 (ART) 深度解析"
+date: 2025-12-25
 weight: 10
 ---
 

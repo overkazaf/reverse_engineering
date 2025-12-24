@@ -1,5 +1,6 @@
 ---
 title: "使用 Frida 脱壳加固 App 并修复 SO 文件"
+date: 2025-12-25
 weight: 10
 ---
 

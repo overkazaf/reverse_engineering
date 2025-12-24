@@ -9,6 +9,7 @@ languageCode = "zh-CN"
 hasCJKLanguage = true
 enableRobotsTXT = true
 enableEmoji = true
+buildFuture = true
 
 [pagination]
   pagerSize = 20
@@ -162,9 +163,9 @@ enableEmoji = true
     # 是否显示编辑链接
     linkToEdit = "https://github.com/overkazaf/reverse_engineering/edit/master/site/content/{path}"
     # 是否显示日期
-    showDate = false
+    showDate = true
     # 是否显示更新日期
-    showLastmod = false
+    showLastmod = true
     # 是否开启系列导航
     seriesNavigation = true
     # 过时文章提醒

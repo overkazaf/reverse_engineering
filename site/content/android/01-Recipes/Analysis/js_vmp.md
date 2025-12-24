@@ -1,5 +1,6 @@
 ---
 title: "JavaScript VMP 逆向工程"
+date: 2025-12-25
 weight: 10
 ---
 

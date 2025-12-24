@@ -1,5 +1,6 @@
 ---
 title: "Xposed 内部原理深度剖析"
+date: 2025-12-25
 weight: 10
 ---
 

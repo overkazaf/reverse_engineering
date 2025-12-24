@@ -1,5 +1,6 @@
 ---
 title: "SELinux 安全机制"
+date: 2025-12-25
 weight: 10
 ---
 

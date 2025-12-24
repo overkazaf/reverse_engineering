@@ -1,5 +1,6 @@
 ---
 title: "JavaScript 虚拟机保护"
+date: 2025-12-25
 weight: 10
 ---
 

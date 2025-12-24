@@ -1,5 +1,6 @@
 ---
 title: "Magisk 与 LSPosed 技术原理"
+date: 2025-12-25
 weight: 10
 ---
 

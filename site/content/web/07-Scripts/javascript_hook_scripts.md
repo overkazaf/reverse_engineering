@@ -1,5 +1,6 @@
 ---
 title: "JavaScript Hook 脚本"
+date: 2025-12-25
 weight: 10
 ---
 
