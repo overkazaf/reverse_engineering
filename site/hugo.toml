@@ -14,7 +14,7 @@ enableEmoji = true
   pagerSize = 20
 
 [outputs]
-  home = ["HTML", "RSS", "JSON"]
+  home = ["HTML", "RSS", "JSON", "search"]
 
 [markup]
   [markup.goldmark]
