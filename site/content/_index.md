@@ -1,6 +1,5 @@
 ---
 title: "逆向工程 Cookbook"
-layout: "home"
 ---
 
 ## 写在前面
@@ -43,7 +42,7 @@ layout: "home"
 - **案例研究**：音乐 App、Unity 游戏、Flutter 应用、恶意软件分析
 - **基础知识**：DEX 格式、Smali 语法、ARM 汇编、ART 运行时
 
-[进入 Android 手册 →](/reverse_engineering/android/)
+{{< link href="/reverse_engineering/android/" content="进入 Android 手册 →" >}} | {{< link href="/pdf/android_reverse_engineering_cookbook.pdf" content="下载 PDF (5.6MB)" >}}
 
 ---
 
@@ -57,7 +56,20 @@ layout: "home"
 - **案例研究**：电商、社交媒体、金融、视频流媒体平台
 - **工程实践**：分布式爬虫、代理池管理、Docker 部署、监控告警
 
-[进入 Web 手册 →](/reverse_engineering/web/)
+{{< link href="/reverse_engineering/web/" content="进入 Web 手册 →" >}} | {{< link href="/pdf/web_reverse_engineering_cookbook.pdf" content="下载 PDF (4.2MB)" >}}
+
+---
+
+## PDF 离线下载
+
+为方便离线阅读和打印，我们提供完整的 PDF 版本：
+
+| 手册 | 大小 | 下载链接 |
+|------|------|----------|
+| **Android 逆向工程 Cookbook** | 5.6 MB | [点击下载](/pdf/android_reverse_engineering_cookbook.pdf) |
+| **Web 逆向工程 Cookbook** | 4.2 MB | [点击下载](/pdf/web_reverse_engineering_cookbook.pdf) |
+
+> PDF 版本定期更新，包含最新内容。
 
 ---
 
@@ -83,6 +95,7 @@ layout: "home"
 
 ## 联系作者
 
+- **Author**: +5
 - **Email**: overkazaf@gmail.com
 - **WeChat**: _0xAF_
 - **GitHub**: [overkazaf/reverse_engineering](https://github.com/overkazaf/reverse_engineering)

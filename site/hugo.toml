@@ -1,0 +1,257 @@
+# FixIt Hugo Configuration
+# https://fixit.lruihao.cn/documentation/basics/
+
+baseURL = "https://overkazaf.github.io/reverse_engineering/"
+title = "逆向工程 Cookbook"
+theme = "FixIt"
+defaultContentLanguage = "zh-cn"
+languageCode = "zh-CN"
+hasCJKLanguage = true
+enableRobotsTXT = true
+enableEmoji = true
+
+[pagination]
+  pagerSize = 20
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    codeFences = true
+    guessSyntax = true
+    lineNos = true
+    lineNumbersInTable = true
+    noClasses = false
+    style = "monokai"
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 6
+
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+  series = "series"
+
+[params]
+  # FixIt 主题版本
+  version = "0.3.X"
+
+  # 网站描述
+  description = "Android 与 Web 逆向工程实战手册"
+  keywords = ["逆向工程", "Android", "Web", "Frida", "安全研究"]
+
+  # 默认作者
+  defaultAuthor = "+5"
+
+  # 网站默认主题
+  defaultTheme = "auto"
+
+  # 日期格式
+  dateFormat = "2006-01-02"
+
+  # 网站图片
+  images = []
+
+  # 是否启用 PWA
+  enablePWA = false
+
+  # 许可协议
+  license = '<a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a>'
+
+  # 页面头部配置
+  [params.header]
+    # 桌面端导航栏模式
+    desktopMode = "sticky"
+    # 移动端导航栏模式
+    mobileMode = "auto"
+    # 页面头部标题配置
+    [params.header.title]
+      logo = ""
+      name = "逆向工程 Cookbook"
+      pre = ""
+      post = ""
+      typeit = false
+    # 页面头部副标题配置
+    [params.header.subtitle]
+      name = "Android & Web RE 实战手册"
+      typeit = false
+
+  # 页面底部配置
+  [params.footer]
+    enable = true
+    copyright = true
+    author = true
+    since = 2024
+    gov = ""
+    icp = ""
+    license = ""
+    [params.footer.powered]
+      enable = true
+      hugoLogo = true
+      themeLogo = true
+    [params.footer.siteTime]
+      enable = false
+    [params.footer.order]
+      powered = 0
+      copyright = 0
+      statistics = 0
+      visitor = 0
+      beian = 0
+
+  # Section 页面配置
+  [params.section]
+    paginate = 20
+    dateFormat = "01-02"
+    rss = 10
+    [params.section.recentlyUpdated]
+      enable = true
+      rss = true
+      days = 30
+      maxCount = 10
+
+  # List 页面配置
+  [params.list]
+    paginate = 20
+    dateFormat = "01-02"
+    rss = 10
+
+  # 文章页面配置
+  [params.page]
+    # 目录配置
+    [params.page.toc]
+      enable = true
+      keepStatic = false
+      auto = true
+    # 是否显示阅读时间
+    readingTime = true
+    # 是否显示字数统计
+    wordCount = true
+    # 是否显示作者
+    author = true
+    # 是否显示原始链接
+    linkToMarkdown = true
+    # 是否显示编辑链接
+    linkToEdit = "https://github.com/overkazaf/reverse_engineering/edit/master/site/content/{path}"
+    # 是否显示日期
+    showDate = true
+    # 是否显示更新日期
+    showLastmod = true
+    # 是否开启系列导航
+    seriesNavigation = true
+    # 过时文章提醒
+    [params.page.outdatedArticleReminder]
+      enable = false
+      reminder = 90
+      warning = 180
+    # 代码块配置
+    [params.page.code]
+      copy = true
+      maxShownLines = 50
+    # 表格配置
+    [params.page.table]
+      sort = true
+    # KaTeX 数学公式
+    [params.page.math]
+      enable = false
+    # Mermaid 图表
+    [params.page.mermaid]
+      enable = true
+    # 分享配置
+    [params.page.share]
+      enable = false
+    # 评论配置
+    [params.page.comment]
+      enable = false
+
+  # 搜索配置
+  [params.search]
+    enable = true
+    type = "fuse"
+    contentLength = 4000
+    placeholder = "搜索文章..."
+    maxResultLength = 10
+    snippetLength = 30
+    highlightTag = "em"
+    absoluteURL = false
+    [params.search.fuse]
+      isCaseSensitive = false
+      minMatchCharLength = 2
+      findAllMatches = false
+      location = 0
+      threshold = 0.3
+      distance = 100
+      ignoreLocation = false
+      useExtendedSearch = false
+      ignoreFieldNorm = false
+
+  # 作者配置
+  [params.author]
+    name = "+5"
+    email = "overkazaf@gmail.com"
+    link = "https://github.com/overkazaf"
+    avatar = ""
+
+  # 社交链接
+  [params.social]
+    GitHub = "overkazaf"
+    Email = "overkazaf@gmail.com"
+
+# 主菜单
+[menu]
+  [[menu.main]]
+    identifier = "home"
+    name = "首页"
+    url = "/"
+    weight = 1
+    [menu.main.params]
+      icon = "fa-solid fa-house"
+  [[menu.main]]
+    identifier = "android"
+    name = "Android"
+    url = "/android/"
+    weight = 2
+    [menu.main.params]
+      icon = "fa-brands fa-android"
+  [[menu.main]]
+    identifier = "web"
+    name = "Web"
+    url = "/web/"
+    weight = 3
+    [menu.main.params]
+      icon = "fa-solid fa-globe"
+  [[menu.main]]
+    identifier = "search"
+    name = "搜索"
+    url = "/search/"
+    weight = 4
+    [menu.main.params]
+      icon = "fa-solid fa-search"
+  [[menu.main]]
+    identifier = "pdf"
+    name = "PDF下载"
+    weight = 5
+    [menu.main.params]
+      icon = "fa-solid fa-file-pdf"
+  [[menu.main]]
+    identifier = "pdf-android"
+    parent = "pdf"
+    name = "Android Cookbook"
+    url = "/pdf/android_reverse_engineering_cookbook.pdf"
+    weight = 1
+  [[menu.main]]
+    identifier = "pdf-web"
+    parent = "pdf"
+    name = "Web Cookbook"
+    url = "/pdf/web_reverse_engineering_cookbook.pdf"
+    weight = 2
+  [[menu.main]]
+    identifier = "github"
+    name = "GitHub"
+    url = "https://github.com/overkazaf/reverse_engineering"
+    weight = 6
+    [menu.main.params]
+      icon = "fa-brands fa-github"

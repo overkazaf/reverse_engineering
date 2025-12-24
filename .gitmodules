@@ -1,4 +1,3 @@
-[submodule "site/themes/blowfish"]
-	path = site/themes/blowfish
-	url = https://github.com/nunocoracao/blowfish.git
-	branch = main
+[submodule "site/themes/FixIt"]
+	path = site/themes/FixIt
+	url = https://github.com/hugo-fixit/FixIt.git
