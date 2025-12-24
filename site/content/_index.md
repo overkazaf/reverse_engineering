@@ -32,7 +32,7 @@ title: "逆向工程 Cookbook"
 
 ## 两本实战手册
 
-### [Android 逆向工程 Cookbook](/reverse_engineering/android/)
+### [Android 逆向工程 Cookbook](/android/)
 
 从入门到精通的 Android 逆向与安全分析实战手册。
 
@@ -42,11 +42,11 @@ title: "逆向工程 Cookbook"
 - **案例研究**：音乐 App、Unity 游戏、Flutter 应用、恶意软件分析
 - **基础知识**：DEX 格式、Smali 语法、ARM 汇编、ART 运行时
 
-{{< link href="/reverse_engineering/android/" content="进入 Android 手册 →" >}} | {{< link href="/pdf/android_reverse_engineering_cookbook.pdf" content="下载 PDF (5.6MB)" >}}
+[进入 Android 手册 →](/android/) | [下载 PDF (5.6MB)](/pdf/android_reverse_engineering_cookbook.pdf)
 
 ---
 
-### [Web 逆向工程 Cookbook](/reverse_engineering/web/)
+### [Web 逆向工程 Cookbook](/web/)
 
 从入门到精通的 Web 逆向与数据采集实战手册。
 
@@ -56,7 +56,7 @@ title: "逆向工程 Cookbook"
 - **案例研究**：电商、社交媒体、金融、视频流媒体平台
 - **工程实践**：分布式爬虫、代理池管理、Docker 部署、监控告警
 
-{{< link href="/reverse_engineering/web/" content="进入 Web 手册 →" >}} | {{< link href="/pdf/web_reverse_engineering_cookbook.pdf" content="下载 PDF (4.2MB)" >}}
+[进入 Web 手册 →](/web/) | [下载 PDF (4.2MB)](/pdf/web_reverse_engineering_cookbook.pdf)
 
 ---
 
