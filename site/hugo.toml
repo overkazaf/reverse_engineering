@@ -56,11 +56,24 @@ enableEmoji = true
   # 网站图片
   images = []
 
-  # 是否启用 PWA
-  enablePWA = false
+  # 是否启用 PWA (离线访问、添加到主屏幕)
+  enablePWA = true
 
   # 许可协议
   license = '<a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a>'
+
+  # 面包屑导航
+  [params.breadcrumb]
+    enable = true
+    sticky = false
+    showHome = true
+
+  # GitHub Corner (右上角 GitHub 徽章)
+  [params.githubCorner]
+    enable = true
+    permalink = "https://github.com/overkazaf/reverse_engineering"
+    title = "View source on GitHub"
+    position = "right"
 
   # 页面头部配置
   [params.header]
@@ -163,6 +176,10 @@ enableEmoji = true
     # Mermaid 图表
     [params.page.mermaid]
       enable = true
+    # LightGallery 图片画廊 (点击图片放大浏览)
+    # 设置为 true: 有标题的图片显示画廊 ![alt](src "title")
+    # 设置为 "force": 所有图片都显示画廊
+    lightgallery = "force"
     # 分享配置
     [params.page.share]
       enable = false
