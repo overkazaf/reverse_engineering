@@ -137,9 +137,9 @@ enableEmoji = true
     # 是否显示编辑链接
     linkToEdit = "https://github.com/overkazaf/reverse_engineering/edit/master/site/content/{path}"
     # 是否显示日期
-    showDate = true
+    showDate = false
     # 是否显示更新日期
-    showLastmod = true
+    showLastmod = false
     # 是否开启系列导航
     seriesNavigation = true
     # 过时文章提醒
