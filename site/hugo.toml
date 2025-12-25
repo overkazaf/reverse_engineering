@@ -205,6 +205,9 @@ buildFuture = true
       animation = true
       position = "after"
       comment = "如果这篇文章对你有帮助，请我喝杯咖啡吧~"
+      [params.page.reward.ways]
+        wechatpay = "/images/wechatpay.png"
+        alipay = "/images/alipay.png"
     # 分享配置
     [params.page.share]
       enable = true
