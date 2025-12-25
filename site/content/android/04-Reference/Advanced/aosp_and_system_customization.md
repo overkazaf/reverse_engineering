@@ -1,6 +1,7 @@
 ---
 title: "AOSP 与 Android 系统裁剪"
 date: 2025-06-05
+type: posts
 tags: ["Native层", "Frida", "DEX", "高级", "Hook", "Xposed"]
 weight: 10
 ---

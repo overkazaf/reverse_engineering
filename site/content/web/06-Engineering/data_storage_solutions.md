@@ -1,6 +1,7 @@
 ---
 title: "数据存储方案"
 date: 2025-09-25
+type: posts
 tags: ["Web", "Docker", "工程实践", "分布式", "Root检测", "DEX"]
 weight: 10
 ---

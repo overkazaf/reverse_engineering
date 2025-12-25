@@ -1,6 +1,7 @@
 ---
 title: "x86 与 ARM 汇编基础指南"
 date: 2024-05-21
+type: posts
 tags: ["基础知识", "Smali", "Android", "ARM汇编", "DEX"]
 weight: 10
 ---

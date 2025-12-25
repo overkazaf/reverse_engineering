@@ -1,6 +1,7 @@
 ---
 title: "Objection 常用技巧 (Objection Snippets)"
 date: 2025-02-09
+type: posts
 tags: ["Native层", "Frida脚本", "Frida", "SSL Pinning", "加密分析", "Hook"]
 weight: 10
 ---

@@ -1,6 +1,7 @@
 ---
 title: "SELinux 安全机制"
 date: 2024-07-22
+type: posts
 tags: ["Native层", "签名验证", "Frida", "基础知识", "Hook", "Smali"]
 weight: 10
 ---

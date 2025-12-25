@@ -1,6 +1,7 @@
 ---
 title: "反混淆脚本"
 date: 2024-10-21
+type: posts
 tags: ["Web", "电商", "Hook", "自动化", "脚本", "DEX"]
 weight: 10
 ---

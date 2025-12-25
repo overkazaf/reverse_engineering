@@ -1,6 +1,7 @@
 ---
 title: "分布式爬虫架构"
 date: 2025-04-26
+type: posts
 tags: ["Web", "Docker", "代理池", "工程实践", "分布式", "社交媒体"]
 weight: 10
 ---

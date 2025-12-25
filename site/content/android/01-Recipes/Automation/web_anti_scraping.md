@@ -1,6 +1,7 @@
 ---
 title: "Web 反爬虫技术"
 date: 2025-01-03
+type: posts
 tags: ["浏览器指纹", "Canvas指纹", "Frida", "代理池", "自动化", "Android"]
 weight: 10
 ---

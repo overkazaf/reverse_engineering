@@ -1,6 +1,7 @@
 ---
 title: "Android Binder 跨进程通信机制"
 date: 2024-07-08
+type: posts
 tags: ["Native层", "代理池", "Frida", "基础知识", "Hook", "Smali"]
 weight: 10
 ---

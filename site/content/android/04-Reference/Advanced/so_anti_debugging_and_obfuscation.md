@@ -1,6 +1,7 @@
 ---
 title: "SO 文件反调试与字符串混淆技术"
 date: 2025-04-25
+type: posts
 tags: ["Native层", "签名验证", "Frida", "高级", "加密分析", "Hook"]
 weight: 10
 ---

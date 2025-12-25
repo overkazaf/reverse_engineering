@@ -1,6 +1,7 @@
 ---
 title: "Smali 语法入门"
 date: 2024-07-12
+type: posts
 tags: ["签名验证", "基础知识", "Smali", "Android", "DEX"]
 weight: 10
 ---

@@ -1,6 +1,7 @@
 ---
 title: "CSP 绕过技术"
 date: 2025-02-27
+type: posts
 tags: ["Web", "WebAssembly", "进阶", "指纹", "反混淆"]
 weight: 10
 ---

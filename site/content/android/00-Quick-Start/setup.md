@@ -1,6 +1,7 @@
 ---
 title: "环境配置"
 date: 2024-04-22
+type: posts
 tags: ["入门", "Frida", "Android", "ARM汇编", "DEX", "IDA Pro"]
 weight: 10
 ---

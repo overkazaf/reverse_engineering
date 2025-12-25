@@ -1,6 +1,7 @@
 ---
 title: "IDA Pro 入门"
 date: 2024-09-06
+type: posts
 tags: ["静态分析", "签名验证", "Ghidra", "IDA", "Android", "IDA Pro"]
 weight: 10
 ---

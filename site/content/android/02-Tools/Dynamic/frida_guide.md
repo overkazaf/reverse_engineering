@@ -1,6 +1,7 @@
 ---
 title: "Frida 常用命令与脚本 API 大全"
 date: 2024-10-14
+type: posts
 tags: ["Native层", "动态分析", "Frida", "SSL Pinning", "DEX", "加密分析"]
 weight: 10
 ---

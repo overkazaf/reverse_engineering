@@ -1,6 +1,7 @@
 ---
 title: "代理池管理"
 date: 2025-08-29
+type: posts
 tags: ["Web", "代理池", "工程实践", "分布式", "IDA Pro", "部署"]
 weight: 10
 ---

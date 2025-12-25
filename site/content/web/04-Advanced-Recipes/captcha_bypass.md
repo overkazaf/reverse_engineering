@@ -1,6 +1,7 @@
 ---
 title: "验证码 (CAPTCHA) 绕过"
 date: 2025-03-12
+type: posts
 tags: ["Web", "浏览器指纹", "Canvas指纹", "WebAssembly", "代理池", "电商"]
 weight: 10
 ---

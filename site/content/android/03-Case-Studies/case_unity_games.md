@@ -1,6 +1,7 @@
 ---
 title: "Unity 游戏逆向 (Il2Cpp) 案例"
 date: 2025-03-12
+type: posts
 tags: ["Native层", "Ghidra", "Frida", "案例分析", "Unity游戏", "Hook"]
 weight: 10
 ---

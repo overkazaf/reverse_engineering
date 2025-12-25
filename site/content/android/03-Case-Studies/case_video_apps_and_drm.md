@@ -1,6 +1,7 @@
 ---
 title: "视频 App 与 DRM 案例"
 date: 2025-09-15
+type: posts
 tags: ["RSA", "Native层", "签名验证", "Frida", "案例分析", "代理池"]
 weight: 10
 ---

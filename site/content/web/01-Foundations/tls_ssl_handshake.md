@@ -1,6 +1,7 @@
 ---
 title: "TLS/SSL 握手过程"
 date: 2024-06-08
+type: posts
 tags: ["Web", "HTTP", "RSA", "Native层", "签名验证", "Frida"]
 weight: 10
 ---

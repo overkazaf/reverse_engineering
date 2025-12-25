@@ -1,6 +1,7 @@
 ---
 title: "HTTP/HTTPS 协议"
 date: 2024-04-04
+type: posts
 tags: ["Web", "HTTP", "RSA", "签名验证", "SSL Pinning", "JavaScript"]
 weight: 10
 ---

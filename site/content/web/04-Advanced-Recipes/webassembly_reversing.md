@@ -1,6 +1,7 @@
 ---
 title: "WebAssembly 逆向"
 date: 2025-06-17
+type: posts
 tags: ["Web", "RSA", "签名验证", "WebAssembly", "Frida", "代理池"]
 weight: 10
 ---

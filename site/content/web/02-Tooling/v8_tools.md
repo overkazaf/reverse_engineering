@@ -1,6 +1,7 @@
 ---
 title: "V8 引擎工具"
 date: 2024-10-05
+type: posts
 tags: ["Web", "抓包", "DevTools", "工具", "反混淆"]
 weight: 10
 ---

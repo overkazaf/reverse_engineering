@@ -1,6 +1,7 @@
 ---
 title: "Native 层 Hook 技巧 (Native Hooking Patterns)"
 date: 2024-10-03
+type: posts
 tags: ["Native层", "Frida脚本", "Frida", "代理池", "DEX", "脱壳"]
 weight: 10
 ---

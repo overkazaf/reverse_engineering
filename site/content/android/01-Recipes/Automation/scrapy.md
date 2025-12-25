@@ -1,6 +1,7 @@
 ---
 title: "Scrapy 快速入门备忘录"
 date: 2024-09-20
+type: posts
 tags: ["自动化", "Android", "代理池"]
 weight: 10
 ---

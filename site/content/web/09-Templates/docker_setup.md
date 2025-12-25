@@ -1,6 +1,7 @@
 ---
 title: "Docker 部署配置模板"
 date: 2025-04-12
+type: posts
 tags: ["Web", "项目", "Docker", "代理池", "ARM汇编", "Root检测"]
 weight: 10
 ---

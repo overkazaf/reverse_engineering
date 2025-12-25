@@ -1,6 +1,7 @@
 ---
 title: "Burp Suite 指南"
 date: 2024-05-14
+type: posts
 tags: ["Web", "签名验证", "代理池", "Hook", "抓包", "DevTools"]
 weight: 10
 ---

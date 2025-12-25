@@ -1,6 +1,7 @@
 ---
 title: "HTTP 头速查表"
 date: 2025-05-14
+type: posts
 tags: ["Web", "签名验证", "代理池", "速查表", "视频App", "参考"]
 weight: 10
 ---

@@ -1,6 +1,7 @@
 ---
 title: "Hive 数据仓库"
 date: 2025-04-25
+type: posts
 tags: ["大数据", "工程实践", "DEX"]
 weight: 10
 ---

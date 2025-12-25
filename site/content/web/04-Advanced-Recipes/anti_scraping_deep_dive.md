@@ -1,6 +1,7 @@
 ---
 title: "反爬虫技术深度分析"
 date: 2025-06-08
+type: posts
 tags: ["Web", "浏览器指纹", "Canvas指纹", "WebAssembly", "代理池", "加密分析"]
 weight: 10
 ---

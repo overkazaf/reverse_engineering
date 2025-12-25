@@ -1,6 +1,7 @@
 ---
 title: "消息队列 (Message Queue)"
 date: 2025-04-25
+type: posts
 tags: ["大数据", "工程实践", "代理池"]
 weight: 10
 ---

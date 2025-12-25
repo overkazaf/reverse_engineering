@@ -1,6 +1,7 @@
 ---
 title: "分布式爬虫架构模板"
 date: 2025-06-11
+type: posts
 tags: ["Web", "项目", "签名验证", "Docker", "代理池", "Root检测"]
 weight: 10
 ---

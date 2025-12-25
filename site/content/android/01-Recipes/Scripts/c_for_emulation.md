@@ -1,6 +1,7 @@
 ---
 title: "C 代码：用于运行时仿真与设备指纹生成"
 date: 2025-03-22
+type: posts
 tags: ["Native层", "浏览器指纹", "Frida脚本", "Frida", "SSL Pinning", "签名验证"]
 weight: 10
 ---

@@ -1,6 +1,7 @@
 ---
 title: "CORS 与同源策略"
 date: 2024-07-29
+type: posts
 tags: ["Web", "HTTP", "代理池", "JavaScript", "基础知识", "DEX"]
 weight: 10
 ---

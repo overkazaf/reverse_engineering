@@ -1,6 +1,7 @@
 ---
 title: "Android 运行时 (ART) 深度解析"
 date: 2024-05-07
+type: posts
 tags: ["Native层", "签名验证", "Frida", "SSL Pinning", "JNI", "Ghidra"]
 weight: 10
 ---

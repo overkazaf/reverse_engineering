@@ -1,6 +1,7 @@
 ---
 title: "网络和请求问题"
 date: 2025-05-24
+type: posts
 tags: ["Web", "问题排查", "签名验证", "SSL Pinning", "代理池", "调试"]
 weight: 10
 ---

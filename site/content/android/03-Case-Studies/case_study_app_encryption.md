@@ -1,6 +1,7 @@
 ---
 title: "主流 App 加密签名机制案例"
 date: 2025-05-15
+type: posts
 tags: ["RSA", "案例分析", "加密分析", "Hook", "IDA Pro", "反混淆"]
 weight: 10
 ---

@@ -1,6 +1,7 @@
 ---
 title: "HBase 分布式 NoSQL 数据库"
 date: 2025-09-16
+type: posts
 tags: ["大数据", "工程实践", "DEX"]
 weight: 10
 ---

@@ -1,6 +1,7 @@
 ---
 title: "分析并提取 Android 应用的加密密钥"
 date: 2025-04-07
+type: posts
 tags: ["RSA", "加密分析", "Hook", "DEX", "IDA Pro", "反混淆"]
 weight: 10
 ---

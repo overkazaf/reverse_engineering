@@ -1,6 +1,7 @@
 ---
 title: "CI/CD 流水线模板"
 date: 2025-01-30
+type: posts
 weight: 10
 ---
 

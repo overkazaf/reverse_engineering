@@ -1,6 +1,7 @@
 ---
 title: "工具快捷键速查表"
 date: 2025-04-16
+type: posts
 tags: ["Web", "代理池", "速查表", "Hook", "参考", "ARM汇编"]
 weight: 10
 ---

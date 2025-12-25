@@ -1,6 +1,7 @@
 ---
 title: "Magisk 与 LSPosed 技术原理"
 date: 2025-09-25
+type: posts
 tags: ["Native层", "代理池", "Frida", "SSL Pinning", "DEX", "高级"]
 weight: 10
 ---

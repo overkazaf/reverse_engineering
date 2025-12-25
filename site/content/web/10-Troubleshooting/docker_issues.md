@@ -1,6 +1,7 @@
 ---
 title: "Docker 部署问题"
 date: 2025-04-26
+type: posts
 tags: ["Web", "问题排查", "Docker", "Root检测", "调试"]
 weight: 10
 ---

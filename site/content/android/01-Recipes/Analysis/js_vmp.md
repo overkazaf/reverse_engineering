@@ -1,6 +1,7 @@
 ---
 title: "JavaScript VMP 逆向工程"
 date: 2025-05-07
+type: posts
 tags: ["Ghidra", "逆向分析", "Frida", "加密分析", "Hook", "脱壳"]
 weight: 10
 ---

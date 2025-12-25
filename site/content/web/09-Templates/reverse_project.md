@@ -1,6 +1,7 @@
 ---
 title: "逆向分析项目模板"
 date: 2025-01-31
+type: posts
 tags: ["Web", "项目", "签名验证", "代理池", "加密分析", "Hook"]
 weight: 10
 ---

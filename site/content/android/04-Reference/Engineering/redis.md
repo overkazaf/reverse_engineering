@@ -1,6 +1,7 @@
 ---
 title: "Redis 常用命令备忘录"
 date: 2025-04-14
+type: posts
 tags: ["大数据", "SSL Pinning", "电商", "工程实践", "DEX"]
 weight: 10
 ---

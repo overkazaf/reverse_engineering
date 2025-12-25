@@ -1,6 +1,7 @@
 ---
 title: "SO 文件字符串混淆对抗指南"
 date: 2025-01-19
+type: posts
 tags: ["Native层", "签名验证", "Frida", "Ghidra", "DEX", "加固"]
 weight: 10
 ---

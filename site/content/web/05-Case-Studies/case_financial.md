@@ -1,6 +1,7 @@
 ---
 title: "金融网站逆向案例"
 date: 2025-10-13
+type: posts
 tags: ["Web", "RSA", "浏览器指纹", "签名验证", "Canvas指纹", "案例分析"]
 weight: 10
 ---

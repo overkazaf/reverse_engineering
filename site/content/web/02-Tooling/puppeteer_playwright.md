@@ -1,6 +1,7 @@
 ---
 title: "Puppeteer & Playwright"
 date: 2024-06-17
+type: posts
 tags: ["Web", "签名验证", "Hook", "抓包", "Playwright", "DevTools"]
 weight: 10
 ---

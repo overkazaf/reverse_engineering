@@ -1,6 +1,7 @@
 ---
 title: "JavaScript Obfuscator (OB 混淆) 分析"
 date: 2025-04-20
+type: posts
 tags: ["代理池", "逆向分析", "加密分析", "Android", "反混淆"]
 weight: 10
 ---

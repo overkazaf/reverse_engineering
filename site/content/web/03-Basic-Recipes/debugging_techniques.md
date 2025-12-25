@@ -1,6 +1,7 @@
 ---
 title: "调试技巧与断点设置"
 date: 2024-12-31
+type: posts
 tags: ["Web", "签名验证", "加密分析", "Hook", "验证码", "调试"]
 weight: 10
 ---

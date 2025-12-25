@@ -1,6 +1,7 @@
 ---
 title: "Frida 核心模块与实现原理"
 date: 2024-07-10
+type: posts
 tags: ["Native层", "动态分析", "Frida", "Hook", "Xposed", "Android"]
 weight: 10
 ---

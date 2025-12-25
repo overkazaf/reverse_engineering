@@ -1,6 +1,7 @@
 ---
 title: "使用 Frida 脱壳加固 App 并修复 SO 文件"
 date: 2024-11-09
+type: posts
 tags: ["Native层", "签名验证", "Frida", "代理池", "Ghidra", "DEX"]
 weight: 10
 ---

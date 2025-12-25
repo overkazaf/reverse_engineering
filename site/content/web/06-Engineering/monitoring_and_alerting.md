@@ -1,6 +1,7 @@
 ---
 title: "监控与告警系统"
 date: 2025-08-13
+type: posts
 tags: ["Web", "Docker", "代理池", "工程实践", "Hook", "分布式"]
 weight: 10
 ---

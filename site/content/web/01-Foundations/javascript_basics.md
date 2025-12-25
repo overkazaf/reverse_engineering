@@ -1,6 +1,7 @@
 ---
 title: "JavaScript 基础"
 date: 2024-04-17
+type: posts
 tags: ["Web", "HTTP", "RSA", "签名验证", "JavaScript", "加密分析"]
 weight: 10
 ---

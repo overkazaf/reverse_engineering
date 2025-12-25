@@ -1,6 +1,7 @@
 ---
 title: "Android 四大组件"
 date: 2024-06-26
+type: posts
 tags: ["加密分析", "Hook", "基础知识", "Smali", "Android", "ARM汇编"]
 weight: 10
 ---

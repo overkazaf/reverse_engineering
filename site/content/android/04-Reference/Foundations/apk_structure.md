@@ -1,6 +1,7 @@
 ---
 title: "APK 文件结构详解"
 date: 2024-04-24
+type: posts
 tags: ["RSA", "Native层", "Flutter", "签名验证", "Frida", "SSL Pinning"]
 weight: 10
 ---

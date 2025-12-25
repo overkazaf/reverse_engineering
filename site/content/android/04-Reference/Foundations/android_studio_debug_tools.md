@@ -1,6 +1,7 @@
 ---
 title: "Android Studio 调试工具集"
 date: 2024-04-04
+type: posts
 tags: ["RSA", "Native层", "浏览器指纹", "签名验证", "Frida", "JNI"]
 weight: 10
 ---

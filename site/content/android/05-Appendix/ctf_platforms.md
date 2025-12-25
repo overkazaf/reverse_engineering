@@ -1,6 +1,7 @@
 ---
 title: "CTF 与练习平台"
 date: 2025-03-16
+type: posts
 tags: ["Native层", "资源", "Android", "参考", "IDA Pro", "Root检测"]
 weight: 10
 ---

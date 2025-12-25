@@ -1,6 +1,7 @@
 ---
 title: "自动化脚本 (Automation Scripts)"
 date: 2025-03-07
+type: posts
 tags: ["Frida脚本", "Frida", "代理池", "Hook", "Android", "IDA Pro"]
 weight: 10
 ---

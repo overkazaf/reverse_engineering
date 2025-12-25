@@ -1,6 +1,7 @@
 ---
 title: "JavaScript 反混淆 (Deobfuscation)"
 date: 2025-02-21
+type: posts
 tags: ["Web", "签名验证", "WebAssembly", "加密分析", "Hook", "进阶"]
 weight: 10
 ---

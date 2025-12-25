@@ -1,6 +1,7 @@
 ---
 title: "Docker 容器化部署"
 date: 2025-08-07
+type: posts
 tags: ["Web", "Docker", "代理池", "DEX", "工程实践", "分布式"]
 weight: 10
 ---

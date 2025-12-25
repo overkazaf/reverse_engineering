@@ -1,6 +1,7 @@
 ---
 title: "SO 文件反混淆：花指令识别与自动化去除"
 date: 2025-02-13
+type: posts
 tags: ["Ghidra", "加固", "脱壳", "OLLVM", "Android", "反混淆"]
 weight: 10
 ---

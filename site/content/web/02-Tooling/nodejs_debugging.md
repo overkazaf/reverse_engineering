@@ -1,6 +1,7 @@
 ---
 title: "Node.js 调试指南"
 date: 2024-07-07
+type: posts
 tags: ["Web", "Docker", "加密分析", "Hook", "脱壳", "抓包"]
 weight: 10
 ---

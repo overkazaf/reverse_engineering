@@ -1,6 +1,7 @@
 ---
 title: "前端加固技术详解"
 date: 2025-08-10
+type: posts
 tags: ["Web", "WebAssembly", "加密分析", "Hook", "进阶", "Playwright"]
 weight: 10
 ---

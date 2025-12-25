@@ -1,6 +1,7 @@
 ---
 title: "搜索引擎对抗"
 date: 2025-07-27
+type: posts
 tags: ["Web", "浏览器指纹", "签名验证", "Canvas指纹", "案例分析", "代理池"]
 weight: 10
 ---

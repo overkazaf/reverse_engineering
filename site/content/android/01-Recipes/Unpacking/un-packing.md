@@ -1,6 +1,7 @@
 ---
 title: "脱壳分析加固的 Android 应用"
 date: 2025-03-22
+type: posts
 tags: ["Native层", "签名验证", "Frida", "SSL Pinning", "代理池", "Ghidra"]
 weight: 10
 ---

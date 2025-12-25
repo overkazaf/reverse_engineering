@@ -1,6 +1,7 @@
 ---
 title: "数据仓库与计算引擎"
 date: 2025-08-17
+type: posts
 tags: ["大数据", "工程实践"]
 weight: 10
 ---

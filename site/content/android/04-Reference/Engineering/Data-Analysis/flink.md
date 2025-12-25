@@ -1,6 +1,7 @@
 ---
 title: "Apache Flink 实时流处理"
 date: 2025-08-09
+type: posts
 tags: ["大数据", "工程实践", "签名验证"]
 weight: 10
 ---

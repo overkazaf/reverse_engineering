@@ -1,6 +1,7 @@
 ---
 title: "配方编号系统"
 date: 2025-06-26
+type: posts
 tags: ["OLLVM", "加密分析", "Hook", "DEX", "反混淆", "IDA Pro"]
 weight: 10
 ---

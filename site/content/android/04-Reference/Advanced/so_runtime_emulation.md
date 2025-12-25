@@ -1,6 +1,7 @@
 ---
 title: "SO 运行时仿真技术"
 date: 2025-04-03
+type: posts
 tags: ["Native层", "签名验证", "Frida", "SSL Pinning", "高级", "加密分析"]
 weight: 10
 ---

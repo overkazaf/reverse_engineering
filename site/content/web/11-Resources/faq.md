@@ -1,6 +1,7 @@
 ---
 title: "常见问题 (FAQ)"
 date: 2025-05-27
+type: posts
 tags: ["Web", "学习", "签名验证", "WebAssembly", "代理池", "资源"]
 weight: 10
 ---

@@ -1,6 +1,7 @@
 ---
 title: "Flutter 应用逆向案例"
 date: 2025-02-27
+type: posts
 tags: ["Native层", "Flutter", "代理池", "Frida", "案例分析", "SSL Pinning"]
 weight: 10
 ---

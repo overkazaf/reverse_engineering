@@ -1,6 +1,7 @@
 ---
 title: "Unidbg 模拟执行框架指南"
 date: 2024-06-09
+type: posts
 tags: ["Native层", "动态分析", "签名验证", "Frida", "代理池", "Ghidra"]
 weight: 10
 ---

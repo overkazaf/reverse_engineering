@@ -1,6 +1,7 @@
 ---
 title: "抓包分析 Android 应用的网络流量"
 date: 2024-12-07
+type: posts
 tags: ["RSA", "浏览器指纹", "签名验证", "Frida", "SSL Pinning", "代理池"]
 weight: 10
 ---
@@ -277,6 +278,7 @@ Java.perform(function () {
       tlsSctData
     ) {
       console.log("✓ [TrustManagerImpl] BypassCertValidate: " + host);
+type: posts
 tags: ["RSA", "浏览器指纹", "签名验证", "Frida", "SSL Pinning", "代理池"]
       return untrustedChain;
     };

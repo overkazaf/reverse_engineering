@@ -1,6 +1,7 @@
 ---
 title: "Xposed 内部原理深度剖析"
 date: 2024-08-27
+type: posts
 tags: ["Native层", "动态分析", "签名验证", "Frida", "SSL Pinning", "加密分析", "Xposed"]
 weight: 10
 ---

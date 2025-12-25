@@ -1,6 +1,7 @@
 ---
 title: "工程化：虚拟化与容器技术"
 date: 2024-12-28
+type: posts
 tags: ["Docker", "签名验证", "Frida", "SSL Pinning", "代理池", "自动化"]
 weight: 10
 ---

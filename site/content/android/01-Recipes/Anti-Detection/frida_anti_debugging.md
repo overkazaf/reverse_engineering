@@ -1,6 +1,7 @@
 ---
 title: "绕过 App 对 Frida 的检测"
 date: 2025-04-22
+type: posts
 tags: ["Native层", "浏览器指纹", "Docker", "签名验证", "SSL Pinning", "Frida"]
 weight: 10
 ---

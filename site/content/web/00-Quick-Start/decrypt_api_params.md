@@ -1,6 +1,7 @@
 ---
 title: "配方：解密 API 参数"
 date: 2024-04-01
+type: posts
 tags: ["入门", "签名验证", "电商", "加密分析", "Hook", "AES"]
 weight: 10
 ---

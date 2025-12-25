@@ -1,6 +1,7 @@
 ---
 title: "框架、工具与中间件"
 date: 2025-05-23
+type: posts
 tags: ["大数据", "工程实践"]
 weight: 10
 ---

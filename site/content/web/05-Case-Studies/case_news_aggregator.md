@@ -1,6 +1,7 @@
 ---
 title: "新闻聚合网站"
 date: 2025-06-14
+type: posts
 tags: ["Web", "浏览器指纹", "签名验证", "代理池", "案例分析", "Hook"]
 weight: 10
 ---
@@ -377,6 +378,7 @@ Reddit Hot 算法
 - ups: 点赞数
 - downs: 踩数
 - date: 发布时间
+type: posts
 tags: ["Web", "浏览器指纹", "签名验证", "代理池", "案例分析", "Hook"]
 """
 # 计算分数

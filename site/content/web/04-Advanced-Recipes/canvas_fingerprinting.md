@@ -1,6 +1,7 @@
 ---
 title: "Canvas 指纹技术"
 date: 2025-06-17
+type: posts
 tags: ["Web", "浏览器指纹", "Canvas指纹", "WebAssembly", "代理池", "电商"]
 weight: 10
 ---

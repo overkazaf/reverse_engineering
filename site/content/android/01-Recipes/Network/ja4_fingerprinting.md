@@ -1,6 +1,7 @@
 ---
 title: "JA4+ TLS/QUIC 指纹识别技术详解"
 date: 2025-02-18
+type: posts
 tags: ["浏览器指纹", "签名验证", "SSL Pinning", "代理池", "网络分析", "加密分析"]
 weight: 10
 ---

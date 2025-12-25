@@ -1,6 +1,7 @@
 ---
 title: "JavaScript 虚拟机保护"
 date: 2025-07-22
+type: posts
 tags: ["Web", "WebAssembly", "加密分析", "Hook", "视频App", "进阶"]
 weight: 10
 ---

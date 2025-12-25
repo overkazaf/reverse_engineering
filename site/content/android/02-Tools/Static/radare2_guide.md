@@ -1,6 +1,7 @@
 ---
 title: "Radare2 入门"
 date: 2024-06-29
+type: posts
 tags: ["静态分析", "Ghidra", "IDA", "Android", "IDA Pro"]
 weight: 10
 ---

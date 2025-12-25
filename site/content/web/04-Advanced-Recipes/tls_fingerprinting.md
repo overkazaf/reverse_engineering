@@ -1,6 +1,7 @@
 ---
 title: "TLS 指纹识别 (JA3/JA4)"
 date: 2025-07-08
+type: posts
 tags: ["Web", "浏览器指纹", "代理池", "WebAssembly", "SSL Pinning", "加密分析"]
 weight: 10
 ---
