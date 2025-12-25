@@ -1,6 +1,6 @@
 ---
 title: "JavaScript 基础"
-date: 2025-12-25
+date: 2024-04-17
 weight: 10
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: "DOM 与 BOM"
-date: 2025-12-25
+date: 2024-06-24
 weight: 10
 ---
 

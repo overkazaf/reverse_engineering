@@ -1,6 +1,6 @@
 ---
 title: "Android Binder 跨进程通信机制"
-date: 2025-12-25
+date: 2024-07-08
 weight: 10
 ---
 
