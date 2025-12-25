@@ -280,13 +280,13 @@ def enter_chroot_environment(rootfs_path):
 
 基于上述rootfs构建技术，我开发了一个精简的实现项目：[mini_rootfs](https://github.com/overkazaf/mini_rootfs)
 
-该项目提供了一个轻量级的rootfs构建工具，核心特性包括：
-- **最小化依赖**: 自动分析并复制必要的共享库
-- **快速部署**: 一键创建可用的chroot环境
-- **跨平台支持**: 适配Linux和Android环境
-- **逆向友好**: 专为安全研究和动态分析场景设计
+该项目演示了最小化rootfs环境下的动态库加载机制，提供两种实现方式：
+- **Android方式**: 使用系统内置 `dlopen/dlsym` API 进行动态库加载
+- **Linux方式**: 从头实现自定义ELF加载器，模拟Android linker架构
+- **ELF解析**: 包含完整的ELF文件解析、内存映射、符号解析、重定位处理
+- **教育导向**: 深入理解操作系统如何加载和执行动态链接的二进制文件
 
-如果你对rootfs隔离技术感兴趣，欢迎参考该项目的实现。
+如果你对rootfs环境下的动态链接机制感兴趣，欢迎参考该项目的实现。
 
 ---
 
