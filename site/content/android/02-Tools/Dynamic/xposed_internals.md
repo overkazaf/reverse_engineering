@@ -1,7 +1,7 @@
 ---
 title: "Xposed 内部原理深度剖析"
 date: 2024-08-27
-tags: ["Native层", "动态分析", "签名验证", "Frida", "SSL Pinning", "加密分析"]
+tags: ["Native层", "动态分析", "签名验证", "Frida", "SSL Pinning", "加密分析", "Xposed"]
 weight: 10
 ---
 
@@ -36,12 +36,9 @@ Xposed 最著名的功能是其"Hook"Java 方法的能力。这不是简单的�
 2. **修改 `Method` 对象**：在内部，Xposed 使用反射和本地代码来获取与目标对应的 Java `java.lang.reflect.Method` 对象的句柄。
 
 3. **"Native"伪装**：
-
-- Xposed 修改 `Method` 对象的 `accessFlags`，添加 `ACC_NATIVE` 标志。
-
-- 然后它覆盖方法的入口点指针。在 ART 运行时中，这意味着替换内部 `ArtMethod` 结构中的 `entry_point_from_quick_compiled_code_` 字段。
-
-- 这个新的入口点现在指向 Xposed 提供的通用原生桥接函数。
+   - Xposed 修改 `Method` 对象的 `accessFlags`，添加 `ACC_NATIVE` 标志。
+   - 然后它覆盖方法的入口点指针。在 ART 运行时中，这意味着替换内部 `ArtMethod` 结构中的 `entry_point_from_quick_compiled_code_` 字段。
+   - 这个新的入口点现在指向 Xposed 提供的通用原生桥接函数。
 
 4. **保存原始方法**：在覆盖之前，Xposed 仔细地将原始方法的信息（包括其原始入口点和访问标志）保存到单独的备份结构中。
 
@@ -54,14 +51,10 @@ Xposed 最著名的功能是其"Hook"Java 方法的能力。这不是简单的�
 2. **回调到 Java 桥接器**：原生函数做的事情很少。它的主要目的是回调到 Java 世界，调用 Xposed Bridge 中的核心 Java 方法：`handleHookedMethod`。
 
 3. **`handleHookedMethod` 协调**：这个强大的 Java 方法协调整个 Hook 生命周期：
-
-a. 它将方法的参数和 `this` 引用准备到一个 `MethodHookParam` 对象中。
-
-b. **`beforeHookedMethod`**：它遍历模块中所有注册的回调，并调用它们的 `beforeHookedMethod` 方法。这些回调可以检查或修改参数。关键的是，"before"回调可以选择通过直接在 `param` 对象上设置结果来完全跳过原始方法。
-
-c. **调用原始方法**：如果方法没有被跳过，`handleHookedMethod` 使用保存的备份信息来调用原始方法，并传入（可能已修改的）参数。
-
-d. **`afterHookedMethod`**：在原始方法完成后，它再次遍历回调，这次调用它们的 `afterHookedMethod` 方法。这些回调可以检查或修改方法的返回值。
+   - 它将方法的参数和 `this` 引用准备到一个 `MethodHookParam` 对象中。
+   - **`beforeHookedMethod`**：它遍历模块中所有注册的回调，并调用它们的 `beforeHookedMethod` 方法。这些回调可以检查或修改参数。关键的是，"before"回调可以选择通过直接在 `param` 对象上设置结果来完全跳过原始方法。
+   - **调用原始方法**：如果方法没有被跳过，`handleHookedMethod` 使用保存的备份信息来调用原始方法，并传入（可能已修改的）参数。
+   - **`afterHookedMethod`**：在原始方法完成后，它再次遍历回调，这次调用它们的 `afterHookedMethod` 方法。这些回调可以检查或修改方法的返回值。
 
 4. **返回给调用者**：最后，`handleHookedMethod` 将最终结果（来自"before"回调或原始方法的（已修改的）结果）返回给应用程序的原始调用点。
 
@@ -83,81 +76,81 @@ Xposed 模块是标准的 Android APK，它们向框架表明自己的性质。
 
 ### Xposed 工作流程图
 
-```
-▼
+```text
 ┌─────────────────────────┐
-│ 启动 Zygote 进程 │
+│     启动 Zygote 进程     │
 └────────────┬────────────┘
-│
-▼
+             │
+             ▼
 ┌─────────────────────────┐
-│ 运行修改的 app_process │
+│  运行修改的 app_process  │
 └────────────┬────────────┘
-│
-▼
+             │
+             ▼
 ┌─────────────────────────┐
-│ 加载 XposedBridge.jar │
+│  加载 XposedBridge.jar   │
 └────────────┬────────────┘
-│
-▼
+             │
+             ▼
 ┌─────────────────────────┐
-│ Fork 应用进程 │
-│ (继承 Xposed Bridge) │
+│     Fork 应用进程        │
+│  (继承 Xposed Bridge)    │
 └────────────┬────────────┘
-│
-▼
+             │
+             ▼
 ┌─────────────────────────┐
-│ 应用启动 │
+│       应用启动           │
 └────────────┬────────────┘
-│
-▼
+             │
+             ▼
 ┌─────────────────────────┐
-│ 加载 Xposed 模块 │
-│ (调用 handleLoadPackage)│
+│    加载 Xposed 模块      │
+│ (调用 handleLoadPackage) │
 └────────────┬────────────┘
-│
-▼
+             │
+             ▼
 ┌─────────────────────────┐
-│ Hook 目标方法 │
+│      Hook 目标方法       │
 └─────────────────────────┘
-
 ```
 
+### 方法 Hook 执行流程
+
+```text
 ┌──────────────────┐
-│ VM 查找方法入口 │
+│  VM 查找方法入口  │
 └────────┬─────────┘
-│
-▼
+         │
+         ▼
 ┌─────────────────────────────┐
-│ 检测到 ACC_NATIVE 标志 │
-│ (已被 Xposed 修改) │
+│   检测到 ACC_NATIVE 标志     │
+│     (已被 Xposed 修改)       │
 └────────┬────────────────────┘
-│
-▼
+         │
+         ▼
 ┌─────────────────────────────┐
-│ 跳转到 Xposed Native Bridge │
+│ 跳转到 Xposed Native Bridge  │
 └────────┬────────────────────┘
-│
-▼
+         │
+         ▼
 ┌─────────────────────────────┐
-│ 调用 handleHookedMethod │
+│   调用 handleHookedMethod    │
 └────────┬────────────────────┘
-│
-├──► 调用 beforeHookedMethod 回调
-│ (可以修改参数或跳过原方法)
-│
-├──► 调用原始方法 (如果未跳过)
-│ (使用备份的原始入口点)
-│
-├──► 调用 afterHookedMethod 回调
-│ (可以修改返回值)
-│
-▼
-返回给调用者
+         │
+         ├──► 调用 beforeHookedMethod 回调
+         │    (可以修改参数或跳过原方法)
+         │
+         ├──► 调用原始方法 (如果未跳过)
+         │    (使用备份的原始入口点)
+         │
+         ├──► 调用 afterHookedMethod 回调
+         │    (可以修改返回值)
+         │
+         ▼
+      返回给调用者
+```
 
-````
-
-**关键字段修改：**
+### 关键字段修改
 
 - `access_flags_`: 添加 `ACC_NATIVE` 标志
 - `entry_point_from_quick_compiled_code_`: 替换为 Xposed 桥接函数地址
@@ -168,50 +161,53 @@ Xposed 模块是标准的 Android APK，它们向框架表明自己的性质。
 ```cpp
 // Xposed 内部简化逻辑
 void hookMethod(ArtMethod* method) {
-// 保存原始信息
-backup.original_flags = method->access_flags_;
-backup.original_entry = method->entry_point_from_quick_compiled_code_;
+    // 保存原始信息
+    backup.original_flags = method->access_flags_;
+    backup.original_entry = method->entry_point_from_quick_compiled_code_;
 
-// 修改为 native 方法
-method->access_flags_ |= ACC_NATIVE;
-method->entry_point_from_quick_compiled_code_ = xposed_bridge_entry;
+    // 修改为 native 方法
+    method->access_flags_ |= ACC_NATIVE;
+    method->entry_point_from_quick_compiled_code_ = xposed_bridge_entry;
 }
+```
 
-````
+### 回调执行顺序
 
+```text
 模块 A - beforeHookedMethod
-│
-▼
+         │
+         ▼
 模块 B - beforeHookedMethod
-│
-▼
-原始方法执行
-│
-▼
+         │
+         ▼
+    原始方法执行
+         │
+         ▼
 模块 B - afterHookedMethod
-│
-▼
+         │
+         ▼
 模块 A - afterHookedMethod
-│
-▼
-返回结果
-
-````
+         │
+         ▼
+      返回结果
+```
 
 ### 3. 性能优化机制
 
-* *JIT/AOT 编译影响：**
+**JIT/AOT 编译影响：**
 
 - Hooked 方法被标记为 native，避免 JIT 编译
 - 通过 native 桥接的额外开销（约 10-50μs 每次调用）
 - 大量 Hook 可能影响应用启动时间
 
-* *最佳实践：**
+**最佳实践：**
 
 - 只 Hook 必要的方法
 - 在回调中避免耗时操作
 - 使用条件判断减少不必要的处理
+
 ---
+
 ## 与其他 Hook 框架对比
 
 | 特性 | Xposed | Frida | VirtualXposed |
@@ -223,41 +219,54 @@ method->entry_point_from_quick_compiled_code_ = xposed_bridge_entry;
 | **动态性** | 重启应用生效 | 实时生效 | 重启应用生效 |
 | **稳定性** | 高 | 中 | 中-低 |
 | **适用场景** | 长期修改 | 动态分析/调试 | 无 Root 测试 |
+
 ---
+
 ## 安全影响与检测
 
 ### 应用层检测方法
 
-* *1. 检查 Xposed 特征文件：**
+**1. 检查 Xposed 特征文件：**
 
 ```java
 private boolean isXposedInstalled() {
-try {
-// 检查 XposedBridge 类
-Class.forName("de.robv.android.xposed.XposedBridge");
-return true;
-} catch (ClassNotFoundException e) {
-return false;
+    try {
+        // 检查 XposedBridge 类
+        Class.forName("de.robv.android.xposed.XposedBridge");
+        return true;
+    } catch (ClassNotFoundException e) {
+        return false;
+    }
 }
-}
-
-````
-
-int modifiers = method.getModifiers();
-return Modifier.isNative(modifiers) && !shouldBeNative(method);
-}
-
-```
-for (StackTraceElement trace : traces) {
-if (trace.getClassName().contains("XposedBridge")) {
-return true;
-}
-}
-return false;
-}
-
 ```
 
+**2. 检查方法是否被 Hook：**
+
+```java
+private boolean isMethodHooked(Method method) {
+    int modifiers = method.getModifiers();
+    return Modifier.isNative(modifiers) && !shouldBeNative(method);
+}
+```
+
+**3. 检查堆栈跟踪：**
+
+```java
+private boolean hasXposedInStackTrace() {
+    StackTraceElement[] traces = Thread.currentThread().getStackTrace();
+    for (StackTraceElement trace : traces) {
+        if (trace.getClassName().contains("XposedBridge")) {
+            return true;
+        }
+    }
+    return false;
+}
+```
+
+### 绕过检测的方法
+
+1. Hook 检测方法本身
+2. 修改 Xposed 特征字符串
 3. 清理堆栈跟踪信息
 4. 使用定制版 Xposed（修改特征字符串）
 
@@ -298,60 +307,70 @@ return false;
 ```java
 public class MyXposedModule implements IXposedHookLoadPackage {
 
-@Override
-public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam)
-throws Throwable {
+    @Override
+    public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam)
+            throws Throwable {
 
-// 只 Hook 目标应用
-if (!lpparam.packageName.equals("com.example.target"))
-return;
+        // 只 Hook 目标应用
+        if (!lpparam.packageName.equals("com.example.target"))
+            return;
 
-// Hook 方法
-findAndHookMethod(
-"com.example.target.MainActivity",
-lpparam.classLoader,
-"getUserInfo", // 方法名
-new XC_MethodHook() {
-@Override
-protected void beforeHookedMethod(MethodHookParam param)
-throws Throwable {
-// 在方法执行前
-XposedBridge.log("getUserInfo 即将被调用");
-}
+        // Hook 方法
+        findAndHookMethod(
+            "com.example.target.MainActivity",
+            lpparam.classLoader,
+            "getUserInfo", // 方法名
+            new XC_MethodHook() {
+                @Override
+                protected void beforeHookedMethod(MethodHookParam param)
+                        throws Throwable {
+                    // 在方法执行前
+                    XposedBridge.log("getUserInfo 即将被调用");
+                }
 
-@Override
-protected void afterHookedMethod(MethodHookParam param)
-throws Throwable {
-// 在方法执行后
-String result = (String) param.getResult();
-XposedBridge.log("getUserInfo 返回: " + result);
+                @Override
+                protected void afterHookedMethod(MethodHookParam param)
+                        throws Throwable {
+                    // 在方法执行后
+                    String result = (String) param.getResult();
+                    XposedBridge.log("getUserInfo 返回: " + result);
 
-// 修改返回值
-param.setResult("Fake User Info");
+                    // 修改返回值
+                    param.setResult("Fake User Info");
+                }
+            }
+        );
+    }
 }
-}
-);
-}
-}
-
 ```
 
-lpparam.classLoader,
-byte[].class, // 参数类型
-String.class,
-new XC_MethodHook() {
-@Override
-protected void afterHookedMethod(MethodHookParam param)
-throws Throwable {
-byte[] key = (byte[]) param.args[0];
-String algorithm = (String) param.args[1];
+### 捕获加密密钥示例
 
-XposedBridge.log("捕获密钥!");
-XposedBridge.log("算法: " + algorithm);
-XposedBridge.log("密钥: " + bytesToHex(key));
-}
-}
+```java
+findAndHookMethod(
+    "javax.crypto.spec.SecretKeySpec",
+    lpparam.classLoader,
+    "<init>",
+    byte[].class, // 参数类型
+    String.class,
+    new XC_MethodHook() {
+        @Override
+        protected void afterHookedMethod(MethodHookParam param)
+                throws Throwable {
+            byte[] key = (byte[]) param.args[0];
+            String algorithm = (String) param.args[1];
+
+            XposedBridge.log("捕获密钥!");
+            XposedBridge.log("算法: " + algorithm);
+            XposedBridge.log("密钥: " + bytesToHex(key));
+        }
+    }
 );
+```
+
+---
+
+## 局限性与挑战
 
 1. **依赖 Root 权限**：需要系统级访问
 2. **稳定性问题**：不当使用可能导致系统崩溃
