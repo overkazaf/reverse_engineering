@@ -1,6 +1,7 @@
 ---
 title: "基于 AOSP 的深度改机技术指南"
 date: 2025-04-30
+tags: ["Native层", "浏览器指纹", "签名验证", "Frida", "DEX", "高级"]
 weight: 10
 ---
 

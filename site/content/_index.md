@@ -1,6 +1,7 @@
 ---
 title: "逆向工程 Cookbook"
 date: 2025-03-03
+tags: ["WebAssembly", "加密分析", "Hook", "DEX", "IDA Pro", "反混淆"]
 ---
 
 ## 写在前面

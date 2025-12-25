@@ -1,6 +1,7 @@
 ---
 title: "常用 ADB 命令大全"
 date: 2024-11-07
+tags: ["Root检测"]
 weight: 10
 ---
 

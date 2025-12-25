@@ -1,6 +1,7 @@
 ---
 title: "JNI 开发与调用原理"
 date: 2025-02-16
+tags: ["Native层", "签名验证", "SSL Pinning", "Frida", "Ghidra", "DEX"]
 weight: 10
 ---
 

@@ -1,6 +1,7 @@
 ---
 title: "消息队列应用"
 date: 2025-04-27
+tags: ["Web", "Docker", "工程实践", "分布式", "DEX", "部署"]
 weight: 10
 ---
 

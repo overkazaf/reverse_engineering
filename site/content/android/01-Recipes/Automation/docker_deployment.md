@@ -1,6 +1,7 @@
 ---
 title: "容器化部署：Docker 与 Kubernetes 实战"
 date: 2025-05-23
+tags: ["Docker", "自动化", "Android", "Root检测", "Kubernetes"]
 weight: 10
 ---
 

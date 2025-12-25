@@ -1,6 +1,7 @@
 ---
 title: "二进制分析工具链"
 date: 2024-07-06
+tags: ["Frida", "脱壳", "基础知识", "Hook", "Smali", "Android"]
 weight: 10
 ---
 

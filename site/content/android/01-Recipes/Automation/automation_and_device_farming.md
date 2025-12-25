@@ -1,6 +1,7 @@
 ---
 title: "工程化：自动化与群控系统"
 date: 2025-02-03
+tags: ["Docker", "代理池", "Unity游戏", "自动化", "Android", "ARM汇编"]
 weight: 10
 ---
 

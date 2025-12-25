@@ -1,6 +1,7 @@
 ---
 title: "音乐 App 案例"
 date: 2025-07-29
+tags: ["RSA", "Native层", "签名验证", "Frida", "案例分析", "Ghidra"]
 weight: 10
 ---
 

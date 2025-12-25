@@ -1,6 +1,7 @@
 ---
 title: "浏览器架构与渲染引擎"
 date: 2024-04-12
+tags: ["Web", "HTTP", "浏览器指纹", "Canvas指纹", "JavaScript", "视频App"]
 weight: 10
 ---
 

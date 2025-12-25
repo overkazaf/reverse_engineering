@@ -1,6 +1,7 @@
 ---
 title: "Xposed 框架入门"
 date: 2024-10-09
+tags: ["Native层", "动态分析", "Frida", "SSL Pinning", "Hook", "Xposed"]
 weight: 10
 ---
 

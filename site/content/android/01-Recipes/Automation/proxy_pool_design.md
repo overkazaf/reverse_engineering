@@ -1,6 +1,7 @@
 ---
 title: "代理池设计与 Scrapy 集成"
 date: 2024-08-17
+tags: ["Docker", "代理池", "电商", "自动化", "Android", "社交媒体"]
 weight: 10
 ---
 

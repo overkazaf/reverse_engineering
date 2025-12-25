@@ -1,6 +1,7 @@
 ---
 title: "Cookie 与 Storage"
 date: 2024-04-09
+tags: ["Web", "HTTP", "签名验证", "JavaScript", "基础知识", "Hook"]
 weight: 10
 ---
 

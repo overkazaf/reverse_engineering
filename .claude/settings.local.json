@@ -24,7 +24,8 @@
       "WebFetch(domain:fixit.lruihao.cn)",
       "Bash(head -3 echo \"\" echo \"=== 案例研究 \\(后期\\) ===\")",
       "Bash(head -3:*)",
-      "Bash(echo \"=== 案例研究 \\(后期\\) ===\" grep \"^date:\" /Users/nongjiawu/frida/reverse_engineering/site/content/android/03-Case-Studies/*.md)"
+      "Bash(echo \"=== 案例研究 \\(后期\\) ===\" grep \"^date:\" /Users/nongjiawu/frida/reverse_engineering/site/content/android/03-Case-Studies/*.md)",
+      "Bash(head:*)"
     ]
   }
 }

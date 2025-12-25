@@ -1,6 +1,7 @@
 ---
 title: "Web 逆向工程 Cookbook"
 date: 2025-07-25
+tags: ["浏览器指纹", "Docker", "签名验证", "SSL Pinning", "WebAssembly", "Canvas指纹"]
 weight: 1
 ---
 

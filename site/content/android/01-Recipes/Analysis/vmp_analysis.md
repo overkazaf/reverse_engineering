@@ -1,6 +1,7 @@
 ---
 title: "VMP 分析"
 date: 2025-01-30
+tags: ["Native层", "签名验证", "逆向分析", "Frida", "Ghidra", "DEX"]
 weight: 10
 ---
 

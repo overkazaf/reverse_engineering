@@ -1,6 +1,7 @@
 ---
 title: "Web 逆向工程工作流"
 date: 2024-11-20
+tags: ["Web", "签名验证", "Canvas指纹", "Puppeteer", "加密分析", "Hook"]
 weight: 10
 ---
 

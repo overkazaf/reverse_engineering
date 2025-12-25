@@ -1,6 +1,7 @@
 ---
 title: "开源项目推荐"
 date: 2025-06-08
+tags: ["Web", "RSA", "浏览器指纹", "学习", "签名验证", "WebAssembly"]
 weight: 10
 ---
 

@@ -1,6 +1,7 @@
 ---
 title: "使用静态分析定位 Android App 的关键逻辑"
 date: 2025-04-10
+tags: ["Native层", "签名验证", "逆向分析", "Frida", "Ghidra", "DEX"]
 weight: 10
 ---
 

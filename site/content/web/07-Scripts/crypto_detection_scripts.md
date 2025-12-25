@@ -1,6 +1,7 @@
 ---
 title: "加密算法识别与检测脚本"
 date: 2024-11-19
+tags: ["Web", "RSA", "签名验证", "Frida", "WebAssembly", "Ghidra"]
 weight: 10
 ---
 

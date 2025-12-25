@@ -1,6 +1,7 @@
 ---
 title: "JavaScript Hook 脚本"
 date: 2025-03-31
+tags: ["Web", "RSA", "签名验证", "Frida", "SSL Pinning", "代理池"]
 weight: 10
 ---
 

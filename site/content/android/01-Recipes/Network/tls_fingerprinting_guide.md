@@ -1,6 +1,7 @@
 ---
 title: "使用 TLS 指纹识别检测和绕过应用指纹"
 date: 2024-11-04
+tags: ["RSA", "浏览器指纹", "签名验证", "Frida", "SSL Pinning", "Canvas指纹"]
 weight: 10
 ---
 

@@ -1,6 +1,7 @@
 ---
 title: "构建最小化 Android 系统 (RootFS) 指南"
 date: 2025-10-02
+tags: ["高级", "Android", "Root检测", "ARM汇编", "底层原理"]
 weight: 10
 ---
 

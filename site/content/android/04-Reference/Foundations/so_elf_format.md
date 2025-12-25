@@ -1,6 +1,7 @@
 ---
 title: "Android .so 文件详解 (ELF Format)"
 date: 2024-04-05
+tags: ["Native层", "签名验证", "Frida", "JNI", "Ghidra", "加密分析"]
 weight: 10
 ---
 

@@ -1,6 +1,7 @@
 ---
 title: "ARM 汇编入门 (Android Native)"
 date: 2024-07-22
+tags: ["Native层", "Ghidra", "Frida", "JNI", "加密分析", "基础知识"]
 weight: 10
 ---
 

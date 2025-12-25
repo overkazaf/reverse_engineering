@@ -1,6 +1,7 @@
 ---
 title: "TOTP 技术原理"
 date: 2024-04-13
+tags: ["签名验证", "加密分析", "基础知识", "Smali", "Android", "DEX"]
 weight: 10
 ---
 

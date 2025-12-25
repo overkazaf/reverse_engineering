@@ -1,6 +1,7 @@
 ---
 title: "学习资源 (Learning Resources)"
 date: 2024-12-05
+tags: ["Native层", "浏览器指纹", "签名验证", "Frida", "Canvas指纹", "资源"]
 weight: 10
 ---
 

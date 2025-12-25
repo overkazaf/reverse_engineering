@@ -1,6 +1,7 @@
 ---
 title: "项目模板 - Templates"
 date: 2025-06-21
+tags: ["Web", "项目", "Docker", "加密分析", "Root检测", "模板"]
 weight: 1
 ---
 

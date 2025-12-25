@@ -1,6 +1,7 @@
 ---
 title: "android 逆向工程 Cookbook"
 date: 2025-07-29
+tags: ["OLLVM", "加密分析", "Hook", "DEX", "IDA Pro", "反混淆"]
 weight: 1
 ---
 

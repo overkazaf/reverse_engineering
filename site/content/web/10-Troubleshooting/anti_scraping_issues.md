@@ -1,6 +1,7 @@
 ---
 title: "反爬虫问题"
 date: 2024-11-26
+tags: ["Web", "问题排查", "浏览器指纹", "Canvas指纹", "代理池", "Selenium"]
 weight: 10
 ---
 

@@ -1,6 +1,7 @@
 ---
 title: "SO 动态库编译与加载"
 date: 2024-10-01
+tags: ["Native层", "签名验证", "SSL Pinning", "Frida", "DEX", "加密分析"]
 weight: 10
 ---
 

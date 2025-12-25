@@ -1,6 +1,7 @@
 ---
 title: "社交媒体 App 与风控案例"
 date: 2025-02-13
+tags: ["Native层", "签名验证", "Frida", "案例分析", "代理池", "Ghidra"]
 weight: 10
 ---
 

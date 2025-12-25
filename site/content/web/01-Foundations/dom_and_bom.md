@@ -1,6 +1,7 @@
 ---
 title: "DOM 与 BOM"
 date: 2024-06-24
+tags: ["Web", "HTTP", "代理池", "JavaScript", "加密分析", "基础知识"]
 weight: 10
 ---
 

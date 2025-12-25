@@ -1,6 +1,7 @@
 ---
 title: "WebRTC 指纹与隐私"
 date: 2025-06-06
+tags: ["Web", "浏览器指纹", "Canvas指纹", "WebAssembly", "代理池", "视频App"]
 weight: 10
 ---
 
@@ -104,6 +105,7 @@ pc.onicecandidate = (ice) => {
 if (ice && ice.candidate && ice.candidate.candidate) {
 const candidate = ice.candidate.candidate;
 console.log("ICE Candidate:", candidate);
+tags: ["Web", "浏览器指纹", "Canvas指纹", "WebAssembly", "代理池", "视频App"]
 
 // 解析 IP 地址
 const ipRegex =

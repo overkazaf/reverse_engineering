@@ -1,6 +1,7 @@
 ---
 title: "Android 应用逆向工程完整工作流程"
 date: 2024-11-10
+tags: ["RSA", "加密分析", "Hook", "DEX", "反混淆", "IDA Pro"]
 weight: 10
 ---
 

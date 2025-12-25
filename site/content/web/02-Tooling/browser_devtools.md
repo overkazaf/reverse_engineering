@@ -1,6 +1,7 @@
 ---
 title: "浏览器开发者工具 (DevTools)"
 date: 2024-06-27
+tags: ["Web", "签名验证", "WebAssembly", "加密分析", "Hook", "抓包"]
 weight: 10
 ---
 

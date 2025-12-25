@@ -1,6 +1,7 @@
 ---
 title: "AndroidManifest.xml 深度解析"
 date: 2024-06-01
+tags: ["SSL Pinning", "Hook", "基础知识", "Smali", "Android", "DEX"]
 weight: 10
 ---
 

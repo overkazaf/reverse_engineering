@@ -1,6 +1,7 @@
 ---
 title: "学习资源"
 date: 2024-11-30
+tags: ["Web", "RSA", "WebAssembly", "加密分析", "Hook", "反混淆"]
 weight: 10
 ---
 

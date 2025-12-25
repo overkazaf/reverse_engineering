@@ -1,6 +1,7 @@
 ---
 title: "DEX 文件相关"
 date: 2024-04-27
+tags: ["Native层", "签名验证", "Frida", "SSL Pinning", "Ghidra", "加密分析"]
 weight: 10
 ---
 

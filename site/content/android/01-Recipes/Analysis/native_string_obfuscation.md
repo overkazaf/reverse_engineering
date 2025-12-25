@@ -1,6 +1,7 @@
 ---
 title: "Native 层字符串混淆与逆向"
 date: 2024-12-01
+tags: ["Native层", "Ghidra", "逆向分析", "Frida", "加密分析", "Hook"]
 weight: 10
 ---
 

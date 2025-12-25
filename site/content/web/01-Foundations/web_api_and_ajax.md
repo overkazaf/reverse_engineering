@@ -1,6 +1,7 @@
 ---
 title: "Web API 与 Ajax"
 date: 2024-04-28
+tags: ["Web", "HTTP", "浏览器指纹", "签名验证", "Canvas指纹", "JavaScript"]
 weight: 10
 ---
 

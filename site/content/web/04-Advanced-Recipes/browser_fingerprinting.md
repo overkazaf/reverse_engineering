@@ -1,6 +1,7 @@
 ---
 title: "浏览器指纹识别"
 date: 2025-03-15
+tags: ["Web", "浏览器指纹", "Canvas指纹", "WebAssembly", "代理池", "Hook"]
 weight: 10
 ---
 

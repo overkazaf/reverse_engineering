@@ -1,6 +1,7 @@
 ---
 title: "WebAssembly 基础"
 date: 2024-07-27
+tags: ["Web", "HTTP", "Ghidra", "WebAssembly", "JavaScript", "加密分析"]
 weight: 10
 ---
 

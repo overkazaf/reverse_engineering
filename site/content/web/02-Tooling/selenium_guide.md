@@ -1,6 +1,7 @@
 ---
 title: "Selenium 指南"
 date: 2024-07-07
+tags: ["Web", "代理池", "Hook", "抓包", "Playwright", "DevTools"]
 weight: 10
 ---
 

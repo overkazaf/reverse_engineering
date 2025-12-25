@@ -1,6 +1,7 @@
 ---
 title: "Ghidra 入门"
 date: 2024-09-27
+tags: ["静态分析", "Ghidra", "IDA", "Android", "IDA Pro"]
 weight: 10
 ---
 

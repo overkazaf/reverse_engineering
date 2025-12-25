@@ -1,6 +1,7 @@
 ---
 title: "快速入门"
 date: 2024-03-06
+tags: ["入门", "签名验证", "Frida", "DEX", "加密分析", "Hook"]
 weight: 1
 ---
 

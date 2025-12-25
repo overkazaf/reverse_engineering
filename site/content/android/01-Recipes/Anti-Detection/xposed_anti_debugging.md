@@ -1,6 +1,7 @@
 ---
 title: "绕过应用的 Xposed 检测"
 date: 2025-02-23
+tags: ["Native层", "签名验证", "SSL Pinning", "Frida", "DEX", "Hook"]
 weight: 10
 ---
 

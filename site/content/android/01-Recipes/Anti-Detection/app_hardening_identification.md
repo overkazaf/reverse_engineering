@@ -1,6 +1,7 @@
 ---
 title: "主流应用加固厂商及其特征识别"
 date: 2025-01-22
+tags: ["代理池", "SSL Pinning", "加密分析", "脱壳", "Android", "Root检测"]
 weight: 10
 ---
 

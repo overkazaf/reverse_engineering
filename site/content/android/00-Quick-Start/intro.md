@@ -1,6 +1,7 @@
 ---
 title: "关于本书"
 date: 2024-03-31
+tags: ["入门", "Frida", "加密分析", "Android", "DEX"]
 weight: 10
 ---
 

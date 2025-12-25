@@ -1,6 +1,7 @@
 ---
 title: "验证码绕过技术：滑块与点选篇"
 date: 2025-04-21
+tags: ["SSL Pinning", "加密分析", "Android", "Selenium", "验证码", "Root检测"]
 weight: 10
 ---
 
