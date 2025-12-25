@@ -272,9 +272,21 @@ def enter_chroot_environment(rootfs_path):
 #### 🔍 安全研究应用
 在Android逆向中，rootfs技术常用于：
 - **沙箱环境**: 在隔离环境中分析恶意APP
-- **系统仿真**: 创建特定Android版本的运行环境  
+- **系统仿真**: 创建特定Android版本的运行环境
 - **绕过检测**: 通过chroot隐藏分析工具
 - **容器化分析**: 使用Docker容器进行大规模自动化分析
+
+#### 🚀 开源实现：mini_rootfs
+
+基于上述rootfs构建技术，我开发了一个精简的实现项目：[mini_rootfs](https://github.com/overkazaf/mini_rootfs)
+
+该项目提供了一个轻量级的rootfs构建工具，核心特性包括：
+- **最小化依赖**: 自动分析并复制必要的共享库
+- **快速部署**: 一键创建可用的chroot环境
+- **跨平台支持**: 适配Linux和Android环境
+- **逆向友好**: 专为安全研究和动态分析场景设计
+
+如果你对rootfs隔离技术感兴趣，欢迎参考该项目的实现。
 
 ---
 

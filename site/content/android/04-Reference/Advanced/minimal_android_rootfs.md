@@ -171,3 +171,17 @@ on property:sys.boot_completed=1
 3. **启动 `system_server`**: Zygote 启动的第一个 Java 进程，它会创建所有的 Android 系统服务 (AMS, WMS, PMS 等)。
 
 完成这些后，系统才能真正地运行 Android 应用。但这已经超出了"最小化 RootFS"的范畴，进入了完整的系统移植和开发领域。
+
+---
+
+## 开源实现：mini_rootfs
+
+基于本文介绍的构建技术，我实现了一个精简的开源项目：[mini_rootfs](https://github.com/overkazaf/mini_rootfs)
+
+该项目将上述繁琐的手动步骤自动化，提供：
+- **一键构建**: 自动完成依赖分析、文件复制、符号链接创建
+- **依赖解析**: 自动使用 `ldd` 分析并复制所需的共享库
+- **模板配置**: 内置 `init.rc` 模板，开箱即用
+- **跨平台**: 支持 Linux 和 Android 目标环境
+
+如果你对最小化 RootFS 构建感兴趣，欢迎参考该项目的实现，也欢迎贡献代码。
