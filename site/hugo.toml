@@ -206,8 +206,8 @@ buildFuture = true
       position = "after"
       comment = "如果这篇文章对你有帮助，请我喝杯咖啡吧~"
       [params.page.reward.ways]
-        wechatpay = "/images/wechatpay.png"
-        alipay = "/images/alipay.png"
+        wechatpay = "/reverse_engineering/images/wechatpay.png"
+        alipay = "/reverse_engineering/images/alipay.png"
     # 分享配置
     [params.page.share]
       enable = true
