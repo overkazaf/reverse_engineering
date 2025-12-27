@@ -12,7 +12,7 @@ weight: 10
 >
 > 本配方涉及以下核心技术，建议先阅读相关章节：
 >
-> - **[ADB 速查手册](../../02-Tools/Environment/adb_cheatsheet.md)** - 理解 ADB 命令基础
+> - **[ADB 速查手册](../../02-Tools/Cheatsheets/adb_cheatsheet.md)** - 理解 ADB 命令基础
 > - **Python 基础** - 掌握 subprocess、文件操作等
 
 在 Android 逆向工程中，自动化脚本可以极大地提高效率，例如自动安装 APK、重启应用、模拟点击以及批量处理设备。Python 是编写这些脚本的首选语言。

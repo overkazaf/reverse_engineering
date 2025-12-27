@@ -759,7 +759,7 @@ posts = scraper.scrape_feed()
 
 ## 相关章节
 
-- [GraphQL API 分析](../02-Techniques/graphql_analysis.md)
-- [WebSocket 通信分析](../02-Techniques/websocket_analysis.md)
-- [无限滚动加载](../02-Techniques/infinite_scroll.md)
-- [设备指纹识别](../03-Advanced-Topics/device_fingerprinting.md)
+- [API 逆向工程](../03-Basic-Recipes/api_reverse_engineering.md)
+- [WebSocket 逆向](../03-Basic-Recipes/websocket_reversing.md)
+- [动态参数分析](../03-Basic-Recipes/dynamic_parameter_analysis.md)
+- [浏览器指纹识别](../04-Advanced-Recipes/browser_fingerprinting.md)

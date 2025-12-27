@@ -1152,8 +1152,8 @@ simulator.cleanup()
 
 ## 相关章节
 
-- [浏览器 DevTools 使用](../01-Tools/browser_devtools.md)
-- [JavaScript Hook 技术](../02-Techniques/js_hook.md)
-- [浏览器指纹识别](../03-Advanced-Topics/browser_fingerprinting.md)
+- [浏览器 DevTools 使用](../02-Tooling/browser_devtools.md)
+- [Hook 技术](../03-Basic-Recipes/hooking_techniques.md)
+- [浏览器指纹识别](../04-Advanced-Recipes/browser_fingerprinting.md)
 - [TLS 指纹识别](../04-Advanced-Recipes/tls_fingerprinting.md)
-- [CAPTCHA 识别与绕过](../03-Advanced-Topics/captcha_bypass.md)
+- [CAPTCHA 识别与绕过](../04-Advanced-Recipes/captcha_bypass.md)

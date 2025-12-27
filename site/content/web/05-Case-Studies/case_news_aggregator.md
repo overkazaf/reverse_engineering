@@ -1192,7 +1192,7 @@ print(f"Fetched article {i}")
 ## 相关章节
 
 - [HTTP/HTTPS 协议](../01-Foundations/http_https_protocol.md)
-- [JavaScript Hook 技术](../02-Techniques/js_hook.md)
-- [WebSocket 逆向](../03-Advanced-Topics/websocket_reversing.md)
+- [Hook 技术](../03-Basic-Recipes/hooking_techniques.md)
+- [WebSocket 逆向](../03-Basic-Recipes/websocket_reversing.md)
 - [内容安全策略绕过](../04-Advanced-Recipes/csp_bypass.md)
 - [搜索引擎对抗](./case_search_engine.md)

@@ -560,7 +560,7 @@ Content-Security-Policy: script-src 'sha256-hash_of_script_content'
 
 ## 相关章节
 
-- [XSS 漏洞利用](../02-Techniques/xss_exploitation.md)
-- [浏览器安全机制](../01-Foundations/browser_security.md)
-- [HTTP 安全头部](../01-Foundations/http_security_headers.md)
-- [DOM XSS 检测](../02-Techniques/dom_xss_detection.md)
+- [Hook 技术](../03-Basic-Recipes/hooking_techniques.md)
+- [浏览器架构](../01-Foundations/browser_architecture.md)
+- [HTTP/HTTPS 协议](../01-Foundations/http_https_protocol.md)
+- [JavaScript 基础](../01-Foundations/javascript_basics.md)

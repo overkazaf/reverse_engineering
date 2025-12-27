@@ -15,7 +15,7 @@ weight: 1
 
 **完全新手？** 先完成 10 分钟快速入门，体验第一次 Hook！
 
-👉 **[10 分钟快速入门](./00-Quick-Start/index.md)** - 安装 Frida 并完成第一次 Hook
+👉 **[10 分钟快速入门](./00-Quick-Start/)** - 安装 Frida 并完成第一次 Hook
 
 **环境还没配置好？**
 👉 **[环境配置指南](./00-Quick-Start/setup.md)** - 从零搭建逆向分析环境
@@ -70,6 +70,7 @@ weight: 1
 - [RE Workflow](./01-Recipes/Analysis/re_workflow.md) - 逆向工程工作流
 - [Static Analysis Deep Dive](./01-Recipes/Analysis/static_analysis_deep_dive.md) - 静态分析深入
 - [Dynamic Analysis Deep Dive](./01-Recipes/Analysis/dynamic_analysis_deep_dive.md) - 动态分析深入
+- [eBPF Android Reversing](./01-Recipes/Analysis/ebpf_android_reversing.md) - eBPF Android逆向实战
 - [OLLVM Deobfuscation](./01-Recipes/Analysis/ollvm_deobfuscation.md) - OLLVM反混淆
 - [VMP Analysis](./01-Recipes/Analysis/vmp_analysis.md) - VMP分析
 - [JS Obfuscator](./01-Recipes/Analysis/js_obfuscator.md) - JS混淆分析
@@ -93,6 +94,7 @@ weight: 1
 
 - [Frida Script Examples](./01-Recipes/Scripts/frida_script_examples.md) - Frida脚本示例
 - [Frida Common Scripts](./01-Recipes/Scripts/frida_common_scripts.md) - Frida常用脚本
+- [eBPF Scripts](./01-Recipes/Scripts/ebpf_scripts.md) - eBPF脚本集
 - [Automation Scripts](./01-Recipes/Scripts/automation_scripts.md) - 自动化脚本
 - [Native Hooking](./01-Recipes/Scripts/native_hooking.md) - Native Hook模式
 - [Objection Snippets](./01-Recipes/Scripts/objection_snippets.md) - Objection代码片段
@@ -109,6 +111,8 @@ weight: 1
 - [Xposed Internals](./02-Tools/Dynamic/xposed_internals.md) - Xposed内部原理
 - [Unidbg Guide](./02-Tools/Dynamic/unidbg_guide.md) - Unidbg使用指南
 - [Unidbg Internals](./02-Tools/Dynamic/unidbg_internals.md) - Unidbg内部原理
+- [eBPF Guide](./02-Tools/Dynamic/ebpf_guide.md) - eBPF使用指南
+- [eBPF Internals](./02-Tools/Dynamic/ebpf_internals.md) - eBPF内部原理
 
 ### 🔍 [Static - 静态分析工具](./02-Tools/Static/)
 - [Ghidra Guide](./02-Tools/Static/ghidra_guide.md) - Ghidra使用指南
@@ -194,7 +198,9 @@ Android应用和系统的核心基础。
 - **脱壳加固应用** → [Unpacking](./01-Recipes/Unpacking/un-packing.md)
 - **分析加密算法** → [Crypto Analysis](./01-Recipes/Network/crypto_analysis.md)
 - **学习 Frida 使用** → [Frida Guide](./02-Tools/Dynamic/frida_guide.md)
+- **学习 eBPF 隐蔽追踪** → [eBPF Guide](./02-Tools/Dynamic/ebpf_guide.md)
 - **查看 Frida 脚本示例** → [Frida Script Examples](./01-Recipes/Scripts/frida_script_examples.md)
+- **查看 eBPF 脚本示例** → [eBPF Scripts](./01-Recipes/Scripts/ebpf_scripts.md)
 - **了解 APK 文件结构** → [APK Structure](./04-Reference/Foundations/apk_structure.md)
 - **看实战案例** → [Case Studies](./03-Case-Studies/)
 ---

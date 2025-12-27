@@ -702,5 +702,5 @@ console.log("Obfuscation indicators:", indicators);
 - [JavaScript 虚拟机保护](./javascript_vm_protection.md)
 - [WebAssembly 逆向](./webassembly_reversing.md)
 - [JavaScript 反混淆](../04-Advanced-Recipes/javascript_deobfuscation.md)
-- [浏览器调试技巧](../02-Techniques/browser_debugging.md)
-- [AST 分析与转换](../02-Techniques/ast_analysis.md)
+- [调试技巧](../03-Basic-Recipes/debugging_techniques.md)
+- [AST 工具](../02-Tooling/ast_tools.md)

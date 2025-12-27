@@ -17,7 +17,7 @@ weight: 1
 
 **完全新手？** 先完成 10 分钟快速入门，体验第一次 Hook！
 
-**[10 分钟快速入门](./00-Quick-Start/index.md)** - 安装工具并完成第一次 Hook
+**[10 分钟快速入门](./00-Quick-Start/)** - 安装工具并完成第一次 Hook
 
 **想看更多实战案例？**
 **[解密 API 参数](./00-Quick-Start/decrypt_api_params.md)** - 学习分析和还原加密参数
@@ -61,7 +61,7 @@ weight: 1
 
 ### 快速入门
 
-1. **[概述](./00-Quick-Start/index.md)** - 学习路径和准备工作
+1. **[概述](./00-Quick-Start/)** - 学习路径和准备工作
 
 2. **[你的第一个 Hook](./00-Quick-Start/your_first_hook.md)** - 15 分钟完成第一次 Hook
 

@@ -886,7 +886,7 @@ navigator.serviceWorker.register("/scripts/sw.js"); // scope = '/scripts/'
 
 ## 相关章节
 
-- [浏览器调试技巧](../02-Techniques/browser_debugging.md)
-- [离线存储分析](../02-Techniques/offline_storage.md)
+- [调试技巧](../03-Basic-Recipes/debugging_techniques.md)
+- [Cookie 与 Storage](../01-Foundations/cookie_and_storage.md)
 - [CSP 绕过技术](./csp_bypass.md)
-- [Web Worker 分析](../02-Techniques/web_worker_analysis.md)
+- [JavaScript 执行机制](../01-Foundations/javascript_execution_mechanism.md)

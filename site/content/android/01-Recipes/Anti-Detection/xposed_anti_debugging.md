@@ -13,7 +13,7 @@ weight: 10
 > 本配方涉及以下核心技术，建议先阅读相关章节：
 >
 > - **[Xposed 框架指南](../../02-Tools/Dynamic/xposed_guide.md)** - 理解 Xposed Hook 原理
-> - **[Magisk 环境配置](../../02-Tools/Environment/magisk_guide.md)** - Root 环境与模块管理
+> - **[Magisk & LSPosed 原理](../../04-Reference/Advanced/magisk_lsposed_internals.md)** - Root 环境与模块管理
 
 ## 问题场景
 

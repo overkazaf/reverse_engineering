@@ -13,7 +13,7 @@ weight: 10
 > 本配方涉及以下核心技术，建议先阅读相关章节：
 >
 > - **[Frida 完整指南](../../02-Tools/Dynamic/frida_guide.md)** - 掌握 Frida 基础语法与 API
-> - **[ADB 速查手册](../../02-Tools/Environment/adb_cheatsheet.md)** - 设备连接与应用管理
+> - **[ADB 速查手册](../../02-Tools/Cheatsheets/adb_cheatsheet.md)** - 设备连接与应用管理
 
 ## 问题场景
 

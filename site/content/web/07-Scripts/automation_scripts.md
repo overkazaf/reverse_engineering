@@ -918,6 +918,6 @@ response = requests.get('https://example.com', proxies=proxies)
 ## 相关章节
 
 - [Puppeteer 与 Playwright](../02-Tooling/puppeteer_playwright.md)
-- [Selenium WebDriver](../02-Tooling/selenium_webdriver.md)
-- [JavaScript Hook 脚本](javascript_hook_scripts.md)
-- [反爬虫对抗技术](../02-Techniques/anti_anti_scraping.md)
+- [Selenium 指南](../02-Tooling/selenium_guide.md)
+- [JavaScript Hook 脚本](./javascript_hook_scripts.md)
+- [反爬虫深度分析](../04-Advanced-Recipes/anti_scraping_deep_dive.md)

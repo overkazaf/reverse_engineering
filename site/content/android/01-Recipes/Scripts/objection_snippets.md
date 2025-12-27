@@ -13,7 +13,7 @@ weight: 10
 > 本配方涉及以下核心技术，建议先阅读相关章节：
 >
 > - **[Frida 完整指南](../../02-Tools/Dynamic/frida_guide.md)** - Objection 基于 Frida 构建
-> - **[ADB 速查手册](../../02-Tools/Environment/adb_cheatsheet.md)** - 设备连接与应用启动
+> - **[ADB 速查手册](../../02-Tools/Cheatsheets/adb_cheatsheet.md)** - 设备连接与应用启动
 
 Objection 是一个基于 Frida 开发的运行时移动端探索工具包。它提供了类似于 shell 的交互式命令行，无需编写 JavaScript 代码即可完成大部分常见的逆向任务。
 

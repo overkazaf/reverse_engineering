@@ -377,5 +377,5 @@ result = framework.fetch('https://example.com', use_browser=True)
 ## 相关章节
 
 - [反爬虫技术深度分析](../04-Advanced-Recipes/anti_scraping_deep_dive.md)
-- [浏览器指纹识别与对抗](../03-Advanced-Topics/browser_fingerprinting.md)
+- [浏览器指纹识别与对抗](../04-Advanced-Recipes/browser_fingerprinting.md)
 - [代理池管理](./proxy_pool_management.md)

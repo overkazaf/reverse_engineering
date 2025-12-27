@@ -1388,8 +1388,8 @@ nodes = discover_all_cdn_nodes('cdn.example.com')
 
 ## 相关章节
 
-- [浏览器 DevTools 使用](../01-Tools/browser_devtools.md)
-- [抓包与代理工具](../01-Tools/packet_capture.md)
-- [JavaScript 混淆与反混淆](../02-Techniques/js_obfuscation.md)
+- [浏览器 DevTools 使用](../02-Tooling/browser_devtools.md)
+- [抓包与代理工具](../02-Tooling/burp_suite_guide.md)
+- [JavaScript 反混淆](../04-Advanced-Recipes/javascript_deobfuscation.md)
 - [WebAssembly 逆向](../04-Advanced-Recipes/webassembly_reversing.md)
-- [DRM 保护机制](../03-Advanced-Topics/drm_protection.md)
+- [前端加固技术](../04-Advanced-Recipes/frontend_hardening.md)

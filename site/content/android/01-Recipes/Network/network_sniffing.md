@@ -12,7 +12,7 @@ weight: 10
 >
 > 本配方涉及以下核心技术，建议先阅读相关章节：
 >
-> - **[ADB 速查手册](../../02-Tools/Environment/adb_cheatsheet.md)** - 设备连接与证书推送
+> - **[ADB 速查手册](../../02-Tools/Cheatsheets/adb_cheatsheet.md)** - 设备连接与证书推送
 > - **HTTP/HTTPS 协议** - 理解请求响应结构与 TLS 握手
 
 ## 问题场景

@@ -674,5 +674,5 @@ RTCPeerConnection.prototype.createOffer = function () {
 
 - [Canvas 指纹识别](./canvas_fingerprinting.md)
 - [TLS 指纹识别](./tls_fingerprinting.md)
-- [浏览器指纹技术](../01-Tools/browser_fingerprinting.md)
-- [隐私保护技术](../02-Techniques/privacy_protection.md)
+- [浏览器指纹技术](./browser_fingerprinting.md)
+- [反爬虫深度分析](./anti_scraping_deep_dive.md)

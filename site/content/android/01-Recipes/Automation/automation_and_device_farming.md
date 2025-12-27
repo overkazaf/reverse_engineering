@@ -12,7 +12,7 @@ weight: 10
 >
 > 本配方涉及以下核心技术，建议先阅读相关章节：
 >
-> - **[ADB 速查手册](../../02-Tools/Environment/adb_cheatsheet.md)** - 设备控制与应用管理基础
+> - **[ADB 速查手册](../../02-Tools/Cheatsheets/adb_cheatsheet.md)** - 设备控制与应用管理基础
 > - **[虚拟化与容器技术](./virtualization_and_containers.md)** - 理解模拟器与容器环境
 
 在虚拟化和容器化解决了"环境"问题之后，自动化和群控系统则负责解决"执行"和"管理"的问题。它们是驱动整个规模化测试和分析流水线运转的核心引擎。

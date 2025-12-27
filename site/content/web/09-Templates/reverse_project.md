@@ -130,7 +130,7 @@ function generateSign(params) {
 
 ### 4. 复现实现
 
-详见 [reproduce.py](../scripts/reproduce.py)
+详见 [自动化脚本](../07-Scripts/automation_scripts.md)
 
 ---
 

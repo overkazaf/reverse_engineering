@@ -637,4 +637,4 @@ wasm-objdump -s -j data module.wasm
 - [JavaScript 虚拟机保护](./javascript_vm_protection.md)
 - [前端加固技术](./frontend_hardening.md)
 - [JavaScript 反混淆](../04-Advanced-Recipes/javascript_deobfuscation.md)
-- [浏览器调试技巧](../02-Techniques/browser_debugging.md)
+- [调试技巧](../03-Basic-Recipes/debugging_techniques.md)

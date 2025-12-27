@@ -542,7 +542,7 @@ JSVMP 的目标是提高攻击成本，而非完全防止逆向。
 ## 相关章节
 
 - [WebAssembly 逆向](./webassembly_reversing.md) - WebAssembly 技术基础
-- [JavaScript 反混淆](../02-Techniques/js_deobfuscation.md) - 代码反混淆技术
+- [JavaScript 反混淆](./javascript_deobfuscation.md) - 代码反混淆技术
 - [AST 解析和操作](../02-Tooling/ast_tools.md) - AST 工具使用
 - [浏览器调试技巧](../03-Basic-Recipes/debugging_techniques.md) - 高级调试方法
 - [前端加固技术](./frontend_hardening.md) - 其他前端保护技术

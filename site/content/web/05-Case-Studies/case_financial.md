@@ -667,7 +667,7 @@ return requests.get(url, headers=headers)
 
 ## 相关章节
 
-- [加密算法逆向](../02-Techniques/crypto_reverse_engineering.md)
-- [设备指纹识别](../03-Advanced-Topics/device_fingerprinting.md)
-- [WebSocket 通信分析](../02-Techniques/websocket_analysis.md)
-- [行为检测绕过](../02-Techniques/behavior_detection_bypass.md)
+- [加密算法识别](../03-Basic-Recipes/crypto_identification.md)
+- [浏览器指纹识别](../04-Advanced-Recipes/browser_fingerprinting.md)
+- [WebSocket 逆向](../03-Basic-Recipes/websocket_reversing.md)
+- [反爬虫深度分析](../04-Advanced-Recipes/anti_scraping_deep_dive.md)
