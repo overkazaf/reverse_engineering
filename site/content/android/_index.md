@@ -109,6 +109,8 @@ weight: 1
 - [Frida Internals](./02-Tools/Dynamic/frida_internals.md) - Frida内部原理
 - [Xposed Guide](./02-Tools/Dynamic/xposed_guide.md) - Xposed使用指南
 - [Xposed Internals](./02-Tools/Dynamic/xposed_internals.md) - Xposed内部原理
+- [KernelSU Guide](./02-Tools/Dynamic/kernelsu_guide.md) - KernelSU使用指南
+- [KernelSU Internals](./02-Tools/Dynamic/kernelsu_internals.md) - KernelSU内部原理
 - [Unidbg Guide](./02-Tools/Dynamic/unidbg_guide.md) - Unidbg使用指南
 - [Unidbg Internals](./02-Tools/Dynamic/unidbg_internals.md) - Unidbg内部原理
 - [eBPF Guide](./02-Tools/Dynamic/ebpf_guide.md) - eBPF使用指南
@@ -150,6 +152,7 @@ Android应用和系统的核心基础。
 - [Smali Syntax](./04-Reference/Foundations/smali_syntax.md) - Smali语法
 - [SO ELF Format](./04-Reference/Foundations/so_elf_format.md) - SO文件(ELF)格式
 - [ART Runtime](./04-Reference/Foundations/art_runtime.md) - ART运行时
+- [Boot Image & GKI](./04-Reference/Foundations/boot_image_and_gki.md) - 启动镜像与GKI
 - [ARM Assembly](./04-Reference/Foundations/arm_assembly.md) - ARM汇编
 - [x86 & ARM Assembly Basics](./04-Reference/Foundations/x86_and_arm_assembly_basics.md) - x86与ARM汇编基础
 - [TOTP](./04-Reference/Foundations/totp.md) - 时间动态密码原理
@@ -198,6 +201,7 @@ Android应用和系统的核心基础。
 - **脱壳加固应用** → [Unpacking](./01-Recipes/Unpacking/un-packing.md)
 - **分析加密算法** → [Crypto Analysis](./01-Recipes/Network/crypto_analysis.md)
 - **学习 Frida 使用** → [Frida Guide](./02-Tools/Dynamic/frida_guide.md)
+- **学习 KernelSU Root** → [KernelSU Guide](./02-Tools/Dynamic/kernelsu_guide.md)
 - **学习 eBPF 隐蔽追踪** → [eBPF Guide](./02-Tools/Dynamic/ebpf_guide.md)
 - **查看 Frida 脚本示例** → [Frida Script Examples](./01-Recipes/Scripts/frida_script_examples.md)
 - **查看 eBPF 脚本示例** → [eBPF Scripts](./01-Recipes/Scripts/ebpf_scripts.md)
