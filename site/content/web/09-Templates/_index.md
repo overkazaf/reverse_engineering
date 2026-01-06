@@ -208,9 +208,9 @@ config/secrets.py
 
 ## 相关资源
 
-- [Docker 部署](../06-Engineering/docker_deployment/)
-- [分布式爬虫](../06-Engineering/distributed_scraping/)
-- [监控告警](../06-Engineering/monitoring_and_alerting/)
+- [Docker 部署](../06-engineering/docker_deployment/)
+- [分布式爬虫](../06-engineering/distributed_scraping/)
+- [监控告警](../06-engineering/monitoring_and_alerting/)
 
 ---
 

@@ -150,7 +150,7 @@ npm install -g @babel/cli @babel/core
 - if/else 条件判断
 - 基本的调试技巧
 
-那你就可以开始了！不懂的地方可以参考 [JavaScript 基础](../01-Foundations/javascript_basics/)。
+那你就可以开始了！不懂的地方可以参考 [JavaScript 基础](../01-foundations/javascript_basics/)。
 
 ### Q: 这些技术是否合法？
 
@@ -187,9 +187,9 @@ npm install -g @babel/cli @babel/core
 
 完成快速入门后，你可以继续深入学习：
 
-- [基础配方](../03-Basic-Recipes/) - 核心技术详解
-- [高级配方](../04-Advanced-Recipes/) - 高级技术挑战
-- [案例研究](../05-Case-Studies/) - 真实网站分析
+- [基础配方](../03-basic-recipes/) - 核心技术详解
+- [高级配方](../04-advanced-recipes/) - 高级技术挑战
+- [案例研究](../05-case-studies/) - 真实网站分析
 
 ---
 

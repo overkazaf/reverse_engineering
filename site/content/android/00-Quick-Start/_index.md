@@ -223,34 +223,34 @@ frida -U -f com.android.settings -l modify_behavior.js --no-pause
 
 #### **深入学习工具**
 
-- [Frida 完整指南](../02-Tools/Dynamic/frida_guide/) - 学习 Frida 的所有 API
-- [Frida 内部原理](../02-Tools/Dynamic/frida_internals/) - 理解 Frida 如何工作
-- [ADB 命令速查](../02-Tools/Cheatsheets/adb_cheatsheet/) - 掌握 ADB 常用命令
+- [Frida 完整指南](../02-tools/dynamic/frida_guide/) - 学习 Frida 的所有 API
+- [Frida 内部原理](../02-tools/dynamic/frida_internals/) - 理解 Frida 如何工作
+- [ADB 命令速查](../02-tools/cheatsheets/adb_cheatsheet/) - 掌握 ADB 常用命令
 
 #### **解决具体问题**
 
 **场景 1: 抓包分析**
-→ [网络抓包](../01-Recipes/Network/network_sniffing/)
+→ [网络抓包](../01-recipes/network/network_sniffing/)
 
 **场景 2: 绕过反调试**
-→ [反调试绕过](../01-Recipes/Anti-Detection/frida_anti_debugging/)
+→ [反调试绕过](../01-recipes/anti-detection/frida_anti_debugging/)
 
 **场景 3: 分析加密算法**
-→ [密码学分析](../01-Recipes/Network/crypto_analysis/)
+→ [密码学分析](../01-recipes/network/crypto_analysis/)
 
 **场景 4: 脱壳加固 App**
-→ [应用脱壳](../01-Recipes/Unpacking/un-packing/)
+→ [应用脱壳](../01-recipes/unpacking/un-packing/)
 
 #### **实战案例**
 
-- [音乐 App 分析](../03-Case-Studies/case_music_apps/) - VIP 破解、音频解密
-- [社交 App 风控](../03-Case-Studies/case_social_media_and_anti_bot/) - API 签名、设备指纹
+- [音乐 App 分析](../03-case-studies/case_music_apps/) - VIP 破解、音频解密
+- [社交 App 风控](../03-case-studies/case_social_media_and_anti_bot/) - API 签名、设备指纹
 
 #### **理解基础原理**
 
-- [APK 文件结构](../04-Reference/Foundations/apk_structure/)
-- [Android 四大组件](../04-Reference/Foundations/android_components/)
-- [DEX 文件格式](../04-Reference/Foundations/dex_format/)
+- [APK 文件结构](../04-reference/foundations/apk_structure/)
+- [Android 四大组件](../04-reference/foundations/android_components/)
+- [DEX 文件格式](../04-reference/foundations/dex_format/)
 
 ---
 
@@ -293,7 +293,7 @@ adb forward tcp:27042 tcp:27042
 
 ### Q: 应用检测到 Frida?
 
-→ 查看 [Frida 反调试绕过](../01-Recipes/Anti-Detection/frida_anti_debugging/)
+→ 查看 [Frida 反调试绕过](../01-recipes/anti-detection/frida_anti_debugging/)
 
 ---
 
@@ -303,7 +303,7 @@ adb forward tcp:27042 tcp:27042
 | ---------------------- | ---------------------------------------------------------------- |
 | **Frida 官方文档**     | https://frida.re/docs/                                           |
 | **Frida CodeShare**    | https://codeshare.frida.re/ (社区脚本)                           |
-| **本 Cookbook 脚本库** | [Frida 脚本示例](../01-Recipes/Scripts/frida_script_examples/) |
+| **本 Cookbook 脚本库** | [Frida 脚本示例](../01-recipes/scripts/frida_script_examples/) |
 
 ---
 

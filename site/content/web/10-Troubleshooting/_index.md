@@ -285,10 +285,10 @@ logger.info(f"Operation took {time.time() - start:.2f}s")
 
 ## 相关资源
 
-- [Chrome DevTools 指南](../02-Tooling/browser_devtools/)
-- [调试技巧](../03-Basic-Recipes/debugging_techniques/)
-- [常用命令](../08-Cheat-Sheets/common_commands/)
-- [FAQ](../11-Resources/faq/)
+- [Chrome DevTools 指南](../02-tooling/browser_devtools/)
+- [调试技巧](../03-basic-recipes/debugging_techniques/)
+- [常用命令](../08-cheat-sheets/common_commands/)
+- [FAQ](../11-resources/faq/)
 
 ---
 

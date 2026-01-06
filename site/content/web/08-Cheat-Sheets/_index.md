@@ -87,8 +87,8 @@ mkdocs build
 
 如果速查表中没有你需要的内容：
 
-1. 查看 [FAQ](../11-Resources/faq/)
-2. 查看 [Troubleshooting](../10-Troubleshooting/)
+1. 查看 [FAQ](../11-resources/faq/)
+2. 查看 [Troubleshooting](../10-troubleshooting/)
 3. 查看具体的技术章节
 
 ---

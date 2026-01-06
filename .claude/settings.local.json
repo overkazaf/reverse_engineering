@@ -37,7 +37,9 @@
       "Bash(git -C /Users/nongjiawu/frida/reverse_engineering remote:*)",
       "Bash(git -C /Users/nongjiawu/frida/reverse_engineering branch -vv)",
       "Bash(git -C /Users/nongjiawu/frida/reverse_engineering push origin master)",
-      "Bash(git -C /Users/nongjiawu/frida/reverse_engineering add -A)"
+      "Bash(git -C /Users/nongjiawu/frida/reverse_engineering add -A)",
+      "Bash(git -C /Users/nongjiawu/frida/reverse_engineering commit -m \"$\\(cat <<''EOF''\nFix markdown link format in _index.md files\n\nReplace .md extension with / in all internal links for proper Hugo URL routing.\nThis fixes broken navigation links in Android and Web section pages.\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git -C /Users/nongjiawu/frida/reverse_engineering commit -m \"$\\(cat <<''EOF''\nFix link paths to lowercase for Hugo URL routing\n\nHugo generates lowercase URLs by default. Convert all relative links\nin _index.md files to lowercase to match the generated URL paths.\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
     ]
   }
 }
