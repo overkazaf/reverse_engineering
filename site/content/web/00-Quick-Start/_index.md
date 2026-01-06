@@ -15,7 +15,7 @@ weight: 1
 
 我们为你准备了三个渐进式的快速配方：
 
-### 1. [你的第一个 Hook](./your_first_hook.md)
+### 1. [你的第一个 Hook](./your_first_hook/)
 
 **难度**: ⭐
 **时间**: 15 分钟
@@ -32,7 +32,7 @@ weight: 1
 
 ---
 
-### 2. [解密 API 参数](./decrypt_api_params.md)
+### 2. [解密 API 参数](./decrypt_api_params/)
 
 **难度**: ⭐⭐
 **时间**: 30 分钟
@@ -49,7 +49,7 @@ weight: 1
 
 ---
 
-### 3. [绕过简单验证码](./bypass_simple_captcha.md)
+### 3. [绕过简单验证码](./bypass_simple_captcha/)
 
 **难度**: ⭐⭐
 **时间**: 30 分钟
@@ -150,7 +150,7 @@ npm install -g @babel/cli @babel/core
 - if/else 条件判断
 - 基本的调试技巧
 
-那你就可以开始了！不懂的地方可以参考 [JavaScript 基础](../01-Foundations/javascript_basics.md)。
+那你就可以开始了！不懂的地方可以参考 [JavaScript 基础](../01-Foundations/javascript_basics/)。
 
 ### Q: 这些技术是否合法？
 
@@ -177,9 +177,9 @@ npm install -g @babel/cli @babel/core
 
 选择你的第一个配方：
 
-1. [你的第一个 Hook](./your_first_hook.md) - 推荐从这里开始
-2. [解密 API 参数](./decrypt_api_params.md)
-3. [绕过简单验证码](./bypass_simple_captcha.md)
+1. [你的第一个 Hook](./your_first_hook/) - 推荐从这里开始
+2. [解密 API 参数](./decrypt_api_params/)
+3. [绕过简单验证码](./bypass_simple_captcha/)
 
 ---
 

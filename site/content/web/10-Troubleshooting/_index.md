@@ -13,7 +13,7 @@ weight: 1
 
 ## 问题分类
 
-### [ 网络和请求问题](./network_issues.md)
+### [ 网络和请求问题](./network_issues/)
 
 - 请求超时
 - 连接被拒绝
@@ -21,7 +21,7 @@ weight: 1
 - 代理配置问题
 - Cookie 失效
 
-### [ 反爬虫问题](./anti_scraping_issues.md)
+### [ 反爬虫问题](./anti_scraping_issues/)
 
 - IP 被封禁
 - 验证码拦截
@@ -29,7 +29,7 @@ weight: 1
 - JavaScript 挑战
 - 频率限制
 
-### [ JavaScript 调试问题](./javascript_debugging.md)
+### [ JavaScript 调试问题](./javascript_debugging/)
 
 - 断点不生效
 - 变量查看失败
@@ -37,7 +37,7 @@ weight: 1
 - 混淆代码调试
 - 异步代码跟踪
 
-### [ 工具使用问题](./tool_issues.md)
+### [ 工具使用问题](./tool_issues/)
 
 - Chrome DevTools 问题
 - Burp Suite 配置
@@ -45,7 +45,7 @@ weight: 1
 - Postman 脚本错误
 - Node.js 环境问题
 
-### [ 数据处理问题](./data_issues.md)
+### [ 数据处理问题](./data_issues/)
 
 - 编码错误
 - JSON 解析失败
@@ -53,7 +53,7 @@ weight: 1
 - 文件读写错误
 - 内存溢出
 
-### [ Docker 部署问题](./docker_issues.md)
+### [ Docker 部署问题](./docker_issues/)
 
 - 容器启动失败
 - 网络连接问题
@@ -82,8 +82,8 @@ weight: 1
 
 - **无法抓包**: [代理配置](./tool_issues.md#抓包工具配置)
 - **Cookie 不生效**: [Cookie 问题](./network_issues.md#cookie-失效)
-- **加密无法破解**: [JavaScript 调试](./javascript_debugging.md)
-- **爬虫被封**: [反爬虫对策](./anti_scraping_issues.md)
+- **加密无法破解**: [JavaScript 调试](./javascript_debugging/)
+- **爬虫被封**: [反爬虫对策](./anti_scraping_issues/)
 - **数据存储失败**: [数据库问题](./data_issues.md#数据库连接问题)
 
 ---
@@ -224,7 +224,7 @@ debugger; // 代码会在这里暂停
 3. 使用 AST 工具还原
 4. 单步调试追踪
 
-详见: [JavaScript 调试](./javascript_debugging.md)
+详见: [JavaScript 调试](./javascript_debugging/)
 
 ---
 
@@ -285,10 +285,10 @@ logger.info(f"Operation took {time.time() - start:.2f}s")
 
 ## 相关资源
 
-- [Chrome DevTools 指南](../02-Tooling/browser_devtools.md)
-- [调试技巧](../03-Basic-Recipes/debugging_techniques.md)
-- [常用命令](../08-Cheat-Sheets/common_commands.md)
-- [FAQ](../11-Resources/faq.md)
+- [Chrome DevTools 指南](../02-Tooling/browser_devtools/)
+- [调试技巧](../03-Basic-Recipes/debugging_techniques/)
+- [常用命令](../08-Cheat-Sheets/common_commands/)
+- [FAQ](../11-Resources/faq/)
 
 ---
 

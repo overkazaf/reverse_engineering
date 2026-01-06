@@ -25,7 +25,19 @@
       "Bash(head -3 echo \"\" echo \"=== 案例研究 \\(后期\\) ===\")",
       "Bash(head -3:*)",
       "Bash(echo \"=== 案例研究 \\(后期\\) ===\" grep \"^date:\" /Users/nongjiawu/frida/reverse_engineering/site/content/android/03-Case-Studies/*.md)",
-      "Bash(head:*)"
+      "Bash(head:*)",
+      "Bash(]*wechatpay[^)",
+      "Bash(]*)",
+      "Bash(/Users/nongjiawu/frida/reverse_engineering/site/public/android/00-quick-start/intro/index.html)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nAdd mini_rootfs project reference to rootfs documentation\n\n在rootfs构建技术相关文档中引入开源项目 mini_rootfs 的介绍，\n方便读者参考实际实现。\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push)",
+      "Bash(git fetch:*)",
+      "Bash(mkdir:*)",
+      "Bash(git -C /Users/nongjiawu/frida/reverse_engineering status)",
+      "Bash(git -C /Users/nongjiawu/frida/reverse_engineering remote:*)",
+      "Bash(git -C /Users/nongjiawu/frida/reverse_engineering branch -vv)",
+      "Bash(git -C /Users/nongjiawu/frida/reverse_engineering push origin master)",
+      "Bash(git -C /Users/nongjiawu/frida/reverse_engineering add -A)"
     ]
   }
 }

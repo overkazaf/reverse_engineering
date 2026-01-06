@@ -13,35 +13,35 @@ weight: 1
 
 ## 可用速查表
 
-### [常用命令](./common_commands.md)
+### [常用命令](./common_commands/)
 
 - Chrome DevTools 命令
 - Python 常用库用法
 - cURL 命令示例
 - Git 常用操作
 
-### [加密算法特征](./crypto_signatures.md)
+### [加密算法特征](./crypto_signatures/)
 
 - MD5/SHA/AES 识别特征
 - 常见加密库特征码
 - 输出格式对照表
 - 加密算法参数
 
-### ⌨️ [工具快捷键](./tool_shortcuts.md)
+### ⌨️ [工具快捷键](./tool_shortcuts/)
 
 - Chrome DevTools 快捷键
 - VS Code 快捷键
 - Burp Suite 快捷键
 - 常用工具快捷操作
 
-### [正则表达式](./regex_patterns.md)
+### [正则表达式](./regex_patterns/)
 
 - URL 匹配模式
 - 常见加密特征正则
 - 数据提取正则
 - 验证规则正则
 
-### [HTTP 头速查](./http_headers.md)
+### [HTTP 头速查](./http_headers/)
 
 - 常见请求头
 - 常见响应头
@@ -87,7 +87,7 @@ mkdocs build
 
 如果速查表中没有你需要的内容：
 
-1. 查看 [FAQ](../11-Resources/faq.md)
+1. 查看 [FAQ](../11-Resources/faq/)
 2. 查看 [Troubleshooting](../10-Troubleshooting/)
 3. 查看具体的技术章节
 

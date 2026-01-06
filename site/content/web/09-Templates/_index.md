@@ -13,7 +13,7 @@ weight: 1
 
 ## 可用模板
 
-### [基础爬虫项目](./basic_scraper.md)
+### [基础爬虫项目](./basic_scraper/)
 
 一个简单的 Python 爬虫项目结构，包含：
 
@@ -27,7 +27,7 @@ weight: 1
 
 ---
 
-### [逆向分析项目](./reverse_project.md)
+### [逆向分析项目](./reverse_project/)
 
 Web 逆向分析的标准项目模板：
 
@@ -40,7 +40,7 @@ Web 逆向分析的标准项目模板：
 
 ---
 
-### [Docker 部署配置](./docker_setup.md)
+### [Docker 部署配置](./docker_setup/)
 
 容器化部署配置：
 
@@ -53,7 +53,7 @@ Web 逆向分析的标准项目模板：
 
 ---
 
-### [CI/CD 流水线](./cicd_pipeline.md)
+### [CI/CD 流水线](./cicd_pipeline/)
 
 自动化构建和部署：
 
@@ -66,7 +66,7 @@ Web 逆向分析的标准项目模板：
 
 ---
 
-### [分布式爬虫架构](./distributed_crawler.md)
+### [分布式爬虫架构](./distributed_crawler/)
 
 基于 Scrapy + Redis 的分布式架构：
 
@@ -208,9 +208,9 @@ config/secrets.py
 
 ## 相关资源
 
-- [Docker 部署](../06-Engineering/docker_deployment.md)
-- [分布式爬虫](../06-Engineering/distributed_scraping.md)
-- [监控告警](../06-Engineering/monitoring_and_alerting.md)
+- [Docker 部署](../06-Engineering/docker_deployment/)
+- [分布式爬虫](../06-Engineering/distributed_scraping/)
+- [监控告警](../06-Engineering/monitoring_and_alerting/)
 
 ---
 
