@@ -80,7 +80,7 @@ jadx-gui --version
 
 用 jadx-gui 打开 APK，全局搜索：
 
-```
+```bash
 # 对称加密
 AES
 DES
@@ -167,7 +167,7 @@ public static String encrypt(String plaintext) {
 
 **记录关键信息**：
 
-```
+```text
 密钥变量: KEY_BYTES
 IV 变量: IV_BYTES
 加密函数: com.example.app.CryptoUtils.encrypt()
@@ -369,7 +369,7 @@ frida -U -f com.example.app -l dump_aes_key.js
 
 **预期输出**：
 
-```
+```text
 🔐 [Cipher.init] 捕获!
     模式: ENCRYPT
     算法: AES/CBC/PKCS5Padding
@@ -506,7 +506,7 @@ Java.perform(function () {
 
 ### AES 加密流程
 
-```
+```text
 明文数据
     ↓
 [AES Encrypt] ← 使用密钥 + IV

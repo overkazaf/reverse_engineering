@@ -12,40 +12,9 @@ Magisk 和 LSPosed 是 Android 平台上最流行的 Root 和 Hook 解决方案�
 
 ---
 
-## 目录
-
-1. [技术架构总览](#1-技术架构总览)
-2. [框架演进历史](#2-框架演进历史)
-   - [Xposed 原版 (2012-2018)](#21-xposed-原版-2012-2018)
-   - [EdXposed 过渡期 (2018-2020)](#22-edxposed-过渡期-2018-2020)
-   - [Riru 注入框架](#23-riru-注入框架)
-   - [Zygisk 注入框架](#24-zygisk-注入框架)
-   - [LSPosed 现代标准 (2020-至今)](#25-lsposed-现代标准-2020-至今)
-3. [Magisk 原理详解](#3-magisk-原理详解)
-   - [Systemless Root 概念](#31-systemless-root-概念)
-   - [Magisk 启动流程](#32-magisk-启动流程)
-   - [MagiskSU 实现原理](#33-magisksu-实现原理)
-   - [MagiskHide / DenyList 原理](#34-magiskhide--denylist-原理)
-4. [LSPosed / Xposed 原理详解](#4-lsposed--xposed-原理详解)
-   - [Xposed 框架架构](#41-xposed-框架架构)
-   - [ART Hook 核心实现](#42-art-hook-核心实现)
-   - [XposedBridge Java 层实现](#43-xposedbridge-java-层实现)
-   - [Xposed 模块示例](#44-xposed-模块示例)
-5. [LSPosed 与原版 Xposed 的区别](#5-lsposed-与原版-xposed-的区别)
-   - [架构对比](#51-架构对比)
-   - [LSPosed 作用域控制](#52-lsposed-作用域控制)
-   - [按需注入机制](#53-按需注入机制)
-   - [Binder 跨进程通信](#54-binder-跨进程通信)
-6. [检测与对抗](#6-检测与对抗)
-   - [常见检测方法](#61-常见检测方法)
-   - [绕过检测](#62-绕过检测)
-7. [总结](#7-总结)
-
----
-
 ## 1. 技术架构总览
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                        Android 系统修改技术栈                            │
 ├─────────────────────────────────────────────────────────────────────────┤
@@ -105,7 +74,7 @@ Magisk 和 LSPosed 是 Android 平台上最流行的 Root 和 Hook 解决方案�
 
 理解 LSPosed，需要先理清 Xposed 框架的演进历史：
 
-```
+```text
 Xposed (元祖) ──► EdXposed (过渡) ──► LSPosed (现代标准)
      │                  │                    │
      │                  │                    │
@@ -167,7 +136,7 @@ EdXposed (Elder Xposed) 是 Xposed 的社区接力项目，解决了原版 Xpose
 
 **EdXposed 架构**：
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                      EdXposed 架构                           │
 ├─────────────────────────────────────────────────────────────┤
@@ -234,7 +203,7 @@ void riru_init() {
 
 **Riru 模块结构**：
 
-```
+```text
 /data/adb/riru/modules/
 └── edxposed/
     ├── lib/
@@ -333,7 +302,7 @@ struct ZygiskModule {
 
 **Zygisk 模块结构**：
 
-```
+```text
 /data/adb/modules/lsposed/
 ├── module.prop
 ├── post-fs-data.sh
@@ -394,7 +363,7 @@ LSPosed 是目前最主流的 Xposed 实现，采用 Zygisk (或 Riru) 作为注
 - **Zygisk/Riru** 负责 Zygote 注入
 - **LSPosed** 负责 Java 方法 Hook
 
-```
+```text
 简单说：Magisk 帮你开了门，LSPosed 帮你进去改代码。
 ```
 
@@ -407,7 +376,7 @@ LSPosed 是目前最主流的 Xposed 实现，采用 Zygisk (或 Riru) 作为注
 
 **LSPosed 启动流程**：
 
-```
+```text
 系统启动
     │
     ▼
@@ -438,7 +407,7 @@ App 正常运行 (仅加载必要模块)
 
 Magisk 的核心创新是 **Systemless Root** - 在不修改 `/system` 分区的情况下获取 Root 权限。
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                     传统 Root vs Systemless Root                        │
 ├─────────────────────────────────────────────────────────────────────────┤
@@ -485,7 +454,7 @@ Magisk 的核心创新是 **Systemless Root** - 在不修改 `/system` 分区的
 
 ### 2.2 Magisk 启动流程
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                        Magisk 启动流程                                   │
 ├─────────────────────────────────────────────────────────────────────────┤
@@ -921,7 +890,7 @@ int my_fork_and_specialize(
 
 ### 3.1 Xposed 框架架构
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                        LSPosed/Xposed 架构                               │
 ├─────────────────────────────────────────────────────────────────────────┤
@@ -1966,7 +1935,7 @@ IBinder binder = new ShizukuBinderProxy().getService("org.lsposed.daemon");
 - 修改后需要重启 App
 
 **适用场景**：
-```
+```text
 ✅ 微信防撤回、去广告等长期使用的功能
 ✅ 系统级功能修改
 ✅ 发布给其他用户使用的模块
@@ -1989,7 +1958,7 @@ IBinder binder = new ShizukuBinderProxy().getService("org.lsposed.daemon");
 - 部署需要 frida-server
 
 **适用场景**：
-```
+```text
 ✅ 逆向分析、快速验证想法
 ✅ 动态调试、参数监控
 ✅ 加密算法分析、数据抓取
@@ -2010,7 +1979,7 @@ IBinder binder = new ShizukuBinderProxy().getService("org.lsposed.daemon");
 - 需要处理 ABI、指令集等细节
 
 **适用场景**：
-```
+```text
 ✅ 风控 SDK 开发
 ✅ 高性能监控
 ✅ 需要隐蔽的 Hook
@@ -2019,7 +1988,7 @@ IBinder binder = new ShizukuBinderProxy().getService("org.lsposed.daemon");
 
 ### 6.3 选型决策流程
 
-```
+```text
 你的需求是什么?
     │
     ├── 快速分析 App 行为
@@ -2043,7 +2012,7 @@ IBinder binder = new ShizukuBinderProxy().getService("org.lsposed.daemon");
 
 **方案一：LSPosed + Frida**
 
-```
+```text
 开发流程:
 1. 用 Frida 快速分析、定位关键函数
 2. 确认 Hook 点后，用 LSPosed 模块实现持久化
@@ -2297,7 +2266,7 @@ public class RootHider implements IXposedHookLoadPackage {
 
 ### 8.2 框架演进总结
 
-```
+```text
 时间线:
 2012 ─── Xposed 诞生 (替换 app_process)
    │

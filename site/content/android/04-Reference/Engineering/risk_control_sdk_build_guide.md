@@ -19,7 +19,7 @@ Risk Control SDK 是一个用于移动应用的设备指纹识别和安全评估
 
 ### 分层设计
 
-```
+```text
 ┌─────────────────────────────────────────────────────────┐
 │                    Application                           │
 ├─────────────────────────────────────────────────────────┤
@@ -54,7 +54,7 @@ Risk Control SDK 是一个用于移动应用的设备指纹识别和安全评估
 
 ## 项目结构
 
-```
+```text
 risk-control-sdk/
 ├── src/
 │   ├── java/com/riskcontrol/
@@ -456,7 +456,7 @@ static inline long syscall_read(int fd, void* buf, size_t count) {
 
 ## 数据流设计
 
-```
+```text
 ┌──────────────┐     ┌──────────────┐     ┌──────────────┐
 │  App 调用    │────▶│  Java API    │────▶│  JNI Bridge  │
 │  SDK.init()  │     │  getInstance │     │  nativeInit  │

@@ -12,19 +12,6 @@ SELinux (Security-Enhanced Linux) 是 Android 安全模型的核心组件，从 
 
 ---
 
-## 目录
-
-1. [SELinux 基础概念](#1-selinux-基础概念)
-2. [Android SELinux 架构](#2-android-selinux-架构)
-3. [安全上下文与标签](#3-安全上下文与标签)
-4. [SELinux 策略分析](#4-selinux-策略分析)
-5. [常用命令与工具](#5-常用命令与工具)
-6. [逆向工程中的 SELinux](#6-逆向工程中的-selinux)
-7. [SELinux 绕过技术](#7-selinux-绕过技术)
-8. [实战案例](#8-实战案例)
-
----
-
 ## 1. SELinux 基础概念
 
 ### 1.1 什么是 SELinux
@@ -40,7 +27,7 @@ SELinux 是一种强制访问控制 (MAC, Mandatory Access Control) 安全机制
 
 ### 1.2 SELinux 运行模式
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                    SELinux 运行模式                          │
 ├─────────────────────────────────────────────────────────────┤
@@ -94,7 +81,7 @@ setenforce 1
 
 ### 2.1 架构概览
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────┐
 │                         Android SELinux 架构                         │
 ├─────────────────────────────────────────────────────────────────────┤
@@ -177,13 +164,13 @@ plat_seapp_contexts           # 应用上下文规则
 
 SELinux 安全上下文格式：
 
-```
+```text
 user:role:type:sensitivity[:categories]
 ```
 
 **示例解析：**
 
-```
+```text
 u:r:untrusted_app:s0:c512,c768
 │ │ │              │  └─────────── 类别 (MLS/MCS)
 │ │ │              └───────────── 敏感度级别
@@ -219,7 +206,7 @@ getprop -Z
 
 ### 3.3 上下文转换
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                    进程上下文转换流程                         │
 ├─────────────────────────────────────────────────────────────┤
@@ -239,7 +226,7 @@ getprop -Z
 
 **seapp_contexts 规则示例：**
 
-```
+```bash
 # /system/etc/selinux/plat_seapp_contexts
 user=_app seinfo=platform domain=platform_app type=app_data_file
 user=_app isPrivApp=true domain=priv_app type=privapp_data_file
@@ -255,13 +242,13 @@ user=_isolated domain=isolated_app
 
 **allow 规则：**
 
-```
+```text
 allow source_type target_type:class permissions;
 ```
 
 **示例：**
 
-```
+```bash
 # 允许 untrusted_app 域读取 app_data_file 类型的文件
 allow untrusted_app app_data_file:file { read open getattr };
 
@@ -274,7 +261,7 @@ allow untrusted_app servicemanager:binder { call transfer };
 
 ### 4.2 其他规则类型
 
-```
+```bash
 # neverallow - 禁止规则（编译时检查）
 neverallow untrusted_app system_file:file write;
 
@@ -406,7 +393,7 @@ allow untrusted_app system_data_file:file read;
 
 ### 6.1 SELinux 对逆向的影响
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │              SELinux 对逆向工程的限制                         │
 ├─────────────────────────────────────────────────────────────┤
@@ -589,7 +576,7 @@ function hookSELinuxContextAPIs() {
 
 Magisk 通过以下方式处理 SELinux：
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                  Magisk SELinux 处理流程                     │
 ├─────────────────────────────────────────────────────────────┤

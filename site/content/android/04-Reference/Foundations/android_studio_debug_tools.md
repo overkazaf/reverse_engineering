@@ -12,25 +12,6 @@ Android Studio 不仅仅是一个代码编辑器，它还集成了一套强大�
 
 ---
 
-## 目录
-
-1. [日志猫 (Logcat)](#1-日志猫-logcat)
-2. [Java/Kotlin 调试器](#2-javakotlin-调试器)
-3. [布局检查器 (Layout Inspector)](#3-布局检查器-layout-inspector)
-4. [应用分析器 (Profiler)](#4-应用分析器-profiler)
-5. [数据库检查器 (Database Inspector)](#5-数据库检查器-database-inspector)
-6. [APK 分析器 (APK Analyzer)](#6-apk-分析器-apk-analyzer)
-7. [设备文件浏览器 (Device File Explorer)](#7-设备文件浏览器-device-file-explorer)
-8. [App Inspection 统一面板](#8-app-inspection-统一面板)
-9. [模拟器扩展控制](#9-模拟器扩展控制)
-10. [Smali 调试 (smalidea)](#10-smali-调试-smalidea)
-11. [Native 调试 (LLDB)](#11-native-调试-lldb)
-12. [终端与 ADB 集成](#12-终端与-adb-集成)
-13. [逆向常用插件](#13-逆向常用插件)
-14. [调试技巧与最佳实践](#14-调试技巧与最佳实践)
-
----
-
 ## 1. 日志猫 (Logcat)
 
 ### 1.1 基本概念
@@ -171,7 +152,7 @@ private String secretKey;  // <-- 字段断点
 
 捕获特定异常：
 
-```
+```text
 Run -> View Breakpoints -> + -> Java Exception Breakpoints
 添加: java.lang.NullPointerException
 添加: javax.crypto.BadPaddingException
@@ -196,7 +177,7 @@ new String(Base64.decode(token, 0))
 
 在调试过程中动态修改变量：
 
-```
+```text
 1. 在 Variables 面板找到变量
 2. 右键 -> Set Value
 3. 输入新值
@@ -211,7 +192,7 @@ new String(Base64.decode(token, 0))
 
 强制方法返回指定值：
 
-```
+```text
 1. 在方法内断点暂停
 2. 右键 -> Force Return
 3. 输入返回值
@@ -225,7 +206,7 @@ new String(Base64.decode(token, 0))
 
 回退到方法调用前的状态：
 
-```
+```text
 1. 在调用栈面板选择帧
 2. 右键 -> Drop Frame
 3. 程序回到该方法调用前
@@ -235,7 +216,7 @@ new String(Base64.decode(token, 0))
 
 ### 2.4 附加到运行中的进程
 
-```
+```text
 Run -> Attach Debugger to Android Process
 选择目标进程 -> Attach
 
@@ -280,7 +261,7 @@ Layout Inspector 是一个强大的可视化工具，允许你实时检查和调
 
 ### 3.3 使用步骤
 
-```
+```text
 1. 运行 App（Debug 模式）
 2. Tools -> Layout Inspector
 3. 选择进程
@@ -292,7 +273,7 @@ View -> Tool Windows -> App Inspection -> Layout Inspector
 
 ### 3.4 属性检查详解
 
-```
+```text
 常用属性：
 - id: View 的资源 ID（用于自动化脚本）
 - text: 文本内容
@@ -350,7 +331,7 @@ Profiler 是一套用于实时分析应用性能的工具，主要关注 CPU、�
 
 #### 4.2.2 火焰图分析
 
-```
+```text
 1. 点击 Record 开始记录
 2. 在 App 中执行目标操作
 3. 点击 Stop 停止记录
@@ -388,7 +369,7 @@ Profiler 是一套用于实时分析应用性能的工具，主要关注 CPU、�
 
 #### 4.3.2 堆转储分析
 
-```
+```text
 1. 点击 Dump Java Heap
 2. 等待堆转储完成
 3. 分析内容：
@@ -427,7 +408,7 @@ Profiler 是一套用于实时分析应用性能的工具，主要关注 CPU、�
 
 #### 4.4.1 功能概述
 
-```
+```text
 - 请求时间线可视化
 - 请求/响应详情
 - 连接状态追踪
@@ -441,7 +422,7 @@ Profiler 是一套用于实时分析应用性能的工具，主要关注 CPU、�
 
 #### 4.4.2 限制与替代
 
-```
+```text
 Network Profiler 限制：
 - 无法解密 HTTPS
 - 不支持所有网络库
@@ -455,7 +436,7 @@ Network Profiler 限制：
 
 ### 4.5 Energy Profiler
 
-```
+```text
 追踪能耗事件：
 - CPU 唤醒
 - 网络活动
@@ -473,7 +454,7 @@ Network Profiler 限制：
 
 ### 5.1 基本功能
 
-```
+```text
 1. 实时数据查看
 2. 自定义 SQL 查询
 3. 数据修改
@@ -547,7 +528,7 @@ APK Analyzer 是 Android Studio 内置的 APK 文件分析工具，可以分析�
 
 ### 6.2 打开方式
 
-```
+```text
 方式一：Build -> Analyze APK -> 选择 APK 文件
 方式二：直接拖拽 APK 文件到 Android Studio
 方式三：双击项目中的 APK 文件
@@ -557,7 +538,7 @@ APK Analyzer 是 Android Studio 内置的 APK 文件分析工具，可以分析�
 
 #### 6.3.1 文件结构
 
-```
+```text
 APK 文件结构：
 ├── AndroidManifest.xml    # 应用配置
 ├── classes.dex            # Java/Kotlin 代码
@@ -610,7 +591,7 @@ APK 文件结构：
 
 #### 6.3.3 DEX 文件分析
 
-```
+```text
 功能：
 - 查看类列表
 - 查看方法数量
@@ -623,7 +604,7 @@ APK 文件结构：
 
 #### 6.3.4 资源分析
 
-```
+```text
 资源类型：
 - drawable: 图片资源
 - layout: 布局文件（可查看 XML）
@@ -634,7 +615,7 @@ APK 文件结构：
 
 ### 6.4 APK 比较功能
 
-```
+```text
 1. 打开第一个 APK
 2. 点击 "Compare with previous APK"
 3. 选择第二个 APK
@@ -674,7 +655,7 @@ APK 文件结构：
 
 ### 7.1 基本功能
 
-```
+```text
 View -> Tool Windows -> Device File Explorer
 
 功能：
@@ -689,7 +670,7 @@ View -> Tool Windows -> Device File Explorer
 
 ### 7.2 重要目录
 
-```
+```text
 /data/data/<package>/           # App 私有数据（需要 root 或 debuggable）
 ├── shared_prefs/               # SharedPreferences XML
 ├── databases/                  # SQLite 数据库
@@ -750,7 +731,7 @@ View -> Tool Windows -> Device File Explorer
 
 App Inspection 是 Android Studio Arctic Fox 引入的统一检查面板，整合了多个工具。
 
-```
+```text
 View -> Tool Windows -> App Inspection
 
 包含：
@@ -761,7 +742,7 @@ View -> Tool Windows -> App Inspection
 
 ### 8.2 Background Task Inspector
 
-```
+```text
 监控后台任务：
 - WorkManager 任务
 - JobScheduler 任务
@@ -776,7 +757,7 @@ View -> Tool Windows -> App Inspection
 
 ### 8.3 Network Inspector (新版)
 
-```
+```text
 比旧版 Network Profiler 更强大：
 - 请求/响应详情
 - 更好的搜索过滤
@@ -791,7 +772,7 @@ View -> Tool Windows -> App Inspection
 
 ### 9.1 Extended Controls
 
-```
+```text
 模拟器 -> ... 按钮 -> Extended Controls
 
 功能类别：
@@ -813,7 +794,7 @@ View -> Tool Windows -> App Inspection
 
 ### 9.2 GPS 位置模拟
 
-```
+```text
 用途：
 - 测试基于位置的功能
 - 绕过地理围栏限制
@@ -829,7 +810,7 @@ View -> Tool Windows -> App Inspection
 
 ### 9.3 快照 (Snapshots)
 
-```
+```text
 功能：
 - 保存模拟器完整状态
 - 快速恢复到特定状态
@@ -843,7 +824,7 @@ View -> Tool Windows -> App Inspection
 
 ### 9.4 指纹模拟
 
-```
+```text
 1. Extended Controls -> Fingerprint
 2. 选择指纹 ID (1-10)
 3. 点击 "Touch Sensor"
@@ -862,7 +843,7 @@ smalidea 是一个 Android Studio 插件，允许直接调试反编译后的 Sma
 
 ### 10.2 安装配置
 
-```
+```text
 1. 下载 smalidea 插件
    https://github.com/JesusFreke/smalidea
 
@@ -874,7 +855,7 @@ smalidea 是一个 Android Studio 插件，允许直接调试反编译后的 Sma
 
 ### 10.3 项目配置
 
-```
+```text
 1. 使用 apktool 反编译 APK
    apktool d target.apk -o target_smali
 
@@ -889,7 +870,7 @@ smalidea 是一个 Android Studio 插件，允许直接调试反编译后的 Sma
 
 ### 10.4 调试步骤
 
-```
+```text
 1. 修改 AndroidManifest.xml
    添加 android:debuggable="true"
 
@@ -933,7 +914,7 @@ Android Studio 集成了 LLDB 调试器，支持调试 C/C++ Native 代码。
 
 ### 11.2 配置要求
 
-```
+```text
 1. 安装 NDK
    SDK Manager -> SDK Tools -> NDK
 
@@ -948,7 +929,7 @@ Android Studio 集成了 LLDB 调试器，支持调试 C/C++ Native 代码。
 
 #### 11.3.1 源码调试
 
-```
+```text
 1. 打开包含 Native 代码的项目
 2. 选择 Native 调试配置
    Run -> Edit Configurations
@@ -960,7 +941,7 @@ Android Studio 集成了 LLDB 调试器，支持调试 C/C++ Native 代码。
 
 #### 11.3.2 附加到进程
 
-```
+```text
 1. Run -> Attach Debugger to Android Process
 2. 选择进程
 3. Debugger 选择 Native Only 或 Dual
@@ -1016,7 +997,7 @@ Android Studio 集成了 LLDB 调试器，支持调试 C/C++ Native 代码。
 
 ### 12.1 内置终端
 
-```
+```text
 View -> Tool Windows -> Terminal
 
 # 直接在 Android Studio 中使用命令行
@@ -1080,28 +1061,28 @@ adb connect <ip>:5555
 
 ### 13.1 smalidea
 
-```
+```text
 功能：Smali 代码语法高亮和调试
 地址：https://github.com/JesusFreke/smalidea
 ```
 
 ### 13.2 Java Decompiler (JD)
 
-```
+```text
 功能：反编译 JAR/Class 文件
 集成：Android Studio 内置
 ```
 
 ### 13.3 APK Analyzer (内置)
 
-```
+```text
 功能：分析 APK 结构
 使用：Build -> Analyze APK
 ```
 
 ### 13.4 Jadx (推荐配合使用)
 
-```
+```text
 功能：更强大的反编译工具
 地址：https://github.com/skylot/jadx
 
@@ -1111,7 +1092,7 @@ adb connect <ip>:5555
 
 ### 13.5 其他有用插件
 
-```
+```text
 1. Android Drawable Importer
    - 快速导入图片资源
 
@@ -1131,7 +1112,7 @@ adb connect <ip>:5555
 
 ### 14.1 调试 Release 版本
 
-```
+```text
 方法一：重新签名为 debuggable
 1. 反编译 APK
 2. 修改 AndroidManifest.xml: android:debuggable="true"
@@ -1167,7 +1148,7 @@ Debug.isDebuggerConnected()
 
 ### 14.3 多设备调试
 
-```
+```text
 1. 连接多个设备
 2. 在工具栏选择目标设备
 3. 分别运行/调试

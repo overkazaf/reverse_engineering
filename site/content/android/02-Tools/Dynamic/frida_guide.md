@@ -12,19 +12,6 @@ Frida 是一个动态代码插桩工具包，它允许您将自己的脚本注�
 
 ---
 
-## 目录
-
-- [Frida 工具集](#frida-工具集)
-- [连接与附加模式](#连接与附加模式)
-- [JavaScript API (核心)](#javascript-api-核心)
-  - [Java (Android)](#java-android)
-  - [Objective-C (iOS)](#objective-c-ios)
-  - [通用/原生 (Native)](#通用原生-native)
-  - [JNI (Java Native Interface)](#jni-java-native-interface)
-- [常用脚本示例](#常用脚本示例)
-
----
-
 ## Frida 工具集
 
 这些是在终端中使用的核心 Frida 命令行工具。

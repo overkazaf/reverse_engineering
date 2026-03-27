@@ -96,7 +96,7 @@ _提取的字段_：
 
 _生成过程_：
 
-```
+```text
 拼接成String: "771,4865-4866-4867,0-23-65281,29-23-24,0"
 ↓
 Calculate MD5 哈希
@@ -361,7 +361,7 @@ chmod +x compare_ja3.sh
 
 **预期输出**：
 
-```
+```text
 === 原生 curl ===
 51c64c77e60f3980eea90869b68c58a8
 
@@ -405,7 +405,7 @@ print(response.text)
 
 ### TLS 握手过程
 
-```
+```text
 客户端                              服务器
    |                                  |
    |--- Client Hello ---------------→|
@@ -424,7 +424,7 @@ print(response.text)
 
 **原始字符串示例**：
 
-```
+```text
 771,4865-4866-4867-49195-49199,0-23-65281-10-11,29-23-24,0
  │        │                      │          │      │
  │        │                      │          │      └─ EC Point Formats
@@ -436,7 +436,7 @@ print(response.text)
 
 **JA4 指纹格式**：
 
-```
+```text
 t13d1516h2_174735a34e8a_b2149a751699
 │  │  │  │  │            │
 │  │  │  │  │            └─ Signature Algorithms 哈希

@@ -10,16 +10,6 @@ weight: 10
 
 在 Android Native 层安全对抗中，SO 文件是实现高强度保护的重要载体。通过 init_array 机制、字符串混淆和反调试技术的组合使用，可以显著提高逆向分析的难度。本文将深入分析这些技术的实现原理及对应的分析绕过方法。
 
-## 目录
-
-1. [init_array 调用流程原理](#init_array-调用流程原理)
-2. [字符串混淆技术](#字符串混淆技术)
-3. [反调试技术实现](#反调试技术实现)
-4. [分析与绕过方法](#分析与绕过方法)
-5. [高级防护策略](#高级防护策略)
-
----
-
 ## 1. init_array 调用流程原理
 
 ### 1.1 ELF 加载与 init_array 执行时机
@@ -44,7 +34,7 @@ void soinfo::call_constructors() {
 
 ### 1.2 完整调用链路
 
-```
+```text
 System.loadLibrary("target")
          ↓
 nativeLoad() [art/runtime/native/java_lang_Runtime.cc]

@@ -17,18 +17,6 @@ weight: 10
 
 本章介绍如何从零开始编译 Android SO 动态库，以及 Android 系统加载 SO 的完整流程。理解这些原理对于逆向分析 Native 层代码至关重要。
 
-## 目录
-
-1. [SO 文件基础](#so-文件基础)
-2. [编译环境准备](#编译环境准备)
-3. [使用 NDK 编译 SO](#使用-ndk-编译-so)
-4. [使用 CMake 构建](#使用-cmake-构建)
-5. [SO 加载流程分析](#so-加载流程分析)
-6. [手动加载 SO](#手动加载-so)
-7. [调试与分析技巧](#调试与分析技巧)
-
----
-
 ## SO 文件基础
 
 ### 什么是 SO 文件
@@ -37,7 +25,7 @@ SO (Shared Object) 是 Linux/Android 系统的动态链接库格式，相当于 
 
 ### SO 文件结构
 
-```
+```text
 ┌─────────────────────┐
 │     ELF Header      │  文件类型、架构、入口点
 ├─────────────────────┤
@@ -115,7 +103,7 @@ $NDK_HOME/build/tools/make_standalone_toolchain.py \
 
 #### 1. 项目结构
 
-```
+```text
 project/
 ├── jni/
 │   ├── Android.mk
@@ -324,7 +312,7 @@ android {
 
 ### Android SO 加载流程
 
-```
+```text
 Java: System.loadLibrary("native")
          │
          ▼

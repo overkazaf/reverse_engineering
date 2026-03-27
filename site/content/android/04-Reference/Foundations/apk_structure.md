@@ -10,25 +10,11 @@ weight: 10
 
 APK (Android Package) 是 Android 操作系统用于分发和安装移动应用的文件格式。它本质上是一个 ZIP 归档文件，包含了应用的所有代码、资源、证书等。理解其内部结构是逆向工程和安全分析的第一步。
 
-## 目录
-
-1. [APK 概览](#apk-概览)
-2. [AndroidManifest.xml](#androidmanifestxml)
-3. [classes.dex](#classesdex)
-4. [resources.arsc](#resourcesarsc)
-5. [res/ 目录](#res-目录)
-6. [lib/ 目录](#lib-目录)
-7. [assets/ 目录](#assets-目录)
-8. [META-INF/ 目录](#meta-inf-目录)
-9. [APK 分析流程](#apk-分析流程)
-
----
-
 ## APK 概览
 
 一个标准的 APK 文件，当用解压缩工具打开时，通常会看到以下目录结构：
 
-```
+```text
 app.apk
 ├── AndroidManifest.xml   # [必需] 应用清单文件（二进制格式）
 ├── classes.dex           # [必需] Dalvik/ART 字节码
@@ -140,7 +126,7 @@ d2j-dex2jar.sh classes.dex
 
 ### 资源 ID 格式
 
-```
+```text
 0x7f010001
 │  │  │
 │  │  └── 资源项 ID (0001)
@@ -170,7 +156,7 @@ d2j-dex2jar.sh classes.dex
 
 ### 资源限定符
 
-```
+```text
 res/
 ├── drawable/           # 默认资源
 ├── drawable-hdpi/      # 高密度屏幕
@@ -200,7 +186,7 @@ res/
 
 ### 常见原生库
 
-```
+```text
 lib/arm64-v8a/
 ├── libnative-lib.so      # 应用自定义原生库
 ├── libflutter.so         # Flutter 引擎
@@ -246,7 +232,7 @@ lib/arm64-v8a/
 
 ### 签名机制
 
-```
+```text
 1. 计算 APK 中每个文件的哈希 → 记录在 MANIFEST.MF
                     │
                     ▼

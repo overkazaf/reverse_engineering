@@ -19,11 +19,11 @@ weight: 10
 
 - _你遇到了什么问题？_
 
-* 想知道某个 App 调用了哪些 API 接口
-* 需要分析 API 的请求参数和响应数据
-* 想查看 App 发送了哪些敏感信息（设备信息、定位等）
-* 需要找到加密签名的生成逻辑
-* 想重放或修改 API 请求
+- 想知道某个 App 调用了哪些 API 接口
+- 需要分析 API 的请求参数和响应数据
+- 想查看 App 发送了哪些敏感信息（设备信息、定位等）
+- 需要找到加密签名的生成逻辑
+- 想重放或修改 API 请求
 
 - _本配方教你_：配置抓包环境，拦截并分析 HTTPS 流量，绕过 SSL Pinning 限制。
 
@@ -327,7 +327,7 @@ frida -U com.example.app -l bypass_ssl_pinning.js
 frida -U -f com.example.app -l bypass_ssl_pinning.js --no-pause
 ```
 
-```
+```text
 [SSL Pinning Bypass] 配置完成
 ```
 
@@ -376,7 +376,7 @@ frida -U -f com.example.app -l bypass_ssl_pinning.js --no-pause
 
 ### MITM（中间人攻击）流程
 
-```
+```text
 1. App 发起 HTTPS 请求
 2. 代理解密请求（使用安装的证书）
 3. 代理重新加密并转发到真实服务器

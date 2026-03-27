@@ -10,28 +10,18 @@ weight: 10
 
 DEX (Dalvik Executable) 文件是 Android 操作系统的核心组成部分之一。它们是专门为在内存和处理器速度受限的设备上高效运行而设计的。本指南将深入探讨 DEX 文件的定义、格式、运行原理以及相关工具。
 
-!!! question "思考：理解 DEX 格式的实战价值"
-很多初学者会问："DEX 格式这么复杂，我真的需要了解这些底层细节吗？"
+> [!question] 思考：理解 DEX 格式的实战价值
+> 很多初学者会问："DEX 格式这么复杂，我真的需要了解这些底层细节吗？"
+>
+> 考虑这些实际场景：
+>
+> - **加固对抗**：当 App 使用了 DEX 加壳（如梆梆、360），你需要知道 DEX 的魔数、签名字段在哪，才能判断脱壳是否完整
+> - **动态加载分析**：很多 App 会在运行时解密并加载隐藏的 DEX，理解 `Class Defs` 结构能帮你快速定位被隐藏的恶意代码
+> - **Multi-DEX 定位**：当你想 Hook 某个类，但不知道它在哪个 `classes.dex` 中时，理解 String IDs 和 Type IDs 能帮你快速搜索
+> - **方法数优化**：理解 65536 方法数限制的根本原因（Method IDs 索引用 16 位），能帮你更好地进行模块化设计
 
-考虑这些实际场景：
-
-- **加固对抗**：当 App 使用了 DEX 加壳（如梆梆、360），你需要知道 DEX 的魔数、签名字段在哪，才能判断脱壳是否完整
-- **动态加载分析**：很多 App 会在运行时解密并加载隐藏的 DEX，理解 `Class Defs` 结构能帮你快速定位被隐藏的恶意代码
-- **Multi-DEX 定位**：当你想 Hook 某个类，但不知道它在哪个 `classes.dex` 中时，理解 String IDs 和 Type IDs 能帮你快速搜索
-- **方法数优化**：理解 65536 方法数限制的根本原因（Method IDs 索引用 16 位），能帮你更好地进行模块化设计
 
 ## DEX 格式不是学术知识，而是你破解加固、分析恶意代码的**手术刀**。
-
-## 目录
-
-1. [**定义与角色**：什么是 DEX 文件？](#定义与角色)
-2. [**DEX vs. CLASS**：与 Java 字节码的对比](#dex-vs-class)
-3. [**DEX 文件结构**：深入剖析格式](#dex-文件结构)
-4. [**运行原理**：DEX 文件如何被执行？](#运行原理)
-5. [**Multi-DEX**：应对方法数限制](#multi-dex)
-6. [**DEX 分析与处理工具**](#dex-分析与处理工具)
-
----
 
 ### 定义与角色
 
@@ -66,22 +56,23 @@ DEX (Dalvik Executable) 文件是 Android 操作系统的核心组成部分之�
 
 DEX 文件格式非常紧凑和高效，其结构可以大致分为以下几个部分，并由一个 `header` 来描述整个文件的元数据和偏移量。
 
-!!! tip "逆向技巧：从结构入手快速定位"
-面对一个陌生的 DEX 文件，如何快速找到你感兴趣的代码？
+> [!tip] 逆向技巧：从结构入手快速定位
+> 面对一个陌生的 DEX 文件，如何快速找到你感兴趣的代码？
+>
+> **自顶向下的分析策略**：
+>
+> 1. **看 Header**：检查魔数确认文件完整性，查看 `class_defs_size` 了解有多少个类
+> 2. **搜 String IDs**：用 `dexdump` 或 `strings` 搜索关键字符串（如 "encrypt", "http://"），定位可疑代码
+> 3. **查 Method IDs**：通过方法名索引找到具体实现
+> 4. **跳 Class Defs**：直接定位到目标类的完整定义
+> 5. **读 Code Item**：最后才深入字节码细节
+>
+> 这种"线索驱动"的方法，比漫无目的地浏览代码高效得多。
+>
+> <!-- ![DEX File Structure](../images/dex-format.png) -->
+>
+> A DEX file consists of several main sections:
 
-**自顶向下的分析策略**：
-
-1. **看 Header**：检查魔数确认文件完整性，查看 `class_defs_size` 了解有多少个类
-2. **搜 String IDs**：用 `dexdump` 或 `strings` 搜索关键字符串（如 "encrypt", "http://"），定位可疑代码
-3. **查 Method IDs**：通过方法名索引找到具体实现
-4. **跳 Class Defs**：直接定位到目标类的完整定义
-5. **读 Code Item**：最后才深入字节码细节
-
-这种"线索驱动"的方法，比漫无目的地浏览代码高效得多。
-
-<!-- ![DEX File Structure](../images/dex-format.png) -->
-
-A DEX file consists of several main sections:
 
 ### 1. 头部 (Header)
 
@@ -168,7 +159,7 @@ DEX 文件的执行由 Android 运行时 (ART) 负责，在 Android 5.0 之前�
 
 DEX 文件头共 112 字节（0x70），包含文件的元数据和各区域的偏移量：
 
-```
+```text
 偏移量    大小    字段名              描述
 ────────────────────────────────────────────────────────────────
 0x00      8      magic               魔数: "dex\n035\0" 或 "dex\n039\0"
@@ -930,46 +921,48 @@ def detect_packer(dex_path: str) -> str:
 
 ## 常见问题与技巧
 
-!!! warning "65536 方法数限制"
-    DEX 文件的 Method IDs 使用 16 位索引，最多只能引用 65536 个方法。这就是著名的 "64K 方法数限制"。
+> [!warning] 65536 方法数限制
+> DEX 文件的 Method IDs 使用 16 位索引，最多只能引用 65536 个方法。这就是著名的 "64K 方法数限制"。
+>
+> **解决方案**:
+>
+> - 启用 Multi-DEX（Android 5.0+ 原生支持）
+> - 使用 ProGuard/R8 移除未使用的代码
+> - 合理划分模块，减少依赖
 
-    **解决方案**:
 
-    - 启用 Multi-DEX（Android 5.0+ 原生支持）
-    - 使用 ProGuard/R8 移除未使用的代码
-    - 合理划分模块，减少依赖
+> [!tip] 快速判断 DEX 版本
+> ```python
+> # DEX 035 - Android 7.0 及之前
+> # DEX 037 - Android 8.0 引入默认方法
+> # DEX 038 - Android 9.0
+> # DEX 039 - Android 10.0+
+>
+> with open('classes.dex', 'rb') as f:
+>     magic = f.read(8)
+>     version = magic[4:7].decode()
+>     print(f"DEX 版本: {version}")
+> ```
 
-!!! tip "快速判断 DEX 版本"
-    ```python
-    # DEX 035 - Android 7.0 及之前
-    # DEX 037 - Android 8.0 引入默认方法
-    # DEX 038 - Android 9.0
-    # DEX 039 - Android 10.0+
 
-    with open('classes.dex', 'rb') as f:
-        magic = f.read(8)
-        version = magic[4:7].decode()
-        print(f"DEX 版本: {version}")
-    ```
-
-!!! info "修复损坏的 DEX"
-    如果校验和或签名不匹配，可以重新计算并修复：
-
-    ```python
-    import hashlib
-    import zlib
-
-    def fix_dex(data: bytes) -> bytes:
-        """修复 DEX 文件的校验和和签名"""
-        data = bytearray(data)
-
-        # 重新计算 SHA-1 签名 (从偏移 0x20 开始)
-        sha1 = hashlib.sha1(data[32:]).digest()
-        data[12:32] = sha1
-
-        # 重新计算 Adler32 校验和 (从偏移 0x0C 开始)
-        checksum = zlib.adler32(bytes(data[12:])) & 0xffffffff
-        data[8:12] = checksum.to_bytes(4, 'little')
-
-        return bytes(data)
-    ```
+> [!info] 修复损坏的 DEX
+> 如果校验和或签名不匹配，可以重新计算并修复：
+>
+> ```python
+> import hashlib
+> import zlib
+>
+> def fix_dex(data: bytes) -> bytes:
+>     """修复 DEX 文件的校验和和签名"""
+>     data = bytearray(data)
+>
+>     # 重新计算 SHA-1 签名 (从偏移 0x20 开始)
+>     sha1 = hashlib.sha1(data[32:]).digest()
+>     data[12:32] = sha1
+>
+>     # 重新计算 Adler32 校验和 (从偏移 0x0C 开始)
+>     checksum = zlib.adler32(bytes(data[12:])) & 0xffffffff
+>     data[8:12] = checksum.to_bytes(4, 'little')
+>
+>     return bytes(data)
+> ```

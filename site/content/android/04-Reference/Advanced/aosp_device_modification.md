@@ -14,20 +14,6 @@ weight: 10
 
 ---
 
-## 目录
-
-1. [核心思想：应用层 Hook vs. 系统层修改](#核心思想应用层-hook-vs-系统层修改)
-2. [准备工作](#准备工作)
-3. [关键参数定位与修改](#关键参数定位与修改)
-   - [Build Info (build.prop)](#build-info-buildprop)
-   - [硬件参数 (IMEI, MAC, Android ID)](#硬件参数-imei-mac-android-id)
-   - [系统属性 (System Properties)](#系统属性-system-properties)
-   - [内核参数 (Serial Number)](#内核参数-serial-number)
-4. [编译与刷机](#编译与刷机)
-5. [优势与挑战](#优势与挑战)
-
----
-
 ## 核心思想：应用层 Hook vs. 系统层修改
 
 | 特性         | 应用层 Hook (Xposed/Frida)                   | AOSP 系统层修改                                              |

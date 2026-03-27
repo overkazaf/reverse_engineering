@@ -10,33 +10,6 @@ weight: 10
 
 `.so` 文件（Shared Object）是 Android 平台上的原生共享库，等同于 Windows 上的 `.dll` 或 Linux 上的 `.so`。它们包含了由 C/C++ 等原生代码编译而成的机器码。在 Android 逆向工程中，分析 `.so` 文件是理解应用核心逻辑、破解加密算法和绕过安全机制的关键一步。
 
-## 目录
-
-1. [ELF 文件格式](#elf-文件格式)
-   - [ELF Header](#elf-header)
-   - [Program Header Table](#program-header-table)
-   - [Section Header Table](#section-header-table)
-   - [关键 Section](#关键-section)
-2. [加载与链接](#加载与链接)
-   - [System.loadLibrary()](#systemloadlibrary)
-   - [JNI (Java Native Interface)](#jni-java-native-interface)
-   - [动态链接器](#动态链接器)
-3. [静态分析](#静态分析)
-   - [识别关键函数](#识别关键函数)
-   - [使用 IDA Pro / Ghidra](#使用-ida-pro--ghidra)
-4. [动态分析](#动态分析)
-   - [Frida Hook 原生函数](#frida-hook-原生函数)
-   - [Unidbg 模拟执行](#unidbg-模拟执行)
-5. [常见保护手段](#常见保护手段)
-   - [字符串加密](#字符串加密)
-   - [代码混淆](#代码混淆)
-   - [反调试技术](#反调试技术)
-6. [init_array 详解](#init_array-详解)
-   - [调用时机](#调用时机)
-   - [逆向分析对策](#逆向分析对策)
-
----
-
 ## ELF 文件格式
 
 `.so` 文件遵循 **ELF (Executable and Linkable Format)** 格式，这是一种用于可执行文件、目标代码、共享库和核心转储的标准文件格式。
@@ -444,7 +417,7 @@ Interceptor.attach(ptrace, {
 
 #### 完整的调用流程
 
-```
+```text
 System.loadLibrary("native")
          ↓
 nativeLoad() [art/runtime/native/java_lang_Runtime.cc]

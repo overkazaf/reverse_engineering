@@ -10,23 +10,11 @@ weight: 10
 
 Apache Spark 是一个统一的大数据处理引擎，支持批处理、流处理、机器学习和图计算。
 
-## 目录
-
-1. [Spark 架构](#spark-架构)
-2. [RDD 编程](#rdd-编程)
-3. [DataFrame & Dataset](#dataframe--dataset)
-4. [Spark SQL](#spark-sql)
-5. [Spark Streaming](#spark-streaming)
-6. [性能优化](#性能优化)
-7. [知识要点](#知识要点)
-
----
-
 ## Spark 架构
 
 ### 集群架构
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                    Driver Program                            │
 │                    (SparkContext)                           │
@@ -489,7 +477,7 @@ val optimizedDF = df.filter($"age" > 18)  // Filter 下推到数据源
 
 #### 内存分配
 
-```
+```text
 Spark 内存 = 堆内存 × spark.memory.fraction (默认 0.6)
 ├── 存储内存 (Storage) × 0.5
 │   └── 用于缓存 RDD、广播变量

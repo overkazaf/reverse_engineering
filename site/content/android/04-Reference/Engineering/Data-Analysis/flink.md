@@ -10,24 +10,11 @@ weight: 10
 
 Apache Flink 是一个分布式流处理框架，专为低延迟、高吞吐量的实时数据处理而设计。
 
-## 目录
-
-1. [Flink 架构](#flink-架构)
-2. [核心概念](#核心概念)
-3. [DataStream API](#datastream-api)
-4. [状态管理](#状态管理)
-5. [时间与窗口](#时间与窗口)
-6. [容错机制](#容错机制)
-7. [性能调优](#性能调优)
-8. [知识要点](#知识要点)
-
----
-
 ## Flink 架构
 
 ### 集群架构
 
-```
+```text
 ├── ResourceManager
 └── JobMaster
         ↓
@@ -46,7 +33,7 @@ TaskManager1        TaskManager2        TaskManager3
 
 ### 运行时架构
 
-```
+```text
 Operator1 → Operator2 → Operator3
 ```
 

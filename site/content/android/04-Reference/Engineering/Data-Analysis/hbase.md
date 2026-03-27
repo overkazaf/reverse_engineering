@@ -10,23 +10,11 @@ weight: 10
 
 Apache HBase 是一个分布式、面向列的开源数据库，基于 Google Bigtable 论文实现，运行在 HDFS 之上。
 
-## 目录
-
-1. [HBase 架构](#hbase-架构)
-2. [数据模型](#数据模型)
-3. [Shell 操作](#shell-操作)
-4. [Java API](#java-api)
-5. [性能优化](#性能优化)
-6. [集群管理](#集群管理)
-7. [知识要点](#知识要点)
-
----
-
 ## HBase 架构
 
 ### 核心组件
 
-```
+```text
 ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
 │ RegionServer│    │ RegionServer│    │ RegionServer│
 │  Region1,2  │    │  Region3,4  │    │  Region5,6  │
@@ -53,7 +41,7 @@ Apache HBase 是一个分布式、面向列的开源数据库，基于 Google Bi
 
 ### Region 详细结构
 
-```
+```text
 Region
 ├── Store (列族)
 │   ├── MemStore (内存缓冲)
@@ -86,7 +74,7 @@ Region
 
 ### 逻辑视图
 
-```
+```text
 Table: user_info
 ├── Row Key: user001
 │   ├── Column Family: basic_info
@@ -101,7 +89,7 @@ Table: user_info
 
 ### 物理存储
 
-```
+```text
 basic_info Store:
 user001:name:1234567890 → zhang_san
 user001:age:1234567891 → 25

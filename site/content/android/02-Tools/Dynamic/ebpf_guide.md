@@ -51,7 +51,7 @@ adb shell zcat /proc/config.gz | grep -i bpf
 ```
 
 需要确认以下内核配置启用:
-```
+```text
 CONFIG_BPF=y
 CONFIG_BPF_SYSCALL=y
 CONFIG_BPF_JIT=y

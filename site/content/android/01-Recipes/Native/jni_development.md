@@ -17,25 +17,13 @@ weight: 10
 
 JNI (Java Native Interface) 是 Java 与 C/C++ 代码交互的标准接口。在 Android 逆向工程中，理解 JNI 的工作原理对于分析 Native 层代码至关重要。本章将从开发者视角介绍 JNI 的原理与实践。
 
-## 目录
-
-1. [JNI 基础概念](#jni-基础概念)
-2. [JNI 开发环境搭建](#jni-开发环境搭建)
-3. [JNI 函数注册方式](#jni-函数注册方式)
-4. [JNI 数据类型映射](#jni-数据类型映射)
-5. [JNI 常用函数](#jni-常用函数)
-6. [完整示例：实现加密函数](#完整示例实现加密函数)
-7. [逆向分析要点](#逆向分析要点)
-
----
-
 ## JNI 基础概念
 
 ### 什么是 JNI
 
 JNI 是一个编程框架，允许 Java 代码调用 Native 代码（C/C++），也允许 Native 代码调用 Java 代码。
 
-```
+```text
 ┌─────────────────┐
 │   Java 层       │
 │  (Dalvik/ART)   │
@@ -107,7 +95,7 @@ target_link_libraries(
 
 ### 3. 目录结构
 
-```
+```text
 app/
 ├── src/main/
 │   ├── java/com/example/app/
@@ -167,7 +155,7 @@ Java_com_example_app_NativeHelper_encrypt(
 
 **静态注册的函数命名规则**：
 
-```
+```text
 Java_<包名>_<类名>_<方法名>
 
 示例：
@@ -270,7 +258,7 @@ JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *reserved) {
 
 ### 方法签名格式
 
-```
+```text
 (参数类型)返回类型
 
 示例：
