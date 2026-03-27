@@ -10,26 +10,11 @@ weight: 10
 
 Xposed 是一个在 Android 平台上广受欢迎的动态代码 Hook 框架。与 Frida 主要用于实时、临时的分析不同，Xposed 旨在对系统和应用进行**永久性**的修改。它通过替换一个核心系统进程 (`app_process`)，在应用启动时加载自定义模块，从而实现对任意方法的高效 Hook。
 
-## 目录
-
-- [核心原理](#核心原理)
-- [Xposed/LSPosed 安装配置](#xposedlsposed-安装配置)
-- [模块开发基础](#模块开发基础)
-- [Hook 方法详解](#hook-方法详解)
-- [高级 Hook 技巧](#高级-hook-技巧)
-- [常用 Hook 场景](#常用-hook-场景)
-- [与 Frida 对比](#与-frida-对比)
-- [调试与排错](#调试与排错)
-- [实战案例](#实战案例)
-- [LSPosed 特性](#lsposed-特性)
-
----
-
 ## 核心原理
 
 Xposed 的工作基础是它能够在 Android 系统启动的核心阶段介入，并将自己的代码注入到每一个应用程序进程中。
 
-```
+```text
 ┌──────────────────────────────────────────────────────┐
 │                  Android 系统启动                      │
 │                                                      │
@@ -46,7 +31,7 @@ Xposed 的工作基础是它能够在 Android 系统启动的核心阶段介入�
 2. **方法 Hook**: 当模块需要 Hook 一个方法时，Xposed 会在运行时深入虚拟机（ART）内部，直接修改该方法在内存中的数据结构。它将目标方法"伪装"成一个 Native 方法，并将其执行入口指向 Xposed 的一个通用桥接函数。
 3. **执行流重定向**: 当 App 调用被 Hook 的方法时，执行流会先进入 Xposed 的桥接函数，在这里 Xposed 依次调用所有模块的 `beforeHookedMethod`，然后调用原方法，最后再调用所有模块的 `afterHookedMethod`，从而实现对方法调用的完全控制。
 
-```
+```text
 App 调用 targetMethod()
     │
     v
@@ -201,7 +186,7 @@ public class MainHook implements IXposedHookLoadPackage {
 
 ### 项目目录结构
 
-```
+```text
 MyXposedModule/
 ├── app/src/main/
 │   ├── java/com/example/myxposedmodule/
@@ -528,7 +513,7 @@ XposedHelpers.findAndHookMethod("android.app.ApplicationPackageManager", classLo
 
 **最佳实践：先 Frida 分析，再 Xposed 固化**
 
-```
+```text
 1. 静态分析 (jadx/JEB)  ──> 了解应用结构，定位关键类和方法
 2. Frida 动态分析        ──> 快速验证 Hook 点，迭代调整
 3. Xposed 模块固化       ──> 将方案写成持久化模块
@@ -717,7 +702,7 @@ adb logcat | grep "CryptoHook"
 
 **预期输出**：
 
-```
+```text
 [CryptoHook] 开始 Hook...
 [CryptoHook] encrypt 明文: {"user":"admin","pass":"123456"}
 [CryptoHook] encrypt 密文: a3f2b8c1d4e5...
@@ -737,7 +722,7 @@ adb logcat | grep "CryptoHook"
 
 这是 LSPosed 最重要的改进。原版 Xposed 会将模块加载到**所有**进程中，而 LSPosed 可以精确指定作用域——只让模块加载到选定的应用中，未选中的应用完全不受影响。
 
-```
+```text
 LSPosed 作用域设置
 ┌──────────────────────────────────────────┐
 │ 模块: CryptoHook                         │

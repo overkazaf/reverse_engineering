@@ -33,7 +33,7 @@ weight: 10
 
 ### 技术分类总览
 
-```
+```text
 反爬虫技术
 ├── 被动检测（静默收集信息）
 │   ├── 浏览器指纹采集 / 行为轨迹记录 / TLS·HTTP 协议指纹
@@ -260,7 +260,7 @@ Java.perform(function () {
 
 ### WAF Token 流程（以 Cloudflare 为例）
 
-```
+```text
 客户端                      Cloudflare                   源站
   │── 首次请求 ──────────>│                              │
   │<── 返回 JS 挑战 ─────│  (HTTP 503 + 混淆 JS)       │
@@ -400,7 +400,7 @@ safe_links = [a["href"] for a in soup.find_all("a", href=True) if not is_honeypo
 
 ### Akamai Sensor Data 结构
 
-```
+```text
 sensor_data:
 ├── 设备信息: UA / 屏幕分辨率 / 时区
 ├── 浏览器指纹: Canvas hash / WebGL 渲染器 / AudioContext
@@ -416,7 +416,7 @@ sensor_data:
 
 ### 绕过决策树
 
-```
+```text
 1. 有公开 API / RSS？       → 是 → 直接调用（最优方案）
 2. 服务端渲染（SSR）？       → 是 → requests + 正确 Headers
 3. 有 JS 挑战 / WAF？       → 否 → Playwright 渲染即可

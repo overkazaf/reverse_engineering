@@ -10,18 +10,6 @@ weight: 10
 
 Unidbg 是一个强大的 Android 原生库 (`.so`) 模拟执行框架。理解其内部工作原理——CPU 模拟、内存管理、ELF 加载、JNI 桥接和系统调用仿真——可以帮助我们更高效地解决复杂的加密算法逆向和协议分析问题。
 
-## 目录
-
-1. [架构概览](#架构概览)
-2. [内存模型](#内存模型)
-3. [ELF 加载器](#elf-加载器)
-4. [JNI 桥接层](#jni-桥接层)
-5. [系统调用仿真](#系统调用仿真)
-6. [与 Unicorn/Qiling 对比](#与-unicornqiling-对比)
-7. [优势与局限](#优势与局限)
-
----
-
 ## 架构概览
 
 ### 核心思想
@@ -30,7 +18,7 @@ Unidbg 的核心思想是：**用纯 Java 在 PC 上构建一个虚拟的 Androi
 
 ### 整体架构
 
-```
+```text
 +================================================================+
 |                    用户代码 (Java)                               |
 |    MyEmulator extends AbstractJni                               |
@@ -69,7 +57,7 @@ Unidbg 采用**后端抽象层**设计，将 CPU 模拟能力与上层逻辑解�
 
 默认后端，基于 QEMU 的 TCG (Tiny Code Generator) 模块：
 
-```
+```text
 ARM 二进制指令
      |
      v
@@ -139,7 +127,7 @@ AndroidEmulator emulator = AndroidEmulatorBuilder.for32Bit()
 
 ### 虚拟地址空间布局 (32 位)
 
-```
+```text
 0xFFFFFFFF  +---------------------------+
             |   Kernel Space (不可用)   |
 0xC0000000  +---------------------------+
@@ -224,7 +212,7 @@ public Number[] callFunction(long address, Object... args) {
 
 Unidbg 内置简单的堆分配器处理 `malloc` / `free`：
 
-```
+```text
 +---------------------------+  堆起始地址
 | Block Header (8B)         |
 |   size=64, used=true      |
@@ -249,7 +237,7 @@ Unidbg 内置简单的堆分配器处理 `malloc` / `free`：
 
 ### ELF 文件结构
 
-```
+```text
 +---------------------------+
 | ELF Header                |  魔数、架构、入口点
 +---------------------------+
@@ -269,7 +257,7 @@ Unidbg 内置简单的堆分配器处理 `malloc` / `free`：
 
 ### 加载流程
 
-```
+```text
 vm.loadLibrary("libnative.so")
          |
          v
@@ -302,7 +290,7 @@ vm.loadLibrary("libnative.so")
 
 ### PLT/GOT 重定位
 
-```
+```asm
 调用外部函数 (如 strlen) 的过程:
 
 .text 段:
@@ -363,7 +351,7 @@ private void processRelocation(ElfRelocation rel, Module module) {
 
 在真实 Android 中，`JNIEnv*` 指向一个函数指针表。Unidbg 需要在模拟环境中实现等效机制：
 
-```
+```text
 真实 Android:
   JNIEnv* --> | GetVersion       | --> 原生函数指针
               | FindClass        | --> 原生函数指针
@@ -383,7 +371,7 @@ Unidbg 模拟:
 
 Unidbg 使用跳板代码将 SO 对 JNI 函数的调用重定向到 Java 实现：
 
-```
+```text
 SO 代码: (*env)->FindClass(env, "java/lang/String")
      |
      v
@@ -412,7 +400,7 @@ SO 代码: (*env)->FindClass(env, "java/lang/String")
 
 ### DvmObject 体系
 
-```
+```text
 DvmObject<T>                  (所有 Java 对象的基类)
     |
     +-- StringObject          (java.lang.String)
@@ -441,7 +429,7 @@ public abstract class DvmObject<T> {
 
 ### CallObjectMethod 完整生命周期
 
-```
+```yaml
 SO: jstring result = (*env)->CallObjectMethod(env, obj, methodId, arg1);
      |
      v
@@ -469,7 +457,7 @@ SO: jstring result = (*env)->CallObjectMethod(env, obj, methodId, arg1);
 
 许多加固后的 SO 在 `JNI_OnLoad` 中使用 `RegisterNatives` 动态注册：
 
-```
+```text
 SO 中的 JNI_OnLoad:
   env->RegisterNatives(clazz, methods, count)
        |
@@ -505,7 +493,7 @@ SVC  #0              ; 触发系统调用
 
 ### 处理流程
 
-```
+```text
 Unicorn 执行 SVC #0
      |
      v
@@ -562,7 +550,7 @@ public int __system_property_get(Emulator<?> emulator) {
 
 ### 文件描述符管理
 
-```
+```text
 虚拟文件描述符表:
 +------+---------------+-----------------------------------+
 |  FD  | 类型          | 实际映射                          |
@@ -582,7 +570,7 @@ public int __system_property_get(Emulator<?> emulator) {
 
 ### 三者定位
 
-```
+```text
   高层  +-- Unidbg ---+   专注 Android SO 模拟
         |             |   内置 JNI/DVM/Android 文件系统
         +-------------+
@@ -686,7 +674,7 @@ DvmObject<?> result = dvmClass.callStaticJniMethodObject(emulator,
 
 ### 适用性判断
 
-```
+```text
 +-----------------------------------+-----------------------------------+
 |         适合使用 Unidbg           |        不适合使用 Unidbg          |
 +-----------------------------------+-----------------------------------+

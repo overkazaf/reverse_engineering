@@ -59,7 +59,7 @@ webView.loadUrl("https://app.example.com/hybrid/index.html");
 
 React Native 应用将业务逻辑写在 JavaScript 中，打包后生成 `index.android.bundle` 文件，通常位于 APK 的 `assets/` 目录下。这个 bundle 文件包含了应用的**全部 JS 业务代码**，是逆向的重点目标。
 
-```
+```text
 assets/
 ├── index.android.bundle      # 核心 JS 代码（可能已混淆）
 ├── index.android.bundle.meta  # 元数据
@@ -968,7 +968,7 @@ synchrony deobfuscate obfuscated.js \
 
 当自动化工具无法处理特殊变种时，需要编写自定义的 Babel 插件。推荐的工作流：
 
-```
+```text
 混淆代码 ──→ AST Explorer 分析结构
                     │
                     ↓

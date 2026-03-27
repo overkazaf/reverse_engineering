@@ -26,7 +26,7 @@ Unity 是目前最流行的移动游戏引擎之一。现代 Unity 游戏通常�
 
 Unity 提供两种脚本后端（Scripting Backend），它们决定了 C# 代码最终以何种形式运行在设备上：
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────┐
 │                    Unity 脚本后端对比                                │
 ├─────────────────────────────────────────────────────────────────────┤
@@ -69,7 +69,7 @@ Unity 提供两种脚本后端（Scripting Backend），它们决定了 C# 代�
 
 ### 1.2 IL2CPP 编译流程
 
-```
+```text
 ┌──────────────┐     ┌──────────────┐     ┌──────────────┐
 │  C# 源代码    │────>│  IL 字节码    │────>│  C++ 源代码   │
 │  (.cs 文件)   │     │  (.dll 文件)  │     │  (.cpp 文件)  │
@@ -90,7 +90,7 @@ Unity 提供两种脚本后端（Scripting Backend），它们决定了 C# 代�
 
 一个典型的 Unity IL2CPP 游戏 APK 解压后，关键文件如下：
 
-```
+```text
 game.apk (解压后)
 ├── lib/
 │   ├── armeabi-v7a/                    # 32 位 ARM
@@ -243,7 +243,7 @@ rm -rf "$TMPDIR"
 
 `libil2cpp.so` 在编译时会被 strip（移除符号表），直接用 IDA/Ghidra 打开只能看到海量的 `sub_XXXXXX`：
 
-```
+```bash
 # IDA 中看到的 stripped libil2cpp.so
 .text:00123456  sub_123456    # 这是什么函数？不知道
 .text:00123500  sub_123500    # 是 AddCoin? TakeDamage? 完全不清楚
@@ -258,7 +258,7 @@ rm -rf "$TMPDIR"
 - 字符串字面量
 - **方法在 `libil2cpp.so` 中的 RVA（相对虚拟地址）偏移**
 
-```
+```text
 ┌─────────────────────────────────┐    ┌─────────────────────────────┐
 │        libil2cpp.so             │    │    global-metadata.dat      │
 │  (stripped, 无符号信息)          │    │    (类/方法/字段名映射)       │
@@ -322,7 +322,7 @@ typedef struct MethodInfo {
 
 在 IL2CPP 编译后的代码中，C# 方法被转换为 C 函数，调用约定如下：
 
-```
+```text
 C# 原始方法:
     public class Player {
         public int AddCoin(int amount) { ... }
@@ -379,7 +379,7 @@ typedef struct Il2CppGlobalMetadataHeader {
 
 文件布局示意：
 
-```
+```text
 偏移        内容                      大小
 ─────────────────────────────────────────────────
 0x0000      Header (魔数 + 版本 + 表指针)    ~300 字节
@@ -581,7 +581,7 @@ Il2CppDumper libil2cpp.so global-metadata.dat output/
 
 成功执行后，`output/` 目录结构如下：
 
-```
+```text
 output/
 ├── dump.cs              # ★ 还原的 C# 伪代码 (最重要)
 ├── script.py            # IDA Pro 重命名脚本
@@ -658,7 +658,7 @@ public class BattleManager : MonoBehaviour // TypeDefIndex: 3500
 
 ### 5.4 在 dnSpy 中查看 DummyDll
 
-```
+```text
 步骤:
 1. 打开 dnSpy (https://github.com/dnSpy/dnSpy)
 2. File -> Open -> 选择 output/DummyDll/Assembly-CSharp.dll
@@ -675,7 +675,7 @@ public class BattleManager : MonoBehaviour // TypeDefIndex: 3500
 
 **IDA Pro:**
 
-```
+```text
 1. 用 IDA 打开 libil2cpp.so (选择 ARM 64-bit 或 ARM 32-bit)
 2. 等待自动分析完成 (可能需要 10-30 分钟)
 3. File -> Script file -> 选择 output/script.py
@@ -687,7 +687,7 @@ public class BattleManager : MonoBehaviour // TypeDefIndex: 3500
 
 **Ghidra:**
 
-```
+```text
 1. 创建新项目，导入 libil2cpp.so
 2. 分析完成后，Window -> Script Manager
 3. 运行 output/ghidra.py
@@ -1083,7 +1083,7 @@ function hookNetworkResponse(parseOffset) {
 
 GameGuardian (GG) 是 Android 上最流行的内存修改工具。它可以搜索和修改游戏进程的内存，适用于单机游戏或弱联网游戏。
 
-```
+```text
 ┌─────────────────────────────────────────────────────┐
 │               GameGuardian 工作原理                   │
 ├─────────────────────────────────────────────────────┤
@@ -1127,7 +1127,7 @@ GameGuardian (GG) 是 Android 上最流行的内存修改工具。它可以搜�
 
 **步骤 1: 已知值搜索**
 
-```
+```text
 场景: 游戏中显示 金币 = 1500
 
 GG 操作:
@@ -1154,7 +1154,7 @@ GG 操作:
 
 **步骤 2: 未知值搜索 (模糊搜索)**
 
-```
+```text
 场景: 游戏中 HP 显示为血条图形，不知道具体数值
 
 GG 操作:
@@ -1182,7 +1182,7 @@ GG 操作:
 
 GameGuardian 内置的加速器通过 Hook 系统时间函数来改变游戏速度：
 
-```
+```text
 原理:
   Unity 游戏的 Time.deltaTime 依赖系统时钟
   加速器修改 clock_gettime / gettimeofday 的返回值
@@ -1302,7 +1302,7 @@ rpc.exports = {
 
 ### 8.1 常见反作弊体系
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                    Unity 游戏反作弊体系                           │
 ├─────────────────────────────────────────────────────────────────┤
@@ -1334,7 +1334,7 @@ rpc.exports = {
 
 这是最有效的反作弊手段。关键数值的修改需要服务器确认：
 
-```
+```text
 客户端-服务端交互模型:
 
   ┌──────────┐                        ┌──────────┐
@@ -1489,7 +1489,7 @@ void OnClientAction(Action action, int64_t clientTimestamp) {
 
 ### 9.1 完整流程概览
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                  Unity 游戏数值修改完整流程                       │
 ├─────────────────────────────────────────────────────────────────┤
@@ -1839,7 +1839,7 @@ Interceptor.replace(il2cpp.add(0x18A510),
 
 ### 10.1 Mono 游戏识别与文件结构
 
-```
+```text
 game_mono.apk (解压后)
 ├── lib/
 │   └── armeabi-v7a/
@@ -1863,7 +1863,7 @@ game_mono.apk (解压后)
 
 ### 10.2 使用 dnSpy 分析 Assembly-CSharp.dll
 
-```
+```text
 步骤:
 1. 解压 APK
 2. 提取 assets/bin/Data/Managed/Assembly-CSharp.dll
@@ -1935,7 +1935,7 @@ namespace Game.Player
 
 dnSpy 不仅可以查看代码，还可以直接修改 IL 代码并保存：
 
-```
+```java
 修改步骤:
 1. 在 dnSpy 中找到目标方法
 2. 右键 -> Edit Method Body (编辑方法体)
@@ -1959,7 +1959,7 @@ public void TakeDamage(float damage) {
 }
 ```
 
-```
+```text
 IL 级别修改示例:
 
 // 原始 IL:
@@ -2028,7 +2028,7 @@ function hookMonoMethod(namespace, className, methodName, paramCount) {
 
 ### 10.5 Mono vs IL2CPP 逆向对比总结
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │              Mono vs IL2CPP 逆向难度对比                      │
 ├──────────────────┬──────────────────┬───────────────────────┤

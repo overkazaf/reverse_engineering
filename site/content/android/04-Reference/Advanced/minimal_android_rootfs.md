@@ -12,24 +12,6 @@ weight: 10
 
 ## 本文将指导你完成这一过程，主要使用 QEMU 作为目标平台。
 
-## 目录
-
-- [最小 Android 根文件系统概述](#最小-android-根文件系统概述)
-- [核心概念与启动流程](#核心概念与启动流程)
-- [最小系统的核心组件](#最小系统的核心组件)
-- [构建方法](#构建方法)
-- [关键目录结构](#关键目录结构)
-- [构建步骤详解](#构建步骤详解)
-- [Linker 与动态库](#linker-与动态库)
-- [在 chroot 环境中运行](#在-chroot-环境中运行)
-- [Docker Android 环境](#docker-android-环境)
-- [proot 方案](#proot-方案)
-- [实战：在最小环境中运行 SO](#实战在最小环境中运行-so)
-- [与 unidbg 对比](#与-unidbg-对比)
-- [从 Shell 到 Zygote：下一步是什么？](#从-shell-到-zygote下一步是什么)
-
----
-
 ## 最小 Android 根文件系统概述
 
 最小 Android 根文件系统（Minimal Android RootFS）是一个被精简到最低限度的 Android 用户空间环境，仅保留运行 Native 二进制文件所必需的核心组件。与完整的 Android 系统（通常包含数 GB 的框架、应用和服务）不同，一个最小 RootFS 通常只有几十 MB：
@@ -52,7 +34,7 @@ weight: 10
 
 ### 典型使用场景
 
-```
+```text
 场景 1：分析某 APP 的加密 SO
   完整设备 → 反调试检测 → 被杀进程
   最小 RootFS → 无检测 → 自由调试
@@ -145,7 +127,7 @@ sudo umount /mnt/android_system
 
 ## 关键目录结构
 
-```
+```text
 / (根目录)
 ├── system/          # 系统分区（只读）
 │   ├── bin/         # 系统二进制 (linker64, sh, toybox)
@@ -290,7 +272,7 @@ Android 的动态链接机制是理解和运用最小 RootFS 的核心。与标�
 
 ### linker 的工作流程
 
-```
+```text
 Kernel 加载 ELF → 读取 PT_INTERP → 找到 /system/bin/linker64
   ↓
 linker64: 解析 PT_LOAD 段 → 映射到内存

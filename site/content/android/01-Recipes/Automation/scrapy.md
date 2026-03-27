@@ -19,20 +19,6 @@ Scrapy 是一个用于网络爬虫和数据抓取的、开源的、协作式的 
 
 ---
 
-## 目录
-
-- [Scrapy 框架概述](#scrapy-框架概述)
-- [项目搭建](#项目搭建)
-- [Spider 编写](#spider-编写)
-- [Item 与 Pipeline](#item-与-pipeline)
-- [Middleware 实战](#middleware-实战)
-- [反爬对抗](#反爬对抗)
-- [Scrapy + 逆向工程](#scrapy--逆向工程)
-- [性能调优](#性能调优)
-- [部署方案](#部署方案)
-
----
-
 ## Scrapy 框架概述
 
 ### 核心组件
@@ -49,7 +35,7 @@ Scrapy 是一个用于网络爬虫和数据抓取的、开源的、协作式的 
 
 ### 数据流
 
-```
+```text
 ┌────────┐ Request  ┌────────┐ Request ┌────────────┐ Request ┌────────────┐
 │ Spider │────────►│ Engine │───────►│ Scheduler  │───────►│ Downloader │
 │        │◄────────│        │◄───────│            │◄───────│            │
@@ -79,7 +65,7 @@ scrapy genspider example example.com
 
 ### 目录结构
 
-```
+```text
 myproject/
 ├── scrapy.cfg               # 部署配置
 └── myproject/

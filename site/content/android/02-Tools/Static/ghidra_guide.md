@@ -12,29 +12,6 @@ Ghidra 是由美国国家安全局 (NSA) 开发并开源的一款软件逆向工
 
 ---
 
-## 目录
-
-1. [核心特性](#核心特性)
-2. [Ghidra vs. IDA Pro vs. Radare2](#ghidra-vs-ida-pro-vs-radare2)
-3. [安装与配置](#安装与配置)
-4. [基本工作流程](#基本工作流程)
-5. [关键视图与操作](#关键视图与操作)
-   - [Code Browser (代码浏览器)](#code-browser-代码浏览器)
-   - [Decompiler (反编译器)](#decompiler-反编译器)
-   - [Function Graph (函数图)](#function-graph-函数图)
-   - [Symbol Tree (符号树)](#symbol-tree-符号树)
-   - [Data Type Manager (数据类型管理器)](#data-type-manager-数据类型管理器)
-6. [Android SO 分析实战](#android-so-分析实战)
-7. [反编译器使用](#反编译器使用)
-8. [Ghidra Script 实战](#ghidra-script-实战)
-9. [Headless 模式](#headless-模式)
-10. [常用插件与扩展](#常用插件与扩展)
-11. [Ghidra vs IDA Pro 深度对比](#ghidra-vs-ida-pro-深度对比)
-12. [高级技巧](#高级技巧)
-13. [优缺点分析](#优缺点分析)
-
----
-
 ## 核心特性
 
 - **强大的反编译器 (Decompiler)**: 这是 Ghidra 的王牌功能。它内置了一个高质量的、支持多种处理器架构的免费反编译器，能够将汇编代码转换为类似 C/C++ 的高级语言伪代码，极大地提高了代码理解效率。
@@ -278,7 +255,7 @@ Android SO 中最关键的是 JNI (Java Native Interface) 函数。有两种注�
 
 **静态注册** - 函数名遵循固定格式：
 
-```
+```text
 Java_com_example_app_MainActivity_stringFromJNI
 ```
 
@@ -612,7 +589,7 @@ Ghidra 的生态系统正在快速成长，以下是 Android 逆向中最有价�
 
 ### 安装插件的通用方法
 
-```
+```text
 1. 下载插件 ZIP 包
 2. Ghidra 主界面: File -> Install Extensions...
 3. 点击 "+" 按钮，选择 ZIP 包
@@ -736,7 +713,7 @@ struct EncryptContext {
 3. 分析完成后，在 Symbol Tree 中搜索 `typeinfo` 或 `vtable` 前缀
 4. 通过虚函数表 (vtable) 可以还原类的继承关系和虚函数列表
 
-```
+```text
 // 典型的 vtable 结构 (Ghidra 中查看)
 //
 // vtable for MyClass:

@@ -14,7 +14,7 @@ Android 的应用框架核心由四个基本组件构成。每个组件都是一
 
 ## 1. 四大组件概述
 
-```
+```text
 ┌───────────────────────── Android 应用架构 ─────────────────────────┐
 │                                                                    │
 │  ┌──────────────────────────────────────────────────────────────┐  │
@@ -50,7 +50,7 @@ Android 的应用框架核心由四个基本组件构成。每个组件都是一
 
 ### 2.1 生命周期图
 
-```
+```text
               ┌─────────────────┐
               │   onCreate()    │ ◄── 布局加载、数据初始化
               └────────┬────────┘     setContentView(), findViewById()
@@ -141,7 +141,7 @@ Activity 类名不会被混淆（Manifest 中声明），但内部方法和字�
 
 ### 3.1 Service 类型
 
-```
+```text
 启动服务 (Started):   startService() → onStartCommand() → [后台运行] → stopSelf()
 绑定服务 (Bound):     bindService()  → onBind() → [Binder 交互] → onUnbind()
 前台服务 (Foreground): startForegroundService() → startForeground(id, notification)
@@ -278,7 +278,7 @@ adb shell am broadcast \
 
 ### 5.1 URI 结构
 
-```
+```text
 content://com.example.app.provider/users/10
 \_____/   \________________________/ \___/ \/
  scheme          authority           path   id
@@ -340,7 +340,7 @@ adb shell content read \
 
 `Application` 类是应用中最先被创建的对象，生命周期覆盖整个进程。这使它成为逆向中最关键的切入点。
 
-```
+```text
 应用启动顺序:
   1. Zygote fork 新进程
   2. Application.attachBaseContext()  ◄── 最早的代码入口，壳在此脱壳
@@ -403,7 +403,7 @@ Java.perform(function() {
 
 ### 7.1 Intent 的组成
 
-```
+```text
 Action     → 要执行的操作（如 VIEW, SEND, MAIN）
 Data       → 操作的数据 URI（如 content://, http://）
 Category   → 对组件的附加限定（如 LAUNCHER, DEFAULT）
@@ -478,7 +478,7 @@ Java.perform(function() {
 
 ### 8.1 分析流程
 
-```
+```text
 Step 1: 静态分析 Manifest
   → 找 Application 子类、主 Activity、exported 组件、权限列表
 
@@ -505,7 +505,7 @@ Step 4: 追踪数据流
 
 ### 8.3 混淆应用的突破策略
 
-```
+```text
 未混淆的通常保留:                    通常被混淆:
   Activity/Service/Provider 类名       内部工具类名 (Utils → a)
   JNI native 方法名                    方法名 (encryptData → b)

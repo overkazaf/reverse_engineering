@@ -19,28 +19,13 @@ Flutter 是 Google 推出的跨平台 UI 框架，它使用 Dart 语言开发。
 
 ---
 
-## 目录
-
-- [Flutter 架构与逆向挑战](#flutter-架构与逆向挑战)
-- [Flutter App 识别](#flutter-app-识别)
-- [Dart 快照格式分析](#dart-快照格式分析)
-- [reFlutter 工具使用](#reflutter-工具使用)
-- [Frida 拦截 Flutter 网络请求](#frida-拦截-flutter-网络请求)
-- [Flutter 逆向工具链](#flutter-逆向工具链)
-- [libapp.so 分析技巧](#libappso-分析技巧)
-- [实战：Flutter App 抓包](#实战flutter-app-抓包)
-- [实战：提取 Flutter App 业务逻辑](#实战提取-flutter-app-业务逻辑)
-- [常见问题与解决方案](#常见问题与解决方案)
-
----
-
 ## Flutter 架构与逆向挑战
 
 ### 核心架构概览
 
 Flutter 应用的运行架构与传统 Android 应用截然不同。理解其内部结构是逆向的第一步。
 
-```
+```text
 +---------------------------------------------------------------+
 |                     Flutter Application                       |
 +---------------------------------------------------------------+
@@ -86,7 +71,7 @@ Flutter 应用的运行架构与传统 Android 应用截然不同。理解其内
 
 ### Dart AOT 编译流程
 
-```
+```text
   Dart 源代码 (.dart)
         |
         v
@@ -145,7 +130,7 @@ unzip -l target.apk | grep -E "(libflutter|libapp|flutter_assets)"
 
 **典型 Flutter APK 文件结构**:
 
-```
+```text
 target.apk
 ├── AndroidManifest.xml
 ├── classes.dex                    # Java 薄壳层
@@ -272,7 +257,7 @@ strings libapp.so | head -20
 
 ### Snapshot 结构概览
 
-```
+```text
 libapp.so (ELF)
 ├── .text           # 机器码指令段
 ├── .rodata         # 只读数据
@@ -295,7 +280,7 @@ libapp.so (ELF)
 
 Isolate Snapshot Data 的内部布局（简化）：
 
-```
+```text
 +----------------------------------+
 |         Snapshot Header          |
 |  - Magic Number                  |
@@ -334,7 +319,7 @@ Isolate Snapshot Data 的内部布局（简化）：
 
 Dart Snapshot 格式 **没有向后兼容性保证**。每个 Dart SDK 版本都可能改变 Snapshot 的内部格式。这意味着：
 
-```
+```text
 Dart SDK 2.17 生成的 Snapshot  ≠  Dart SDK 2.18 的格式
 Dart SDK 3.0  生成的 Snapshot  ≠  Dart SDK 3.1  的格式
 ```
@@ -376,7 +361,7 @@ reflutter --help
 
 ### 基本使用流程
 
-```
+```text
 +------------------+       +------------------+       +------------------+
 |  原始 APK        | ----> |   reFlutter      | ----> |  Patched APK     |
 |  (target.apk)    |       |   (替换引擎)      |       | (release.RE.apk) |
@@ -673,7 +658,7 @@ python3 blutter.py lib/arm64-v8a/libapp.so lib/arm64-v8a/libflutter.so output/
 
 **Blutter 输出结构**：
 
-```
+```text
 output/
 ├── asm/                    # 每个 Dart 函数的反汇编
 │   ├── ApiService.login.asm
@@ -688,7 +673,7 @@ output/
 
 **Blutter 输出的反汇编示例**：
 
-```
+```text
 ; ApiService.login (String username, String password)
 ; offset: 0x3a1200
 ; Object Pool:
@@ -818,7 +803,7 @@ Dart AOT (ARM64) 使用如下寄存器约定：
 
 **步骤 3: 解读 Object Pool 引用**
 
-```
+```text
 ; IDA 中常见的 Dart 代码模式:
 ldr  x16, [x27, #0x1a8]    ; 从 Object Pool 加载对象
                              ; x27 = PP (Pool Pointer)
@@ -875,7 +860,7 @@ strings -n 8 libapp.so | grep -iE "(api|http|login|token|encrypt|password|secret
 
 **技巧 2: 通过 URL 定位网络请求函数**
 
-```
+```text
 1. strings 找到 API URL (如 "https://api.target.com/v1/login")
 2. 在 Blutter 的 pp.txt 中搜索该字符串
 3. 找到对应的 Pool 偏移 (如 pp+0x1a8)
@@ -901,7 +886,7 @@ grep -r "\[PP, #0x1a8\]" output/asm/
 
 ### 环境准备
 
-```
+```text
 +------------------+                    +------------------+
 |  Android 手机     |  <--- 同一网络 --->  |  PC (分析机)      |
 |  - 已 Root        |                    |  - Burp Suite    |
@@ -1070,7 +1055,7 @@ adb shell su -c "iptables -t nat -F"
 
 成功抓包后，典型的 Flutter App API 请求如下：
 
-```
+```text
 POST /v1/api/getUserInfo HTTP/1.1
 Host: api.target.com
 Content-Type: application/json; charset=utf-8
@@ -1130,7 +1115,7 @@ grep -ri "https://\|http://" output/pp.txt
 
 **假设我们找到了以下关键信息**：
 
-```
+```text
 output/pp.txt:
   pp+0x2a0: String "https://api.target.com"
   pp+0x2a8: String "X-Sign"
@@ -1147,7 +1132,7 @@ output/asm/ApiService._generateSign.asm:
 
 查看 Blutter 输出的反汇编：
 
-```
+```text
 ; ApiService._generateSign
 ; offset: 0x3b4500
 ; Pool references:
@@ -1594,7 +1579,7 @@ dart run bin/doldrums.dart libapp.so output/
 
 ### 工具选择决策树
 
-```
+```text
                  Flutter App 逆向
                        |
             需要抓包？ OR 需要分析代码？

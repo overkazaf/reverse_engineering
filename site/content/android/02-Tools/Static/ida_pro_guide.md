@@ -10,24 +10,6 @@ weight: 10
 
 IDA Pro (Interactive Disassembler Professional) 是由 Hex-Rays 公司开发的一款业界闻名的交互式反汇编器。在逆向工程领域，IDA Pro 被广泛认为是**黄金标准**，以其最强大的反汇编引擎、无与伦比的处理器支持和极其成熟的生态系统，成为专业人士进行软件分析、漏洞挖掘和恶意软件研究的首选工具。
 
-## 目录
-
-1. [核心特性](#核心特性)
-2. [IDA Pro vs. Ghidra vs. Radare2](#ida-pro-vs-ghidra-vs-radare2)
-3. [版本与安装](#版本与安装)
-4. [基本工作流程](#基本工作流程)
-5. [关键视图与快捷键](#关键视图与快捷键)
-6. [Android SO 分析实战](#android-so-分析实战)
-7. [Hex-Rays 反编译器实战](#hex-rays-反编译器实战)
-8. [IDAPython 实战脚本](#idapython-实战脚本)
-9. [远程调试 Android 应用](#远程调试-android-应用)
-10. [常用插件推荐](#常用插件推荐)
-11. [IDA 与 Frida 联动](#ida-与-frida-联动)
-12. [高级技巧](#高级技巧)
-13. [优缺点分析](#优缺点分析)
-
----
-
 ## 核心特性
 
 ### 顶级的反汇编引擎
@@ -167,7 +149,7 @@ IDA 会进行长时间的自动分析。分析过程可以在底部的输出窗�
 
 APK 本质上是一个 ZIP 文件。原生 SO 库位于 `lib/` 目录下，按 ABI 分类：
 
-```
+```text
 app.apk
   ├── lib/
   │   ├── armeabi-v7a/
@@ -199,7 +181,7 @@ app.apk
 
 打开 Exports 窗口（`View -> Open subviews -> Exports`），查找 JNI 函数：
 
-```
+```text
 JNI 函数命名规则：Java_包名_类名_方法名
 
 示例：
@@ -214,7 +196,7 @@ Java_com_example_app_NativeLib_getSign
 
 按 `Shift+F12` 打开 Strings 窗口，搜索关键词：
 
-```
+```text
 常见有价值的字符串：
 - "AES", "RSA", "MD5", "SHA"        -> 加密算法线索
 - "key", "secret", "token"          -> 密钥相关

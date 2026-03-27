@@ -12,76 +12,52 @@ Frida 是一个功能强大的动态插桩框架，但要充分利用它，理�
 
 ---
 
-## 目录
-
-- [Frida 核心模块与实现原理](#frida-核心模块与实现原理)
-  - [目录](#目录)
-    - [Frida 的 architecture 概览](#frida-的-architecture-概览)
-    - [核心组件详解](#核心组件详解)
-      - [**Frida-Server**: 设备端的守护进程](#frida-server-设备端的守护进程)
-      - [**Frida-Core**: 注入目标进程的核心引擎](#frida-core-注入目标进程的核心引擎)
-      - [**Frida-Gum**: 实现 Hook 的魔法棒](#frida-gum-实现-hook-的魔法棒)
-        - [`Interceptor`: 函数拦截器](#interceptor-函数拦截器)
-        - [`Stalker`: 指令级跟踪器](#stalker-指令级跟踪器)
-      - [**JavaScript (V8) 运行时**: 脚本的执行环境](#javascript-v8-运行时-脚本的执行环境)
-      - [**语言绑定 (Bindings)**: 你的控制台](#语言绑定-bindings-你的控制台)
-    - [工作流程串讲](#工作流程串讲)
-    - [注入机制深入](#注入机制深入)
-    - [Interceptor 实现细节](#interceptor-实现细节)
-    - [Stalker 深入分析](#stalker-深入分析)
-    - [内存管理](#内存管理)
-    - [通信机制](#通信机制)
-    - [与其他框架对比](#与其他框架对比)
-    - [已知限制与陷阱](#已知限制与陷阱)
-    - [源码导读](#源码导读)
-
----
-
 ### Frida 的 architecture 概览
 
 Frida 采用的是一种**客户端-服务器 (Client-Server)** 架构。
 
-!!! question "思考：为什么需要这样复杂的架构？"
-Frida 为什么不设计成一个简单的工具，而要分成客户端、服务器、Agent 三层？
+> [!question] 思考：为什么需要这样复杂的架构？
+> Frida 为什么不设计成一个简单的工具，而要分成客户端、服务器、Agent 三层？
+>
+> - **跨平台的必然选择**：
+>
+> * **隔离性**：你的分析脚本（Python）运行在 PC，不会影响目标设备的性能
+> * **安全性**：Server 只负责进程管理和注入，真正的"危险操作"在隔离的进程内
+> * **灵活性**：同一个 Server 可以同时为多个客户端服务，支持团队协作
+> * **跨语言**：PC 端用 Python/Node.js 编写自动化脚本，目标进程内用 JavaScript 操作内存，各取所长
+>
+> 这种架构的本质是：**把"控制"和"执行"分离**，就像遥控无人机——遥控器在你手上，但飞行逻辑在机上。
+>
+> - **客户端 (Client)**: 运行在你 PC 上的部分。这包括你编写的 Python 或 Node.js 脚本，以及你使用的 Frida 命令行工具 (`frida`, `frida-trace` 等)。
+>
+> - **服务器 (Server)**: 在目标设备（如 Android 手机）上以后台守护进程模式运行的 `frida-server`。
+>
+> - **Agent**: 当你附加到一个目标进程时，Frida 会将一个动态库 (`frida-agent.so`) **注入**到该进程的内存空间中。这个 Agent 负责执行你在客户端脚本中定义的逻辑。
+>
+> ![Frida Architecture](https://frida.re/static/images/frida-architecture.png)
+>
+> - 图片来源: frida.re\*
+>
+> ```
+> 完整数据流：
+>
+>   PC (Host)                        Android (Target)
+>  +------------------+             +-------------------------+
+>  | Python/Node.js   |   USB/TCP   |  frida-server (root)    |
+>  | 客户端脚本        |<==========>|  端口 27042             |
+>  | frida CLI        |             |     | ptrace/dlopen     |
+>  +------------------+             |     v                   |
+>                               |  +--------------------+ |
+>                               |  | 目标进程            | |
+>                               |  |  +--------------+  | |
+>                               |  |  | agent.so     |  | |
+>                               |  |  | V8 + Gum     |  | |
+>                               |  |  | user script  |  | |
+>                               |  |  +--------------+  | |
+>                               |  +--------------------+ |
+>                               +-------------------------+
+> ```
 
-- **跨平台的必然选择**：
-
-* **隔离性**：你的分析脚本（Python）运行在 PC，不会影响目标设备的性能
-* **安全性**：Server 只负责进程管理和注入，真正的"危险操作"在隔离的进程内
-* **灵活性**：同一个 Server 可以同时为多个客户端服务，支持团队协作
-* **跨语言**：PC 端用 Python/Node.js 编写自动化脚本，目标进程内用 JavaScript 操作内存，各取所长
-
-这种架构的本质是：**把"控制"和"执行"分离**，就像遥控无人机——遥控器在你手上，但飞行逻辑在机上。
-
-- **客户端 (Client)**: 运行在你 PC 上的部分。这包括你编写的 Python 或 Node.js 脚本，以及你使用的 Frida 命令行工具 (`frida`, `frida-trace` 等)。
-
-- **服务器 (Server)**: 在目标设备（如 Android 手机）上以后台守护进程模式运行的 `frida-server`。
-
-- **Agent**: 当你附加到一个目标进程时，Frida 会将一个动态库 (`frida-agent.so`) **注入**到该进程的内存空间中。这个 Agent 负责执行你在客户端脚本中定义的逻辑。
-
-![Frida Architecture](https://frida.re/static/images/frida-architecture.png)
-
-- 图片来源: frida.re\*
-
-```
-完整数据流：
-
-  PC (Host)                        Android (Target)
- +------------------+             +-------------------------+
- | Python/Node.js   |   USB/TCP   |  frida-server (root)    |
- | 客户端脚本        |<==========>|  端口 27042             |
- | frida CLI        |             |     | ptrace/dlopen     |
- +------------------+             |     v                   |
-                                  |  +--------------------+ |
-                                  |  | 目标进程            | |
-                                  |  |  +--------------+  | |
-                                  |  |  | agent.so     |  | |
-                                  |  |  | V8 + Gum     |  | |
-                                  |  |  | user script  |  | |
-                                  |  |  +--------------+  | |
-                                  |  +--------------------+ |
-                                  +-------------------------+
-```
 
 ---
 
@@ -111,39 +87,40 @@ Frida 为什么不设计成一个简单的工具，而要分成客户端、服�
 
 `Interceptor` 是你最常使用的功能，用于 Hook/Trace/替换任意函数。
 
-!!! tip "深入理解：Hook 的本质是什么？"
-很多人把 Hook 当成"黑魔法"，但其实原理很朴素：
+> [!tip] 深入理解：Hook 的本质是什么？
+> 很多人把 Hook 当成"黑魔法"，但其实原理很朴素：
+>
+> - **Hook = 劫持程序的执行流**
+>
+> 想象你在高速公路上设置了一个收费站：
+>
+> 1. **原始道路**：函数的正常执行流程
+> 2. **收费站（Trampoline）**：你插入的代码
+> 3. **改道标志（JMP）**：修改函数入口的跳转指令
+> 4. **恢复通行**：执行原始指令后继续
+>
+> 理解了这个本质，你就能：
+>
+> - 判断哪些 Hook 会相互冲突（都修改同一个函数入口）
+> - 理解为什么有些反 Hook 检测能发现你（检查函数头的修改）
+> - 知道如何写更隐蔽的 Hook（inline hook vs. PLT/GOT hook）
+>
+> * **实现原理**:
+>
+> 1. **动态代码生成**: 当你 `Interceptor.attach` 一个函数时，Frida-Gum 会在内存中动态地生成一小段汇编代码，我们称之为**蹦床 (Trampoline)**。
+> 2. **函数头重写 (Prologue Rewriting)**: Frida-Gum 会修改目标函数入口点（函数头）的几条指令，将其替换为一个**无条件跳转 (`JMP`) 指令**，该指令指向刚刚创建的蹦床。Frida 会非常小心地保存被它覆盖掉的原始指令。
+> 3. **执行流程**:
+>
+> - 当应用调用目标函数时，它会首先跳转到蹦床。
+>
+> - 蹦床代码会保存当前的 CPU 上下文（寄存器状态），然后调用你在 JavaScript 中定义的 `onEnter` 回调。
+>
+> - `onEnter` 执行完毕后，蹦床会执行被它覆盖掉的原始函数指令，然后跳转回原始函数的剩余部分继续执行。
+>
+> - 当原始函数执行完毕后，控制权返回给蹦床，蹦床再调用你的 `onLeave` 回调。
+>
+> - 最后，蹦床恢复之前保存的 CPU 上下文，并将返回值传递给原始的调用者。
 
-- **Hook = 劫持程序的执行流**
-
-想象你在高速公路上设置了一个收费站：
-
-1. **原始道路**：函数的正常执行流程
-2. **收费站（Trampoline）**：你插入的代码
-3. **改道标志（JMP）**：修改函数入口的跳转指令
-4. **恢复通行**：执行原始指令后继续
-
-理解了这个本质，你就能：
-
-- 判断哪些 Hook 会相互冲突（都修改同一个函数入口）
-- 理解为什么有些反 Hook 检测能发现你（检查函数头的修改）
-- 知道如何写更隐蔽的 Hook（inline hook vs. PLT/GOT hook）
-
-* **实现原理**:
-
-1. **动态代码生成**: 当你 `Interceptor.attach` 一个函数时，Frida-Gum 会在内存中动态地生成一小段汇编代码，我们称之为**蹦床 (Trampoline)**。
-2. **函数头重写 (Prologue Rewriting)**: Frida-Gum 会修改目标函数入口点（函数头）的几条指令，将其替换为一个**无条件跳转 (`JMP`) 指令**，该指令指向刚刚创建的蹦床。Frida 会非常小心地保存被它覆盖掉的原始指令。
-3. **执行流程**:
-
-- 当应用调用目标函数时，它会首先跳转到蹦床。
-
-- 蹦床代码会保存当前的 CPU 上下文（寄存器状态），然后调用你在 JavaScript 中定义的 `onEnter` 回调。
-
-- `onEnter` 执行完毕后，蹦床会执行被它覆盖掉的原始函数指令，然后跳转回原始函数的剩余部分继续执行。
-
-- 当原始函数执行完毕后，控制权返回给蹦床，蹦床再调用你的 `onLeave` 回调。
-
-- 最后，蹦床恢复之前保存的 CPU 上下文，并将返回值传递给原始的调用者。
 
 ##### `Stalker`: 指令级跟踪器
 
@@ -220,7 +197,7 @@ Frida 实际上提供了两个 JS 运行时：
 
 `ptrace` 是 Linux 内核提供的进程跟踪系统调用。Frida 利用它完成注入：
 
-```
+```text
 frida-server                   目标进程
     |                              |
     | 1. ptrace(PTRACE_ATTACH)     |  进程暂停 (SIGSTOP)
@@ -239,7 +216,7 @@ frida-server                   目标进程
 
 写入目标进程的 shellcode 核心逻辑如下：
 
-```
+```text
 shellcode 伪代码：
   1. dlopen("frida-agent.so", RTLD_LAZY)   // 加载 Agent
   2. dlsym(handle, "frida_agent_main")     // 获取入口函数
@@ -271,7 +248,7 @@ SELinux 在 enforcing 模式下可能阻止 ptrace 附加、mmap 可执行内存
 
 当设备无 root 时，将 `frida-gadget.so` 打包进 APK：
 
-```
+```text
 1. 解压 APK
 2. 拷贝 frida-gadget.so 到 lib/<abi>/
 3. 在入口 Activity 的 smali 中添加 System.loadLibrary("frida-gadget")
@@ -295,7 +272,7 @@ Gadget 支持多种运行模式，通过 `frida-gadget.config` 配置：
 
 ARM64 上 Frida 需要覆盖函数头部 16 字节来放置跳转：
 
-```
+```asm
 原始函数 (Hook 前)：           Hook 后：
 
 0x7000: STP X29,X30,[SP,#-16]!  0x7000: LDR X16, #8     (4 bytes)
@@ -306,7 +283,7 @@ ARM64 上 Frida 需要覆盖函数头部 16 字节来放置跳转：
 
 Trampoline 执行流：
 
-```
+```asm
 调用者 -> [函数入口 JMP] -> Enter Trampoline
                             | 保存 X0-X30, SP, NZCV
                             | 调用 onEnter(context)
@@ -359,7 +336,7 @@ if (imp) {
 
 Frida-Gum 的 `GumArm64Relocator` 组件自动处理这些重定位。重定位示例：
 
-```
+```asm
 原始位置 0x7000:
   ADRP X0, #0x2000     -> X0 = 0x9000 (基于 PC 的页地址)
   LDR  X0, [X0, #0x10] -> X0 = *(0x9010)
@@ -395,7 +372,7 @@ Stalker 本质上是一个**动态二进制翻译器 (DBT)**，类似 QEMU 用�
 
 #### 翻译管线
 
-```
+```text
 原始基本块 -> [解码] -> [Transform 回调] -> [插桩] -> [写入代码缓存] -> [链接]
               ARM64Reader  用户可修改     插入跟踪    Slab 分配器    连接后续块
                            /删除/添加指令  回调代码
@@ -405,7 +382,7 @@ Stalker 本质上是一个**动态二进制翻译器 (DBT)**，类似 QEMU 用�
 
 核心思想：**永远不执行原始代码，只执行经过插桩的副本**。
 
-```
+```text
 原始代码                      Stalker 代码缓存
 +-------------------+         +---------------------------+
 | BB1 (0x1000):     |  翻译   | BB1':                     |
@@ -504,7 +481,7 @@ Stalker.follow(Process.getCurrentThreadId(), {
 
 #### Frida 在目标进程中的内存占用
 
-```
+```text
 注入后新增内存映射（典型值）：
 
 区域                    大小        权限   用途
@@ -533,7 +510,7 @@ Memory.patchCode(targetAddr, 16, function(code) {
 
 #### Trampoline 内存分配策略
 
-```
+```asm
 策略优先级：
 
 1. 近距离分配 (优先)
@@ -576,7 +553,7 @@ var nearby = Memory.alloc(Process.pageSize, {
 
 #### 消息路径
 
-```
+```text
 send(msg, data)  ->  V8 序列化  ->  GumMessage  ->  DBus 编码
     [JS]              [Agent]        [frida-core]    [IPC]
                                           |
@@ -721,7 +698,7 @@ Interceptor.attach(Module.findExportByName(null, "connect"), {
 
 #### 仓库关键文件
 
-```
+```text
 frida-gum/gum/
   guminterceptor.c              Interceptor 核心逻辑
   guminterceptor-arm64.c        ARM64 trampoline 生成
@@ -763,7 +740,7 @@ make server-android-arm64
 
 ### 总结
 
-```
+```text
 Frida 知识体系：
 
                     [Frida 核心原理]

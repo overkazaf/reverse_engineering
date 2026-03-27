@@ -30,7 +30,7 @@ Android 应用加固是一种保护 App 不被轻易逆向、篡改或攻击的�
 3. **检查 `assets` 目录**：很多加固方案会将加密后的 DEX 文件、配置文件或其他组件放入 `assets` 目录。
 4. **检查 `AndroidManifest.xml`**：加固方案通常会用自己的代理 `Application` 类替换掉原始的 `Application` 类。检查 `application` 标签下的 `android:name` 属性，可以找到代理类的名字，其包名往往暴露厂商信息。
 
-```
+```text
 +------------------+     +------------------+     +------------------+
 |  解压 APK        | --> |  检查 DEX 大小    | --> |  DEX < 1MB?      |
 |  (unzip/apktool) |     |  ls -la *.dex    |     |  是 -> 可能加固   |
@@ -176,7 +176,7 @@ apkid -r ./apk_samples/   # 批量扫描
 
 Android 加固技术经历了明显的代际演变：
 
-```
+```text
 第一代 (2013-2015)         第二代 (2015-2018)         第三代 (2018-至今)
 +-------------------+     +-------------------+     +-------------------+
 | DEX 整体加密      |     | DEX 函数抽取      |     | 指令级 VMP        |
@@ -317,7 +317,7 @@ Java.perform(function() {
 | **娜迦**       | 二/三  | FART + VMP 逆向            | FART / IDA               | ★★★★☆   |
 | **几维安全**   | 三代   | VMP 逆向 / 运行时 Hook     | IDA / Frida              | ★★★★☆   |
 
-```
+```text
 决策流程:
   识别加固 --> 一代壳 --> Frida dump DEX --> Jadx 反编译
           --> 二代壳 --> FART 脱壳 --> 回填 CodeItem --> Jadx
@@ -333,7 +333,7 @@ Java.perform(function() {
 
 OLLVM 通过控制流平坦化增加逆向难度。IDA 中典型表现为**星型 CFG**（所有基本块回到一个中心分发器）。
 
-```
+```text
 正常函数 CFG:               OLLVM 平坦化后 CFG:
    +-----+                     +----------+
    | 入口 |                     |  分发器   |<-------+
@@ -361,7 +361,7 @@ SO 层 VMP 将原生 ARM/ARM64 指令转换为自定义字节码，由嵌入的�
 
 **识别特征：**
 
-```
+```text
 原始 SO 函数:                VMP 保护后:
   func_a:                    func_a:
     mov r0, #1                 push {r0-r12}
@@ -406,7 +406,7 @@ readelf -x .init_array libnative.so
 
 ## 运行时保护识别
 
-```
+```text
 RASP 保护层次
 +----------------------------------------------+
 | 应用层: Root/Magisk/KernelSU 检测, 模拟器检测 |
@@ -460,7 +460,7 @@ aapt dump xmltree target.apk AndroidManifest.xml | grep "android:name"
 
 ### 第 4 步：制定策略
 
-```
+```text
 识别结果 --> 查阅「针对不同壳的脱壳策略」表
   |
   +-> 一代壳 -> Frida dump -> Jadx 反编译 -> 分析

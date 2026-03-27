@@ -149,7 +149,7 @@ adb shell dumpsys package com.example.app | grep "granted=true"
 
 ### 3.1 exported 属性规则
 
-```
+```text
 exported 判定规则:
 ┌──────────────────────────────────────────────────────┐
 │  显式 exported="true"    → 可被外部访问               │
@@ -347,7 +347,7 @@ tar xvf backup.tar
 </application>
 ```
 
-```
+```text
 多进程架构:
   PID 12345: com.example.app        ← 主进程 (MyApplication 实例 #1)
   PID 12346: com.example.app:push   ← 推送进程 (MyApplication 实例 #2)
@@ -461,7 +461,7 @@ Java.perform(function() {
 
 ### 7.1 分析检查清单
 
-```
+```text
 ┌────────────────────────────────────────────────────────────┐
 │          AndroidManifest.xml 逆向分析检查清单               │
 ├────────────────────────────────────────────────────────────┤
@@ -558,7 +558,7 @@ grep -A3 'android:scheme=' "$MANIFEST"
 
 **制定的逆向计划**:
 
-```
+```text
 1. 前期准备:
    debuggable=false → 使用 Frida（不依赖 debuggable）
    networkSecurityConfig → 可能有 SSL Pinning，准备绕过脚本

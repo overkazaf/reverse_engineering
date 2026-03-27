@@ -12,21 +12,6 @@ Unidbg 是一个基于 Java 开发的 Android/iOS 原生库 (`.so`/`.dylib`) 模
 
 ---
 
-## 目录
-
-- [核心思想与应用场景](#核心思想与应用场景)
-- [Unidbg vs. Frida](#unidbg-vs-frida)
-- [环境搭建](#环境搭建)
-- [基本使用流程](#基本使用流程)
-- [JNI 环境模拟](#jni-环境模拟)
-- [系统调用处理](#系统调用处理)
-- [Hook 功能](#hook-功能)
-- [调试与排错](#调试与排错)
-- [实战案例](#实战案例)
-- [性能优化](#性能优化)
-
----
-
 ## 核心思想与应用场景
 
 Unidbg 的核心思想是**"欺骗"**——让 `.so` 文件认为自己正运行在一个真实的 Android 设备上：
@@ -120,7 +105,7 @@ dependencies {
 
 ### 推荐项目结构
 
-```
+```text
 unidbg-demo/
 ├── pom.xml
 ├── src/main/
@@ -334,7 +319,7 @@ public class MyEmulator extends AbstractJni implements IOResolver<AndroidFileIO>
 
 ### 系统调用处理流程
 
-```
+```text
 +------------------+     +------------------+     +------------------+
 | SO 执行代码      |     | Unicorn 引擎     |     | Unidbg Handler   |
 |                  |     |                  |     |                  |
@@ -424,20 +409,20 @@ emulator.traceWrite(0x40001000, 0x40001100);
 ### 常见错误及解决方案
 
 **1. Invalid memory read/write**
-```
+```yaml
 UnicornException: Invalid memory read (UC_ERR_READ_UNMAPPED) at 0x00000000
 ```
 原因：空指针引用。检查传入参数和 JNI 回调返回值是否有效。
 
 **2. UnsupportedOperationException**
-```
+```text
 UnsupportedOperationException:
   android/telephony/TelephonyManager->getDeviceId()Ljava/lang/String;
 ```
 原因：未处理的 JNI 回调。在 `callObjectMethod` 等方法中补充对应签名的处理。
 
 **3. 缺少 SO 依赖**
-```
+```yaml
 FileNotFoundException: resolve library: libcrypto.so failed
 ```
 解决：手动预加载依赖库：
@@ -447,7 +432,7 @@ vm.loadLibrary(new File("path/to/libtarget.so"), true);   // 再加载目标
 ```
 
 **4. 系统调用未实现**
-```
+```text
 Unsupported syscall: 0x14e (334)
 ```
 解决：查找 syscall 编号对应的功能，在 `SyscallHandler` 中补充实现。
@@ -474,7 +459,7 @@ Inspector.inspect(data, "Memory dump");
 
 ### 排错流程
 
-```
+```text
 SO 执行失败
   +-- JNI 调用未处理？     --> 在 AbstractJni 中补充实现
   +-- 系统调用未实现？     --> 在 SyscallHandler 中补充
@@ -599,7 +584,7 @@ public class SignEmulator extends AbstractJni implements IOResolver<AndroidFileI
 
 ### 迭代补环境过程
 
-```
+```text
 第 1 次运行: UnsupportedOperation: Context->getPackageName()
   --> 补充 callObjectMethod 中的 getPackageName
 
@@ -658,7 +643,7 @@ public class SignServicePool {
 
 ### 性能参考
 
-```
+```text
 +--------------------------------------------------+
 | 测试: MacBook Pro M1, JDK 11, sign() 函数       |
 +--------------------------------------------------+

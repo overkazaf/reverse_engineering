@@ -66,7 +66,7 @@ objection -N -h 192.168.1.100 -p 27042 -g com.example.app explore
 
 连接成功后会进入交互式 Shell，提示符类似：
 
-```
+```text
 com.example.app on (google: 13) [usb] #
 ```
 
@@ -817,7 +817,7 @@ import /path/to/my_script.js
 
 ### 总结
 
-```
+```text
 初步侦察 / 快速验证  -->  Objection（零代码，交互式）
      |
      v

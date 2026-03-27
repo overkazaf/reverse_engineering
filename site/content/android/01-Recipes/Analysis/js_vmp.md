@@ -25,7 +25,7 @@ JavaScript VMP（虚拟机保护）是一种高级的代码保护技术，它将
 
 JSVMP 的核心思想是 **"把 JavaScript 当作汇编来写"**。传统的 JavaScript 混淆（如 OB 混淆）只是对源码做变形——变量重命名、控制流平坦化、字符串加密等，但代码结构仍然是标准 JavaScript，可以用 AST 工具还原。JSVMP 则彻底改变了执行模型：它将原始 JS 编译为一套 **私有字节码**，再用一个 JavaScript 编写的 **虚拟机解释器** 在运行时逐条解释执行。
 
-```
+```text
 原始 JavaScript 代码
         |
         v
@@ -63,7 +63,7 @@ JSVMP 的核心思想是 **"把 JavaScript 当作汇编来写"**。传统的 Jav
 
 JSVMP 的编译过程模拟了真实编译器的工作方式：
 
-```
+```text
 源码: function sign(data) { return md5(data + secret); }
          |
          v
@@ -111,7 +111,7 @@ JSVMP 虚拟机在架构上与真实 CPU 非常相似，包含以下核心组件
 
 ### 整体架构图
 
-```
+```text
 +------------------------------------------------------------------+
 |                        JSVMP 虚拟机                               |
 |                                                                  |
@@ -290,7 +290,7 @@ var _arg = _0xab3f[_pc++];  // 取操作数
 
 ### 快速判别流程
 
-```
+```text
 发现大型混淆 JS 文件
         |
         v
@@ -321,7 +321,7 @@ switch 的 case 数量多且每个 case 很短?  --否--> 可能是 CFF
 
 ### 总体流程
 
-```
+```text
 [1] 定位 VM 入口
       |
       v
@@ -461,7 +461,7 @@ console.log(
 
 **技巧 1：观察栈指针变化**
 
-```
+```asm
 弹出 2 个, 压入 1 个 (sp--)  ->  二元运算 (ADD, SUB, EQ, ...)
 弹出 0 个, 压入 1 个 (sp++)  ->  PUSH 类操作
 弹出 1 个, 压入 0 个 (sp--)  ->  STORE 或 POP 操作
@@ -470,7 +470,7 @@ console.log(
 
 **技巧 2：观察 PC 变化**
 
-```
+```text
 pc 正常递增 (+1 或 +2)  ->  普通指令
 pc 被直接赋值          ->  跳转指令 (JMP, JMP_IF)
 pc 不再使用            ->  RETURN 或 HALT
@@ -922,7 +922,7 @@ function disassemble(G, startPC, endPC) {
 
 ### 第四步：分析执行轨迹
 
-```
+```text
 PC     | OP          | Stack (top)          | 说明
 -------|-------------|----------------------|------------------
 000000 | PUSH_REG 0  | [input_data]         | 加载输入
@@ -1091,7 +1091,7 @@ console.log('Done! Annotated code saved to vm_code_annotated.js');
 
 将 VM 解释器本身也用另一个 VM 保护，形成嵌套结构：
 
-```
+```text
 外层 VM 执行 -> 内层 VM 字节码 -> 内层 VM 执行 -> 目标逻辑字节码
 ```
 

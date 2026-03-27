@@ -460,7 +460,7 @@ def resolve_adrp_add(adrp_ea, add_ea):
 
 ### 9.1 工作原理
 
-```
+```text
 编译期: "hello" ──[LLVM Pass]──> 密文 0xA3 0xB2 ... 写入 .rodata
 运行期: .init_array ──> 解密函数() ──> .rodata 密文原地解密为 "hello"
                         ↑ SO 加载时自动执行（在 JNI_OnLoad 之前）
@@ -578,7 +578,7 @@ ollvm_batch_decrypt(decrypt_table)
 
 输出结果：
 
-```
+```text
 [+] 0x6100 [key=0x37]: "https://pay.example.com/api"
 [+] 0x6120 [key=0x5A]: "X-Signature"
 [+] 0x6150 [key=0xC3]: "AES/CBC/PKCS5Padding"
