@@ -1,0 +1,41 @@
+name: Cross-post articles to Dev.to
+
+on:
+  # Run after Hugo site deploys successfully
+  workflow_run:
+    workflows: ["Deploy Hugo site to Pages"]
+    types:
+      - completed
+
+  # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (preview only)"
+        type: boolean
+        default: false
+
+jobs:
+  cross-post:
+    runs-on: ubuntu-latest
+    # Only run if the Hugo deploy succeeded (or manual trigger)
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Sync to Dev.to
+        env:
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+        run: |
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            python scripts/cross-post/devto.py sync --dry-run
+          else
+            python scripts/cross-post/devto.py sync
+          fi
