@@ -1,0 +1,61 @@
+site/content/android/01-Recipes/Scripts/frida_common_scripts.md
+  a8451cd1ce22f6d9 1799-1800
+site/content/android/04-Reference/Foundations/art_runtime.md
+  a8451cd1ce22f6d9 1167-1168
+site/content/android/04-Reference/Foundations/android_components.md
+  a8451cd1ce22f6d9 524-525
+site/content/android/04-Reference/Foundations/selinux.md
+  a8451cd1ce22f6d9 676-677,680-681,706-707,772-773
+site/content/android/04-Reference/Foundations/smali_syntax.md
+  a8451cd1ce22f6d9 186-187
+site/content/android/04-Reference/Foundations/x86_and_arm_assembly_basics.md
+  a8451cd1ce22f6d9 569-570
+site/content/android/04-Reference/Foundations/android_version_security_evolution.md
+  a8451cd1ce22f6d9 1341-1342
+site/content/android/01-Recipes/Automation/scrapy.md
+  a8451cd1ce22f6d9 255-256
+site/content/android/01-Recipes/Automation/web_anti_scraping.md
+  a8451cd1ce22f6d9 417-418
+site/content/android/04-Reference/Foundations/android_manifest.md
+  a8451cd1ce22f6d9 517-518
+site/content/android/04-Reference/Foundations/dex_format.md
+  a8451cd1ce22f6d9 156-157,826-827,830-831,849-850,894-895
+site/content/android/01-Recipes/Scripts/native_hooking.md
+  a8451cd1ce22f6d9 659-660
+site/content/android/04-Reference/Foundations/binder_ipc.md
+  a8451cd1ce22f6d9 509-510
+site/content/android/01-Recipes/Analysis/re_workflow.md
+  a8451cd1ce22f6d9 161-162,1015-1016
+site/content/android/04-Reference/Foundations/binary_analysis_toolkit.md
+  a8451cd1ce22f6d9 778-779,782-783,853-854
+site/content/android/04-Reference/Advanced/minimal_android_rootfs.md
+  a8451cd1ce22f6d9 493-494
+site/content/android/02-Tools/Dynamic/ebpf_guide.md
+  a8451cd1ce22f6d9 184-185
+site/content/android/01-Recipes/Network/network_sniffing.md
+  a8451cd1ce22f6d9 482-483
+site/content/android/01-Recipes/Network/crypto_analysis.md
+  a8451cd1ce22f6d9 695-696
+site/content/android/01-Recipes/Unpacking/un-packing.md
+  a8451cd1ce22f6d9 773-774
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.3",
+  "base_commit_sha": "4d61fa404f607ec3e6f4dfced959931dbeb801ac",
+  "prompts": {
+    "a8451cd1ce22f6d9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b4459df9-31fd-412d-8cbf-2790477fdd87",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "nongjiawu",
+      "messages": [],
+      "total_additions": 60,
+      "total_deletions": 0,
+      "accepted_lines": 60,
+      "overriden_lines": 0
+    }
+  }
+}
