@@ -1164,6 +1164,8 @@ struct ArtMethodOffsets {
 
 ## 实战代码示例
 
+> **💡 思路一句话**: 理解 ART 运行时的关键在于「方法调用链」— 从 Java 方法 → ArtMethod 结构体 → 编译后的机器码入口点，hook 和 dump 都需要在这条链上找到正确的拦截点。
+
 ### 示例 1：获取 ArtMethod 地址
 
 ```javascript

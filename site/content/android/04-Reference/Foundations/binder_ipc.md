@@ -506,6 +506,8 @@ public class Location implements Parcelable {
 
 ## 6. 实战示例代码
 
+> **💡 思路一句话**: Binder 是 Android 进程间通信的核心 — 理解 Binder 调用链（Client Proxy → Binder Driver → Server Stub）后，可以通过 hook Binder.transact 拦截和修改任意跨进程调用。
+
 ### 6.1 完整 AIDL 服务实现
 
 以下是一个完整的自定义 Binder 服务示例，包含服务端、客户端和 AIDL 定义。

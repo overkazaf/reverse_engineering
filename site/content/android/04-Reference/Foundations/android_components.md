@@ -521,6 +521,8 @@ Step 4: 追踪数据流
 
 ### 8.4 实战：从零开始分析
 
+> **💡 思路一句话**: 分析一个陌生 App 的入口 — 先看 AndroidManifest.xml 找到启动 Activity 和 Application → 再追踪 onCreate 中的初始化逻辑 → 理解组件之间的调用关系。
+
 ```bash
 # 1. 解包
 apktool d target.apk -o target_decoded

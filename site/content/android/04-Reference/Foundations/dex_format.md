@@ -153,6 +153,8 @@ DEX 文件的执行由 Android 运行时 (ART) 负责，在 Android 5.0 之前�
 
 ## DEX 文件解析实战
 
+> **💡 思路一句话**: 手动解析 DEX 的核心是「跟着指针走」— 从 DEX header 的各类偏移出发，逐层解析 string_ids → type_ids → method_ids → class_defs，理解 DEX 的数据组织方式。
+
 本节通过代码示例，深入讲解如何解析 DEX 文件的各个部分。
 
 ### DEX Header 详细结构
@@ -821,7 +823,11 @@ hookMmap();
 
 ## 实战分析案例
 
+> **💡 思路一句话**: DEX 解析能力在实战中用于：定位加固壳的特征（异常的 header 字段）、检测 DEX 篡改（校验和验证）、提取关键方法的字节码进行分析。
+
 ### 案例 1: 分析 APK 中的敏感方法
+
+> **💡 思路一句话**: 通过解析 DEX 的 method_ids 和 class_defs，批量扫描所有方法签名，快速找到包含敏感关键词（encrypt, decrypt, sign, verify）的方法。
 
 ```bash
 # 1. 解压 APK
@@ -839,6 +845,8 @@ python dex_parser.py app_extracted/classes.dex "api"
 ```
 
 ### 案例 2: 验证 DEX 完整性（检测篡改）
+
+> **💡 思路一句话**: 重新计算 DEX 的 checksum 和 SHA-1 签名，与 header 中的值对比 — 如果不匹配，说明 DEX 被修改过（可能是重打包或加固）。
 
 ```python
 def check_dex_integrity(dex_path: str) -> dict:
@@ -882,6 +890,8 @@ for dex_file in os.listdir('app_extracted'):
 ```
 
 ### 案例 3: 定位加固壳的特征
+
+> **💡 思路一句话**: 加固壳通常会修改 DEX header 或插入自定义段 — 通过检查 class_defs 数量异常少（壳 DEX 只有壳代码）、data 段偏移异常等特征快速判断。
 
 常见加固厂商的特征字符串：
 

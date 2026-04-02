@@ -252,6 +252,8 @@ ITEM_PIPELINES = {
 
 ## Middleware 实战
 
+> **💡 思路一句话**: Scrapy Middleware 是在请求/响应管道中插入自定义处理逻辑的地方 — 用它来自动添加签名参数、轮换代理 IP、处理反爬验证码。
+
 ### 随机 User-Agent
 
 ```python

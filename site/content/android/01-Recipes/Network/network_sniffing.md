@@ -479,6 +479,8 @@ _可能原因_：
 
 ### 案例分析
 
+> **💡 思路一句话**: 抓包的关键是「选对工具链」— HTTP 用 mitmproxy/Charles，HTTPS 需要证书信任处理（Android 7+ 需要 root 注入系统证书），非 HTTP 协议用 Wireshark + Frida hook socket。
+
 - _[音乐 App 分析](../../03-Case-Studies/case_music_apps.md)_ - API 抓包实战
 - _[社交媒体风控](../../03-Case-Studies/case_social_media_and_anti_bot.md)_ - 复杂签名分析
 

@@ -656,6 +656,8 @@ Interceptor.replace(targetAddr, new NativeCallback(function(arg0, arg1) {
 
 ### 8.7 实战示例：使用 Dobby Hook JNI 函数
 
+> **💡 思路一句话**: Dobby 是内联 hook 框架，适合 hook native 函数入口 — 找到目标函数偏移 → 编写 hook 替换函数 → 在替换函数中记录参数/修改返回值 → 调用原始函数保持功能正常。
+
 ```c
 #include <jni.h>
 #include <android/log.h>

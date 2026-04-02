@@ -673,7 +673,11 @@ function spoofContext() {
 
 ## 8. 实战案例
 
+> **💡 思路一句话**: SELinux 是 Android 安全的基石 — 逆向分析中遇到的权限拒绝、文件访问失败、调试受限，很多都与 SELinux 策略相关，学会读 audit 日志是排查问题的关键。
+
 ### 8.1 案例: 分析应用的 SELinux 权限
+
+> **💡 思路一句话**: 用 `adb shell ps -eZ` 查看进程的安全上下文 → 用 `sesearch` 查询该上下文允许的操作 → 理解应用能访问哪些资源、不能访问哪些资源。
 
 ```bash
 # 1. 获取目标应用的进程 ID
@@ -698,6 +702,8 @@ sesearch -A -s untrusted_app -t system_file policy.bin
 ```
 
 ### 8.2 案例: Root 检测中的 SELinux 检查
+
+> **💡 思路一句话**: 很多 App 通过读取 SELinux 状态（getenforce）或检查安全上下文来判断是否 root — 绕过方法是 hook getenforce 返回 "Enforcing" 或修改 /sys/fs/selinux/enforce。
 
 ```java
 // 常见的 SELinux Root 检测
@@ -762,6 +768,8 @@ Java.perform(function() {
 ```
 
 ### 8.3 案例: 调试 SELinux 拒绝问题
+
+> **💡 思路一句话**: `adb logcat | grep avc` 过滤 SELinux 拒绝日志 → 用 `audit2allow` 生成允许规则 → 通过 Magisk 模块注入策略 → 验证问题解决。
 
 ```bash
 # 场景: Frida 注入失败，查看是否被 SELinux 阻止

@@ -490,6 +490,8 @@ cd /data/local/tmp
 
 ## 实战：在最小环境中运行 SO
 
+> **💡 思路一句话**: 当你需要脱离 Android 设备运行 SO（如 CI/CD 中自动化调用签名函数）— 用 Docker 搭建最小 Android 根文件系统 + linker + libc，就能在服务器上直接执行 SO 中的函数。
+
 以下是完整的端到端示例：在最小 RootFS 中加载并调用目标 SO 的 Native 函数。
 
 ### 提取目标 SO 及其依赖

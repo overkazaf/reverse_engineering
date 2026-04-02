@@ -158,6 +158,8 @@ xmllint --format target_unpacked/AndroidManifest.xml
 
 #### 真实案例：分析腾讯乐固应用
 
+> **💡 思路一句话**: 先判断加固类型（看 lib 目录和 Application 入口）→ 脱壳获取原始 DEX → jadx 反编译分析业务逻辑 → Frida hook 验证关键方法。
+
 ```xml
 <application
     android:name="com.tencent.StubShell.TxAppEntry"  <!-- 加壳特征 -->
@@ -1009,6 +1011,8 @@ smali a smali_test -o test.dex
 - [IDA Pro 使用指南](../../02-Tools/Static/ida_pro_guide.md) - 专业逆向工程工具
 
 ### 案例研究
+
+> **💡 思路一句话**: 逆向分析不是线性过程，而是「假设→验证→修正」的循环 — 先建立对目标的初步理解，然后用动态分析验证假设，不断缩小范围直到定位核心逻辑。
 
 - [案例：音乐应用分析](../../03-Case-Studies/case_music_apps.md) - 完整工作流程实践
 - [案例：应用加密分析](../../03-Case-Studies/case_study_app_encryption.md)

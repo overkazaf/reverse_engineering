@@ -770,6 +770,8 @@ Java.perform(function () {
 
 ### 案例分析
 
+> **💡 思路一句话**: 脱壳的本质是「在 DEX 被解密加载到内存后，从内存中 dump 出来」— 不同加固方案的壳不同，但 DEX 最终都要进入 ART 虚拟机执行，在这个时机点 dump 就对了。
+
 - [案例: 某音乐 App 的加固分析](../../03-Case-Studies/case_music_apps.md)
 
 ### 参考资料

@@ -514,6 +514,8 @@ grep -A3 'android:scheme=' "$MANIFEST"
 
 ### 7.3 实战案例：金融 App 分析
 
+> **💡 思路一句话**: 通过 AndroidManifest 就能获取大量信息 — 权限列表暴露功能范围，exported 组件暴露攻击面，meta-data 可能泄露第三方 SDK 配置和密钥。
+
 ```xml
 <manifest package="com.bank.secureapp">
     <uses-sdk android:minSdkVersion="24" android:targetSdkVersion="33" />

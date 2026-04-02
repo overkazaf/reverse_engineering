@@ -1338,6 +1338,8 @@ var android_dlopen_ext = new NativeFunction(
 
 ## 8. 实战建议：根据目标 Android 版本制定分析策略
 
+> **💡 思路一句话**: 拿到目标 App 后，第一步看 `minSdkVersion` 和 `targetSdkVersion` 确定版本范围 → 根据版本选择对应的工具链和绕过方案 → 版本越高限制越多，但核心逆向方法论不变。
+
 ### 8.1 版本识别与环境评估
 
 在开始分析前，首先收集目标设备的完整信息：

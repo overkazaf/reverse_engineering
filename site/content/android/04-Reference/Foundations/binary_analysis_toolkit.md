@@ -775,7 +775,11 @@ analyzer.print_cfg(blocks)
 
 ## 6. 实战案例
 
+> **💡 思路一句话**: 二进制分析工具链的核心思路是「静态理解结构 + 动态验证行为」— Capstone 反汇编看指令、Unicorn 模拟执行验证、Keystone 汇编 patch 修改，三者配合完成分析闭环。
+
 ### 6.1 案例: SO 函数仿真
+
+> **💡 思路一句话**: 用 Unicorn 模拟 SO 函数 — 映射内存 → 加载二进制 → 设置寄存器和栈 → 启动模拟 → 读取返回值。不需要真机，在 PC 上就能运行 ARM 代码。
 
 ```python
 from unicorn import *
@@ -845,6 +849,8 @@ print(f"add_func(100, 200) = {result}")  # 输出: 300
 ```
 
 ### 6.2 案例: 指令 Patch 工具
+
+> **💡 思路一句话**: 用 Keystone 将汇编指令编译为机器码 → 写入 SO 文件的指定偏移 → 实现永久修改（如跳过检测函数、修改返回值）。
 
 ```python
 from capstone import *

@@ -692,6 +692,8 @@ plaintext = unpad(cipher.decrypt(ciphertext), AES.block_size)
 
 ### 案例分析
 
+> **💡 思路一句话**: 抓包拿到加密请求 → 在 jadx 中搜索加密相关类名（Cipher, MessageDigest, Mac）→ hook 加解密方法获取明文和密钥 → 用 Python 重写加密逻辑验证。
+
 - **[音乐 App 分析](../../03-Case-Studies/case_music_apps.md)** - 加密音频格式分析
 - **[社交媒体风控](../../03-Case-Studies/case_social_media_and_anti_bot.md)** - API 签名算法逆向
 
