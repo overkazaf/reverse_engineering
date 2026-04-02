@@ -1,0 +1,77 @@
+site/content/android/01-Recipes/Scripts/objection_snippets.md
+  a8451cd1ce22f6d9 527-528,689-690
+site/content/android/01-Recipes/Analysis/ollvm_deobfuscation.md
+  a8451cd1ce22f6d9 52-613,664-675,1138-1214,1353-1962
+site/content/android/01-Recipes/Anti-Detection/mobile_app_sec_and_anti_bot.md
+  a8451cd1ce22f6d9 1752-1753
+site/content/android/01-Recipes/Anti-Detection/frida_anti_debugging.md
+  a8451cd1ce22f6d9 530-531
+site/content/android/02-Tools/Static/ida_pro_guide.md
+  a8451cd1ce22f6d9 146-147,239-240,337-338
+site/content/android/04-Reference/Advanced/junk_code_and_ollvm_obfuscation.md
+  a8451cd1ce22f6d9 843-844,1709-1710,2015-2439
+site/content/android/03-Case-Studies/case_flutter_apps.md
+  a8451cd1ce22f6d9 885-886,1082-1083
+site/content/android/01-Recipes/Analysis/vmp_analysis.md
+  a8451cd1ce22f6d9 808-809,1237-1238
+site/content/android/04-Reference/Foundations/android_version_security_evolution.md
+  a8451cd1ce22f6d9 1-1502
+site/content/android/01-Recipes/Analysis/ebpf_android_reversing.md
+  a8451cd1ce22f6d9 67-68,208-209,336-337,450-451,544-545
+site/content/android/01-Recipes/Anti-Detection/device_fingerprinting_and_bypass.md
+  a8451cd1ce22f6d9 1008-1009,1012-1013,1114-1115
+site/content/android/02-Tools/Dynamic/unidbg_guide.md
+  a8451cd1ce22f6d9 475-476
+site/content/android/03-Case-Studies/case_video_apps_and_drm.md
+  a8451cd1ce22f6d9 30-31,441-442
+site/content/android/03-Case-Studies/case_anti_analysis_techniques.md
+  a8451cd1ce22f6d9 56-57,421-422,1152-1153,1598-1599,1988-1989,2240-2241,2522-2523
+site/content/android/01-Recipes/Analysis/js_obfuscator.md
+  a8451cd1ce22f6d9 1001-1002
+site/content/android/03-Case-Studies/case_study_app_encryption.md
+  a8451cd1ce22f6d9 41-42,75-76,102-103,121-122,139-140,157-158
+site/content/android/02-Tools/Static/ghidra_guide.md
+  a8451cd1ce22f6d9 206-207,370-371
+site/content/android/01-Recipes/Analysis/native_string_obfuscation.md
+  a8451cd1ce22f6d9 166-167,546-547
+site/content/android/01-Recipes/Unpacking/so_obfuscation_deobfuscation.md
+  a8451cd1ce22f6d9 579-582,585-613,615,617-622,625-746,748-774,776,778,780-781,783-785,789-792,794-825,828,830,833-873,883-895,898-900,902-905,908,911-930,932-937,941-1398
+site/content/android/03-Case-Studies/case_unity_games.md
+  a8451cd1ce22f6d9 554-555,1490-1491,1532-1545
+site/content/android/03-Case-Studies/case_music_apps.md
+  a8451cd1ce22f6d9 30-31,189-190
+site/content/android/03-Case-Studies/case_social_media_and_anti_bot.md
+  a8451cd1ce22f6d9 253-254,466-467,598-599,946-947,1237-1238,1584-1585
+site/content/android/02-Tools/Dynamic/xposed_guide.md
+  a8451cd1ce22f6d9 583-584
+site/content/android/03-Case-Studies/case_malware_analysis.md
+  a8451cd1ce22f6d9 1402-1405
+site/content/android/01-Recipes/Analysis/js_vmp.md
+  a8451cd1ce22f6d9 790-791
+site/content/android/01-Recipes/Anti-Detection/xposed_anti_debugging.md
+  a8451cd1ce22f6d9 1022-1023
+site/content/android/02-Tools/Static/radare2_guide.md
+  a8451cd1ce22f6d9 164-165
+site/content/android/01-Recipes/Anti-Detection/app_hardening_identification.md
+  a8451cd1ce22f6d9 433-434
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.3",
+  "base_commit_sha": "1a673114ee467e76f196d66be14906f8491fc6ff",
+  "prompts": {
+    "a8451cd1ce22f6d9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b4459df9-31fd-412d-8cbf-2790477fdd87",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "nongjiawu",
+      "messages": [],
+      "total_additions": 4722,
+      "total_deletions": 625,
+      "accepted_lines": 4112,
+      "overriden_lines": 0
+    }
+  }
+}
