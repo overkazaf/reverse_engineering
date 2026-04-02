@@ -161,6 +161,8 @@ r2 -q -c 'aaa; afl' /path/to/binary
 
 ## Android SO 分析实战
 
+> **💡 思路一句话**: r2 的核心优势是「命令行+脚本化」— 适合在无 GUI 环境（服务器/CI）中自动化分析 SO 文件，用 r2pipe 将 r2 集成到 Python 分析流水线中。
+
 在 Android 逆向中，原生层（Native）逻辑往往编译在 `.so` 共享库中。Radare2 对 ARM/AArch64 架构有良好的支持，非常适合分析这类文件。
 
 ### 打开 ARM .so 文件

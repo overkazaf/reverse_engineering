@@ -203,6 +203,8 @@ Function Graph 以控制流图 (CFG) 的方式展示函数结构，非常适合�
 
 ## Android SO 分析实战
 
+> **💡 思路一句话**: Ghidra 的优势是免费+开源+强大的反编译器 — 加载 SO 后同样从 Exports 和 Strings 入手，用 Decompiler 窗口阅读伪代码，用 Script Manager 编写自动化分析脚本。
+
 Android 应用中的 Native 层代码以 `.so` 共享库的形式存在，通常编译为 ARM 或 ARM64 架构。使用 Ghidra 分析这类文件是 Android 逆向中最常见的场景之一。
 
 ### 提取 SO 文件
@@ -364,6 +366,8 @@ jboolean native_verify(JNIEnv *env, jobject thiz, jstring input) {
 ---
 
 ## Ghidra Script 实战
+
+> **💡 思路一句话**: Ghidra 脚本（Java/Python）可以自动化重复操作 — 比如批量搜索特定指令模式、自动标注函数类型、导出分析结果为 JSON 供其他工具使用。
 
 Ghidra 强大的脚本能力是其核心优势之一。支持 Java 和 Python (Jython) 两种脚本语言。
 

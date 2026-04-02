@@ -551,6 +551,8 @@ Java.perform(function() {
 
 ## 5. Il2CppDumper 实战
 
+> **💡 思路一句话**: 用 Il2CppDumper 从 libil2cpp.so + global-metadata.dat 恢复类名/方法名 → 导入 IDA 获得可读的函数列表 → 定位目标函数进行分析。
+
 ### 5.1 准备工作
 
 ```bash
@@ -1485,6 +1487,8 @@ void OnClientAction(Action action, int64_t clientTimestamp) {
 
 ## 9. 实战：修改游戏数值
 
+> **💡 思路一句话**: Il2CppDumper 导出方法偏移 → IDA 定位目标方法 → Frida hook 修改参数/返回值 → 或直接 patch SO 二进制永久修改。
+
 本节以一个完整的流程演示如何从零开始找到并修改 Unity 游戏中的 HP / 金币 / 伤害。
 
 ### 9.1 完整流程概览
@@ -1524,6 +1528,20 @@ void OnClientAction(Action action, int64_t clientTimestamp) {
 ```
 
 ### 9.2 Step-by-Step 实战
+
+> **环境准备**:
+> ```bash
+> # 工具清单
+> # 1. Il2CppDumper (GitHub releases 下载)
+> # 2. IDA Pro 7.5+ 或 Ghidra
+> # 3. Frida 16.x + root 设备
+> # 4. APK 解压工具 (apktool / 7zip)
+>
+> # 从 APK 中提取关键文件
+> apktool d target_game.apk -o game_extracted
+> ls game_extracted/lib/arm64-v8a/libil2cpp.so          # SO 文件
+> ls game_extracted/assets/bin/Data/Managed/Metadata/global-metadata.dat  # 元数据
+> ```
 
 **Step 1: 准备环境**
 

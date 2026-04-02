@@ -1005,7 +1005,11 @@ class DeviceAuthenticityClassifier:
 
 ## 实战案例分析
 
+> **💡 思路一句话**: 抓包 + hook 双管齐下 — 抓包看请求中携带了哪些设备信息字段，hook 系统 API (Build, TelephonyManager, Settings.Secure) 确认数据来源，然后逐一伪造。
+
 ### 案例 1：某电商平台设备指纹分析
+
+> **💡 思路一句话**: mitmproxy 拦截请求 → 找到 device_id/fingerprint 参数 → jadx 搜索参数名定位采集代码 → Frida hook 篡改采集结果实现设备伪装。
 
 **背景**：某大型电商平台面临大量刷单、虚假评论和薅羊毛行为，需要通过设备指纹识别恶意用户。
 
@@ -1106,6 +1110,8 @@ class EcommerceRiskEngine:
 ```
 
 ### 案例 2：金融 App 风控绕过
+
+> **💡 思路一句话**: 金融 App 风控更严（硬件级检测+行为分析），需要组合方案：Magisk 隐藏 root + 设备信息全量伪造 + 操作行为模拟（随机延迟、滑动轨迹）。
 
 **背景**：某金融 App 使用顶象设备指纹进行风控，攻击者尝试绕过进行批量注册和薅羊毛。
 

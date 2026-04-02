@@ -64,6 +64,8 @@ adb shell getenforce
 
 ## 实战案例 1: 隐蔽追踪加密通信
 
+> **💡 思路一句话**: 用 eBPF 在内核层拦截 send/recv 系统调用，在加密前/解密后捕获明文数据，完全绕过应用层的反 hook 检测。
+
 ### 背景
 
 目标应用使用自定义加密，需要在不被检测的情况下捕获明文数据。
@@ -203,6 +205,8 @@ uprobe:/system/lib64/libcrypto.so:EVP_EncryptInit_ex
 
 ## 实战案例 2: 绕过反调试检测
 
+> **💡 思路一句话**: 用 eBPF hook ptrace/open 等系统调用，在内核层篡改返回值，让反调试检测函数永远得到"安全"的结果。
+
 ### 背景
 
 目标应用有多重反调试保护，需要在不触发检测的情况下分析。
@@ -329,6 +333,8 @@ interval:s:10
 
 ## 实战案例 3: 分析应用启动流程
 
+> **💡 思路一句话**: 用 eBPF 追踪 fork/exec/mmap/open 系统调用序列，还原应用从 Zygote fork 到加载 DEX/SO 的完整启动链路。
+
 ### 追踪启动过程
 
 ```bash
@@ -441,6 +447,8 @@ uprobe:/data/app/com.target.app-*/lib/arm64/*.so:JNI_OnLoad
 
 ## 实战案例 4: 协议逆向分析
 
+> **💡 思路一句话**: 用 eBPF 在 socket 层拦截收发数据，配合 uprobe hook 应用层加解密函数，同时获取加密前明文和网络层密文，快速理解协议结构。
+
 ### 追踪自定义协议
 
 ```bash
@@ -532,6 +540,8 @@ uprobe:/data/app/com.target.app-*/lib/arm64/lib*.so:*WriteVarint*
 ---
 
 ## 实战案例 5: Root 检测分析
+
+> **💡 思路一句话**: 用 eBPF 监控应用的 open/access/stat 系统调用，观察它检测哪些路径（/system/xbin/su, /sbin/magisk 等），从而精准定位并绕过 root 检测。
 
 ### 监控 Root 检测行为
 

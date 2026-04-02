@@ -163,6 +163,8 @@ loc_loop:
 
 ## 4. XOR 解密实战
 
+> **💡 思路一句话**: 在 IDA 中识别 XOR 循环特征（循环 + 异或操作 + 字节数组）→ 提取密文和密钥 → 编写 Python 解密脚本批量还原。
+
 ### 4.1 识别流程
 
 1. **定位加密数据**：在 `.rodata` 中发现不可读字节序列
@@ -540,6 +542,8 @@ Module module = emulator.loadLibrary(new File("libtarget.so"));
 ---
 
 ## 10. 实战案例：完整字符串解密流程
+
+> **💡 思路一句话**: IDA 定位 .init_array 中的解密函数 → Frida hook 解密函数的入口和出口获取明文 → 或用 Unicorn 模拟执行解密函数批量解密所有字符串。
 
 ### 10.1 场景
 

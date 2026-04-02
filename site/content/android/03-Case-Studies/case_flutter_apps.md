@@ -882,6 +882,8 @@ grep -r "\[PP, #0x1a8\]" output/asm/
 
 ## 实战：Flutter App 抓包
 
+> **💡 思路一句话**: Flutter 使用 Dart VM 自带的证书校验（不走系统证书库），所以传统抓包方法失效 → 需要 hook BoringSSL 的 ssl_verify_peer_cert 函数 → 或使用 reFlutter 重打包注入代理。
+
 这是一个完整的 Flutter App HTTPS 流量拦截实战流程。
 
 ### 环境准备
@@ -1076,6 +1078,8 @@ X-Sign: a3f2b8c91d...
 ---
 
 ## 实战：提取 Flutter App 业务逻辑
+
+> **💡 思路一句话**: Flutter release 模式编译为 AOT snapshot (libapp.so) → 用 Doldrums/blutter 解析 snapshot 恢复类名和方法 → 在 IDA 中对照恢复的符号分析 Dart 原生代码。
 
 本节以一个虚构的 Flutter 电商 App 为例，展示如何从 `libapp.so` 中提取关键业务逻辑。
 

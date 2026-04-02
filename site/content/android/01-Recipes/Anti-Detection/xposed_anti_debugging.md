@@ -1019,6 +1019,8 @@ adb reboot
 
 ### 案例分析
 
+> **💡 思路一句话**: App 检测 Xposed 的常见方式：搜索已安装包名、检查调用栈、扫描 /proc/maps → 对应绕过：用 LSPosed 隐藏模块 + hook 堆栈过滤 + 内存映射重命名。
+
 - [反分析技术案例](../../03-Case-Studies/case_anti_analysis_techniques.md) - 综合反分析技术案例
 - [社交媒体风控](../../03-Case-Studies/case_social_media_and_anti_bot.md) - 社交应用的 Xposed 检测
 

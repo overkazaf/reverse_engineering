@@ -53,6 +53,8 @@ weight: 10
 
 ## 1. 反调试 (Anti-Debugging)
 
+> **💡 思路一句话**: 识别检测类型（TracerPid/ptrace/时间差/断点扫描）→ 搜索特征字符串或系统调用定位检测代码 → hook 返回值或 patch 指令绕过。
+
 **目标**: 检测 App 是否正被调试器附加。
 
 ### 1.1 基于 TracerPid 的检测
@@ -415,6 +417,8 @@ Interceptor.attach(Module.findExportByName("libtarget.so", "check_breakpoints"),
 ---
 
 ## 2. 反 Hook (Anti-Hooking)
+
+> **💡 思路一句话**: 识别检测手段（端口扫描/内存映射/Inline Hook 特征/Xposed 类检测）→ hook 对应的检测函数使其返回"安全"结果 → 验证 App 正常运行。
 
 **目标**: 检测和阻止 Frida、Xposed 等 Hook 框架的注入和功能。
 
@@ -1145,6 +1149,8 @@ Interceptor.attach(Module.findExportByName("libc.so", "fopen"), {
 
 ## 3. 反模拟器 (Anti-Emulator)
 
+> **💡 思路一句话**: 识别检测维度（系统属性/文件系统/传感器/电话功能）→ hook Build 属性和文件访问返回真机值 → 伪造传感器数据通过检测。
+
 **目标**: 检测 App 是否运行在模拟器而非真实设备上。
 
 ### 3.1 系统属性检测
@@ -1589,6 +1595,8 @@ Java.perform(function() {
 
 ## 4. Root 检测 (Root Detection)
 
+> **💡 思路一句话**: 识别检测方式（su 文件/Magisk 路径/执行权限/Native 层 fopen）→ hook 文件访问和命令执行使其找不到 Root 痕迹 → 验证绕过效果。
+
 **目标**: 检测设备是否已被 Root。
 
 ### 4.1 常见 Root 文件检测
@@ -1977,6 +1985,8 @@ Interceptor.attach(Module.findExportByName("libc.so", "stat"), {
 
 ## 5. 完整性校验 (Integrity Checks)
 
+> **💡 思路一句话**: 识别校验对象（APK 签名/DEX 哈希/SO 代码段）→ hook 校验函数使其返回原始值 → 或在校验完成后再注入修改，避开时序检测。
+
 **目标**: 检测 APK 或运行时代码是否被篡改。
 
 ### 5.1 签名校验
@@ -2226,6 +2236,8 @@ Java.perform(function() {
 ---
 
 ## 6. SSL Pinning (证书绑定)
+
+> **💡 思路一句话**: 识别 Pinning 实现方式（TrustManager/OkHttp CertificatePinner/Native 层验证）→ hook 对应的证书校验方法使其信任所有证书 → 配合 mitmproxy 抓包验证。
 
 **目标**: 防止中间人攻击，确保通信只与指定服务器建立。
 
@@ -2506,6 +2518,8 @@ Interceptor.attach(Module.findExportByName("libssl.so", "SSL_CTX_set_verify"), {
 ---
 
 ## 7. 综合绕过框架
+
+> **💡 思路一句话**: 将上述所有单项绕过整合为一个统一 Frida 脚本，按优先级依次加载——先绕过检测（反调试/反 Hook/Root），再处理网络层（SSL Pinning），确保分析环境稳定。
 
 将上述所有绕过技术整合为一个综合脚本：
 

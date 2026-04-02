@@ -527,6 +527,8 @@ docker run --rm -v $(pwd):/work frida/ci
 
 ### 案例分析
 
+> **💡 思路一句话**: 先让 App 崩溃/闪退时用 logcat 抓日志确定检测类型 → 然后针对性 hook 检测函数（端口扫描/maps 检测/so 名称检测）→ 验证绕过后再进行正式分析。
+
 - **[反分析技术案例](../../03-Case-Studies/case_anti_analysis_techniques.md)**
 - **[社交媒体风控](../../03-Case-Studies/case_social_media_and_anti_bot.md)** - 高级检测对抗
 

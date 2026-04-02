@@ -430,6 +430,8 @@ RASP 保护层次
 
 ## 实战：快速判断加固方案
 
+> **💡 思路一句话**: 解压 APK → 检查 lib/ 目录下的 SO 文件名（libjiagu.so=360, libsecexe.so=梆梆, libexec.so=爱加密）→ 检查 AndroidManifest 中的 Application 类名 → 5 秒判断加固方案。
+
 完整工作流（约 5 分钟）：
 
 ### 第 1 步：基础检查

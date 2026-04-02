@@ -840,6 +840,8 @@ char* decrypt_string() {
 
 ## 4. OLLVM 去混淆实战
 
+> **💡 思路一句话**: OLLVM 去混淆的核心是「分层剥离」— 先用 IDAPython 清理指令级花指令（NOP 垃圾指令）→ 再用 Z3 消除不透明谓词 → 最后用符号执行恢复平坦化的控制流 → 逐层还原，每层都有对应的自动化工具。
+
 ### 4.1 控制流平坦化去混淆
 
 #### 4.1.1 基于符号执行的去平坦化
@@ -1704,6 +1706,8 @@ class MLObfuscationDetector:
 
 ## 6. 实战案例分析
 
+> **💡 思路一句话**: 拿到加固 SO → IDA 打开判断混淆类型 → 先跑 d810 自动去混淆 → 不够的部分用 Frida Stalker 动态追踪补全 → 最终还原核心算法。从自动化工具开始，手动分析作为补充。
+
 ### 6.1 案例：某加固 SO 的去混淆分析
 
 #### 6.1.1 初步分析
@@ -2005,6 +2009,431 @@ class DeobfuscationPipeline:
 # pipeline = DeobfuscationPipeline("target.so", "target_clean.so")
 # pipeline.run()
 ```
+
+---
+
+## 7. OLLVM 在 Android ARM64 上的特征模式
+
+### 7.1 ARM64 控制流平坦化特征
+
+ARM64 架构下控制流平坦化（FLA）的分发器有几种典型模式。最常见的是 **CMP + B.EQ 链**：
+
+```arm
+// ARM64 FLA 典型分发器模式
+// 特征: CMP + B.EQ 链或 TBZ/TBNZ 链
+_dispatcher:
+    LDR W8, [SP, #0x20]        // 加载状态变量
+    CMP W8, #0x1234             // 比较状态值
+    B.EQ block_A                // 跳转到对应块
+    CMP W8, #0x5678
+    B.EQ block_B
+    CMP W8, #0x9ABC
+    B.EQ block_C
+    B _dispatcher               // 默认回到分发器
+
+block_A:
+    // ... 真实代码 ...
+    MOV W8, #0x5678             // 更新状态变量 → 下一个块是 block_B
+    STR W8, [SP, #0x20]
+    B _dispatcher               // 返回分发器
+```
+
+除了最基本的 CMP 链之外，还有几种更复杂的分发变体：
+
+**Hash-based dispatch（Hikari 风格）**：使用 CRC32 指令对状态变量进行哈希，再通过跳转表间接分发。这种方式使得状态值与实际跳转目标之间的关系更难静态分析。
+
+```arm
+// Hash-based dispatch variant (Hikari style)
+LDR W8, [SP, #state_var]
+CRC32W W9, WZR, W8             // Hash the state
+AND W9, W9, #0xF               // Mask to table size
+ADR X10, jump_table
+LDR X10, [X10, X9, LSL #3]     // Load target from table
+BR X10                          // Indirect branch
+```
+
+**Table-based dispatch（跳转表分发）**：利用 ARM64 的 ADR + LDR + BR 组合，通过一张跳转表实现分发。这种模式在 IDA 中通常表现为无法识别的 switch 语句。
+
+```arm
+// Table-based dispatch
+LDR W8, [SP, #state_var]
+SUB W8, W8, #base_state        // 归一化状态值
+CMP W8, #table_size
+B.HS _default                  // 越界检查
+ADR X9, jump_table
+LDRSW X10, [X9, X8, UXTW #2]  // 加载偏移量 (32位有符号扩展)
+ADD X9, X9, X10                // 计算目标地址
+BR X9                          // 跳转
+```
+
+**CSEL-based dispatch（条件选择分发）**：对于只有两个后继块的情况，编译器可能使用 CSEL 指令代替分支，使控制流在汇编层面看起来是线性的。
+
+```arm
+// CSEL-based dispatch (两路分发)
+LDR W8, [SP, #state_var]
+MOV W9, #0x1234                // 状态值 A
+MOV W10, #0x5678               // 状态值 B
+CMP W0, #0                     // 条件判断
+CSEL W8, W9, W10, EQ           // 根据条件选择下一个状态
+STR W8, [SP, #state_var]
+B _dispatcher
+```
+
+### 7.2 ARM64 虚假控制流特征
+
+虚假控制流（BCF）在 ARM64 上的核心特征是**不透明谓词 + 永远不会执行的分支**。以下是典型模式：
+
+```arm
+// BCF 典型模式: 使用 CSEL + 不透明谓词
+LDR W8, [X19]                  // 加载某个值
+MUL W9, W8, W8                 // W9 = x * x
+AND W9, W9, #1                 // W9 = x² mod 2
+CBNZ W9, fake_branch           // x² mod 2 永远为 0, 永远不跳
+// real code continues here...
+B continue
+fake_branch:
+    // 垃圾代码
+continue:
+```
+
+常见的 ARM64 不透明谓词模式包括：
+
+**MADD/MSUB 谓词**：利用乘法结果的数学恒等式构造永真/永假条件。
+
+```arm
+// MADD 不透明谓词: x*(x+1) 永远是偶数
+LDR W8, [SP, #var]
+ADD W9, W8, #1
+MADD W10, W8, W9, WZR          // W10 = x * (x+1)
+AND W10, W10, #1               // W10 = (x*(x+1)) mod 2
+CBNZ W10, fake_path            // 永远不跳转
+```
+
+**UBFX/SBFX 位域操作**：通过位域提取构造复杂的不透明表达式，增加分析难度。
+
+```arm
+// UBFX 不透明谓词
+LDR W8, [SP, #var]
+MUL W9, W8, W8                 // x²
+UBFX W10, W9, #0, #1           // 提取最低位 (等价于 AND #1)
+CBZ W10, real_path              // x² 的最低位永远是 0 → 永真跳转
+B fake_path                     // 永远不执行
+```
+
+**CCMP 链（多条件标志）**：使用 ARM64 特有的条件比较指令链来构造复杂的条件组合，使得不透明谓词在反编译器中呈现为多个条件的逻辑组合，大幅增加分析难度。
+
+```arm
+// CCMP 链不透明谓词
+LDR W8, [SP, #var]
+MUL W9, W8, W8                 // W9 = x²
+CMP W9, #0                     // 比较 x² 与 0
+CCMP W8, W8, #0, GE            // 如果 x²>=0 (永真), 再比较 x==x
+B.NE fake_path                 // x==x 永真, NE 永假 → 永远不跳
+```
+
+### 7.3 ARM64 指令替换特征
+
+指令替换（Instruction Substitution）将简单算术运算展开为等价的复杂位运算组合。以下是 ARM64 上常见的替换模式：
+
+```arm
+// 原始: ADD X0, X1, X2
+// SUB 替换方案 1: 双补码加法
+NEG X3, X2                     // X3 = -X2
+SUB X0, X1, X3                 // X0 = X1 - (-X2) = X1 + X2
+
+// SUB 替换方案 2: MBA 展开
+AND X3, X1, X2                 // X3 = X1 & X2
+EOR X4, X1, X2                 // X4 = X1 ^ X2
+ADD X0, X4, X3, LSL #1         // X0 = (X1^X2) + 2*(X1&X2) = X1+X2
+
+// SUB 替换方案 3: 位运算展开 (更深层)
+ORN X3, X1, X2                 // X3 = X1 | ~X2
+MVN X4, X1                     // X4 = ~X1
+AND X4, X4, X2                 // X4 = ~X1 & X2
+MVN X5, X3                     // X5 = ~(X1 | ~X2) = ~X1 & X2 (same as X4)
+// ... 多步运算最终等价于 ADD
+```
+
+在实际分析中，指令替换的深度可能达到 3-4 层嵌套，导致原本 1 条指令展开为 10-20 条。识别的关键在于：观察是否存在大量 EOR/AND/ORR/MVN/ORN 组合，且最终结果写入一个寄存器后被后续代码直接使用。
+
+### 7.4 ARM64 MBA 表达式识别
+
+Mixed Boolean-Arithmetic（MBA）表达式是 OLLVM 指令替换的核心技术，将算术运算和布尔运算混合，使得 Z3 等 SMT 求解器也难以直接化简。以下是实际 APP 中常见的 MBA 模式：
+
+```arm
+// MBA: a + b = (a ^ b) + 2 * (a & b)
+EOR X3, X0, X1          // X3 = a ^ b
+AND X4, X0, X1          // X4 = a & b
+ADD X5, X3, X4, LSL #1  // X5 = (a^b) + 2*(a&b) = a + b
+
+// MBA: a - b = (a ^ b) - 2 * (~a & b)
+EOR X3, X0, X1          // X3 = a ^ b
+BIC X4, X1, X0          // X4 = ~a & b (BIC = bit clear)
+SUB X5, X3, X4, LSL #1  // X5 = (a^b) - 2*(~a&b) = a - b
+
+// 嵌套 MBA (2层): 更复杂的等价替换
+// a + b = ((a | b) + (a & b))
+ORR X3, X0, X1          // X3 = a | b
+AND X4, X0, X1          // X4 = a & b
+ADD X5, X3, X4           // X5 = (a|b) + (a&b) = a + b
+```
+
+更深层次的嵌套 MBA 会将上述基本模式中的子表达式再次展开。例如 `(a ^ b)` 可能被展开为 `(~a & b) | (a & ~b)`，而 `(a & b)` 可能被展开为 `~(~a | ~b)`，导致一个简单的加法最终变成十几条位运算指令。
+
+**MBA 表达式的自动识别方法**：
+
+```python
+# 使用 Z3 自动识别和化简 ARM64 MBA 表达式
+from z3 import *
+
+def verify_mba_pattern(expr_func, expected_func, bits=64):
+    """验证一个 MBA 表达式是否等价于某个简单运算"""
+    a, b = BitVecs('a b', bits)
+    s = Solver()
+    s.add(expr_func(a, b) != expected_func(a, b))
+    return s.check() == unsat  # unsat = 等价
+
+# 常见 MBA 模式验证
+patterns = [
+    ("(a^b) + 2*(a&b)", lambda a,b: (a^b) + 2*(a&b), lambda a,b: a+b),
+    ("(a^b) - 2*(~a&b)", lambda a,b: (a^b) - 2*(~a&b), lambda a,b: a-b),
+    ("(a|b) + (a&b)",    lambda a,b: (a|b) + (a&b),    lambda a,b: a+b),
+    ("(a|b) - (a^b)",    lambda a,b: (a|b) - (a^b),    lambda a,b: a&b),
+    ("(a&b) | (a^b)",    lambda a,b: (a&b) | (a^b),    lambda a,b: a|b),
+]
+
+for name, expr, expected in patterns:
+    result = verify_mba_pattern(expr, expected)
+    # print(f"{name} == a+b/a-b/...: {result}")
+```
+
+---
+
+## 8. OLLVM 变体在 Android 生态中的分布
+
+### 8.1 主流 OLLVM 变体识别指南
+
+Android 生态中存在多种 OLLVM 变体，每种都有独特的特征。准确识别变体类型有助于选择最合适的去混淆策略。
+
+**原版 OLLVM 特征：**
+- 单层 while-switch 分发器
+- 不透明谓词仅使用简单数学恒等式（如 `x*x >= 0`）
+- 指令替换深度通常为 1-2 层
+- 字符串不加密
+- 状态变量使用单一整型变量
+- 基本块之间通过直接赋值状态值进行转移
+
+**Hikari 特征：**
+- 嵌套分发器（2-3 层 switch），外层分发器选择函数区域，内层分发器选择具体基本块
+- FunctionWrapper：所有外部函数调用通过 trampoline 间接调用，增加交叉引用分析难度
+- 字符串加密：`.init_array` 中有批量解密函数，通常在 SO 加载时自动执行
+- AntiClassDump：ObjC metadata 被打乱（iOS 特有，Android 端无此特征）
+- IndirectBranch：使用 BLR/BR 替代 BL/B，所有分支变成间接跳转
+- 状态变量可能使用 CRC32 哈希进行分发
+
+**Pluto-Obfuscator 特征：**
+- TrapAngr pass：插入针对 angr 的反分析代码，使符号执行陷入死循环或路径爆炸
+- GlobalEncryption：全局变量在 constructor 中解密，`.init_array` 中包含全局变量解密函数
+- Flattening 使用更复杂的状态变量更新方式（可能使用位运算如 XOR、旋转）
+- 间接跳转使用 ADRP+ADD+BR 模式，页面相对寻址增加重定位分析难度
+- MBA 表达式替换深度可达 3 层
+
+**商业方案特征：**
+- **梆梆加固**：通常 VMP + OLLVM 叠加，SO 文件的 `.text` 段部分或全部被 VMP 保护，剩余部分使用 OLLVM 混淆
+- **爱加密**：自定义 OLLVM 变体 + 字符串加密，特征是 `.init_array` 数量异常多且解密函数有固定签名
+- **360 加固**：多层壳 + 选择性 OLLVM，核心算法函数使用 OLLVM，外围函数不混淆
+- **网易易盾**：OLLVM + 环境检测，混淆强度较高，同时嵌入多种反调试和反 Hook 检测
+
+### 8.2 版本识别自动化脚本
+
+以下脚本通过分析 SO 文件的结构特征，自动推断其使用的 OLLVM 变体：
+
+```python
+import lief
+
+def identify_ollvm_variant(so_path):
+    """自动识别 SO 文件使用的 OLLVM 变体"""
+    binary = lief.parse(so_path)
+    features = {
+        'has_init_array': False,
+        'init_array_count': 0,
+        'indirect_branch_ratio': 0,
+        'avg_basic_blocks_per_func': 0,
+        'has_crc32_dispatch': False,
+        'has_nested_switch': False,
+    }
+    
+    # 检查 .init_array
+    init_array = binary.get_section('.init_array')
+    if init_array:
+        features['has_init_array'] = True
+        features['init_array_count'] = init_array.size // 8  # ARM64 pointer size
+    
+    # 检查是否有大量间接跳转 (Hikari IndirectBranch 特征)
+    text_section = binary.get_section('.text')
+    if text_section:
+        text_data = bytes(text_section.content)
+        br_count = 0
+        bl_count = 0
+        total_insn = len(text_data) // 4  # ARM64 固定 4 字节指令
+        for i in range(0, len(text_data) - 3, 4):
+            insn = int.from_bytes(text_data[i:i+4], 'little')
+            # BR Xn: 1101011 0000 11111 000000 Rn 00000
+            if (insn & 0xFFFFFC1F) == 0xD61F0000:
+                br_count += 1
+            # BL: 100101 imm26
+            if (insn >> 26) == 0b100101:
+                bl_count += 1
+        if total_insn > 0:
+            features['indirect_branch_ratio'] = br_count / total_insn
+    
+    # 判断变体
+    if features['init_array_count'] > 20:
+        return "Hikari (大量 init_array 暗示字符串加密)"
+    elif features['has_crc32_dispatch']:
+        return "Hikari (CRC32 哈希分发)"
+    elif features['indirect_branch_ratio'] > 0.05:
+        return "Hikari (高间接跳转比例暗示 IndirectBranch pass)"
+    elif features['init_array_count'] > 5:
+        return "Pluto/Armariris (中等 init_array)"
+    elif features['has_init_array'] and features['init_array_count'] <= 5:
+        return "原版 OLLVM 或轻度混淆"
+    else:
+        return "未检测到明显 OLLVM 特征，可能是未混淆或使用 VMP"
+
+# 使用
+# result = identify_ollvm_variant("libnative.so")
+# print(f"检测结果: {result}")
+```
+
+---
+
+## 9. Android 版本差异对花指令/OLLVM 分析的影响
+
+### 9.1 NDK 编译工具链变化
+
+不同 NDK 版本使用的编译器和默认配置不同，直接影响 OLLVM 变体的兼容性和混淆效果：
+
+| NDK 版本 | 默认编译器 | LLVM 版本 | 默认 ABI | 对 OLLVM 的影响 |
+|---------|-----------|-----------|---------|---------------|
+| r16 | Clang 5.0 | 5.0 | armeabi-v7a | 与原版 OLLVM 4.0 兼容 |
+| r17-r20 | Clang 8.0 | 8.0 | armeabi-v7a | 需要 OLLVM 适配到 LLVM 8 |
+| r21-r22 | Clang 11 | 11 | arm64-v8a | Hikari/Pluto 主要适配版本 |
+| r23-r24 | Clang 14 | 14 | arm64-v8a | LLD 默认链接器，影响 section 布局 |
+| r25-r26 | Clang 17 | 17 | arm64-v8a | 需要最新 OLLVM 变体适配 |
+| r27+ | Clang 18+ | 18+ | arm64-v8a | 16KB 页面对齐支持 |
+
+关键变化点：
+- **NDK r21 起 arm64-v8a 成为默认 ABI**，逆向分析中遇到的 SO 文件绝大多数是 ARM64
+- **NDK r23 起 LLD 成为默认链接器**，影响 ELF section 布局和重定位方式
+- **OLLVM 变体需要针对 LLVM 版本重新移植**，高版本 LLVM IR 变化可能导致旧版 OLLVM pass 不兼容
+
+### 9.2 Execute-Only Memory (XOM) 影响 (Android 10+)
+
+Android 10 引入了 Execute-Only Memory（XOM）特性，将 `.text` 段设置为仅可执行、不可读。这对逆向分析有重大影响：
+
+**XOM 的影响：**
+- `Memory.readByteArray()` 直接读取代码段可能失败（权限被拒绝）
+- 内存 dump 工具无法直接读取代码内容
+- 基于内存扫描的特征匹配（如搜索花指令模式）可能受阻
+- Frida Stalker 不受影响（使用 ptrace 机制绕过）
+
+**绕过方案：**
+
+```javascript
+// Frida: XOM 对 Stalker 无影响 (ptrace 绕过)
+// 但 Memory.readByteArray 在某些设备上可能失败
+// 安全的读取方式:
+function safeReadCode(addr, size) {
+    try {
+        return Memory.readByteArray(addr, size);
+    } catch(e) {
+        // Fallback: 使用 /proc/self/mem
+        var fd = new File("/proc/self/mem", "r");
+        fd.seek(addr.toInt32());
+        var data = fd.readBytes(size);
+        fd.close();
+        return data;
+    }
+}
+
+// 更稳健的方案: 通过 mprotect 修改权限
+function readCodeWithMprotect(addr, size) {
+    var pageSize = 4096;
+    var pageAddr = addr.and(ptr(~(pageSize - 1)));  // 页对齐
+    var mprotect = new NativeFunction(
+        Module.findExportByName(null, "mprotect"),
+        'int', ['pointer', 'uint', 'int']
+    );
+    
+    // PROT_READ | PROT_EXEC = 0x5
+    var result = mprotect(pageAddr, size + (addr.sub(pageAddr).toInt32()), 0x5);
+    if (result === 0) {
+        return Memory.readByteArray(addr, size);
+    }
+    return null;
+}
+```
+
+### 9.3 16KB 页面大小 (Android 14+)
+
+Android 14 开始支持 16KB 页面大小（主要在 ARM64 设备上），这对 ELF 加载和二进制分析有以下影响：
+
+**ELF 段对齐变化：**
+- ELF 的 PT_LOAD 段对齐从 4KB（0x1000）变为 16KB（0x4000）
+- SO 文件体积可能因对齐填充而增大
+- 文件偏移与内存偏移的映射关系发生变化
+
+**对逆向分析的影响：**
+- IDA Pro / Ghidra 加载 SO 时需要确认页面大小设置
+- 手动计算虚拟地址与文件偏移的映射时需使用 16KB 对齐
+- Frida 中 `Module.base` 仍然准确，但计算 section 偏移时需注意对齐差异
+- 使用 inline hook / 二进制 patch 时，patch 点所在的页面边界可能不同
+
+**IDA Pro 加载配置调整：**
+- 在 Load File 对话框中确认 segment alignment 设置
+- 对于 16KB 对齐的 SO，使用 `idaapi.get_segm_by_sel()` 验证段边界
+
+### 9.4 SELinux 策略对动态分析的限制
+
+Android 各版本持续收紧 SELinux 策略，对动态分析工具的影响逐步加大：
+
+**各版本关键限制：**
+
+| Android 版本 | SELinux 变化 | 对动态分析的影响 |
+|-------------|-------------|----------------|
+| 5.0-6.0 | Enforcing 模式成为默认 | ptrace 需要 `allow` 规则 |
+| 7.0 | neverallow 规则增加 | 部分自定义 policy 被拒 |
+| 8.0 | Treble 架构分离 | vendor 域策略独立 |
+| 9.0 | 限制 debugfs | 部分内核调试功能失效 |
+| 10.0 | XOM + scoped storage | 代码段不可读 + 文件访问受限 |
+| 11.0 | 更严格的 exec 限制 | `/data/local/tmp` 执行权限收紧 |
+| 12.0+ | 限制 `/proc` 访问 | `/proc/pid/mem` 读取受限 |
+| 14.0+ | 16KB 页面 + 更多 neverallow | 内存布局变化 |
+
+**对 Frida 的具体影响：**
+- `frida-server` 需要以 root 权限运行并位于 SELinux 允许执行的路径
+- 注入目标进程时可能因 SELinux domain transition 规则被阻止
+- `/proc/pid/maps` 和 `/proc/pid/mem` 的访问可能受限
+
+**Magisk 的 SELinux 绕过机制：**
+- Magisk 通过 `magiskpolicy` 工具在启动时注入自定义 SELinux 规则
+- 使用 `magisk --denylist` 管理隐藏列表，避免被目标 APP 检测
+- MagiskHide/Zygisk 可以在 fork 子进程时临时修改 SELinux context
+- 对于 Frida 分析，通常需要配合 Magisk 的 SELinux 规则修改：
+
+```bash
+# 通过 Magisk 添加允许 Frida 运行的 SELinux 规则
+magiskpolicy --live "allow su * process ptrace"
+magiskpolicy --live "allow su * file { read write execute }"
+
+# 检查当前 SELinux 状态
+getenforce
+# 临时设置为 Permissive (需要 root)
+setenforce 0
+```
+
+> **注意**：在生产环境中，大量 APP 会检测 SELinux 状态。将 SELinux 设为 Permissive 可能触发 APP 的安全检测。建议使用 Magisk 的精细化规则控制而非全局关闭。
 
 ---
 

@@ -787,6 +787,8 @@ var navigator = createLoggingProxy('navigator', { /* 已知属性 */ });
 
 ## 实战案例
 
+> **💡 思路一句话**: 定位 JS VM 解释器入口 → 插桩记录 opcode 执行序列 → 分析每个 handler 语义 → 编写反编译器将虚拟指令还原为原始 JS 代码。
+
 以下以一个典型的 JSVMP 签名生成函数为案例，演示完整的分析流程。
 
 ### 场景描述

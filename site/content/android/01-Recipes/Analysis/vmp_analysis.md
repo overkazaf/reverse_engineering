@@ -805,6 +805,8 @@ traceVM();
 
 ## 4. Handler 分析实战
 
+> **💡 思路一句话**: 对 VMP 分发器中的每个 opcode handler 逐个分析语义（MOV/ADD/XOR/CMP/JMP 等），建立自定义指令集文档，然后编写反汇编器将 VM 字节码翻译回可读伪代码。
+
 ### 4.1 Handler 识别与分类
 
 ```javascript
@@ -1231,6 +1233,8 @@ function registerKnownHandlers(moduleBase) {
 ---
 
 ## 5. 实战案例分析
+
+> **💡 思路一句话**: Frida hook VM 入口拿到字节码 → 分析分发器识别每个 handler → 逐条翻译 VM 指令 → 重建原始算法逻辑。比 OLLVM 更难，但方法论相同：让程序告诉你它在做什么。
 
 ### 5.1 案例：分析加密签名函数
 

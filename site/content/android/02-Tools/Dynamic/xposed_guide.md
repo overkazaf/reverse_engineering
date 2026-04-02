@@ -580,6 +580,8 @@ adb shell su -c 'touch /data/adb/modules/zygisk_lsposed/disable'
 
 ## 实战案例
 
+> **💡 思路一句话**: Xposed/LSPosed 的优势是「持久化 hook」— 重启后 hook 仍然生效，适合需要长期监控或修改应用行为的场景（如持续抓包、自动化测试、功能修改）。
+
 ### Hook 目标应用的加密函数
 
 假设通过 jadx 分析发现目标应用 `com.example.secureapp` 有加密工具类：

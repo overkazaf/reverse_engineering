@@ -524,6 +524,8 @@ android hooking watch class_method java.security.KeyStore.getCertificateChain --
 
 ### 实战：提取应用加密密钥
 
+> **💡 思路一句话**: objection 一行命令 hook Cipher/SecretKeySpec/Mac 等加密类 → 自动打印算法名称、密钥、IV、明文/密文 → 无需手写 Frida 脚本，适合快速获取加密参数。
+
 ```bash
 # 1. 搜索加密相关的类
 android hooking search classes Crypto
@@ -683,6 +685,8 @@ android hooking watch class_method android.content.ContentResolver.query --dump-
 ---
 
 ## 实战组合技
+
+> **💡 思路一句话**: objection 的强大在于「组合使用」— SSL pinning bypass + 内存搜索 + 加密类 hook + 文件监控，四合一覆盖大部分逆向场景，一个工具搞定 80% 的工作。
 
 ### 场景一：分析登录流程
 
