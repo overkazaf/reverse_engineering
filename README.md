@@ -1,3 +1,12 @@
+<div align="center">
+
+![Stars](https://img.shields.io/github/stars/overkazaf/reverse_engineering?style=flat-square&color=58a6ff)
+![Language](https://img.shields.io/github/languages/top/overkazaf/reverse_engineering?style=flat-square&color=58a6ff)
+![Last Commit](https://img.shields.io/github/last-commit/overkazaf/reverse_engineering?style=flat-square&color=58a6ff)
+![Repo Size](https://img.shields.io/github/repo-size/overkazaf/reverse_engineering?style=flat-square&color=58a6ff)
+
+</div>
+
 # 逆向工程烹饪食谱 (Reverse Engineering Cookbook)
 
 欢迎来到逆向工程烹饪食谱！这是一个系统化的逆向工程学习资源库，涵盖 Android 和 Web 两大领域。
